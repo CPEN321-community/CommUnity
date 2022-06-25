@@ -5,7 +5,7 @@
 
 <br/>
 
-<div align="center"><img src="https://github.com/JoshParkSJ/CommUnity/tree/main/assets/logos/logo_art.png?raw=true" width="100" height="80" style="vertical-align:middle"></div>
+<div align="center"><img src="https://github.com/JoshParkSJ/CommUnity/tree/main/assets/logos/logo_art.png" width="100" height="80" style="vertical-align:middle"></div>
 
 <div align="center">
 <h4>37% of students at UBC Vancouver report low to very low food security. Globally, approximately one third of the food produced for human consumption gets lost or wasted each year. COMMUNITY aims to reduce food waste and increase food security amongst students by sharing food which might otherwise go to waste</h4>
@@ -21,15 +21,15 @@ Android frontend in Java, backend in Node.js, and database in MySQL.
 # Mockups
 
 <div align="center">
-	<img src="https://github.com/JoshParkSJ/CommUnity/tree/main/assets/mockups/main_day?raw=true" width="100" height="80" style="vertical-align:middle">
-	<img src="https://github.com/JoshParkSJ/CommUnity/tree/main/assets/mockups/main_night.png?raw=true" width="100" height="80" style="vertical-align:middle">
+	<img src="https://github.com/JoshParkSJ/CommUnity/tree/main/assets/mockups/main_day.png" width="100" height="80" style="vertical-align:middle">
+	<img src="https://github.com/JoshParkSJ/CommUnity/tree/main/assets/mockups/main_night.png" width="100" height="80" style="vertical-align:middle">
 </div>
 
 
 
  # Developers
- - [Parthvi Kulkarni (66483348)]((https://github.com/parthvi-kulkarni))
- - [Joshua Park (45091048)]((https://github.com/joshparksj))
- - [Claire Song (88219662)] (https://github.com/cxsong1)
- - [Trevor Flanigan (22151880)] (https://github.com/trevorflanigan)
+ - [Parthvi Kulkarni (66483348)](https://github.com/parthvi-kulkarni)
+ - [Joshua Park (45091048)](https://github.com/joshparksj)
+ - [Claire Song (88219662)](https://github.com/cxsong1)
+ - [Trevor Flanigan (22151880)](https://github.com/trevorflanigan)
 
