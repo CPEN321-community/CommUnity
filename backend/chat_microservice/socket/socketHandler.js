@@ -1,8 +1,13 @@
 const socketHandler = (socket) => {
     console.log("socket connection made with id: " + socket.id);
     
-    socket.on('join_room', (postIds) => {
+    socket.on('join_room', (userId) => {
+        // get all postIds userId is in
+        
+        const postIds = [];
         socket.join(postIds);
+        
+        
         console.log("Room successfully joined!");
     });
 

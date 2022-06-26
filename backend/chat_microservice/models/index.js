@@ -8,6 +8,13 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
+function applyRelationships(sequelize) {
+	const { User, Message } = sequelize.models;
+
+  User.belongsTo(Message, { foreignKey: 'userId' })
+  Message.hasOne(User, { foreignKey: 'userId' })
+}
+
 let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
@@ -30,6 +37,8 @@ Object.keys(db).forEach(modelName => {
     db[modelName].associate(db);
   }
 });
+
+applyRelationships(sequelize);
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
