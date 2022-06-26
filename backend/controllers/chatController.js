@@ -1,7 +1,7 @@
 const getChatData = async (req, res) => {
-  const { id } = req.body;
-  const response = null;
-  res.json(response);
+  // const { id } = req.body;
+  const { userId } = req.query;
+  res.json(userId);
 };
 
 const getChatSocket = async (req, res) => {
