@@ -8,7 +8,7 @@ const router = Router();
 // router.post('/cart/add', addCartController);
 
 // Chat Module
-router.get('/chat?userId', getChatData);
+router.get('/chat', getChatData);
 router.get('/socket/:chatId', getChatSocket);
 router.get('/socket/message/:chatId', getMessageFromSocket);
 router.post('/socket/message/:chatId', addMessageToSocket)
