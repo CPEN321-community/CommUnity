@@ -3,14 +3,17 @@ const { getChatData, getChatSocket, getMessageFromSocket, addMessageToSocket } =
 
 const router = Router();
 
-// parthvi's part
-// router.get('/cart/get', getCartController);
-// router.post('/cart/add', addCartController);
-
 // Chat Module
 router.get('/chat', getChatData);
 router.get('/socket/:chatId', getChatSocket);
 router.get('/socket/message/:chatId', getMessageFromSocket);
 router.post('/socket/message/:chatId', addMessageToSocket)
+router.get('/testChat', (req, res) => res.sendFile(__dirname + '/socket/chat.html')); // testing socket with simple html file
+
+// Post Module
+
+// Recommendation Module
+
+// User Module
 
 module.exports = router;
