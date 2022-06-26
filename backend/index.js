@@ -11,6 +11,6 @@ app.use(cors({
   credentials: true
 }), routes);
 
-var server = app.listen(3003, function() {
+var server = app.listen(8080, function() {
   console.log('Server running on port %d', server.address().port);
 });

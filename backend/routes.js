@@ -1,17 +1,16 @@
 const Router = require('express-promise-router');
-const getCartController = require('./controllers/getCartController');
-const addCartController = require('./controllers/addCartController');
-const getItemsController = require('./controllers/getItemsController');
-const addItemController = require('./controllers/addItemController');
+const { getChatData, getChatSocket, getMessageFromSocket, addMessageToSocket } = require('./controllers/chatController');
 
 const router = Router();
 
 // parthvi's part
-router.get('/cart/get', getCartController);
-router.post('/cart/add', addCartController);
+// router.get('/cart/get', getCartController);
+// router.post('/cart/add', addCartController);
 
-// joshua's part
-router.get('/item/get', getItemsController);
-router.post('/item/add', addItemController);
+// Chat Module
+router.get('/chat?userId', getChatData);
+router.get('/socket/:chatId', getChatSocket);
+router.get('/socket/message/:chatId', getMessageFromSocket);
+router.post('/socket/message/:chatId', addMessageToSocket)
 
 module.exports = router;
