@@ -4,22 +4,24 @@ const socket = require('socket.io');
 const bodyParser = require('body-parser');
 const routes = require('./routes');
 const socketHandler = require('./socket/socketHandler');
-const sessionMapper = require('./socket/sessionMapper');
-// const SessionStore = require('./socket/sessionStore');
+const db = require('./models');
 
 const app = express();
 const server = http.Server(app);
 const io = socket(server);
-// const sessionStore = new SessionStore();
 
+io.on('connection', (socket) => socketHandler(socket));
 app.use(bodyParser.json());
 app.use(routes);
 
-// io.use((socket, next) => sessionMapper(socket, next, sessionStore))
-io.on('connection', (socket) => socketHandler(socket, sessionStore));
+db.sequelize.sync().then((req) => {
+  app.listen(3031, () => {
+    console.log("MySQL server running on http://localhost:3031");
+  })
+})
 
 const PORT = process.env.PORT || 3000;
 
 server.listen(PORT, () => {
-  console.log(`Server running on port http://localhost:${PORT}`);
+  console.log(`Node.js Server running on port http://localhost:${PORT}`);
 });
