@@ -3,19 +3,23 @@ const http = require('http');
 const socket = require('socket.io');
 const bodyParser = require('body-parser');
 const routes = require('./routes');
-const socketHandler = require('./socket');
+const socketHandler = require('./socket/socketHandler');
+const sessionMapper = require('./socket/sessionMapper');
+// const SessionStore = require('./socket/sessionStore');
 
 const app = express();
 const server = http.Server(app);
 const io = socket(server);
+// const sessionStore = new SessionStore();
 
 app.use(bodyParser.json());
 app.use(routes);
 
-app.get('/', (req, res) => res.sendFile(__dirname + '/chat.html'));
+// io.use((socket, next) => sessionMapper(socket, next, sessionStore))
+io.on('connection', (socket) => socketHandler(socket, sessionStore));
 
-io.on('connection', (socket) => socketHandler(socket));
+const PORT = process.env.PORT || 3000;
 
-server.listen(8080, function() {
-  console.log('Server running on port %d', server.address().port);
+server.listen(PORT, () => {
+  console.log(`Server running on port http://localhost:${PORT}`);
 });
