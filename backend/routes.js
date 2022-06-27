@@ -1,11 +1,16 @@
 const Router = require('express-promise-router');
 const { getChatData, getChatSocket, getMessageFromSocket, addMessageToSocket } = require('./controllers/chatController');
+const { getPostData, deletePost, updatePost, createNewPost, findPostList } = require('./controllers/postController');
 
 const router = Router();
 
-// parthvi's part
-// router.get('/cart/get', getCartController);
-// router.post('/cart/add', addCartController);
+//Post Module
+router.get('/post/:postId', getPostData);
+router.get('/post?query', findPostList);
+router.post('/post', createNewPost);
+router.put('/post/:postId', updatePost);
+router.delete('/post/:postId', deletePost);
+
 
 // Chat Module
 router.get('/chat?userId', getChatData);
