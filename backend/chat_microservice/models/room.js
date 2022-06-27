@@ -1,11 +1,11 @@
-const UserObj = (sequelize, DataTypes) => {
-    const User = sequelize.define("User", {
-        userId: {
+const RoomObj = (sequelize, DataTypes) => {
+    const Room = sequelize.define("Room", {
+        id: {
             type: DataTypes.STRING,
             allowNull: false,
             primaryKey: true,
         },
-        name: {
+        postId: {
             type: DataTypes.STRING,
             allowNull: false,
         },
@@ -13,7 +13,7 @@ const UserObj = (sequelize, DataTypes) => {
         timestamps: false
     });
     
-    return User;
+    return Room;
 }
 
-module.exports = UserObj;
+module.exports = RoomObj;

@@ -1,5 +1,3 @@
-const UserObject = require('./user');
-
 const MessageObject = (sequelize, DataTypes) => {
     const Message = sequelize.define("Message", {
         id: {
@@ -9,10 +7,6 @@ const MessageObject = (sequelize, DataTypes) => {
         },
         postId: {
             type: DataTypes.STRING, 
-            allowNull: false,
-        },
-        userId: {
-            type: DataTypes.STRING,
             allowNull: false,
         },
         message: {

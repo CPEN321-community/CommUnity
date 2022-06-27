@@ -9,10 +9,13 @@ const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
 function applyRelationships(sequelize) {
-	const { User, Message } = sequelize.models;
+	const { User, Message, Room } = sequelize.models;
 
-  User.belongsTo(Message, { foreignKey: 'userId' })
-  Message.hasOne(User, { foreignKey: 'userId' })
+  User.hasMany(Message, { foreignKey: 'userId' });
+  Message.belongsTo(User, { foreignKey: 'userId' });
+
+  User.hasMany(Room, { foreignKey: 'userId' });
+  Room.belongsTo(User, { foreignKey: 'userId' });
 }
 
 let sequelize;
