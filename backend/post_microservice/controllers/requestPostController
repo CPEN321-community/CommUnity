@@ -1,0 +1,53 @@
+/**
+  * Post Controller includes all of the endpoints relating to post management in our app
+  */
+ 
+  const { User } = require("../models/userModel");
+  const { PostTags } = require("../models/offerPostTagsModel");
+  const { OfferPost } = require("../models/offerPostModel");
+  const { RequestPost } = require("../models/requestPostModel");
+
+ //Retrieve the post identified by post ID
+ const getRequest = async (req, res) => {
+    const {id} = req.postId;
+    const response = RequestPost.findByPk(id);
+    res.json(response);
+  };
+  
+  //Find all posts for a specific user query (filter tags)
+  const searchRequests = async (req, res) => {
+      const { query } = req.query;
+      //retrieve posts "findByTags"
+      //retrieve post "findByName"
+      res.json(query);
+  }
+
+  //Create a new post
+  const createRequest = async (req, res) => {
+      const { id } = req.body;
+      const response = null;
+      res.json(response);
+  }
+
+  //Update post
+  const updateRequest = async (req, res) => {
+      const { id } = req.body;
+      const response = null;
+      res.json(response);
+  }
+
+  //Delete post
+  const deleteRequest = async (req, res) => {
+      const { id } = req.body;
+      const response = null;
+      res.json(response);
+  }
+
+  module.exports = {
+    getRequest,
+    searchRequests,
+    createRequest,
+    updateRequest,
+    deleteRequest
+  };
+  
