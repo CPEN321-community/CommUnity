@@ -24,9 +24,9 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
     var socket = io();
-    socket.on('connect', function(data) {
-        socket.emit('joined', 'Hello World from client');
-    });
+    console.log('trying to join room...');
+    socket.emit('join_room', 'user1');
+
     socket.on('acknowledge', function(data) {
         alert(data);
     });

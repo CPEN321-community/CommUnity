@@ -1,13 +1,12 @@
+const { getAssociatedRooms, getChatData, getChatSocket, getMessageFromSocket, addMessageToSocket } = require('../controllers/chatController');
+
 const socketHandler = (socket) => {
     console.log("socket connection made with id: " + socket.id);
     
-    socket.on('join_room', (userId) => {
-        // get all postIds userId is in
-        
-        const postIds = [];
-        socket.join(postIds);
-        
-        
+    socket.on('join_room', async (userId) => {
+        console.log("oh a user is trying to join...")
+        const postIds = await getAssociatedRooms(userId);
+        // socket.join(postIds);
         console.log("Room successfully joined!");
     });
 
