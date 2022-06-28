@@ -11,12 +11,15 @@
         #messages { list-style-type: none; margin: 0; padding: 0; }
         #messages li { padding: 5px 10px; }
         #messages li:nth-child(odd) { background: #eee; }
+        #button1 { background: #eee; width: 500px; height: 500px; }
     </style>
 </head>
 <body>
 <ul id="messages"></ul>
-<button onClick="">Create room</button>
-<form action="">
+<form id="button1" action="">
+    <button>Create room</button>
+</form>
+<form id="button2" action="">
     <input id="m" autocomplete="off" /><button>Send</button>
 </form>
 <script src="//code.jquery.com/jquery-3.2.1.js"></script>
@@ -26,27 +29,37 @@
 <script>
     var socket = io();
 
-    console.log('trying to join room...');
     socket.emit('join_rooms', 'user1');
 
-    $('button').onClick(() => {
-        socket.emit('chat message', $('#m').val());
+    $('#button1').submit(() => {
+        var createRoomObj = { 
+            postId: 'post3', 
+            senderId: 'user1',
+            receieverId: 'user3',
+        };
+        console.log('creating room...');
+        socket.emit('create_room', createRoomObj);
+        
+        socket.on('create_room', data => {
+            console.log(data); //create_room_success or create_room_failure
+        });
     });
 
-    socket.on('acknowledge', data => {
-        alert(data);
-    });
-
-    $('form').submit(() => {
-        socket.emit('chat message', $('#m').val());
+    $('button2').submit(() => {
+        socket.emit('send_message', $('#m').val());
         $('#messages').append($('<li>').text($('#m').val()));
         $('#m').val('');
+
+        socket.on('send_message', data => {
+            console.log(data); //send_message_success or send_message_failure
+        });
+
         return false;
     });
 
-    socket.on('response message', data => {
-        $('#messages').append($('<li>').text(data));
-    });
+    // socket.on('response message', data => {
+    //     $('#messages').append($('<li>').text(data));
+    // });
 </script>
 </body>
 </html>
