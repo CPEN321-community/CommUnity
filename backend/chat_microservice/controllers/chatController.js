@@ -1,8 +1,6 @@
 const { Op } = require("sequelize");
 const { User, Message, Room } = require('../models');
 
-const initializeTest = (req, res) => res.sendFile(__dirname + '/socket/chat.html');
-
 const deleteRoom = async (req, res) => {
   try {
     await Room.destroy({
@@ -93,7 +91,7 @@ const getAssociatedRooms = async (userId) => {
   }
 }
 
-const createRoom = async (postId, receieverId, receieverPfp, receieverName, senderId, senderPfp, senderName) => {
+const createRoom = async (postId, receieverId, senderId) => {
   try {
     const [r1, created1] = await Room.upsert({
       postId,
@@ -104,18 +102,7 @@ const createRoom = async (postId, receieverId, receieverPfp, receieverName, send
       userId: senderId,
     });
 
-    const [u1, created3] = await User.upsert({
-      userId: receieverId,
-      name: receieverName,
-      profilePicture: receieverPfp,
-    });
-    const [u2, created4] = await User.upsert({
-      userId: senderId,
-      name: senderName,
-      profilePicture: senderPfp,
-    });
-
-    return created1 && created2 && created3 && created4;
+    return created1 && created2;
   } catch (e) {
     console.log('createRoom Error ' + e);
   }
@@ -135,7 +122,6 @@ const sendMessage = async (message, userId, postId) => {
 }
 
 module.exports = {
-  initializeTest,
   deleteRoom,
   getChats,
   changeInfo,

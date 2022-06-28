@@ -5,8 +5,9 @@ const socketHandler = (socket) => {
     
     socket.on('join_rooms', async userId => {
         const postIds = await getAssociatedRooms(userId);
+        console.log('joining rooms: ', postIds);
         
-        if (postIds && postIds.length() > 0) {
+        if (postIds && postIds.length > 0) {
             socket.join(postIds);
             socket.emit('join_rooms', 'join_rooms_success');
         } else {
@@ -14,8 +15,8 @@ const socketHandler = (socket) => {
         }
     });
 
-    socket.on('create_room', async ({ postId, receieverId, receieverPfp, receieverName, senderId, senderPfp, senderName }) => {
-        const isCreated = await createRoom(postId, receieverId, receieverPfp, receieverName, senderId, senderPfp, senderName);
+    socket.on('create_room', async ({ postId, receieverId, senderId }) => {
+        const isCreated = await createRoom(postId, receieverId, senderId);
 
         if (isCreated) {
             socket.emit('create_room', 'create_room_success')
