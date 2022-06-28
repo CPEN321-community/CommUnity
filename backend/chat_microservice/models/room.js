@@ -4,6 +4,7 @@ const RoomObj = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
             primaryKey: true,
+            defaultValue: DataTypes.UUIDV4,
         },
         postId: {
             type: DataTypes.STRING,
