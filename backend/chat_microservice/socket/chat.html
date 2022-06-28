@@ -15,6 +15,7 @@
 </head>
 <body>
 <ul id="messages"></ul>
+<button onClick="">Create room</button>
 <form action="">
     <input id="m" autocomplete="off" /><button>Send</button>
 </form>
@@ -24,19 +25,26 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
     var socket = io();
-    console.log('trying to join room...');
-    socket.emit('join_room', 'user1');
 
-    socket.on('acknowledge', function(data) {
+    console.log('trying to join room...');
+    socket.emit('join_rooms', 'user1');
+
+    $('button').onClick(() => {
+        socket.emit('chat message', $('#m').val());
+    });
+
+    socket.on('acknowledge', data => {
         alert(data);
     });
-    $('form').submit(function(){
+
+    $('form').submit(() => {
         socket.emit('chat message', $('#m').val());
         $('#messages').append($('<li>').text($('#m').val()));
         $('#m').val('');
         return false;
     });
-    socket.on('response message', function(data) {
+
+    socket.on('response message', data => {
         $('#messages').append($('<li>').text(data));
     });
 </script>

@@ -4,11 +4,16 @@ const UserObj = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
             primaryKey: true,
+            defaultValue: DataTypes.UUIDV4,
         },
         name: {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        profilePicture: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        }
     }, {
         timestamps: false
     });

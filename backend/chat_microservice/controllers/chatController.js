@@ -1,4 +1,82 @@
+const { Op } = require("sequelize");
 const { User, Message, Room } = require('../models');
+
+const initializeTest = (req, res) => res.sendFile(__dirname + '/socket/chat.html');
+
+const deleteRoom = async (req, res) => {
+  try {
+    await Room.destroy({
+      where: {
+        postId: req.params.postId,
+      }
+    });
+    await Message.destroy({
+      where: {
+        postId: req.params.postId,
+      }
+    });
+
+    res.sendStatus(200);
+  } catch (e) {
+    console.log('deleteRoom Error ' + e);
+    res.sendStatus(500);
+  }
+}
+
+const getChats = async (req, res) => {
+  try {
+    const { userId } = req.params;
+  
+    const { name, profilePicture } = await User.findOne({ 
+      where: { userId } 
+    });
+    
+    const rooms = await Room.findAll({ 
+      where: { userId } 
+    });
+  
+    const allChats = await Promise.all(rooms.map(async r => {
+
+      const postId = r.dataValues.postId;      
+      const receiever = await Room.findOne({ where: {userId: {[Op.ne]: userId}, postId} });
+      const receieverUser = await User.findOne({ where: { userId: receiever.userId }});
+      const msg = await Message.findAll({ postId });
+
+      return {
+        sender: userId,
+        senderName: name,
+        senderProfilePicture: profilePicture,
+        receiever: receiever.userId,
+        receieverName: receieverUser.name,
+        receieverProfilePicture: receieverUser.profilePicture,
+        messages: msg,
+      }
+    }));
+  
+    res.json(allChats);
+    res.sendStatus(200);
+  } catch (e) {
+    console.log("getChats Error: " + e);
+  }
+};
+
+const changeInfo = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { name, profilePicture } = req.body;
+    
+    await User.upsert({
+      userId,
+      name,
+      profilePicture,
+    });
+
+    res.sendStatus(200);
+  } catch (e) {
+    console.log("changeInfo Error: " + e);
+    res.sendStatus(500);
+  }
+}
 
 const getAssociatedRooms = async (userId) => {
   try {
@@ -15,34 +93,53 @@ const getAssociatedRooms = async (userId) => {
   }
 }
 
-const getChatData = async (req, res) => {
-  // const { id } = req.body;
-  const { userId } = req.query;
-  res.json(userId);
+const createRoom = async (postId, receieverId, receieverPfp, receieverName, senderId, senderPfp, senderName) => {
+  try {
+    const [r1, created1] = await Room.upsert({
+      postId,
+      userId: receieverId,
+    });
+    const [r2, created2] = await Room.upsert({
+      postId,
+      userId: senderId,
+    });
+
+    const [u1, created3] = await User.upsert({
+      userId: receieverId,
+      name: receieverName,
+      profilePicture: receieverPfp,
+    });
+    const [u2, created4] = await User.upsert({
+      userId: senderId,
+      name: senderName,
+      profilePicture: senderPfp,
+    });
+
+    return created1 && created2 && created3 && created4;
+  } catch (e) {
+    console.log('createRoom Error ' + e);
+  }
 };
 
-const getChatSocket = async (req, res) => {
-  const { id } = req.body;
-  const response = null;
-  res.json(response);
-};
-
-const getMessageFromSocket = async (req, res) => {
-  const { id } = req.body;
-  const response = null;
-  res.json(response);
-};
-
-const addMessageToSocket = async (req, res) => {
-  const { id } = req.body;
-  const response = null;
-  res.json(response);
-};
+const sendMessage = async (message, userId, postId) => {
+  try {
+    const [_, created] = await Message.upsert({
+      postId,
+      userId,
+      message,
+    });
+    return created;
+  } catch (e) {
+    console.log('sendMessage Error ' + e);
+  }
+}
 
 module.exports = {
+  initializeTest,
+  deleteRoom,
+  getChats,
+  changeInfo,
   getAssociatedRooms,
-  getChatData, 
-  getChatSocket, 
-  getMessageFromSocket, 
-  addMessageToSocket
+  createRoom,
+  sendMessage,
 };
