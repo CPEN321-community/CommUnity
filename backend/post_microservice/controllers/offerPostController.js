@@ -5,7 +5,7 @@
   const { User } = require("../models/userModel");
   const { OfferPost } = require("../models/offerPostModel");
   const {OfferPostTags} = require("../models/offerPostTagsModel");
-
+ 
  const getOffer = async (req, res) => {
      try {
          const offerId = req.postId;

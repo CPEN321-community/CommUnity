@@ -3,24 +3,46 @@
   */
  
   const { User } = require("../models/userModel");
-  const { PostTags } = require("../models/offerPostTagsModel");
-  const { OfferPost } = require("../models/offerPostModel");
+  const { RequestPostTags } = require("../models/requestPostTagsModel");
   const { RequestPost } = require("../models/requestPostModel");
-
- //Retrieve the post identified by post ID
- const getRequest = async (req, res) => {
-    const {id} = req.postId;
-    const response = RequestPost.findByPk(id);
-    res.json(response);
+  const getRequest = async (req, res) => {
+   try {
+     const offerId = req.postId;
+     const response = await RequestPost.findByPk(offerId, {include: ["offerTags"]});
+     res.json(response);
+     res.sendStatus(200);
+    } catch (error) {
+      console.log("Error finding an offer post: " + e);
+      res.sendStatus(500);
+    }
   };
-  
-  //Find all posts for a specific user query (filter tags)
+
   const searchRequests = async (req, res) => {
-      const { query } = req.query;
-      //retrieve posts "findByTags"
-      //retrieve post "findByName"
-      res.json(query);
+    try {
+      const title = req.title;
+      const query = "%" + title + "%";
+
+      //find all posts which have a title containing the query
+      const response = await OfferPost.findAll({
+          where: {
+              title: {[Op.like]: query}, 
+            }
+      });
+      if (response = null) {
+          const message = "Sorry, there are no offer posts for " + title + "."
+          res.json({
+              message: message
+          });
+          res.sendStatus(200);
+      } else {
+          res.json(response);
+          res.sendStatus(200);
+      }
+  } catch (error) {
+    console.log("Error with searching for offer posts: " + e);
+    res.sendStatus(500);
   }
+}
 
   //Create a new post
   const createRequest = async (req, res) => {
