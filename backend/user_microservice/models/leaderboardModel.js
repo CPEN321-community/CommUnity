@@ -1,7 +1,7 @@
 const LeaderboardObject = (sequelize, DataTypes) => {
     const Leaderboard = sequelize.define("Leaderboard", {
         id: {
-            type: DataTypes.UUIDV4,
+            type: DataTypes.STRING,
             defaultValue: DataTypes.UUIDV4,
             allowNull: false,
             primaryKey: true
@@ -9,15 +9,20 @@ const LeaderboardObject = (sequelize, DataTypes) => {
         offerPosts: {
             type: DataTypes.INTEGER, 
             allowNull: false,
+            defaultValue: 0,
         },
         requestPosts: {
             type: DataTypes.INTEGER, 
             allowNull: false,
+            defaultValue: 0,
         },
         score: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            defaultValue: 0,
         }
+    }, {
+        timestamp: false,
     });
     return Leaderboard;
   };

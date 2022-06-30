@@ -1,7 +1,7 @@
 const UserObject = (sequelize, DataTypes) => {
     const User = sequelize.define("User", {
         userId: {
-            type: DataTypes.UUIDV4,
+            type: DataTypes.STRING,
             defaultValue: DataTypes.UUIDV4,
             allowNull: false,
             primaryKey: true
@@ -22,6 +22,8 @@ const UserObject = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
         }
+    }, {
+        timestamp: false,
     });
     return User;
   };

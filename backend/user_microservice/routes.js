@@ -10,7 +10,7 @@ router.put('/user/preference', upsertUserPreference);
 router.post('/user', upsertUser);
 
 // leaderboard
-router.get('/rank?top', getTopNUsers);
+router.get('/rank/:top', getTopNUsers);
 router.get('/rank/:userId', getUserRank);
 router.put('/rank', upsertUserRank);
 
