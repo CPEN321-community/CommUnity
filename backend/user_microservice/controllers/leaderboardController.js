@@ -45,7 +45,7 @@ const upsertUserRank = async (req, res) => {
     }
 };
 
-module.export = {
+module.exports = {
     getTopNUsers,
     getUserRank,
     upsertUserRank,
