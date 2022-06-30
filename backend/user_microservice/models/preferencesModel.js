@@ -1,7 +1,7 @@
 const PreferencesObject = (sequelize, DataTypes) => {
     const Preferences = sequelize.define("Preferences", {
         id: {
-            type: DataTypes.UUIDV4,
+            type: DataTypes.STRING,
             defaultValue: DataTypes.UUIDV4,
             allowNull: false,
             primaryKey: true
@@ -14,6 +14,8 @@ const PreferencesObject = (sequelize, DataTypes) => {
             type: DataTypes.STRING, 
             allowNull: false,
         }
+    }, {
+        timestamp: false,
     });
     return Preferences;
   };

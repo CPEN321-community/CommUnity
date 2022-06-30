@@ -1,11 +1,10 @@
 
 const { Op } = require("sequelize");
-const { User } = require("../models/userModel");
-const { Preferences } = require("../models/preferencesModel");
+const { User, Preferences } = require("../models");
 
 const getUser = async (req, res) => {
    try {
-       const userId = req.userId;
+       const userId = req.params.userId;
        const response = await User.findByPk(userId, {include: ["preferences"]});
        res.json(response);
        res.sendStatus(200);
@@ -38,18 +37,18 @@ const upsertUser = async (req, res) => {
             profilePicture: req.body.profilePicture
         });
         
-        await fetch('http://localhost:1000/chat/changeUserInfo', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            userId: '',
-            firstName: '',
-            lastName: '',
-            profilePicture: '',
-          }),
-        })
+        // await fetch('http://localhost:1000/chat/changeUserInfo', {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify({
+        //     userId: '',
+        //     firstName: '',
+        //     lastName: '',
+        //     profilePicture: '',
+        //   }),
+        // })
 
         res.json(response);
         res.sendStatus(200);

@@ -1,12 +1,12 @@
-const { Op } = require("sequelize");
-const { Leaderboard } = require("../models/leaderboardModel");
+const sequelize = require('sequelize');
+const { Leaderboard } = require("../models");
 
 const getTopNUsers = async (req, res) => {
    try {
-        const N = req.query.top;
+        const N = req.params.top;
         const response = await Leaderboard.findAll({
-            order: sequelize.fn('max', sequelize.col('score')),
-            limit: N,
+            order: [["score","DESC"]],
+            limit: parseInt(N),
         });
        res.json(response);
        res.sendStatus(200);
@@ -20,7 +20,7 @@ const getUserRank = async (req, res) => {
     try {
         const { userId } = req.params;
         const response = await Leaderboard.findOne({ 
-            where: { userId } 
+            where: { userId }
         });
         res.json(response);
         res.sendStatus(200);
@@ -33,11 +33,30 @@ const getUserRank = async (req, res) => {
 const upsertUserRank = async (req, res) => {
     try {
         const { userId, offerPosts, requestPosts } = req.body;
-        await Leaderboard.upsert({
-            userId,
-            offerPosts,
-            requestPosts,
+        const currLeaderboard = await Leaderboard.findOne({
+            where: { userId }
         });
+        const scoreAlreadyExists = currLeaderboard != null;
+        if (scoreAlreadyExists) {
+            const newOfferPosts = currLeaderboard.offerPosts + offerPosts;
+            const newRequestPosts = currLeaderboard.requestPosts + requestPosts;
+            const score = (newOfferPosts * 7) + (newRequestPosts * 3);    
+
+            await Leaderboard.update({
+                userId,
+                offerPosts: newOfferPosts,
+                requestPosts: newRequestPosts,
+                score,
+            }, { where: { userId } });
+        } else {
+            await Leaderboard.create({
+                userId,
+                offerPosts,
+                requestPosts,
+                score: (offerPosts * 7) + (requestPosts * 3),
+            });
+        }
+
         res.sendStatus(200);
     } catch (error) {
         console.log("Error upserting user rank: " + error);
