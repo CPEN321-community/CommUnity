@@ -1,28 +1,29 @@
-const UserObj = (sequelize, DataTypes) => {
+const UserObject = (sequelize, DataTypes) => {
     const User = sequelize.define("User", {
         userId: {
             type: DataTypes.UUIDV4,
-            allowNull: false,
-            primaryKey: true,
             defaultValue: DataTypes.UUIDV4,
+            allowNull: false,
+            primaryKey: true
         },
         firstName: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING, 
             allowNull: false,
         },
         lastName: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING, 
+            allowNull: false,
+        },
+        email: {
+            type: DataTypes.STRING, 
             allowNull: false,
         },
         profilePicture: {
             type: DataTypes.STRING,
             allowNull: false,
         }
-    }, {
-        timestamps: false
     });
-    
     return User;
-}
+  };
 
-module.exports = UserObj;
+module.exports = UserObject;

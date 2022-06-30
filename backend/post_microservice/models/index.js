@@ -27,7 +27,7 @@ const basename = path.basename(__filename);
 //const db = {};
 
 function applyRelationships(sequelize) {
-    const { OfferPost, OfferPostTags, RequestPost, RequestPostTags} = sequelize.models;
+    const { OfferPost, OfferPostTags, RequestPost, RequestPostTags, User} = sequelize.models;
 
     OfferPost.hasMany(OfferPostTags, {as: "offerTags"});
     OfferPostTags.belongsTo(OfferPost, {
@@ -40,6 +40,18 @@ function applyRelationships(sequelize) {
       foreignKey: "requestId",
       as: "requestPost",
     });
+
+    User.hasMany(RequestPost, {as: "requestPosts"});
+    RequestPost.belongsTo(User, {
+      foreignKey: "userId",
+      as: "user",
+    });
+
+    User.hasMany(OfferPost, {as: "offerPosts"});
+    OfferPost.belongsTo(User, {
+      foreignKey: "userId",
+      as: "user",
+    })
 }
 
 if (config.use_env_variable) {

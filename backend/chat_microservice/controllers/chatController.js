@@ -37,7 +37,7 @@ const getChats = async (req, res) => {
 
       const postId = r.dataValues.postId;      
       const receiever = await Room.findOne({ where: {userId: {[Op.ne]: userId}, postId} });
-      const receieverUser = await User.findOne({ where: { userId: receiever.userId }});
+      const receieverUser = await User.findByPk(receiever.id);
       const msg = await Message.findAll({ postId });
 
       return {
@@ -58,14 +58,14 @@ const getChats = async (req, res) => {
   }
 };
 
-const changeInfo = async (req, res) => {
+const changeUserInfo = async (req, res) => {
   try {
-    const { userId } = req.params;
-    const { name, profilePicture } = req.body;
+    const { userId, firstName, lastName, profilePicture } = req.body;
     
     await User.upsert({
       userId,
-      name,
+      firstName,
+      lastName,
       profilePicture,
     });
 
