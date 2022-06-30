@@ -1,7 +1,7 @@
 const MessageObject = (sequelize, DataTypes) => {
     const Message = sequelize.define("Message", {
         id: {
-            type: DataTypes.STRING,
+            type: DataTypes.UUIDV4,
             allowNull: false,
             primaryKey: true,
             defaultValue: DataTypes.UUIDV4,

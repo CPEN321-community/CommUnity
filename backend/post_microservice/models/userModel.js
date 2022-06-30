@@ -1,6 +1,6 @@
 const UserObject = (sequelize, DataTypes) => {
     const User = sequelize.define("User", {
-        id: {
+        userId: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,
             allowNull: false,
