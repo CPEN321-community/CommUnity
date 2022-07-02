@@ -124,7 +124,7 @@ const sendMessage = async (message, userId, postId) => {
 module.exports = {
   deleteRoom,
   getChats,
-  changeInfo,
+  changeUserInfo,
   getAssociatedRooms,
   createRoom,
   sendMessage,
