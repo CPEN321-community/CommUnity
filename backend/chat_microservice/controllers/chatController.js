@@ -25,7 +25,7 @@ const getChats = async (req, res) => {
   try {
     const { userId } = req.params;
   
-    const { name, profilePicture } = await User.findOne({ 
+    const { firstName, lastName, profilePicture } = await User.findOne({ 
       where: { userId } 
     });
     
@@ -33,20 +33,26 @@ const getChats = async (req, res) => {
       where: { userId } 
     });
   
-    const allChats = await Promise.all(rooms.map(async r => {
+    const allChats = await Promise.all(rooms.map(async room => {
 
-      const postId = r.dataValues.postId;      
-      const receiever = await Room.findOne({ where: {userId: {[Op.ne]: userId}, postId} });
-      const receieverUser = await User.findByPk(receiever.id);
-      const msg = await Message.findAll({ postId });
+      const postId = room.dataValues.postId;      
+      const receiver = await Room.findOne({ where: {userId: {[Op.ne]: userId}, postId} });
+      const receiverUser = await User.findByPk(receiver.userId);
+      const unformattedMessages = await Message.findAll({ postId });
+      const msg = unformattedMessages.map(m => {
+        const { postId, ...rest } = m.dataValues;
+        return rest;
+      })
 
       return {
         sender: userId,
-        senderName: name,
+        senderFirstName: firstName,
+        senderLastName: lastName,
         senderProfilePicture: profilePicture,
-        receiever: receiever.userId,
-        receieverName: receieverUser.name,
-        receieverProfilePicture: receieverUser.profilePicture,
+        receiver: receiver.userId,
+        receiverFirstName: receiverUser.firstName,
+        receiverLastName: receiverUser.lastName,
+        receiverProfilePicture: receiverUser.profilePicture,
         messages: msg,
       }
     }));
