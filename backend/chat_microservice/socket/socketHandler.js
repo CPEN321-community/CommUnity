@@ -15,10 +15,11 @@ const socketHandler = (socket) => {
         }
     });
 
-    socket.on('create_room', async ({ postId, receieverId, senderId }) => {
-        const isCreated = await createRoom(postId, receieverId, senderId);
+    socket.on('create_room', async roomDto => {
+        const isCreated = await createRoom(roomDto);
 
         if (isCreated) {
+            socket.join(roomDto.postId);
             socket.emit('create_room', 'create_room_success')
         } else {
             socket.emit('create_room', 'create_room_failure')
@@ -26,12 +27,12 @@ const socketHandler = (socket) => {
     });
 
     socket.on('send_message', async ({ message, userId, postId }) => {
-        const isSent = await sendMessage(message, userId, postId);
+        const { msgObj, isSent } = await sendMessage(message, userId, postId);
 
         if (isSent) {
-            socket.emit('send_message', 'send_message_success')
+            socket.to(postId).emit('send_message', msgObj);
         } else {
-            socket.emit('send_message', 'send_message_failure')
+            socket.to(postId).emit('send_message', 'send_message_failure')
         }
     });
 }
