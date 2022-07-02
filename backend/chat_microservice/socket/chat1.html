@@ -29,7 +29,7 @@
 <script>
     var socket = io();
 
-    socket.emit('join_rooms', 'user1');
+    socket.emit('joinRooms', 'user1');
 
     $('#button1').submit(() => {
         var createRoomObj = { 
@@ -44,15 +44,15 @@
             receiverProfilePicture: 'pfp456',
         };
         console.log('creating room...');
-        socket.emit('create_room', createRoomObj);
+        socket.emit('createRoom', createRoomObj);
         
-        socket.on('create_room', data => {
+        socket.on('createRoom', data => {
             console.log(data); //create_room_success or create_room_failure
         });
     });
 
     $('#button2').submit(() => {
-        socket.emit('send_message', { 
+        socket.emit('sendMessage', { 
             message: $('#m').val(), 
             userId: 'user1', 
             postId: 'post1' 
@@ -62,7 +62,7 @@
         return false;
     });
 
-    socket.on('send_message', data => {
+    socket.on('sendMessage', data => {
         // data = { userId, postId, message }
         $('#messages').append($('<li>').text(data.userId + ': ' + data.message));
     });

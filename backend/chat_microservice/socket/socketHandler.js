@@ -3,36 +3,36 @@ const { getAssociatedRooms, createRoom, sendMessage, getMessageFromSocket, addMe
 const socketHandler = (socket) => {
     console.log("socket connection made with id: " + socket.id);
     
-    socket.on('join_rooms', async userId => {
+    socket.on('joinRooms', async userId => {
         const postIds = await getAssociatedRooms(userId);
         console.log('joining rooms: ', postIds);
         
         if (postIds && postIds.length > 0) {
             socket.join(postIds);
-            socket.emit('join_rooms', 'join_rooms_success');
+            socket.emit('joinRooms', 'join_rooms_success');
         } else {
-            socket.emit('join_rooms', 'join_rooms_failed');
+            socket.emit('joinRooms', 'join_rooms_failed');
         }
     });
 
-    socket.on('create_room', async roomDto => {
+    socket.on('createRoom', async roomDto => {
         const isCreated = await createRoom(roomDto);
 
         if (isCreated) {
             socket.join(roomDto.postId);
-            socket.emit('create_room', 'create_room_success')
+            socket.emit('createRoom', 'create_room_success')
         } else {
-            socket.emit('create_room', 'create_room_failure')
+            socket.emit('createRoom', 'create_room_failure')
         }
     });
 
-    socket.on('send_message', async ({ message, userId, postId }) => {
+    socket.on('sendMessage', async ({ message, userId, postId }) => {
         const { msgObj, isSent } = await sendMessage(message, userId, postId);
 
         if (isSent) {
-            socket.to(postId).emit('send_message', msgObj);
+            socket.to(postId).emit('sendMessage', msgObj);
         } else {
-            socket.to(postId).emit('send_message', 'send_message_failure')
+            socket.to(postId).emit('sendMessage', 'send_message_failure')
         }
     });
 }
