@@ -41,7 +41,7 @@
     });
 
     socket.on('send_message', data => {
-        // data = { userId, postId, message }
+        // data = { messageId, postId, message }
         $('#messages').append($('<li>').text(data.userId + ': ' + data.message));
     });
 </script>
