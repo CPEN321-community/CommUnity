@@ -80,9 +80,7 @@ const getAssociatedRooms = async (userId) => {
   try {
     const user = await Room.findAll({ where: { userId: userId } });
     if (user) {
-      associatedRooms = user.map(room => room.postId);
-      console.log(associatedRooms);
-      return associatedRooms;
+      return user.map(room => room.postId); 
     } else {
       console.log('no rooms were found for userId: ' + userId);
     }
@@ -91,11 +89,34 @@ const getAssociatedRooms = async (userId) => {
   }
 }
 
-const createRoom = async (postId, receieverId, senderId) => {
+const createRoom = async roomDto => {
   try {
+    const { 
+      postId,
+      receiverId,
+      receiverFirstName,
+      receiverLastName,
+      receiverProfilePicture,
+      senderId,
+      senderFirstName,
+      senderLastName,
+      senderProfilePicture } = roomDto;
+
+    await User.upsert({
+      userId: receiverId,
+      firstName: receiverFirstName,
+      lastName: receiverLastName,
+      profilePicture: receiverProfilePicture,
+    });
+    await User.upsert({
+      userId: senderId,
+      firstName: senderFirstName,
+      lastName: senderLastName,
+      profilePicture: senderProfilePicture,
+    });
     const [r1, created1] = await Room.upsert({
       postId,
-      userId: receieverId,
+      userId: receiverId,
     });
     const [r2, created2] = await Room.upsert({
       postId,
@@ -110,12 +131,12 @@ const createRoom = async (postId, receieverId, senderId) => {
 
 const sendMessage = async (message, userId, postId) => {
   try {
-    const [_, created] = await Message.upsert({
+    const [msg, created] = await Message.upsert({
       postId,
       userId,
       message,
     });
-    return created;
+    return { msgObj: msg.dataValues, isSent: created };
   } catch (e) {
     console.log('sendMessage Error ' + e);
   }

@@ -33,9 +33,15 @@
 
     $('#button1').submit(() => {
         var createRoomObj = { 
-            postId: 'post3', 
+            postId: 'post1', 
             senderId: 'user1',
-            receieverId: 'user3',
+            senderFirstName: 'John',
+            senderLastName: 'Doe',
+            senderProfilePicture: 'pfp123',
+            receiverId: 'user2',
+            receiverFirstName: 'Bob',
+            receiverLastName: 'Marley',
+            receiverProfilePicture: 'pfp456',
         };
         console.log('creating room...');
         socket.emit('create_room', createRoomObj);
@@ -45,21 +51,22 @@
         });
     });
 
-    $('button2').submit(() => {
-        socket.emit('send_message', $('#m').val());
-        $('#messages').append($('<li>').text($('#m').val()));
-        $('#m').val('');
-
-        socket.on('send_message', data => {
-            console.log(data); //send_message_success or send_message_failure
+    $('#button2').submit(() => {
+        socket.emit('send_message', { 
+            message: $('#m').val(), 
+            userId: 'user1', 
+            postId: 'post1' 
         });
-
+        $('#messages').append($('<li>').text('me: ' + $('#m').val()));
+        $('#m').val('');
         return false;
     });
 
-    // socket.on('response message', data => {
-    //     $('#messages').append($('<li>').text(data));
-    // });
+    socket.on('send_message', data => {
+        // data = { userId, postId, message }
+        $('#messages').append($('<li>').text(data.userId + ': ' + data.message));
+    });
+
 </script>
 </body>
 </html>
