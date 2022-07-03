@@ -12,7 +12,7 @@
  const OfferPostObject = (sequelize, DataTypes) => {
     const OfferPost = sequelize.define("OfferPost", {
         offerId: {
-            type: DataTypes.UUIDV4,
+            type: DataTypes.STRING,
             defaultValue: DataTypes.UUIDV4,
             allowNull: false,
             primaryKey: true
