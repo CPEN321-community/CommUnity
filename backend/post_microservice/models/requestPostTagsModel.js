@@ -1,5 +1,5 @@
 "use strict";
- 
+
 const { RequestPost } = require("./requestPostModel");
 
  const RequestPostTagsObject = (sequelize, DataTypes) => {
