@@ -12,7 +12,7 @@
  const OfferPostObject = (sequelize, DataTypes) => {
     const OfferPost = sequelize.define("OfferPost", {
         offerId: {
-            type: DataTypes.UUIDV4,
+            type: DataTypes.STRING,
             defaultValue: DataTypes.UUIDV4,
             allowNull: false,
             primaryKey: true
@@ -39,13 +39,6 @@
         image: {
             type: DataTypes.STRING,
             allowNull: false,
-        },
-        creationDate: {
-            type: DataTypes.DATE,
-            allowNull: false,
-            get: function() {
-              return Moment(this.getDataValue("date")).format("DD/MM/YYYY");
-            }
         },
         bestBeforeDate: {
             type: DataTypes.DATE,
