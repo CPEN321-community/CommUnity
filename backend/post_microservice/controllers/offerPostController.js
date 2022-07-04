@@ -74,59 +74,73 @@
     }
 }
 
+//woohoo
   const createOffer = async (req, res) => {
-      try {
-          const newOffer = OfferPost.create({
-              title: req.body.title,
-              description: req.body.description,
-              quantity: req.body.quantity,
-              pickUpLocation: req.body.pickUpLocation,
-              image: req.body.image,
-              bestBeforeDate: req.body.bestBeforeDate
-            });
-          req.body.tagList.foreach(tag => {
-              OfferPostTags.create({
-                  postId: newOffer.offerId,
-                  name: tag
-                });
-            });
-            res.sendMessage("New post has been created.");
-            res.sendStatus(200);
-      } catch (error) {
-        console.log("Error creating a new post: " + error);
-        res.sendStatus(500);
-      }
-  }
-  
-  const updateOffer = async (req, res) => {
-      try {
-          await OfferPost.update({
+    try {
+        await OfferPost.create({
             title: req.body.title,
             description: req.body.description,
             quantity: req.body.quantity,
             pickUpLocation: req.body.pickUpLocation,
             image: req.body.image,
             bestBeforeDate: req.body.bestBeforeDate
-          }, {
-              where: {
-                  offerId: req.body.offerId
-              }
-          });
-          req.body.tagList.foreach(async tag => {
-              await OfferPostTags.update({name: tag}, {
-                  where: {
-                      postId: req.body.offerId
-                  }
-              });
-          });
-          const message = req.body.title + " post has been updated.";
-          res.sendMessage(message);
-          res.sendStatus(200);
+        });
+
+        const newOffer = await OfferPost.findOne(
+            {
+                where: {
+                    title: req.body.title,
+                    description: req.body.description,
+                    quantity: req.body.quantity,
+                    pickUpLocation: req.body.pickUpLocation,
+                    image: req.body.image,
+                    bestBeforeDate: req.body.bestBeforeDate
+                }
+            }
+        );
+
+        let tagList = req.body.tagList;
+        for(let item of tagList) {
+            OfferPostTags.create({
+                postId: newOffer.offerId,
+                name: item
+            });
+        }
+        res.sendStatus(200);
+
+      } catch (error) {
+        console.log("Error creating a new post: " + error);
+        res.sendStatus(500);
+      }
+  }
+  
+
+  //i am great success
+  const updateOffer = async (req, res) => {
+      try {
+        const updateOffer = OfferPost.findOne({
+            where: {offerId: req.body.offerId}
+        })
+        const offerAlreadyExists = updateOffer != null;
+        if(offerAlreadyExists){
+            await OfferPost.update({
+                title: req.body.title,
+                description: req.body.description,
+                quantity: req.body.quantity,
+                pickUpLocation: req.body.pickUpLocation,
+                image: req.body.image,
+                bestBeforeDate: req.body.bestBeforeDate
+            }, {where: {offerId: req.body.offerId}});
+            res.json("Post updated");
+            res.sendStatus(200);
+        }else{
+            res.json("You cannot update a post that does not exist");
+            res.sendStatus(200);
+        }
       } catch (error) {
         console.log("Error updating post: " + error);
         res.sendStatus(500);
       }
-
   }
 
   //Delete post

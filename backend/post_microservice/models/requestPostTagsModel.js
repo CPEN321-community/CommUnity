@@ -4,7 +4,7 @@ const { RequestPost } = require("./requestPostModel");
 
  const RequestPostTagsObject = (sequelize, DataTypes) => {
     const RequestPostTags = sequelize.define("RequestPostTags", {
-        id: {
+        requestTagId: {
             type: DataTypes.STRING,
             defaultValue: DataTypes.UUIDV4,
             allowNull: false,
