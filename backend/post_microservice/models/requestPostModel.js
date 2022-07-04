@@ -28,9 +28,9 @@
         currentLocation: {
             type: DataTypes.STRING,
             allowNull: false,
-            get: function() {
-                return User.currentLocation;
-            }
+            // get: function() {
+            //     return User.currentLocation;
+            // }
         }
     });
 

@@ -32,9 +32,9 @@
         pickUpLocation: {
             type: DataTypes.STRING,
             allowNull: false,
-            get: function() {
-                return User.pickUpLocation;
-            }
+            // get: function() {
+            //     return User.pickUpLocation;
+            // }
         },
         image: {
             type: DataTypes.STRING,

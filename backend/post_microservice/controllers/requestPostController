@@ -74,20 +74,31 @@ const searchRequestsWithTags = async (req, res) => {
   }
 }
 
+//success! this works!
 const createRequest = async (req, res) => {
     try {
-        const newRequest = RequestPost.create({
+        await RequestPost.create({
             title: req.body.title,
             description: req.body.description,
             currentLocation: req.body.currentLocation
           });
-        req.body.tagList.foreach(tag => {
+        const newRequest = await RequestPost.findOne(
+            {
+                where: {
+                    title: req.body.title, 
+                    description:req.body.description, 
+                    currentLocation: req.body.currentLocation
+                }
+            }
+        )
+
+        let tagList = req.body.tagList;
+        for(let item of tagList) {
             RequestPostTags.create({
                 postId: newRequest.requestId,
-                name: tag
+                name: item
               });
-          });
-          res.sendMessage("New post has been created.");
+        }
           res.sendStatus(200);
     } catch (error) {
       console.log("Error creating a new post: " + error);
@@ -95,27 +106,25 @@ const createRequest = async (req, res) => {
     }
 }
 
+//yay success :)
 const updateRequest = async (req, res) => {
     try {
-        await RequestPost.update({
-          title: req.body.title,
-          description: req.body.description,
-          currentLocation: req.body.currentLocation
-        }, {
-            where: {
-                requestId: req.body.requestId
-            }
+        const updateRequest = RequestPost.findOne({
+            where: {requestId: req.body.requestId}
         });
-        req.body.tagList.foreach(async tag => {
-            await RequestPostTags.update({name: tag}, {
-                where: {
-                    postId: req.body.requestId
-                }
-            });
-        });
-        const message = req.body.title + " post has been updated.";
-        res.sendMessage(message);
-        res.sendStatus(200);
+        const requestAlreadyExists = updateRequest != null;
+        if(requestAlreadyExists){
+            await RequestPost.update({
+                title: req.body.title,
+                description: req.body.description,
+                currentLocation: req.body.currentLocation
+            }, {where: {requestId: req.body.requestId}});
+            res.json("Post updated");
+            res.sendStatus(200);
+        }else{
+            res.json("You cannot update a post that does not exist");
+            res.sendStatus(200);
+        }
     } catch (error) {
       console.log("Error updating post: " + error);
       res.sendStatus(500);
@@ -123,7 +132,7 @@ const updateRequest = async (req, res) => {
 
 }
 
-//Delete post
+
 const deleteRequest = async (req, res) => {
   try {
       await RequestPost.destroy({

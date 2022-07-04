@@ -23,17 +23,17 @@ function applyRelationships(sequelize) {
       as: "requestPost",
     });
 
-    // User.hasMany(RequestPost, {as: "requestPosts"});
-    // RequestPost.belongsTo(User, {
-    //   foreignKey: "userId",
-    //   as: "user",
-    // });
+    User.hasMany(RequestPost, {as: "requestPosts"});
+    RequestPost.belongsTo(User, {
+      foreignKey: "userId",
+      as: "user",
+    });
 
-    // User.hasMany(OfferPost, {as: "offerPosts"});
-    // OfferPost.belongsTo(User, {
-    //   foreignKey: "userId",
-    //   as: "user",
-    // })
+    User.hasMany(OfferPost, {as: "offerPosts"});
+    OfferPost.belongsTo(User, {
+      foreignKey: "userId",
+      as: "user",
+    })
 }
 
 let sequelize;
