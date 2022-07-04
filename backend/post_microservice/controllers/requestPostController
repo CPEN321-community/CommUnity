@@ -106,6 +106,7 @@ const updateRequest = async (req, res) => {
                 requestId: req.body.requestId
             }
         });
+
         req.body.tagList.foreach(async tag => {
             await RequestPostTags.update({name: tag}, {
                 where: {

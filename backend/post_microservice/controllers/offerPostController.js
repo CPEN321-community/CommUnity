@@ -112,6 +112,7 @@
                   offerId: req.body.offerId
               }
           });
+
           req.body.tagList.foreach(async tag => {
               await OfferPostTags.update({name: tag}, {
                   where: {
