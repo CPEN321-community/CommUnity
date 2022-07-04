@@ -3,7 +3,7 @@ const { getAssociatedRooms, createRoom, sendMessage, getMessageFromSocket, addMe
 const socketHandler = (socket) => {
     console.log("socket connection made with id: " + socket.id);
     
-    socket.on('joinRooms', async userId => {
+    socket.on('joinRooms', async ({ userId }) => {
         const postIds = await getAssociatedRooms(userId);
         console.log('joining rooms: ', postIds);
         
