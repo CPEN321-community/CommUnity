@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/rl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        tools:context=".request_page"
+        android:background="#ffffff"
+        >
+    <ImageButton
+        android:layout_width="96dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="15dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/white"
+        android:contentDescription="@string/search_content_description"
+        android:scaleType="fitCenter"
+        android:src="@drawable/search" />
+
+    <ImageButton
+        android:layout_width="96dp"
+        android:layout_height="48dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="15dp"
+        android:background="@color/white"
+        android:contentDescription="@string/chat_content_description"
+        android:scaleType="fitCenter"
+        android:src="@drawable/chat" />
+
+    <ImageButton
+        android:layout_width="96dp"
+        android:layout_height="48dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:contentDescription="@string/home_content_description"
+        android:scaleType="fitCenter"
+        android:src="@drawable/home" />
+
+    <ImageButton
+        android:layout_width="96dp"
+        android:layout_height="48dp"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="0dp"
+        android:background="@color/white"
+        android:contentDescription="@string/leader_content_description"
+        android:scaleType="fitCenter"
+        android:src="@drawable/trophy" />
+
+    <ImageButton
+        android:layout_width="96dp"
+        android:layout_height="48dp"
+        android:background="@color/white"
+        android:contentDescription="@string/profile_content_description"
+        android:scaleType="fitCenter"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/profile" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="false"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="130dp"
+        android:textSize="25dp"
+        android:text="@string/greeting_message" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="75dp"
+        android:clickable="true"
+        app:srcCompat="@drawable/add" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginLeft="10dp"
+        app:srcCompat="@drawable/image" />
+
+    <TextView
+        android:layout_width="240dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="130dp"
+        android:layout_marginTop="200dp"
+        android:text="Strawberries 1lb\nBest Before July 15\n1km" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="320dp"
+        android:layout_marginLeft="10dp"
+        app:srcCompat="@drawable/image" />
+
+    <TextView
+        android:layout_width="240dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="130dp"
+        android:layout_marginTop="320dp"
+        android:text="Strawberries 1lb\nBest Before July 15\n1km" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="440dp"
+        android:layout_marginLeft="10dp"
+        app:srcCompat="@drawable/image" />
+
+    <TextView
+        android:layout_width="240dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="130dp"
+        android:layout_marginTop="440dp"
+        android:text="Strawberries 1lb\nBest Before July 15\n1km" />
+
+</RelativeLayout>

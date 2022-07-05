@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">request_posts_page</string>
+    <string name="profile_content_description">My Profile</string>
+    <string name="home_content_description">Home Page</string>
+    <string name="leader_content_description">Leaderboard</string>
+    <string name="search_content_description">Search</string>
+    <string name="chat_content_description">Go to Chats</string>
+    <string name="greeting_message">Good morning, John!</string>
+
+</resources>
