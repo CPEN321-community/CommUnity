@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">M1_Frontend</string>
+    <string name="weather_button_caption">Surprise!</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="maps_button_caption">My Favourite City</string>
+    <string name="curr_location_button_caption">Current Location and Phone Model</string>
+    <string name="check_weather_button_caption">Check Weather</string>
+    <string name="curr_loc_loading_caption">Loading Location and Phone Model...</string>
+</resources>
