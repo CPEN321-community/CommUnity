@@ -1,4 +1,4 @@
-package com.example.m1_frontend;
+package com.example.community;
 
 import org.junit.Test;
 
