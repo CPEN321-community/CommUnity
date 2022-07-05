@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "M1_Frontend"
+rootProject.name = "Community"
 include ':app'
