@@ -8,8 +8,7 @@ const getTopNUsers = async (req, res) => {
             order: [["score","DESC"]],
             limit: parseInt(N),
         });
-       res.json(response);
-       res.sendStatus(200);
+       res.status(200).json(response);
    } catch (error) {
        console.log("Error getting top N users: " + error);
        res.sendStatus(500);
@@ -22,8 +21,7 @@ const getUserRank = async (req, res) => {
         const response = await Leaderboard.findOne({ 
             where: { userId }
         });
-        res.json(response);
-        res.sendStatus(200);
+        res.status(200).json(response);
     } catch (error) {
         console.log("Error getting user rank: " + error);
         res.sendStatus(500);
