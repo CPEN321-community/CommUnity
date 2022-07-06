@@ -28,11 +28,10 @@ const getUserRank = async (req, res) => {
         console.log("Error getting user rank: " + error);
         res.sendStatus(500);
     }
- };
+};
 
-const upsertUserRank = async (req, res) => {
+const upsertUserMethod = async ({ userId, offerPosts, requestPosts }) => {
     try {
-        const { userId, offerPosts, requestPosts } = req.body;
         const currLeaderboard = await Leaderboard.findOne({
             where: { userId }
         });
@@ -56,10 +55,18 @@ const upsertUserRank = async (req, res) => {
                 score: (offerPosts * 7) + (requestPosts * 3),
             });
         }
-
-        res.sendStatus(200);
+        return true;
     } catch (error) {
         console.log("Error upserting user rank: " + error);
+        return false;
+    }
+}
+
+const upsertUserRank = async (req, res) => {
+    const result = upsertUserMethod(req.body)
+    if (result) {
+        res.sendStatus(200);
+    } else {
         res.sendStatus(500);
     }
 };
@@ -67,5 +74,6 @@ const upsertUserRank = async (req, res) => {
 module.exports = {
     getTopNUsers,
     getUserRank,
+    upsertUserMethod,
     upsertUserRank,
 };
