@@ -6,7 +6,10 @@ const getUser = async (req, res) => {
    try {
        const userId = req.params.userId;
        const response = await User.findByPk(userId, {include: ["preferences"]});
-       res.json(response);
+       console.log("Fetching user");
+       console.log(userId);
+       console.log(response);
+       res.json({user: response});
     //    res.sendStatus(200);
    } catch (error) {
        console.log("Error finding user: " + error);
@@ -30,6 +33,8 @@ const upsertUserPreference = async (req, res) => {
 
 const upsertUser = async (req, res) => {
     try {
+        console.log(req.body);
+        console.log("Creating a user");
         const response = await User.upsert({
             userId: req.body.userId,
             firstName: req.body.firstName,
