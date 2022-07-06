@@ -1,13 +1,14 @@
 const Router = require('express-promise-router');
 const { getTopNUsers, getUserRank, upsertUserRank } = require('./controllers/leaderboardController');
-const { getUser, upsertUserPreference, upsertUser } = require('./controllers/userController');
+const { getUser, upsertUserPreference, createUser, updateUser } = require('./controllers/userController');
 
 const router = Router();
 
 // user
 router.get('/user/:userId', getUser);
 router.put('/user/preference', upsertUserPreference);
-router.post('/user', upsertUser);
+router.post('/user', createUser);
+router.put('/user', updateUser);
 
 // leaderboard
 router.get('/rank/:top', getTopNUsers);
