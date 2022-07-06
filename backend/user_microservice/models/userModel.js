@@ -23,7 +23,7 @@ const UserObject = (sequelize, DataTypes) => {
             allowNull: false,
         }
     }, {
-        timestamp: false,
+        timestamps: false,
     });
     return User;
   };
