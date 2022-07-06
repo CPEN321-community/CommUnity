@@ -10,8 +10,7 @@
      try {
          const offerId = req.postId;
          const response = await OfferPost.findByPk(offerId, {include: ["offerTags"]});
-         res.json(response);
-         res.sendStatus(200);
+         res.status(200).json(response);
      } catch (error) {
          console.log("Error finding an offer post: " + e);
          res.sendStatus(500);
@@ -31,13 +30,11 @@
           });
           if (response = null) {
               const message = "Sorry, there are no offer posts for " + title + "."
-              res.json({
+              res.status(200).json({
                   message: message
               });
-              res.sendStatus(200);
           } else {
-              res.json(response);
-              res.sendStatus(200);
+              res.status(200).json(response);
           }
       } catch (error) {
         console.log("Error with searching for offer posts: " + e);
@@ -65,13 +62,11 @@
 
         if (postList = null) {
             const message = "Sorry, there are no offer posts for " + tagList + "."
-            res.json({
+            res.status(200).json({
                 message: message
             });
-            res.sendStatus(200);
         } else {
-            res.json(postList);
-            res.sendStatus(200);
+            res.status(200).json(postList);
         }
     } catch (error) {
       console.log("Error with searching for offer posts: " + e);
@@ -139,7 +134,7 @@
   const deleteOffer = async (req, res) => {
       const { id } = req.body;
       const response = null;
-      res.json(response);
+      res.status(200).json(response);
   }
 
   module.exports = {
