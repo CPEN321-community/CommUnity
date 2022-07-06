@@ -1,6 +1,7 @@
 
 const { Op } = require("sequelize");
 const { User, Preferences } = require("../models");
+const { upsertUserMethod } = require("./leaderboardController.js");
 
 const getUser = async (req, res) => {
    try {
@@ -31,18 +32,16 @@ const upsertUserPreference = async (req, res) => {
     }
 }
 
-const upsertUser = async (req, res) => {
+const updateUser = async (req, res) => {
     try {
-        console.log(req.body);
-        console.log("Creating a user");
-        const response = await User.upsert({
+        const response = await User.update({
             userId: req.body.userId,
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
             profilePicture: req.body.profilePicture
         });
-        
+
         // await fetch('http://localhost:1000/chat/changeUserInfo', {
         //   method: 'POST',
         //   headers: {
@@ -57,8 +56,38 @@ const upsertUser = async (req, res) => {
         // })
 
         res.json(response);
-        // res.sendStatus(200);
+        res.sendStatus(200);
+    } catch (error) {
+        console.log("Error upserting user: " + error);
+        res.sendStatus(500);
+    }
+}
 
+const createUser = async (req, res) => {
+    try {
+        const response = await User.create({
+            userId: req.body.userId,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            profilePicture: req.body.profilePicture
+        });
+
+        const result = await upsertUserMethod({ userId: req.body.userId, offerPosts: 0, requestPosts: 0 });
+        if (result) {
+            res.json(response);
+            res.sendStatus(200);
+        } else {
+            await User.destroy({
+                userId: req.body.userId,
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                email: req.body.email,
+                profilePicture: req.body.profilePicture    
+            });
+            console.log("Error creating scoreboard for user: " + error);
+            res.sendStatus(500);
+        }
     } catch (error) {
         console.log("Error upserting user: " + error);
         res.sendStatus(500);
@@ -69,5 +98,6 @@ const upsertUser = async (req, res) => {
 module.exports = {
     getUser,
     upsertUserPreference,
-    upsertUser
+    updateUser,
+    createUser,
   };
