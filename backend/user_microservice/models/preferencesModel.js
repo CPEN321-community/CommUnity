@@ -15,7 +15,7 @@ const PreferencesObject = (sequelize, DataTypes) => {
             allowNull: false,
         }
     }, {
-        timestamp: false,
+        timestamps: false,
     });
     return Preferences;
   };

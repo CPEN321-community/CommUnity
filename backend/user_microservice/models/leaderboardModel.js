@@ -22,7 +22,7 @@ const LeaderboardObject = (sequelize, DataTypes) => {
             defaultValue: 0,
         }
     }, {
-        timestamp: false,
+        timestamps: false,
     });
     return Leaderboard;
   };

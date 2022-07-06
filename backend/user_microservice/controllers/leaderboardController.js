@@ -1,29 +1,50 @@
+const { Op } = require("sequelize");
 const sequelize = require('sequelize');
-const { Leaderboard } = require("../models");
+const { Leaderboard, User } = require("../models");
 
 const getTopNUsers = async (req, res) => {
    try {
-        const N = req.params.top;
+        const N = req.params.N;
         const response = await Leaderboard.findAll({
             order: [["score","DESC"]],
             limit: parseInt(N),
         });
-        console.log(response);
-       res.json(response);
+        
+        const responseWithNames = await Promise.all(response.map(async userScore => {            
+            const user = await User.findOne({
+                where: { userId: userScore.dataValues.userId }
+            })
+            
+            return { 
+                firstName: user.dataValues.firstName,
+                lastName: user.dataValues.lastName,
+                offerPosts: userScore.dataValues.offerPosts,
+                requestPosts: userScore.dataValues.requestPosts,
+                score: userScore.dataValues.score
+            }
+        }));
+       res.status(200).json(responseWithNames);
    } catch (error) {
        console.log("Error getting top N users: " + error);
        res.sendStatus(500);
    }
 };
 
+/**
+ * Only return the user's position on the leaderboard
+ */
 const getUserRank = async (req, res) => {
     try {
         const { userId } = req.params;
-        const response = await Leaderboard.findOne({ 
+        const user = await Leaderboard.findOne({ 
             where: { userId }
         });
-        res.json(response);
-        res.sendStatus(200);
+        //create a function that finds all of the users with higher scores than you
+        const higherScoringUsers = await Leaderboard.findAll({
+            where: {score: {[Op.gte]: user.score}}
+        })
+        const rank = higherScoringUsers.length;
+        res.status(200).json({ rank });
     } catch (error) {
         console.log("Error getting user rank: " + error);
         res.sendStatus(500);
@@ -33,7 +54,7 @@ const getUserRank = async (req, res) => {
 const upsertUserMethod = async ({ userId, offerPosts, requestPosts }) => {
     try {
         const currLeaderboard = await Leaderboard.findOne({
-            where: { userId }
+                    where: { userId }
         });
         const scoreAlreadyExists = currLeaderboard != null;
         if (scoreAlreadyExists) {
