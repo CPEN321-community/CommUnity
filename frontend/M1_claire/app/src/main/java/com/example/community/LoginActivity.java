@@ -3,30 +3,21 @@ package com.example.community;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.community.databinding.ActivityLoginBinding;
-import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.TaskStackBuilder;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -34,9 +25,6 @@ import androidx.navigation.ui.NavigationUI;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 1;
@@ -102,50 +90,88 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUI(GoogleSignInAccount account) {
         if (account != null) {
-            boolean exists = userDoesExist(account.getId());
-            if (!exists) {
-                createUser(account.getId());
-            }
-            Intent mainActivityIntent = new Intent(this, MainActivity.class);
-            startActivity(mainActivityIntent);
-            finish();
+            userDoesExist(account.getId(), new UserCallback() {
+                public void onSuccess(boolean exists) {
+                    Log.d(TAG, "onSuccess: " + exists);
+                    if (!exists) {
+                        createUser(account, new UserCallback() {
+                            @Override
+                            public void onError(VolleyError error) {
+                                // TODO handle create user error
+                            }
+
+                            @Override
+                            public void onSuccess() {
+                                Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(mainActivityIntent);
+                                finish();
+                            }
+                        });
+                    } else {
+                        Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(mainActivityIntent);
+                        finish();
+                    }
+                }
+
+                @Override
+                public void onError(VolleyError error) {
+                    // TODO handle userDoesExist error
+                }
+            });
+
         }
     }
 
-    private void createUser(String uid) {
+    private void createUser(GoogleSignInAccount account, VolleyCallBack volleyCallBack) {
         Log.d(TAG, "createUser: Start");
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://10.0.2.2:8080/user";
-        StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
-            try {
-                JSONObject respObj = new JSONObject(response);
-                Log.d(TAG, "createUser: " + respObj);
-                String name = respObj.getString("name");
-                String job = respObj.getString("job");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }, error -> Log.e(TAG, "createUser: " + error)) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("userId", uid);
-                return params;
-            }
-        };
+        JSONObject data = new JSONObject();
+        try {
+            data.put("userId", account.getId());
+            data.put("firstName", account.getGivenName());
+            data.put("lastName", account.getFamilyName());
+            data.put("email", account.getEmail());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, data,
+                response -> {
+                    Log.d(TAG, "createUser: " + response);
+                    volleyCallBack.onSuccess();
+                },
+                error -> {
+                    Log.e(TAG, "createUser: " + error);
+                    volleyCallBack.onError();
+                    // TODO: Fail sign in
+                }
+        );
         queue.add(request);
+
     }
 
-    private boolean userDoesExist(String uid) {
+    private void userDoesExist(String uid, VolleyCallBack callback) {
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://10.0.2.2:8080/user" + "/" + uid;
-        StringRequest sr = new StringRequest(Request.Method.GET,
-                url,
-                response -> Log.d(TAG, "userDoesExist: " + response),
-                error -> Log.e(TAG, "userDoesExist: " + error));
+        JsonObjectRequest sr = new JsonObjectRequest(Request.Method.GET, url,
+                null,
+                response -> {
+                    Log.d(TAG, "userDoesExist: successResponse");
+                    if (!response.isNull("user")) {
+                        callback.onSuccess(true);
+                    } else {
+                        callback.onSuccess(false);
+                    }
+                },
+                error -> {
+                    Log.e(TAG, "userDoesExist: " + error);
+                    callback.onError(error);
+                });
         queue.add(sr);
-//      TODO wait for response before returning actual answer
-        return false;
     }
+
 }
+
 

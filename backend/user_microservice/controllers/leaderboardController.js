@@ -9,7 +9,6 @@ const getTopNUsers = async (req, res) => {
             limit: parseInt(N),
         });
        res.json(response);
-       res.sendStatus(200);
    } catch (error) {
        console.log("Error getting top N users: " + error);
        res.sendStatus(500);
