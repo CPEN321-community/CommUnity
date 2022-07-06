@@ -57,8 +57,7 @@ const getChats = async (req, res) => {
       }
     }));
   
-    res.json(allChats);
-    res.sendStatus(200);
+    res.status(200).json(allChats);
   } catch (e) {
     console.log("getChats Error: " + e);
   }

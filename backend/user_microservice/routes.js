@@ -11,7 +11,7 @@ router.post('/user', createUser);
 router.put('/user', updateUser);
 
 // leaderboard
-router.get('/rank/:top', getTopNUsers);
+router.get('/rank/top/:N', getTopNUsers);
 router.get('/rank/:userId', getUserRank);
 router.put('/rank', upsertUserRank);
 
