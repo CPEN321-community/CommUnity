@@ -1,4 +1,4 @@
-package com.example.community;
+package com.example.community.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.community.MainActivity;
+import com.example.community.R;
+import com.example.community.VolleyCallBack;
 import com.example.community.databinding.ActivityLoginBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -90,11 +93,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUI(GoogleSignInAccount account) {
         if (account != null) {
-            userDoesExist(account.getId(), new UserCallback() {
+            userDoesExist(account.getId(), new LoginCallback() {
                 public void onSuccess(boolean exists) {
                     Log.d(TAG, "onSuccess: " + exists);
                     if (!exists) {
-                        createUser(account, new UserCallback() {
+                        createUser(account, new LoginCallback() {
                             @Override
                             public void onError(VolleyError error) {
                                 // TODO handle create user error

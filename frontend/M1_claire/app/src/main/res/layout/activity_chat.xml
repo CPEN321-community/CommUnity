@@ -4,22 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login.LoginActivity">
+    android:fitsSystemWindows="true"
+    tools:context=".ChatActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:layout_height="wrap_content"
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
         android:theme="@style/Theme.Community.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:background="?attr/colorPrimary"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_collapseMode="pin"
             app:popupTheme="@style/Theme.Community.PopupOverlay"
-            android:layout_height="?attr/actionBarSize" />
+            app:title="Chats" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_login" />
+    <include layout="@layout/content_scrolling" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
