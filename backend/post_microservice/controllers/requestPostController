@@ -132,9 +132,15 @@ const updateRequest = async (req, res) => {
 
 }
 
-
+//whaaaaaaaa
+//woop woop that's the sound of the police
 const deleteRequest = async (req, res) => {
   try {
+    await RequestPostTags.destroy({
+        where: {
+            postId: req.body.requestId
+        }
+    })
       await RequestPost.destroy({
           where: {
               requestId: req.body.requestId

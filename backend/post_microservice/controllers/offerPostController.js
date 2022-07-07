@@ -3,8 +3,9 @@
  
  const getOffer = async (req, res) => {
      try {
-         const offerId = req.params.postId;
+         const offerId = req.body.postId;
          const response = await OfferPost.findByPk(offerId, {include: ["offerTags"]});
+         console.log("Post: " + response);
          res.json(response);
          res.sendStatus(200);
      } catch (error) {
@@ -143,9 +144,14 @@
       }
   }
 
-  //Delete post
+  //woop woop that's the sound of the beast
   const deleteOffer = async (req, res) => {
     try {
+        await OfferPostTags.destroy({
+            where: {
+                postId: req.body.offerId
+            }
+        })
         await OfferPost.destroy({
             where: {
                 offerId: req.body.offerId
