@@ -30,8 +30,8 @@ public class LeaderboardFragment extends Fragment {
         });
         final ListView listView = binding.leaderboardList;
         leaderboardViewModel.getList().observe(getViewLifecycleOwner(), userList -> {
-            UserAdapter adapter;
-            adapter = new UserAdapter(requireContext(),
+            LeaderboardAdapter adapter;
+            adapter = new LeaderboardAdapter(requireContext(),
                     userList);
             listView.setAdapter(adapter);
         });

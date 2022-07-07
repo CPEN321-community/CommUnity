@@ -38,7 +38,7 @@ public class LeaderboardViewModel extends AndroidViewModel {
 
     protected void fetchLeaderboard() {
         RequestQueue queue = Volley.newRequestQueue(this.application);
-        String url = "http://10.0.2.2:8080/rank/10";
+        String url = "http://10.0.2.2:8080/rank/top/10";
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET,
                 url,
