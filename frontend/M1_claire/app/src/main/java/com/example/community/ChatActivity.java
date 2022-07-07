@@ -2,29 +2,36 @@ package com.example.community;
 
 import android.os.Bundle;
 
+import com.android.volley.Request;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.community.classes.Chat;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.MutableLiveData;
 
-import android.view.View;
+import android.util.Log;
 import android.widget.ListView;
 
+import com.example.community.classes.UserWithScore;
 import com.example.community.databinding.ActivityChatBinding;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
 public class ChatActivity extends AppCompatActivity {
 
+    private static final String TAG = "CHAT_ACTIVITY";
     private ActivityChatBinding binding;
+    private MutableLiveData<ArrayList<Chat>> mChatList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        this.mChatList = new MutableLiveData<>();
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -33,24 +40,24 @@ public class ChatActivity extends AppCompatActivity {
         toolbar.setTitle("Chats");
         ListView chatListView = findViewById(R.id.chat_list);
         ArrayList<Chat> chats = new ArrayList<>();
-        chats.add(new Chat("tester"));
-        chats.add(new Chat("tester2"));
-        chats.add(new Chat("tester3"));
-        chats.add(new Chat("tester4"));
-        chats.add(new Chat("tester5"));
-        chats.add(new Chat("tester6"));
-        chats.add(new Chat("tester7"));
-        chats.add(new Chat("tester8"));
-        chats.add(new Chat("tester9"));
-        chats.add(new Chat("tester10"));
-        chats.add(new Chat("tester11"));
-        chats.add(new Chat("tester12"));
-        chats.add(new Chat("tester13"));
-        chats.add(new Chat("tester14"));
-        chats.add(new Chat("tester15"));
-        chats.add(new Chat("tester16"));
+
         ChatAdapter adapter = new ChatAdapter(this, chats);
         chatListView.setAdapter(adapter);
 
+    }
+
+    private void getChats(String uid) {
+
+        String url = "10.0.2.2:3000/chat/"+uid;
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET,
+                url,
+                null,
+                (JSONArray response) -> {
+                    Log.d(TAG, "getChats: " + response);
+                },
+                error -> {
+                    Log.e(TAG, "fetchLeaderboard: " + error);
+//                    callback.onError(error);
+                });
     }
 }

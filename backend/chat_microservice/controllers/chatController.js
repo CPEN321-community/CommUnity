@@ -24,10 +24,16 @@ const deleteRoom = async (req, res) => {
 const getChats = async (req, res) => {
   try {
     const { userId } = req.params;
+    console.log("***", userId);
   
-    const { firstName, lastName, profilePicture } = await User.findOne({ 
+    const user = await User.findOne({ 
       where: { userId } 
     });
+    console.log(user);
+
+    const { firstName, lastName, profilePicture } = user;
+    
+    console.log("Got here");
     
     const rooms = await Room.findAll({ 
       where: { userId } 
@@ -60,6 +66,7 @@ const getChats = async (req, res) => {
     res.status(200).json(allChats);
   } catch (e) {
     console.log("getChats Error: " + e);
+    res.status(500).json({err: e.toString()})
   }
 };
 

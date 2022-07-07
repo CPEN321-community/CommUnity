@@ -136,6 +136,7 @@ public class LoginActivity extends AppCompatActivity {
             data.put("firstName", account.getGivenName());
             data.put("lastName", account.getFamilyName());
             data.put("email", account.getEmail());
+            data.put("profilePicture", account.getPhotoUrl());
         } catch (JSONException e) {
             e.printStackTrace();
         }

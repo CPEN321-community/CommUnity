@@ -11,7 +11,6 @@ const getUser = async (req, res) => {
        console.log(userId);
        console.log(response);
        res.json({user: response});
-    //    res.sendStatus(200);
    } catch (error) {
        console.log("Error finding user: " + error);
        res.sendStatus(500);
@@ -65,6 +64,7 @@ const updateUser = async (req, res) => {
 
 const createUser = async (req, res) => {
     try {
+        console.log(req.body);
         const response = await User.create({
             userId: req.body.userId,
             firstName: req.body.firstName,
@@ -74,9 +74,9 @@ const createUser = async (req, res) => {
         });
 
         const result = await upsertUserMethod({ userId: req.body.userId, offerPosts: 0, requestPosts: 0 });
+        console.log(result);
         if (result) {
             res.json(response);
-            res.sendStatus(200);
         } else {
             await User.destroy({
                 userId: req.body.userId,
