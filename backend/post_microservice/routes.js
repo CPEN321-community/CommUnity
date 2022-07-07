@@ -1,6 +1,6 @@
 const Router = require('express-promise-router');
 const { getChatData, getChatSocket, getMessageFromSocket, addMessageToSocket } = require('./controllers/chatController');
-const { getOffer, searchOffers, searchOffersWithTags, createOffer, updateOffer, deleteOffer} = require('./post_microservice/controllers/offerPostController');
+const { getOffer, getAllOffers, searchOffers, searchOffersWithTags, createOffer, updateOffer, deleteOffer} = require('./post_microservice/controllers/offerPostController');
 const { getRequest, searchRequests, createRequest, updateRequest, deleteRequest} = require('./post_microservice/controllers/requestPostController');
 const router = Router();
 
@@ -13,6 +13,7 @@ router.put('/communitypost/requests/:postId', updateRequest);
 router.delete('/communitypost/requests/:postId', deleteRequest);
 // Offers Submodule
 router.get('/communitypost/offers/:postId', getOffer);
+router.get('/communitypost/offers');
 router.get('/communitypost/offers?title', searchOffers);
 router.get('/communitypost/offers?tagsList', searchOffersWithTags)
 router.post('/communitypost/offers/:postDTO', createOffer);

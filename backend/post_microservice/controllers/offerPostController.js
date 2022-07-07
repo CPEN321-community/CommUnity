@@ -16,6 +16,16 @@
          res.sendStatus(500);
      }
   };
+
+  const getAllOffers = async (req, res) => {
+    try {
+        const response = await OfferPost.findAll();
+        res.status(200).json(response);
+    } catch (error) {
+        console.log("Error finding an offer post: " + e);
+        res.sendStatus(500);
+    }
+ };
   
   const searchOffers = async (req, res) => {
       try {
@@ -139,6 +149,7 @@
 
   module.exports = {
     getOffer,
+    getAllOffers,
     searchOffers,
     searchOffersWithTags,
     createOffer,
