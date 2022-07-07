@@ -5,19 +5,19 @@ const { getRequest, searchRequests, searchRequestsWithTags, createRequest, updat
 const router = Router();
 
 // Requests
-router.get('/communitypost/requests/:postId', getRequest);
+router.get('/communitypost/requests/:requestId', getRequest);
 router.get('/communitypost/requests/:title', searchRequests);
 router.get('/communitypost/requests/:tagsList', searchRequestsWithTags);
 router.post('/communitypost/requests', createRequest);
 router.put('/communitypost/requests', updateRequest);
-router.delete('/communitypost/requests/:postId', deleteRequest);
+router.delete('/communitypost/requests/:requestId', deleteRequest);
 
 // Offers
-router.get('/communitypost/offers/:postId', getOffer);
+router.get('/communitypost/offers/:offerId', getOffer);
 router.get('/communitypost/offers/:title', searchOffers);
 router.get('/communitypost/offers/:tagsList', searchOffersWithTags);
 router.post('/communitypost/offers', createOffer);
 router.put('/communitypost/offers', updateOffer);
-router.delete('/communitypost/offers/:postId', deleteOffer);
+router.delete('/communitypost/offers/:offerId', deleteOffer);
 
 module.exports = router;
