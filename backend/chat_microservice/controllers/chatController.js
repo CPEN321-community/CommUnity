@@ -24,10 +24,16 @@ const deleteRoom = async (req, res) => {
 const getChats = async (req, res) => {
   try {
     const { userId } = req.params;
+    console.log("***", userId);
   
-    const { firstName, lastName, profilePicture } = await User.findOne({ 
+    const user = await User.findOne({ 
       where: { userId } 
     });
+    console.log(user);
+
+    const { firstName, lastName, profilePicture } = user;
+    
+    console.log("Got here");
     
     const rooms = await Room.findAll({ 
       where: { userId } 
@@ -38,13 +44,14 @@ const getChats = async (req, res) => {
       const postId = room.dataValues.postId;      
       const receiver = await Room.findOne({ where: {userId: {[Op.ne]: userId}, postId} });
       const receiverUser = await User.findByPk(receiver.userId);
-      const unformattedMessages = await Message.findAll({ postId });
+      const unformattedMessages = await Message.findAll({where: { postId }, order: [["createdAt", "ASC"]]});
       const msg = unformattedMessages.map(m => {
         const { postId, ...rest } = m.dataValues;
         return rest;
       })
 
       return {
+        postId,
         sender: userId,
         senderFirstName: firstName,
         senderLastName: lastName,
@@ -60,6 +67,7 @@ const getChats = async (req, res) => {
     res.status(200).json(allChats);
   } catch (e) {
     console.log("getChats Error: " + e);
+    res.status(500).json({err: e.toString()})
   }
 };
 
@@ -106,13 +114,17 @@ const createRoom = async roomDto => {
       senderFirstName,
       senderLastName,
       senderProfilePicture } = roomDto;
+      console.log(roomDto);
 
+      console.log(receiverFirstName);
     await User.upsert({
       userId: receiverId,
       firstName: receiverFirstName,
       lastName: receiverLastName,
       profilePicture: receiverProfilePicture,
     });
+
+    console.log("first one");
     await User.upsert({
       userId: senderId,
       firstName: senderFirstName,

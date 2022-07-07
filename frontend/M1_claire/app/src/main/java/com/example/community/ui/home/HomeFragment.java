@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.community.classes.Global;
 import com.example.community.login.LoginActivity;
 import com.example.community.databinding.FragmentHomeBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -42,6 +43,7 @@ public class HomeFragment extends Fragment {
             mGoogleSignInClient.signOut().addOnCompleteListener(requireActivity(), (OnCompleteListener<Void>) task -> {
                 Intent mainActivityIntent = new Intent(requireActivity(), LoginActivity.class);
                 startActivity(mainActivityIntent);
+                Global.account = null;
                 requireActivity().finish();
             });
         });
