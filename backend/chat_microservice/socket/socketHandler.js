@@ -28,6 +28,7 @@ const socketHandler = (socket) => {
 
     socket.on('sendMessage', async ({ message, userId, postId }) => {
         const { msgObj, isSent } = await sendMessage(message, userId, postId);
+        console.log(msgObj);
 
         if (isSent) {
             socket.to(postId).emit('sendMessage', msgObj);

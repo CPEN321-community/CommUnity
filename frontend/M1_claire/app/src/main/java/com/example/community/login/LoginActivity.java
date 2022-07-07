@@ -12,6 +12,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.community.MainActivity;
 import com.example.community.R;
 import com.example.community.VolleyCallBack;
+import com.example.community.classes.Global;
 import com.example.community.databinding.ActivityLoginBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -91,6 +92,13 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void finishLogin(GoogleSignInAccount account) {
+        Global.account = account;
+        Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(mainActivityIntent);
+        finish();
+    }
+
     private void updateUI(GoogleSignInAccount account) {
         if (account != null) {
             userDoesExist(account.getId(), new LoginCallback() {
@@ -105,15 +113,11 @@ public class LoginActivity extends AppCompatActivity {
 
                             @Override
                             public void onSuccess() {
-                                Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(mainActivityIntent);
-                                finish();
+                                finishLogin(account);
                             }
                         });
                     } else {
-                        Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(mainActivityIntent);
-                        finish();
+                        finishLogin(account);
                     }
                 }
 

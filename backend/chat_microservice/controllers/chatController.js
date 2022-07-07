@@ -44,13 +44,14 @@ const getChats = async (req, res) => {
       const postId = room.dataValues.postId;      
       const receiver = await Room.findOne({ where: {userId: {[Op.ne]: userId}, postId} });
       const receiverUser = await User.findByPk(receiver.userId);
-      const unformattedMessages = await Message.findAll({ postId });
+      const unformattedMessages = await Message.findAll({where: { postId }, order: [["createdAt", "ASC"]]});
       const msg = unformattedMessages.map(m => {
         const { postId, ...rest } = m.dataValues;
         return rest;
       })
 
       return {
+        postId,
         sender: userId,
         senderFirstName: firstName,
         senderLastName: lastName,
@@ -113,13 +114,17 @@ const createRoom = async roomDto => {
       senderFirstName,
       senderLastName,
       senderProfilePicture } = roomDto;
+      console.log(roomDto);
 
+      console.log(receiverFirstName);
     await User.upsert({
       userId: receiverId,
       firstName: receiverFirstName,
       lastName: receiverLastName,
       profilePicture: receiverProfilePicture,
     });
+
+    console.log("first one");
     await User.upsert({
       userId: senderId,
       firstName: senderFirstName,
