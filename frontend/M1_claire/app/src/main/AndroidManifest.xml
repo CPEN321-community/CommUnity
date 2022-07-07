@@ -17,6 +17,27 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".NewOfferForm"
+            android:exported="false" />
+        <activity
+            android:name=".OfferPosts"
+            android:exported="false" />
+        <activity
+            android:name=".PostAdapter"
+            android:exported="false" />
+        <activity
+            android:name=".NewRequestForm"
+            android:exported="false" />
+        <activity
+            android:name=".request_list.RequestPosts$NewRequestPostForm"
+            android:exported="false" />
+        <activity
+            android:name=".SearchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".request_list.RequestPosts"
+            android:exported="false" />
+        <activity
             android:name=".ChatActivity"
             android:exported="false"
             android:label="@string/title_activity_chat"
