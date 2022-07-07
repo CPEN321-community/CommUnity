@@ -1,15 +1,16 @@
-package com.example.community;
+package com.example.community.ui.chat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.community.R;
 import com.example.community.classes.Chat;
-import com.example.community.classes.UserWithScore;
+import com.example.community.ui.chat.message.MessageActivity;
 
 import java.util.ArrayList;
 
@@ -45,7 +46,12 @@ public class ChatAdapter extends BaseAdapter {
         Chat chat = this.chats.get(i);
 
         TextView chatName = (TextView) view.findViewById(R.id.chat_name);
-        chatName.setText(chat.name);
+        view.setOnClickListener(v -> {
+            Intent messageIntent = new Intent(context, MessageActivity.class);
+            messageIntent.putExtra("chat", chat);
+            context.startActivity(messageIntent);
+        });
+        chatName.setText(chat.other.firstName);
 
 
         return view;
