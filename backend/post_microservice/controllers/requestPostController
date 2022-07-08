@@ -1,75 +1,164 @@
-/**
-  * Post Controller includes all of the endpoints relating to post management in our app
-  */
- 
-  const { User } = require("../models/userModel");
-  const { RequestPostTags } = require("../models/requestPostTagsModel");
-  const { RequestPost } = require("../models/requestPostModel");
-  const getRequest = async (req, res) => {
+const { Op } = require("sequelize");
+const { RequestPost, RequestPostTags } = require("../models");
+
+const getRequest = async (req, res) => {
    try {
-     const offerId = req.postId;
-     const response = await RequestPost.findByPk(offerId, {include: ["offerTags"]});
-     res.json(response);
-     res.sendStatus(200);
+       const requestId = req.params.postId;
+       const response = await RequestPost.findByPk(requestId, {include: ["requestTags"]});
+       res.json(response);
+       res.sendStatus(200);
+   } catch (error) {
+       console.log("Error finding an offer post: " + error);
+       res.sendStatus(500);
+   }
+}
+
+const searchRequests = async (req, res) => {
+    try {
+        const title = req.params.title;
+        const query = "%" + title + "%";
+
+        //find all posts which have a title containing the query
+        const response = await RequestPost.findAll({
+            where: {
+                title: {[Op.like]: query}, 
+              }
+        });
+        if (response = null) {
+            const message = "Sorry, there are no offer posts for " + title + "."
+            res.json({
+                message: message
+            });
+            res.sendStatus(200);
+        } else {
+            res.json(response);
+            res.sendStatus(200);
+        }
     } catch (error) {
-      console.log("Error finding an offer post: " + e);
+      console.log("Error with searching for offer posts: " + error);
       res.sendStatus(500);
     }
-  };
+}
 
-  const searchRequests = async (req, res) => {
-    try {
-      const title = req.title;
-      const query = "%" + title + "%";
+const searchRequestsWithTags = async (req, res) => {
+  try {
+      const tagList = req.params.tagList;
 
-      //find all posts which have a title containing the query
-      const response = await OfferPost.findAll({
-          where: {
-              title: {[Op.like]: query}, 
-            }
+      //list of postIds that have the tags
+      const postIds = await RequestPostTags.findAll({
+          attributes: {include: ["postId"]},
+          where: {name: tagList}
       });
-      if (response = null) {
-          const message = "Sorry, there are no offer posts for " + title + "."
+      
+      //check whether there are duplicates in postIds list
+      let uniquePostIds = [...new Set(postIds)];
+      
+      //find list of posts that match postIds
+      const postList = await RequestPost.findAll({
+          where: {requestId: uniquePostIds}
+      });
+
+      if (postList = null) {
+          const message = "Sorry, there are no offer posts for " + tagList + "."
           res.json({
               message: message
           });
           res.sendStatus(200);
       } else {
-          res.json(response);
+          res.json(postList);
           res.sendStatus(200);
       }
   } catch (error) {
-    console.log("Error with searching for offer posts: " + e);
+    console.log("Error with searching for offer posts: " + error);
     res.sendStatus(500);
   }
 }
 
-  //Create a new post
-  const createRequest = async (req, res) => {
-      const { id } = req.body;
-      const response = null;
-      res.json(response);
-  }
+//success! this works!
+const createRequest = async (req, res) => {
+    try {
+        await RequestPost.create({
+            title: req.body.title,
+            description: req.body.description,
+            currentLocation: req.body.currentLocation
+          });
+        const newRequest = await RequestPost.findOne(
+            {
+                where: {
+                    title: req.body.title, 
+                    description:req.body.description, 
+                    currentLocation: req.body.currentLocation
+                }
+            }
+        )
 
-  //Update post
-  const updateRequest = async (req, res) => {
-      const { id } = req.body;
-      const response = null;
-      res.json(response);
-  }
+        let tagList = req.body.tagList;
+        for(let item of tagList) {
+            RequestPostTags.create({
+                postId: newRequest.requestId,
+                name: item
+              });
+        }
+          res.sendStatus(200);
+    } catch (error) {
+      console.log("Error creating a new post: " + error);
+      res.sendStatus(500);
+    }
+}
 
-  //Delete post
-  const deleteRequest = async (req, res) => {
-      const { id } = req.body;
-      const response = null;
-      res.json(response);
-  }
+//yay success :)
+const updateRequest = async (req, res) => {
+    try {
+        const updateRequest = RequestPost.findOne({
+            where: {requestId: req.body.requestId}
+        });
+        const requestAlreadyExists = updateRequest != null;
+        if(requestAlreadyExists){
+            await RequestPost.update({
+                title: req.body.title,
+                description: req.body.description,
+                currentLocation: req.body.currentLocation
+            }, {where: {requestId: req.body.requestId}});
+            res.json("Post updated");
+            res.sendStatus(200);
+        }else{
+            res.json("You cannot update a post that does not exist");
+            res.sendStatus(200);
+        }
+    } catch (error) {
+      console.log("Error updating post: " + error);
+      res.sendStatus(500);
+    }
 
-  module.exports = {
-    getRequest,
-    searchRequests,
-    createRequest,
-    updateRequest,
-    deleteRequest
-  };
+}
+
+//whaaaaaaaa
+//woop woop that's the sound of the police
+const deleteRequest = async (req, res) => {
+  try {
+    await RequestPostTags.destroy({
+        where: {
+            postId: req.body.requestId
+        }
+    })
+      await RequestPost.destroy({
+          where: {
+              requestId: req.body.requestId
+          }
+      });
+      res.sendStatus(200);
+  } catch (error) {
+      console.log("Error deleting post: " + error);
+      res.sendStatus(500);
+  }
+}
+
+module.exports = {
+  getRequest,
+  searchRequests,
+  searchRequestsWithTags,
+  createRequest,
+  updateRequest,
+  deleteRequest
+};
   

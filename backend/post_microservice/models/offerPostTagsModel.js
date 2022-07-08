@@ -4,7 +4,7 @@ const { OfferPost } = require("./offerPostModel");
 
  const OfferPostTagsObject = (sequelize, DataTypes) => {
     const OfferPostTags = sequelize.define("OfferPostTags", {
-        id: {
+        offerTagId: {
             type: DataTypes.STRING,
             defaultValue: DataTypes.UUIDV4,
             allowNull: false,
