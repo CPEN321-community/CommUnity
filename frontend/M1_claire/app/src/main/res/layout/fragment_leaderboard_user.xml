@@ -16,7 +16,7 @@
         android:textAppearance="?attr/textAppearanceListItem" />
 
     <ImageView
-        android:id="@+id/leaderboard_image"
+        android:id="@+id/chat_avatar"
         android:layout_width="0dp"
         android:layout_height="75dp"
         android:layout_weight=".3"

@@ -3,6 +3,7 @@ package com.example.community.classes;
 import android.util.Log;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
@@ -42,5 +43,41 @@ public class Chat implements Serializable {
     public static Chat getChat(String postId) {
         return Chat.chatMap.getOrDefault(postId, null);
     }
+
+    public static synchronized void sendMessage(String roomId, String message) {
+        JSONObject sendMessage = new JSONObject();
+        try {
+            sendMessage.put("postId", roomId);
+            sendMessage.put("userId", Global.getAccount().getId());
+            sendMessage.put("message", message);
+            Global.getSocket().emit("sendMessage", sendMessage);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static synchronized void joinRooms() {
+        Log.d(TAG, "joinRooms: Start");
+        JSONObject joinRoomsMessage = new JSONObject();
+        try {
+            joinRoomsMessage.put("userId", Global.getAccount().getId());
+            Global.getSocket().emit("joinRooms", joinRoomsMessage);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static synchronized void listenForMessages() {
+        Global.getSocket().on("sendMessage", args -> {
+            JSONObject data = (JSONObject) args[0];
+            Message message = new Message(data);
+            String postId = message.postId;
+            Log.d(TAG, "listenForMessages: " + message.postId);
+            if (!ChatMessageHandler.getChatMap().containsKey(postId)) return;
+            ChatMessageHandler.AddMessage(postId, message);
+            Log.d(TAG, "listenForMessages: Recieved Message: " + message.messageText);
+        });
+    }
+
 
 }

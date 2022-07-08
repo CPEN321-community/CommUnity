@@ -48,7 +48,7 @@
         android:id="@+id/other_message_bubble"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="#000000"
+        app:cardBackgroundColor="@color/black"
         app:cardCornerRadius="12dp"
         app:cardElevation="0dp"
         app:cardPreventCornerOverlap="false"
@@ -72,7 +72,7 @@
                 android:paddingTop="8dp"
                 android:paddingRight="12dp"
                 android:text="@string/sample_message"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/white"
                 android:textSize="16sp" />
         </LinearLayout>
 

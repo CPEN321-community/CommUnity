@@ -31,7 +31,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/my_message_bubble"
+        android:id="@+id/chat_message_bubble"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="#774df2"
@@ -49,7 +49,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/my_message_text"
+                android:id="@+id/chat_message_preview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -71,8 +71,8 @@
         android:text="@string/sample_timestamp"
         android:textColor="#757575"
         android:textSize="11sp"
-        app:layout_constraintBottom_toBottomOf="@+id/my_message_bubble"
-        app:layout_constraintEnd_toStartOf="@+id/my_message_bubble" />
+        app:layout_constraintBottom_toBottomOf="@+id/chat_message_bubble"
+        app:layout_constraintEnd_toStartOf="@+id/chat_message_bubble" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

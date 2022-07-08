@@ -7,9 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
-import com.example.community.ChatActivity;
 import com.example.community.R;
 import com.example.community.SearchActivity;
+import com.example.community.ui.chat.ChatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class RequestPosts extends AppCompatActivity {
