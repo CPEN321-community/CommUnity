@@ -4,15 +4,14 @@ const use = require('@tensorflow-models/universal-sentence-encoder');
 var Singleton = require('../singleton');
 
 const getSuggestedPosts = async (req, res) => {
+    var model = new Singleton().getInstance();
+    model.getTopTen(req.params.item);
+}
 
 
+const trainModel = async (req, res) => {
     var model = new Singleton().getInstance();
     model.trainModel();
 }
 
-
-const getCosineDistance = async (req, res) => {
-    
-}
-
-module.exports = { getSuggestedPosts }
+module.exports = { getSuggestedPosts, trainModel }
