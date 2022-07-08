@@ -22,7 +22,7 @@
         console.log("Error getting all of the offer posts: " + error);
     }
   }
->>>>>>> 459177f3373df4c442ac99766772ce869c5c1bbe
+
   
   const searchOffers = async (req, res) => {
       try {
@@ -163,6 +163,7 @@
                 offerId: req.body.offerId
             }
         });
+        await axios.delete(`http://localhost:6969/suggestedPosts/offer/${req.body.offerId}`);
         res.sendStatus(200);
     } catch (error) {
         console.log("Error deleting post: " + error);

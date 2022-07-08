@@ -1,4 +1,5 @@
 const { Op } = require("sequelize");
+const axios = require("axios").default;
 const { RequestPost, RequestPostTags } = require("../models");
 
 //waaaaaaaaaluigi
@@ -86,6 +87,7 @@ const searchRequestsWithTags = async (req, res) => {
 //success! this works!
 const createRequest = async (req, res) => {
     try {
+        console.log("hellooo world", req.body);
         await RequestPost.create({
             title: req.body.title,
             description: req.body.description,
@@ -155,6 +157,7 @@ const deleteRequest = async (req, res) => {
               requestId: req.body.requestId
           }
       });
+      await axios.delete(`http://localhost:6969/suggestedPosts/request/${req.body.requestId}`);
       res.sendStatus(200);
   } catch (error) {
       console.log("Error deleting post: " + error);

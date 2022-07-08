@@ -1,9 +1,12 @@
 const Router = require('express-promise-router');
-const { getSuggestedPosts, trainModel } = require('./controllers/recommendationController');
+const { getSuggestedPosts, deletePost } = require('./controllers/recommendationController');
 
 const router = Router();
 
-router.get('/suggestedPosts/:item', getSuggestedPosts);
-router.get('/suggestedPosts/train', trainModel);
+router.get('/suggestedPosts/request/:item', getSuggestedPosts);
+router.get('/suggestedPosts/offer/:item', getSuggestedPosts);
+
+router.delete('/suggestedPosts/request/:postId', deletePost);
+router.delete('/suggestedPosts/offer/:postId', deletePost);
 
 module.exports = router;
