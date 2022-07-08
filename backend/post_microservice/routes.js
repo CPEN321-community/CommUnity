@@ -20,11 +20,24 @@ router.post('/communitypost/offers/:postDTO', createOffer);
 router.put('/communitypost/offers/:postDTO', updateOffer);
 router.delete('/communitypost/offers/:postId', deleteOffer);
 
+const { getOffer, searchOffers, searchOffersWithTags, createOffer, updateOffer, deleteOffer} = require('./controllers/offerPostController');
+const { getRequest, searchRequests, searchRequestsWithTags, createRequest, updateRequest, deleteRequest} = require('./controllers/requestPostController');
+const router = Router();
 
-// Chat Module
-router.get('/chat?userId', getChatData);
-router.get('/socket/:chatId', getChatSocket);
-router.get('/socket/message/:chatId', getMessageFromSocket);
-router.post('/socket/message/:chatId', addMessageToSocket)
+// Requests
+router.get('/communitypost/requests/:requestId', getRequest);
+router.get('/communitypost/requests/:title', searchRequests);
+router.get('/communitypost/requests/:tagsList', searchRequestsWithTags);
+router.post('/communitypost/requests', createRequest);
+router.put('/communitypost/requests', updateRequest);
+router.delete('/communitypost/requests/:requestId', deleteRequest);
+
+// Offers
+router.get('/communitypost/offers/:offerId', getOffer);
+router.get('/communitypost/offers/:title', searchOffers);
+router.get('/communitypost/offers/:tagsList', searchOffersWithTags);
+router.post('/communitypost/offers', createOffer);
+router.put('/communitypost/offers', updateOffer);
+router.delete('/communitypost/offers/:offerId', deleteOffer);
 
 module.exports = router;
