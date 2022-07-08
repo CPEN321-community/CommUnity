@@ -1,17 +1,26 @@
 const { Op } = require("sequelize");
 const { RequestPost, RequestPostTags } = require("../models");
 
+//waaaaaaaaaluigi
 const getRequest = async (req, res) => {
    try {
-       const requestId = req.params.postId;
-       const response = await RequestPost.findByPk(requestId, {include: ["requestTags"]});
+       const requestId = req.body.requestId;
+       const response = await RequestPost.findOne({where: {requestId: requestId}});
        res.json(response);
-       res.sendStatus(200);
    } catch (error) {
        console.log("Error finding an offer post: " + error);
-       res.sendStatus(500);
    }
 }
+
+ //yahoo
+ const getAllRequests = async (req, res) => {
+    try {
+        const response = await RequestPost.findAll();
+        res.json(response);
+    } catch (error) {
+        console.log("Error getting all of the offer posts: " + error);
+    }
+  }
 
 const searchRequests = async (req, res) => {
     try {
@@ -155,6 +164,7 @@ const deleteRequest = async (req, res) => {
 
 module.exports = {
   getRequest,
+  getAllRequests,
   searchRequests,
   searchRequestsWithTags,
   createRequest,
