@@ -43,7 +43,7 @@ public class HomeFragment extends Fragment {
             mGoogleSignInClient.signOut().addOnCompleteListener(requireActivity(), (OnCompleteListener<Void>) task -> {
                 Intent mainActivityIntent = new Intent(requireActivity(), LoginActivity.class);
                 startActivity(mainActivityIntent);
-                Global.account = null;
+                Global.setAccount(null);
                 requireActivity().finish();
             });
         });

@@ -1,7 +1,5 @@
 package com.example.community.ui.home;
 
-import android.widget.Button;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -14,7 +12,7 @@ public class HomeViewModel extends ViewModel {
 
     public HomeViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("Hello, " + Global.account.getGivenName());
+        mText.setValue("Hello, " + Global.getAccount().getGivenName());
     }
 
     public LiveData<String> getText() {
