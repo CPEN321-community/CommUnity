@@ -1,17 +1,24 @@
-const tf = require('@tensorflow/tfjs-node');
-// const tf = require('@tensorflow/tfjs')
-const use = require('@tensorflow-models/universal-sentence-encoder');
 var Singleton = require('../singleton');
 
 const getSuggestedPosts = async (req, res) => {
     var model = new Singleton().getInstance();
-    model.getTopTen(req.params.item);
+
+    if (req.url.contains("/offer")) {
+        res.status(200).json(model.getTopTen(req.params.item, 'offer'));
+    } else {
+        res.status(200).json(model.getTopTen(req.params.item, 'request'));
+    }
 }
 
-
-const trainModel = async (req, res) => {
+const deletePost = async (req, res) => {
     var model = new Singleton().getInstance();
-    model.trainModel();
+    
+    if (req.url.contains("/offer")) {
+        await model.removePostId(req.params.postId, 'offer');
+    } else {
+        await model.removePostId(req.params.postId, 'request');
+    }
+    res.status(200);
 }
 
-module.exports = { getSuggestedPosts, trainModel }
+module.exports = { getSuggestedPosts, deletePost }

@@ -12,6 +12,6 @@ class Singleton {
         return Singleton.instance;
     }
   
-  }
+}
   
-  module.exports = Singleton;
+module.exports = Singleton;

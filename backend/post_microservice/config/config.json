@@ -1,21 +1,21 @@
 {
   "development": {
     "username": "root",
-    "password": "D4V1nk1L30",
+    "password": "P@ssw0rd",
     "database": "post_data",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": "D4V1nk1L30",
+    "password": "P@ssw0rd",
     "database": "post_data",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": "D4V1nk1L30",
+    "password": "P@ssw0rd",
     "database": "post_data",
     "host": "127.0.0.1",
     "dialect": "mysql"

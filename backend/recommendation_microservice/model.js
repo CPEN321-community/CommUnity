@@ -1,69 +1,98 @@
+const tf = require('@tensorflow/tfjs-node');
+const use = require('@tensorflow-models/universal-sentence-encoder');
+const axios = require('axios').default;
+
 class IModel {
     trainModel() {}
-    getTopTen() {}
+    getTopTen(item, type) {}
+    removePostId(postId) {}
 }
 
 class Model extends IModel {
     constructor() {
       super();
-        this.tensors = []; // { postId, score }
+        this.requestTensors = [];
+        this.offerTensors = [];
+        this.requestModel = null;
+        this.offerModel = null;
     }
 
-    trainModel() {
-        const model = await use.load();
-        const embeddings1 = (await model.embed([
-            "MANGO",
-            "mango"
-        ])).unstack();
+    async trainModel() {
+        // train the offer model
+        const offerModel = await use.load();
+        this.offerModel = offerModel;
 
-        // 1. fetch all the offer posts
+        const offerRes = await axios.get('http://localhost:8080/communityPost/offers');
+        const allOffers = offerRes.data;
 
-        // const embeddings2 = (await model.embed([
-        //     "kiwis are a bird and a fruit, but not at the same time", 
-        //     // "Kiwi the bird lives in Austrailia",
-        //     // "MANGO",
-        //     // "mango",
-        //     // "Mango Mango Mango Mango",
-        //     // "Mangoes are delicious. I love mongoose.",
-        // ])).unstack();
-        const embeddings3 = (await model.embed([
-            "A yellow succulent piece of juiciness with one large pit and tastes good in smoothies."
-        ])).unstack();
-        const input = await (await model.embed(["Man go"])).unstack();
-        // const number = tf.losses.cosineDistance(embeddings1[0], embeddings1[1]);
-        // const variable1 = await tf.losses.cosineDistance(embeddings2[0], embeddings2[1]).array();
-        const array = []; 
-        
-        for (let i = 0; i <= embeddings2.length; i += 1) {
-            const embedding = (await model.embed([ value ])).unstack();
+        for (let i=0; i < allOffers.length; i+=1) {
+            const offer = allOffers[i];
+            const offerTitle = (await offerModel.embed([offer.title])).unstack();
+            const offerDesc = (await offerModel.embed([offer.description])).unstack();
             
-            const newLocal = await tf.losses.cosineDistance(input, embeddings2[i]).data();
-            array.push(newLocal);
+            this.offerTensors.push({
+                postId: offer.offerId,
+                titleEmbedding: offerTitle[0],
+                descriptionEmbedding: offerDesc[0],
+            });
         }
-        // for (let i = 0; i <= embeddings2.length; i += 1) {
-        //     const newLocal = await tf.losses.cosineDistance(input, embeddings2[i]).data();
-        //     array.push(newLocal);
-        // }
-        
-        const variable3 = tf.losses.cosineDistance(input[0], embeddings3[0]).toString(true);
-        // tf.losses.cosineDistance(embeddings3[0], embeddings3[1], embeddings3[2]).print();
 
+        // train the request model
+        const requestModel = await use.load();
+        this.requestModel = requestModel;
 
-        // console.log("variable1: ", variable1);
-        console.log("variable3: ", variable3);
-        // console.log("variable3: ", variable3);
+        const requestRes = await axios.get('http://localhost:8080/communityPost/requests');
+        const allRequests = requestRes.data;
 
-        //return percentage similarity
-        // res.json((1 - variable2)*100);
-        //res.json(Math.max(...array));
+        for (let i=0; i < allRequests.length; i+=1) {
+            const request = allRequests[i];
+            const requestTitle = (await requestModel.embed([request.title])).unstack();
+            const requestDesc = (await requestModel.embed([request.description])).unstack();
+            
+            this.requestTensors.push({
+                postId: request.requestId,
+                titleEmbedding: requestTitle[0],
+                descriptionEmbedding: requestDesc[0],
+            });
+        }
     }
 
-    getTopTen() {
-        // rank in descending order
-        // get top 10 
-        // make sure the posts are still upm
-        return [];
+    async getTopTen(item, type) {
+        const itemTensor = (await this.model.embed([item])).unstack();
+        const distances = []
+        const tensors = type == 'offer' ? this.offerTensors : this.requestTensors;
+
+        for (let i=0; i < tensors.length; i += 1) {
+            const distanceTitle = await tf.losses.cosineDistance(itemTensor[0], tensors[i].titleEmbedding).array();
+            const distanceDesc = await tf.losses.cosineDistance(itemTensor[0], tensors[i].descriptionEmbedding).array();
+
+            const distanceTitlePercentage = (1.0 - distanceTitle) * 100.0;
+            const distanceDescPercentage = (1.0 - distanceDesc) * 100.0;
+
+            const distanceAverage = (distanceTitlePercentage + distanceDescPercentage) / 2.0;
+            distances.push({ 
+                postId: tensors[i].postId, 
+                score: distanceAverage
+            });
+        }
+
+        distances.sort((first, two) => two.score - first.score);
+        return distances.length >= 10 ? distances.slice(0,10) : distances;
+    }
+    
+    removePostId(postId, type) {
+        const tensors = type == 'offer' ? this.offerTensors : this.requestTensors;
+        let foundId = null;
+        for(let i = 0; i < tensors.length; i = i+1) {
+            if (tensors[i].postId == postId){
+                foundId = i;
+            }
+        }
+
+        if (foundId != null) {
+            tensors = tensors.splice(foundId, 1);
+        }
     }
 }
-  
+
 module.exports = Model;
