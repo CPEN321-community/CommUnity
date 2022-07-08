@@ -40,4 +40,5 @@
     <string name="sample_timestamp">4:00</string>
     <string name="sample_name">John Doe</string>
     <string name="avatar_caption">User Icon</string>
+    <string name="button_speakable">Search</string>
 </resources>
