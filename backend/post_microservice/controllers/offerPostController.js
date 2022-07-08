@@ -1,29 +1,28 @@
   const { Op } = require("sequelize");
   const { OfferPost, OfferPostTags } = require("../models");
  
+  //works
  const getOffer = async (req, res) => {
      try {
-         const offerId = req.body.postId;
-         const response = await OfferPost.findByPk(offerId, {include: ["offerTags"]});
-
-         console.log("Post: " + response);
+         const offerId = req.body.offerId;
+         const response = await OfferPost.findOne({where: {offerId: offerId}});
          res.json(response);
-         res.sendStatus(200);
      } catch (error) {
          console.log("Error finding an offer post: " + error);
-         res.sendStatus(500);
      }
   };
 
+
+  //wahoo
   const getAllOffers = async (req, res) => {
     try {
         const response = await OfferPost.findAll();
-        res.status(200).json(response);
+        res.json(response);
     } catch (error) {
-        console.log("Error finding an offer post: " + e);
-        res.sendStatus(500);
+        console.log("Error getting all of the offer posts: " + error);
     }
- };
+  }
+>>>>>>> 459177f3373df4c442ac99766772ce869c5c1bbe
   
   const searchOffers = async (req, res) => {
       try {
