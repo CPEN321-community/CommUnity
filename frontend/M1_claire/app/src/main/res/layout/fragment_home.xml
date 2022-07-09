@@ -29,4 +29,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_home" />
+
+    <ImageView
+        android:id="@+id/search_icon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/search_content_description"
+        app:layout_constraintBottom_toBottomOf="@+id/search_button"
+        app:layout_constraintEnd_toEndOf="@+id/search_button"
+        app:layout_constraintStart_toStartOf="@+id/search_button"
+        app:layout_constraintTop_toTopOf="@+id/search_button"
+        app:srcCompat="@drawable/ic_search" />
+
+    <Button
+        android:id="@+id/search_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/button_speakable"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="DuplicateSpeakableTextCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>
