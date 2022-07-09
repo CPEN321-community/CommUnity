@@ -22,9 +22,19 @@ const getRequest = async (req, res) => {
     }
   }
 
-const searchRequests = async (req, res) => {
+  const getAllUserRequests = async (req, res) => {
+    try{
+        const response = await RequestPost.findAll({where: {userId: userId}});
+        res.json(response);
+    } catch(error) {
+        console.log("Error in retrieving request posts made by user " + error);
+    }
+  }
+
+
+ const searchRequests = async (req, res) => {
     try {
-        const title = req.params.title;
+        const title = req.body.title;
         const query = "%" + title + "%";
 
         //find all posts which have a title containing the query
@@ -34,14 +44,9 @@ const searchRequests = async (req, res) => {
               }
         });
         if (response = null) {
-            const message = "Sorry, there are no offer posts for " + title + "."
-            res.json({
-                message: message
-            });
             res.sendStatus(200);
         } else {
             res.json(response);
-            res.sendStatus(200);
         }
     } catch (error) {
       console.log("Error with searching for offer posts: " + error);
@@ -72,10 +77,8 @@ const searchRequestsWithTags = async (req, res) => {
           res.json({
               message: message
           });
-          res.sendStatus(200);
       } else {
           res.json(postList);
-          res.sendStatus(200);
       }
   } catch (error) {
     console.log("Error with searching for offer posts: " + error);
@@ -87,19 +90,12 @@ const searchRequestsWithTags = async (req, res) => {
 const createRequest = async (req, res) => {
     try {
         await RequestPost.create({
+            userId: req.body.userId,
             title: req.body.title,
             description: req.body.description,
             currentLocation: req.body.currentLocation
           });
-        const newRequest = await RequestPost.findOne(
-            {
-                where: {
-                    title: req.body.title, 
-                    description:req.body.description, 
-                    currentLocation: req.body.currentLocation
-                }
-            }
-        )
+        const newRequest = await RequestPost.findOne({where: {userId: req.body.userId}});
 
         let tagList = req.body.tagList;
         for(let item of tagList) {
@@ -124,15 +120,14 @@ const updateRequest = async (req, res) => {
         const requestAlreadyExists = updateRequest != null;
         if(requestAlreadyExists){
             await RequestPost.update({
+                userId: req.body.userId,
                 title: req.body.title,
                 description: req.body.description,
                 currentLocation: req.body.currentLocation
             }, {where: {requestId: req.body.requestId}});
             res.json("Post updated");
-            res.sendStatus(200);
         }else{
             res.json("You cannot update a post that does not exist");
-            res.sendStatus(200);
         }
     } catch (error) {
       console.log("Error updating post: " + error);
@@ -165,6 +160,7 @@ const deleteRequest = async (req, res) => {
 module.exports = {
   getRequest,
   getAllRequests,
+  getAllUserRequests,
   searchRequests,
   searchRequestsWithTags,
   createRequest,
