@@ -186,7 +186,7 @@
       try {
         const updateOffer = OfferPost.findOne({
             where: {offerId: req.body.offerId}
-        })
+        });
         const offerAlreadyExists = updateOffer != null;
         if(offerAlreadyExists){
             await OfferPost.update({
