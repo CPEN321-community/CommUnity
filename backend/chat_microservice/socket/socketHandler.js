@@ -1,4 +1,4 @@
-const { getAssociatedRooms, createRoom, sendMessage, getMessageFromSocket, addMessageToSocket } = require('../controllers/chatController');
+const { getAssociatedRooms, createRoom, sendMessage } = require('../controllers/chatController');
 
 const socketHandler = (socket) => {
     console.log("socket connection made with id: " + socket.id);
