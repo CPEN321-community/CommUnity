@@ -30,15 +30,9 @@ const socketHandler = (socket, io) => {
     });
 
     socket.on('sendMessage', async ({ message, userId, postId }) => {
-        const { msgObj, isSent } = await sendMessage(message, userId, postId);
-        console.log(msgObj);
+        const msgObj = await sendMessage(message, userId, postId);
 
-        if (isSent) {
-            io.to(postId).emit('sendMessage', msgObj);
-            // socket.in(postId).emit('sendMessage', msgObj);
-        } else {
-            socket.emit('sendMessage', 'send_message_failure')
-        }
+        io.to(postId).emit('sendMessage', msgObj);
     });
 
     socket.on('leave-all', async ({ userId }) => {
