@@ -131,7 +131,7 @@ const updateRequest = async (req, res) => {
                 status: req.body.status
             }, {where: {requestId: req.body.requestId}});
             if (req.body.status == "Fulfilled") {
-                await axios.delete(`http://localhost:6969/suggestedPosts/request/${req.body.requestId}`);
+                await axios.delete(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/suggestedPosts/request/${req.body.requestId}`);
             }
             res.json("Post updated");
         }else{
@@ -206,7 +206,7 @@ const deleteRequest = async (req, res) => {
               requestId: req.body.requestId
           }
       });
-      await axios.delete(`http://localhost:6969/suggestedPosts/request/${req.body.requestId}`);
+      await axios.delete(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/suggestedPosts/request/${req.body.requestId}`);
       res.sendStatus(200);
   } catch (error) {
       console.log("Error deleting post: " + error);
