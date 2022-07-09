@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">Community</string>
+    <string name="title_home">Home</string>
+    <string name="title_leaderboard">Leaderboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="sign_out">Sign Out</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="refresh_leaderboard_text">Refresh</string>
+    <string name="title_activity_chat">Chats</string>
+    <string name="large_text">Chat</string>
+    <string name="action_settings">Settings</string>
+    <string name="profile_content_description">My Profile</string>
+    <string name="home_content_description">Home Page</string>
+    <string name="leader_content_description">Leaderboard</string>
+    <string name="search_content_description">Search</string>
+    <string name="chat_content_description">Go to Chats</string>
+    <string name="add_req_content_description">Add New Request Post</string>
+    <string name="view_offers_button_caption">View Offers</string>
+    <string name="refresh_req_posts_text">Refresh</string>
+    <string name="title_activity_message">MessageActivity</string>
+    <string name="button_read_text">Send</string>
+    <string name="enter_message">Enter Message</string>
+    <string name="sample_date">March 4</string>
+    <string name="sample_message">Hello World!</string>
+    <string name="sample_timestamp">4:00</string>
+    <string name="sample_name">John Doe</string>
+    <string name="avatar_caption">User Icon</string>
+    <string name="button_speakable">Search</string>
+</resources>

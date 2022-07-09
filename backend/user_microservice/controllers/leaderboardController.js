@@ -14,13 +14,14 @@ const getTopNUsers = async (req, res) => {
             const user = await User.findOne({
                 where: { userId: userScore.dataValues.userId }
             })
-            
+
             return { 
                 firstName: user.dataValues.firstName,
                 lastName: user.dataValues.lastName,
                 offerPosts: userScore.dataValues.offerPosts,
                 requestPosts: userScore.dataValues.requestPosts,
-                score: userScore.dataValues.score
+                score: userScore.dataValues.score,
+                profilePicture: user.dataValues.profilePicture
             }
         }));
        res.status(200).json(responseWithNames);
@@ -36,9 +37,12 @@ const getTopNUsers = async (req, res) => {
 const getUserRank = async (req, res) => {
     try {
         const { userId } = req.params;
+        console.log(userId);
         const user = await Leaderboard.findOne({ 
             where: { userId }
         });
+
+        console.log(user);
         //create a function that finds all of the users with higher scores than you
         const higherScoringUsers = await Leaderboard.findAll({
             where: {score: {[Op.gte]: user.score}}
