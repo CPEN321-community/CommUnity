@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void finishLogin(GoogleSignInAccount account) {
-        Global.account = account;
+        Global.setAccount(account);
         Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(mainActivityIntent);
         finish();

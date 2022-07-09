@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class Message implements Serializable {
@@ -12,6 +13,7 @@ public class Message implements Serializable {
     public String messageText;
     public String userId;
     public Date createdAt;
+    private final String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
 
     public Message(JSONObject messageJSON, String postId, Chat parentChat) {
         try {
@@ -20,7 +22,6 @@ public class Message implements Serializable {
             this.postId = postId;
             this.parentChat = parentChat;
             String createdAtString = messageJSON.getString("createdAt");
-            String dateFormat = "yyyy-mm-dd hh:mm:ss";
             this.createdAt = new SimpleDateFormat(dateFormat).parse(createdAtString);
 
         } catch (Exception e) {
@@ -35,7 +36,6 @@ public class Message implements Serializable {
             this.postId = messageJSON.getString("postId");
             this.parentChat = Chat.getChat(this.postId);
             String createdAtString = messageJSON.getString("createdAt");
-            String dateFormat = "yyyy-mm-dd hh:mm:ss";
             this.createdAt = new SimpleDateFormat(dateFormat).parse(createdAtString);
 
         } catch (Exception e) {

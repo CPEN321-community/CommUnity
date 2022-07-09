@@ -7,9 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
-import com.example.community.ui.chat.ChatActivity;
 import com.example.community.R;
 import com.example.community.SearchActivity;
+import com.example.community.ui.chat.ChatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class RequestPosts extends AppCompatActivity {
@@ -22,7 +22,7 @@ public class RequestPosts extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_posts);
 
-        //Search button on Request Posts page
+        // Search button on Request Posts page
         searchReqPostButton = findViewById(R.id.searchReqPostButton);
         searchReqPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,7 +32,7 @@ public class RequestPosts extends AppCompatActivity {
             }
         });
 
-        //Chat button on Requests Posts page
+        // Chat button on Requests Posts page
         chatReqPostButton = findViewById(R.id.chatReqPostButton);
         chatReqPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,7 +42,7 @@ public class RequestPosts extends AppCompatActivity {
             }
         });
 
-        //Add button for new request posts
+        // Add button for new request posts
         addReqPostButton = findViewById(R.id.addReqPostButton);
         addReqPostButton.setOnClickListener(new View.OnClickListener() {
             @Override

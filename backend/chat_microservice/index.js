@@ -10,7 +10,7 @@ const app = express();
 const server = http.Server(app);
 const io = socket(server);
 
-io.on('connection', (socket) => socketHandler(socket));
+io.on('connection', (socket) => socketHandler(socket, io));
 app.use(bodyParser.json());
 app.use(routes);
 

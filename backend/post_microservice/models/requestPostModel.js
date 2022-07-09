@@ -26,18 +26,11 @@
             allowNull: false
         },
         currentLocation: {
-            type: DataTypes,
+            type: DataTypes.STRING,
             allowNull: false,
-            get: function() {
-                return User.currentLocation;
-            }
-        },
-        creationDate: {
-            type: DataTypes.DATE,
-            allowNull: false,
-            get: function() {
-              return Moment(this.getDataValue("date")).format("DD/MM/YYYY");
-            }
+            // get: function() {
+            //     return User.currentLocation;
+            // }
         }
     });
 

@@ -31,9 +31,13 @@
     <string name="search_content_description">Search</string>
     <string name="chat_content_description">Go to Chats</string>
     <string name="add_req_content_description">Add New Request Post</string>
+<<<<<<< HEAD
     <string name="view_offers_button_caption">View Offers</string>
     <string name="refresh_req_posts_text">Refresh</string>
 
+=======
+    <string name="greeting_message">Good morning, John!</string>
+>>>>>>> 393d3ace18f3fe0b4300c24829af549d07133b16
     <string name="title_activity_message">MessageActivity</string>
     <string name="button_read_text">Send</string>
     <string name="enter_message">Enter Message</string>
