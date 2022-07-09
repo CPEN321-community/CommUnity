@@ -143,15 +143,17 @@ const sendMessage = async (message, userId, postId) => {
       message,
     });
 
-    // TODO : check if user is online
-
     const userInfo = await User.findByPk(userId);
     const receiver = await Room.findOne({ where: {userId: {[Op.ne]: userId}, postId} });
-  
-    await sendNotifToUser(receiver.userId, {
-      "title": "Message from " + userInfo.dataValues.firstName,
-      "body": message,
-    });
+
+    const ActiveUsers = (new Singleton()).getInstance();
+    const receieverIsInactive = !ActiveUsers.set.has(receiever.userId);
+    if (receieverIsInactive) {
+        await sendNotifToUser(receiver.userId, {
+          "title": "Message from " + userInfo.dataValues.firstName,
+          "body": message,
+        });
+    }
 
     return { msgObj: msg.dataValues, isSent: created };
   } catch (e) {
