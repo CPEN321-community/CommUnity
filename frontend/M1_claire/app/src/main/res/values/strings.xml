@@ -25,16 +25,15 @@
     <string name="title_activity_chat">Chats</string>
     <string name="large_text">Chat</string>
     <string name="action_settings">Settings</string>
-<<<<<<< HEAD
-
     <string name="profile_content_description">My Profile</string>
     <string name="home_content_description">Home Page</string>
     <string name="leader_content_description">Leaderboard</string>
     <string name="search_content_description">Search</string>
     <string name="chat_content_description">Go to Chats</string>
     <string name="add_req_content_description">Add New Request Post</string>
-    <string name="greeting_message">Good morning, John!</string>
-=======
+    <string name="view_offers_button_caption">View Offers</string>
+    <string name="refresh_req_posts_text">Refresh</string>
+
     <string name="title_activity_message">MessageActivity</string>
     <string name="button_read_text">Send</string>
     <string name="enter_message">Enter Message</string>
@@ -43,5 +42,4 @@
     <string name="sample_timestamp">4:00</string>
     <string name="sample_name">John Doe</string>
     <string name="avatar_caption">User Icon</string>
->>>>>>> 474b9e33c3d1e017053c9bd94893e95248709666
 </resources>
