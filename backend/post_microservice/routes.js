@@ -2,6 +2,7 @@ const Router = require('express-promise-router');
 
 const { getOffer, getAllOffers, getAllUserOffers, searchOffers, searchOffersWithTags, createOffer, updateOffer, deleteOffer, removeOfferTags, addOfferTags} = require('./controllers/offerPostController');
 const { getRequest, getAllRequests, getAllUserRequests, searchRequests, searchRequestsWithTags, createRequest, updateRequest, deleteRequest, getAllUserRequests, removeRequestTags, addRequestTags} = require('./controllers/requestPostController');
+
 const router = Router();
 
 // Requests
@@ -16,6 +17,9 @@ router.put('/communitypost/requests/:tagList', addRequestTags);
 router.delete('/communitypost/requests/:tagList', removeRequestTags);
 router.delete('/communitypost/requests/:requestId', deleteRequest);
 
+/**
+
+ */
 // Offers
 router.get('/communitypost/offers/:offerId', getOffer);
 router.get('/communitypost/offers', getAllOffers);
