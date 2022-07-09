@@ -1,6 +1,8 @@
 node_modules
 package-lock.json
 firebase_service_key.json
-config.json
-
 .DS_Store
+
+backend/post_microservice/config/config.json
+backend/chat_microservice/config/config.json
+backend/user_microservice/config/config.json

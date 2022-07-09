@@ -192,7 +192,7 @@
                 bestBeforeDate: req.body.bestBeforeDate
             }, {where: {offerId: req.body.offerId}});
             if (req.body.status == "Fulfilled") {
-                await axios.delete(`http://localhost:6969/suggestedPosts/offer/${req.body.offerId}`);
+                await axios.delete(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/suggestedPosts/offer/${req.body.offerId}`);
             }
             res.sendStatus(200);
         }else{
@@ -217,7 +217,7 @@
                 offerId: req.body.offerId
             }
         });
-        await axios.delete(`http://localhost:6969/suggestedPosts/offer/${req.body.offerId}`);
+        await axios.delete(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/suggestedPosts/offer/${req.body.offerId}`);
         res.sendStatus(200);
     } catch (error) {
         console.log("Error deleting post: " + error);
