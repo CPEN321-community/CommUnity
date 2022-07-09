@@ -1,8 +1,8 @@
-const Singleton = require('./singleton');
-const ActiveUsers = (new Singleton()).getInstance();
-const { getAssociatedRooms, createRoom, sendMessage, getMessageFromSocket, addMessageToSocket } = require('../controllers/chatController');
+const { getAssociatedRooms, createRoom, sendMessage } = require('../controllers/chatController');
+const Singleton = require('../singleton');
 
 const socketHandler = (socket, io) => {
+    const ActiveUsers = (new Singleton()).getInstance();
     console.log("socket connection made with id: " + socket.id);
     
     socket.on('joinRooms', async ({ userId }) => {
@@ -38,6 +38,16 @@ const socketHandler = (socket, io) => {
             // socket.in(postId).emit('sendMessage', msgObj);
         } else {
             socket.emit('sendMessage', 'send_message_failure')
+        }
+    });
+
+    socket.on('leave-all', async ({ userId }) => {
+        const postIds = await getAssociatedRooms(userId);
+        console.log('leaving rooms: ', postIds);
+        
+        if (postIds && postIds.length > 0) {
+            socket.leave(postIds);
+            ActiveUsers.set.delete(userId);
         }
     });
 }
