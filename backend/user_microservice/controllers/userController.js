@@ -7,8 +7,10 @@ const getUser = async (req, res) => {
    try {
        const userId = req.params.userId;
        const response = await User.findByPk(userId, {include: ["preferences"]});
-       res.json(response);
-       res.sendStatus(200);
+       console.log("Fetching user");
+       console.log(userId);
+       console.log(response);
+       res.json({user: response});
    } catch (error) {
        console.log("Error finding user: " + error);
        res.sendStatus(500);
@@ -62,6 +64,7 @@ const updateUser = async (req, res) => {
 
 const createUser = async (req, res) => {
     try {
+        console.log(req.body);
         const response = await User.create({
             userId: req.body.userId,
             firstName: req.body.firstName,
@@ -70,10 +73,10 @@ const createUser = async (req, res) => {
             profilePicture: req.body.profilePicture
         });
 
-        const result = await upsertUserMethod({ userId, offerPosts: 0, requestPosts: 0 });
+        const result = await upsertUserMethod({ userId: req.body.userId, offerPosts: 0, requestPosts: 0 });
+        console.log(result);
         if (result) {
             res.json(response);
-            res.sendStatus(200);
         } else {
             await User.destroy({
                 userId: req.body.userId,
