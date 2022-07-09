@@ -1,6 +1,12 @@
 package com.example.community.offer_list;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +18,7 @@ import com.example.community.R;
 import com.example.community.classes.OfferPostObj;
 import com.example.community.classes.ReqPostObj;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class OfferPostAdapter extends BaseAdapter {
@@ -55,9 +62,45 @@ public class OfferPostAdapter extends BaseAdapter {
         //distance.setText(post.distanceKm);
         bestBefore.setText(String.valueOf(post.bestBefore));
 
-        //TODO: set the image
         ImageView itemImage = (ImageView) view.findViewById(R.id.item_image);
-        //itemImage.setImage
         return view;
     }
 }
+        //TODO: verify correct URI
+        // show The Image in a ImageView
+        /*new DownloadImageTask((ImageView) view.findViewById(R.id.item_image))
+                .execute("http://java.sogeti.nl/JavaBlog/wp-content/uploads/2009/04/android_icon_256.png");
+        itemImage.setImageURI(Uri.parse(post.image));
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent showImgIntent = new Intent(OfferPostAdapter.this, IndexActivity.class);
+        startActivity(showImgIntent);
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
+    }
+     */
