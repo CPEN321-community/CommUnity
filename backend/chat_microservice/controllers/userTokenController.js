@@ -1,4 +1,4 @@
-const {User} = require("../models")
+const {UserToken} = require("../models")
 const admin = require('firebase-admin/app');
 const {getMessaging} = require("firebase-admin/messaging")
 var serviceAccount = require("../firebase_service_key.json");
@@ -6,13 +6,13 @@ var serviceAccount = require("../firebase_service_key.json");
 admin.initializeApp({
   credential: admin.cert(serviceAccount)
 });
+
 const FCM = getMessaging();
 
-const createUser = async (req, res) => {
+const createUserToken = async (req, res) => {
   try {
-
     const {userId, token} = req.body;
-    const [data, created] = await User.upsert({
+    const [data, created] = await UserToken.upsert({
       userId,
       token,
     });
@@ -58,4 +58,4 @@ const sendNotif = async (token, payload) => {
   return await FCM.sendToDevice(token, notif)
 }
 
-module.exports = {createUser, sendNotifToUser}
+module.exports = {createUserToken, sendNotifToUser, sendNotif}
