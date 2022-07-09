@@ -1,3 +1,5 @@
+const Singleton = require('./singleton');
+const ActiveUsers = (new Singleton()).getInstance();
 const { getAssociatedRooms, createRoom, sendMessage, getMessageFromSocket, addMessageToSocket } = require('../controllers/chatController');
 
 const socketHandler = (socket, io) => {
@@ -10,6 +12,7 @@ const socketHandler = (socket, io) => {
         if (postIds && postIds.length > 0) {
             socket.join(postIds);
             socket.emit('joinRooms', 'join_rooms_success');
+            ActiveUsers.set.add(userId);
         } else {
             socket.emit('joinRooms', 'join_rooms_failed');
         }

@@ -11,29 +11,11 @@ const db = {};
 function applyRelationships(sequelize) {
     const { OfferPost, OfferPostTags, RequestPost, RequestPostTags, User} = sequelize.models;
 
-    OfferPost.hasMany(OfferPostTags, {as: "offerTags"});
-    OfferPostTags.belongsTo(OfferPost, {
-      foreignKey: "offerId",
-      as: "offerPost",
-    });
+    OfferPost.hasMany(OfferPostTags, { foreignKey: 'offerId' });
+    OfferPostTags.belongsTo(OfferPost, { foreignKey: 'offerId' });
 
-    RequestPost.hasMany(RequestPostTags, {as: "requestTags"});
-    RequestPostTags.belongsTo(RequestPost, {
-      foreignKey: "requestId",
-      as: "requestPost",
-    });
-
-    User.hasMany(RequestPost, {as: "requestPosts"});
-    RequestPost.belongsTo(User, {
-      foreignKey: "userId",
-      as: "user",
-    });
-
-    User.hasMany(OfferPost, {as: "offerPosts"});
-    OfferPost.belongsTo(User, {
-      foreignKey: "userId",
-      as: "user",
-    })
+    RequestPost.hasMany(RequestPostTags, { foreignKey: 'requestId' });
+    OfferPostTags.belongsTo(RequestPost, { foreignKey: 'requestId' })
 }
 
 let sequelize;
