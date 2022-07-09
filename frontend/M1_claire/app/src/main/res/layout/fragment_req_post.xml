@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="start|center_vertical"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <Button
         android:id="@+id/button_refresh_req_posts"
@@ -18,13 +18,13 @@
 
     <ListView
         android:id="@+id/req_post_list"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginBottom="55dp"
+        android:layout_weight="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_refresh_req_posts"
-        app:layout_constraintVertical_bias="0.0"/>
+        app:layout_constraintVertical_bias="0.0" />
 
 </LinearLayout>
