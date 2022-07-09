@@ -39,7 +39,7 @@ const socketHandler = (socket) => {
         }
     });
 
-    socket.on('disconnect', async ({ userId }) => {
+    socket.on('leave-all', async ({ userId }) => {
         const postIds = await getAssociatedRooms(userId);
         console.log('leaving rooms: ', postIds);
         
