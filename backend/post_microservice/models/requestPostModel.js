@@ -6,8 +6,6 @@
  */
 
  "use strict";
- const { User } = require("./userModel");
- const Moment = require("moment");
 
  const RequestPostObject = (sequelize, DataTypes) => {
     const RequestPost = sequelize.define("RequestPost", {
@@ -16,6 +14,10 @@
             defaultValue: DataTypes.UUIDV4,
             allowNull: false,
             primaryKey: true
+        },
+        userId: {
+            type: DataTypes.STRING,
+            allowNull: false
         },
         title: {
             type: DataTypes.STRING, 
@@ -27,10 +29,11 @@
         },
         currentLocation: {
             type: DataTypes.STRING,
-            allowNull: false,
-            // get: function() {
-            //     return User.currentLocation;
-            // }
+            allowNull: false
+        },
+        status: {
+            type: DataTypes.STRING,
+            allowNull: false
         }
     });
 

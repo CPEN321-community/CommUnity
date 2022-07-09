@@ -21,6 +21,15 @@
         console.log("Error getting all of the offer posts: " + error);
     }
   }
+
+  const getAllUserOffers = async (req, res) => {
+    try{
+        const response = await OfferPost.findAll({where: {userId: userId}});
+        res.json(response);
+    } catch(error) {
+        console.log("Error in retrieving offer posts made by user " + error);
+    }
+  }
   
   const searchOffers = async (req, res) => {
       try {
@@ -87,26 +96,17 @@
   const createOffer = async (req, res) => {
     try {
         await OfferPost.create({
+            userId: req.body.userId,
             title: req.body.title,
             description: req.body.description,
             quantity: req.body.quantity,
             pickUpLocation: req.body.pickUpLocation,
             image: req.body.image,
+            status: req.body.status,
             bestBeforeDate: req.body.bestBeforeDate
         });
 
-        const newOffer = await OfferPost.findOne(
-            {
-                where: {
-                    title: req.body.title,
-                    description: req.body.description,
-                    quantity: req.body.quantity,
-                    pickUpLocation: req.body.pickUpLocation,
-                    image: req.body.image,
-                    bestBeforeDate: req.body.bestBeforeDate
-                }
-            }
-        );
+        const newOffer = await OfferPost.findOne({where: {userId: req.body.userId}});
 
         let tagList = req.body.tagList;
         for(let item of tagList) {
@@ -122,7 +122,64 @@
         res.sendStatus(500);
       }
   }
+
+  const removeOfferTags = async (req, res) => {
+    try {
+        const currentTags = OfferPostTags.findAll({
+            where: {postId: req.body.offerId}
+        });
+        const updatedTags = req.body.tagList;
+
+        //currentTags.length > updatedTags.length
+        for (let i = 0; i < currentTags.length; i = i + 1){
+            if (!(updatedTags.contains(currentTags[i]))) {
+                OfferPostTags.destroy({
+                    where: {
+                        postId: req.body.offerId,
+                        name: currentTags[i]
+                    }
+                });
+            }
+        }
+        res.sendStatus(200);
+    } catch (error) {
+        console.log("Error deleting offer tags: " + error);
+        res.sendStatus(500);
+    }
+  }
   
+  const addOfferTags = async (req, res) => {
+    try {
+        const currentTags = OfferPostTags.findAll({
+            where: {postId: req.body.offerId}
+        });
+        const updatedTags = req.body.tagList;
+
+        //check if the post has tags associated with it first...
+        if (currentTags == null){
+            for(let item of updatedTags) {
+                OfferPostTags.create({
+                    postId: req.body.offerId,
+                    name: item
+                });
+            }
+        } else {
+            //updatedTags.length > currentTags.length
+            for (let i = 0; i < updatedTags.length; i = i + 1){
+                if(!(currentTags.contains(updatedTags[i]))){
+                    OfferPostTags.create({
+                        postId: req.body.offerId,
+                        name: updatedTags[i]
+                    });
+                }
+            }
+        }
+        res.sendStatus(200);
+    } catch (error) {
+        console.log("Error with adding new offer tags: " + error);
+        res.sendStatus(500);
+    }
+  }
 
   //i am great success
   const updateOffer = async (req, res) => {
@@ -133,17 +190,17 @@
         const offerAlreadyExists = updateOffer != null;
         if(offerAlreadyExists){
             await OfferPost.update({
+                userId: req.body.userId,
                 title: req.body.title,
                 description: req.body.description,
                 quantity: req.body.quantity,
                 pickUpLocation: req.body.pickUpLocation,
                 image: req.body.image,
+                status: req.body.status,
                 bestBeforeDate: req.body.bestBeforeDate
             }, {where: {offerId: req.body.offerId}});
-            res.json("Post updated");
             res.sendStatus(200);
         }else{
-            res.json("You cannot update a post that does not exist");
             res.sendStatus(200);
         }
       } catch (error) {
@@ -175,9 +232,12 @@
   module.exports = {
     getOffer,
     getAllOffers,
+    getAllUserOffers,
     searchOffers,
     searchOffersWithTags,
     createOffer,
     updateOffer,
+    removeOfferTags,
+    addOfferTags,
     deleteOffer
   };
