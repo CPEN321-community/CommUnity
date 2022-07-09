@@ -35,8 +35,7 @@ const createUserToken = async (req, res) => {
 const sendNotifToUser = async (req, res) => {
   const {userId, payload} = req.body;
   try {
-    const user = await User.findOne({where: {userId}});
-    console.log(user);
+    const user = await UserToken.findOne({where: {userId}});
     const token = user.dataValues.token;
     await sendNotif(token, payload);
 
