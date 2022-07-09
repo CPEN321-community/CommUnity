@@ -32,14 +32,11 @@ const createUserToken = async (req, res) => {
   }
 }
   
-const sendNotifToUser = async (req, res) => {
-  const {userId, payload} = req.body;
+const sendNotifToUser = async (userId, payload) => {
   try {
-    const user = await User.findOne({where: {userId}});
-    console.log(user);
-    const token = user.dataValues.token;
-    await sendNotif(token, payload);
-
+    const usertoken = await UserToken.findOne({ where: {userId} });
+    const token = usertoken.dataValues.token;
+    await FCM.sendToDevice(token, { notification: payload });
     res.sendStatus(201);
   }
   catch (e) {
@@ -48,14 +45,6 @@ const sendNotifToUser = async (req, res) => {
       error: e
     });
   }
-
 }
 
-const sendNotif = async (token, payload) => {
-  const notif = {
-    notification: payload
-  }
-  return await FCM.sendToDevice(token, notif)
-}
-
-module.exports = {createUserToken, sendNotifToUser, sendNotif}
+module.exports = { createUserToken, sendNotifToUser }
