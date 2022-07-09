@@ -6,8 +6,6 @@
  */
 
  "use strict";
- const { User } = require("./userModel");
- const Moment = require("moment");
 
  const OfferPostObject = (sequelize, DataTypes) => {
     const OfferPost = sequelize.define("OfferPost", {
@@ -16,6 +14,10 @@
             defaultValue: DataTypes.UUIDV4,
             allowNull: false,
             primaryKey: true
+        },
+        userId: {
+            type: DataTypes.STRING,
+            allowNull: false
         },
         title: {
             type: DataTypes.STRING, 
@@ -31,19 +33,20 @@
         },
         pickUpLocation: {
             type: DataTypes.STRING,
-            allowNull: false,
-            // get: function() {
-            //     return User.pickUpLocation;
-            // }
+            allowNull: false
         },
         image: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: false
+        },
+        status: {
+            type: DataTypes.STRING,
+            allowNull: false
         },
         bestBeforeDate: {
             type: DataTypes.DATE,
             allowNull: false
-        },
+        }
     });
 
     return OfferPost;
