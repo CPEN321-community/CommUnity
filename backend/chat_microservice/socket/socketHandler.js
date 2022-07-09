@@ -12,7 +12,7 @@ const socketHandler = (socket) => {
         if (postIds && postIds.length > 0) {
             socket.join(postIds);
             socket.emit('joinRooms', 'join_rooms_success');
-            ActiveUsers.activeUsers.add(userId);
+            ActiveUsers.set.add(userId);
         } else {
             socket.emit('joinRooms', 'join_rooms_failed');
         }
