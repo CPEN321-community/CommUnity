@@ -1,6 +1,8 @@
 const { getAssociatedRooms, createRoom, sendMessage } = require('../controllers/chatController');
+const Singleton = require('./singleton');
 
 const socketHandler = (socket) => {
+    const ActiveUsers = (new Singleton()).getInstance();
     console.log("socket connection made with id: " + socket.id);
     
     socket.on('joinRooms', async ({ userId }) => {
@@ -10,6 +12,7 @@ const socketHandler = (socket) => {
         if (postIds && postIds.length > 0) {
             socket.join(postIds);
             socket.emit('joinRooms', 'join_rooms_success');
+            ActiveUsers.set.add(userId);
         } else {
             socket.emit('joinRooms', 'join_rooms_failed');
         }
@@ -33,6 +36,16 @@ const socketHandler = (socket) => {
             socket.to(postId).emit('sendMessage', msgObj);
         } else {
             socket.to(postId).emit('sendMessage', 'send_message_failure')
+        }
+    });
+
+    socket.on('disconnect', async ({ userId }) => {
+        const postIds = await getAssociatedRooms(userId);
+        console.log('leaving rooms: ', postIds);
+        
+        if (postIds && postIds.length > 0) {
+            socket.leave(postIds);
+            ActiveUsers.set.delete(userId);
         }
     });
 }
