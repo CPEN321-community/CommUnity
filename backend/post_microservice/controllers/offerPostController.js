@@ -191,6 +191,9 @@
                 status: req.body.status,
                 bestBeforeDate: req.body.bestBeforeDate
             }, {where: {offerId: req.body.offerId}});
+            if (req.body.status == "Fulfilled") {
+                await axios.delete(`http://localhost:6969/suggestedPosts/offer/${req.body.offerId}`);
+            }
             res.sendStatus(200);
         }else{
             res.sendStatus(200);

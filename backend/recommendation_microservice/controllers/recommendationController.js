@@ -2,23 +2,23 @@ var Singleton = require('../singleton');
 
 const getSuggestedPosts = async (req, res) => {
     var model = new Singleton().getInstance();
-
-    if (req.url.contains("/offer")) {
-        res.status(200).json(model.getTopTen(req.params.item, 'offer'));
+    let result;
+    if (req.url.includes("/offer")) {
+        result = await model.getTopTen(req.params.item, 'offer');
     } else {
-        res.status(200).json(model.getTopTen(req.params.item, 'request'));
+        result = await model.getTopTen(req.params.item, 'request');
     }
+    res.status(200).json(result);
 }
 
 const deletePost = async (req, res) => {
     var model = new Singleton().getInstance();
-    
-    if (req.url.contains("/offer")) {
+    if (req.url.includes("/offer")) {
         await model.removePostId(req.params.postId, 'offer');
     } else {
         await model.removePostId(req.params.postId, 'request');
     }
-    res.status(200);
+    res.sendStatus(200);
 }
 
 module.exports = { getSuggestedPosts, deletePost }

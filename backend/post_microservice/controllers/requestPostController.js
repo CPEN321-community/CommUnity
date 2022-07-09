@@ -130,6 +130,9 @@ const updateRequest = async (req, res) => {
                 currentLocation: req.body.currentLocation,
                 status: req.body.status
             }, {where: {requestId: req.body.requestId}});
+            if (req.body.status == "Fulfilled") {
+                await axios.delete(`http://localhost:6969/suggestedPosts/request/${req.body.requestId}`);
+            }
             res.json("Post updated");
         }else{
             res.json("You cannot update a post that does not exist");

@@ -18,11 +18,15 @@ class Model extends IModel {
     }
 
     async trainModel() {
+        // re-initialize tensors
+        this.requestTensors = [];
+        this.offerTensors = [];
+
         // train the offer model
         const offerModel = await use.load();
         this.offerModel = offerModel;
 
-        const offerRes = await axios.get('http://localhost:8080/communityPost/offers');
+        const offerRes = await axios.get('http://localhost:8081/communityPost/offers');
         const allOffers = offerRes.data;
 
         for (let i=0; i < allOffers.length; i+=1) {
@@ -41,7 +45,7 @@ class Model extends IModel {
         const requestModel = await use.load();
         this.requestModel = requestModel;
 
-        const requestRes = await axios.get('http://localhost:8080/communityPost/requests');
+        const requestRes = await axios.get('http://localhost:8081/communityPost/requests');
         const allRequests = requestRes.data;
 
         for (let i=0; i < allRequests.length; i+=1) {
@@ -55,12 +59,14 @@ class Model extends IModel {
                 descriptionEmbedding: requestDesc[0],
             });
         }
+        console.log("train complete");
     }
 
     async getTopTen(item, type) {
-        const itemTensor = (await this.model.embed([item])).unstack();
-        const distances = []
+        const model = type == 'offer' ? this.offerModel : this.requestModel;
         const tensors = type == 'offer' ? this.offerTensors : this.requestTensors;
+        const itemTensor = (await model.embed([item])).unstack();
+        const distances = []
 
         for (let i=0; i < tensors.length; i += 1) {
             const distanceTitle = await tf.losses.cosineDistance(itemTensor[0], tensors[i].titleEmbedding).array();
@@ -75,23 +81,25 @@ class Model extends IModel {
                 score: distanceAverage
             });
         }
-
         distances.sort((first, two) => two.score - first.score);
         return distances.length >= 10 ? distances.slice(0,10) : distances;
     }
     
     removePostId(postId, type) {
         const tensors = type == 'offer' ? this.offerTensors : this.requestTensors;
-        let foundId = null;
-        for(let i = 0; i < tensors.length; i = i+1) {
-            if (tensors[i].postId == postId){
-                foundId = i;
+        const newTensors = []
+        tensors.forEach(tensor => {
+            if (tensor.postId != postId) {
+                newTensors.push(tensor);
             }
-        }
+        });
 
-        if (foundId != null) {
-            tensors = tensors.splice(foundId, 1);
+        if (type == 'offer') {
+            this.offerTensors = newTensors;
+        } else {
+            this.requestTensors = newTensors;
         }
+        return 'done';
     }
 }
 
