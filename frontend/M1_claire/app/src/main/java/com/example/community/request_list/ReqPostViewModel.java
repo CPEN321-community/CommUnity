@@ -38,7 +38,7 @@ public class ReqPostViewModel extends AndroidViewModel {
 
     protected void fetchReqPosts() {
         RequestQueue queue = Volley.newRequestQueue(this.application);
-        String url = "http://10.0.2.2:8080/communitypost/requests";
+        String url = "http://10.0.2.2:8081/communitypost/requests";
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET,
                 url,
