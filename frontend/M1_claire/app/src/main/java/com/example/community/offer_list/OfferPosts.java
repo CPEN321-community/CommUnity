@@ -22,7 +22,7 @@ public class OfferPosts extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offer_posts);
 
-        //Search button on Request Posts page
+        // Search button on Request Posts page
         searchOfferPostButton = findViewById(R.id.searchOfferPostButton);
         searchOfferPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,7 +32,7 @@ public class OfferPosts extends AppCompatActivity {
             }
         });
 
-        //Chat button on Requests Posts page
+        // Chat button on Requests Posts page
         chatOfferPostButton = findViewById(R.id.chatOfferPostButton);
         chatOfferPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,7 +42,7 @@ public class OfferPosts extends AppCompatActivity {
             }
         });
 
-        //Add button for new request posts
+        // Add button for new request posts
         addOfferPostButton = findViewById(R.id.addOfferPostButton);
         addOfferPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
