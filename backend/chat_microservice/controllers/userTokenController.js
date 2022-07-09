@@ -1,6 +1,6 @@
-const {UserToken} = require("../models")
+const {UserToken} = require("../models");
 const admin = require('firebase-admin/app');
-const {getMessaging} = require("firebase-admin/messaging")
+const {getMessaging} = require("firebase-admin/messaging");
 var serviceAccount = require("../firebase_service_key.json");
 
 admin.initializeApp({
@@ -37,7 +37,6 @@ const sendNotifToUser = async (userId, payload) => {
     const usertoken = await UserToken.findOne({ where: {userId} });
     const token = usertoken.dataValues.token;
     await FCM.sendToDevice(token, { notification: payload });
-    res.sendStatus(201);
   }
   catch (e) {
     console.error(e);
