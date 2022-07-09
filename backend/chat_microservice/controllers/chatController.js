@@ -1,5 +1,6 @@
 const { Op } = require("sequelize");
 const { User, Message, Room } = require('../models');
+const { sendNotifToUser } = require('./userTokenController');
 
 const deleteRoom = async (req, res) => {
   try {
@@ -153,7 +154,20 @@ const sendMessage = async (message, userId, postId) => {
       userId,
       message,
     });
-    return { msgObj: msg.dataValues, isSent: true };
+
+    const userInfo = await User.findByPk(userId);
+    const receiver = await Room.findOne({ where: {userId: {[Op.ne]: userId}, postId} });
+
+    const ActiveUsers = (new Singleton()).getInstance();
+    const receieverIsInactive = !ActiveUsers.set.has(receiever.userId);
+    if (receieverIsInactive) {
+        await sendNotifToUser(receiver.userId, {
+          "title": "Message from " + userInfo.dataValues.firstName,
+          "body": message,
+        });
+    }
+
+    return { msgObj: msg.dataValues, isSent: created };
   } catch (e) {
     console.log('sendMessage Error ' + e);
   }
