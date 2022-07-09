@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,20 +49,20 @@ public class HomeFragment extends Fragment {
         View root = binding.getRoot();
 
         final TextView textView = binding.textHome;
-        Button searchButton = binding.searchButton;
+        ImageButton searchButton = binding.searchButton;
         searchButton.setOnClickListener(v -> {
             Intent searchIntent = new Intent(requireActivity(), SearchActivity.class);
             startActivity(searchIntent);
         });
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        binding.signOutButton.setOnClickListener(v -> {
-            mGoogleSignInClient.signOut().addOnCompleteListener(requireActivity(), (OnCompleteListener<Void>) task -> {
-                Intent mainActivityIntent = new Intent(requireActivity(), LoginActivity.class);
-                startActivity(mainActivityIntent);
-                Global.setAccount(null);
-                requireActivity().finish();
-            });
-        });
+//        binding.signOutButton.setOnClickListener(v -> {
+//            mGoogleSignInClient.signOut().addOnCompleteListener(requireActivity(), (OnCompleteListener<Void>) task -> {
+//                Intent mainActivityIntent = new Intent(requireActivity(), LoginActivity.class);
+//                startActivity(mainActivityIntent);
+//                Global.setAccount(null);
+//                requireActivity().finish();
+//            });
+//        });
         return root;
     }
 

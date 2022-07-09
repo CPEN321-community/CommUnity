@@ -20,36 +20,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/sign_out_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sign_out"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_home" />
-
-    <ImageView
-        android:id="@+id/search_icon"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:contentDescription="@string/search_content_description"
-        app:layout_constraintBottom_toBottomOf="@+id/search_button"
-        app:layout_constraintEnd_toEndOf="@+id/search_button"
-        app:layout_constraintStart_toStartOf="@+id/search_button"
-        app:layout_constraintTop_toTopOf="@+id/search_button"
-        app:srcCompat="@drawable/ic_search" />
-
-    <Button
-        android:id="@+id/search_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/button_speakable"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="DuplicateSpeakableTextCheck" />
     <fragment
         android:id="@+id/fragment_req_post"
         android:name="com.example.community.request_list.ReqPostFragment"
@@ -61,7 +31,7 @@
         tools:layout_editor_absoluteX="8dp" />
 
     <ImageButton
-        android:id="@+id/searchReqPostButton"
+        android:id="@+id/search_button"
         android:layout_width="96dp"
         android:layout_height="48dp"
         android:layout_alignParentLeft="true"
@@ -72,10 +42,10 @@
         android:src="@drawable/search"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintHorizontal_bias="0.025"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.04" />
+        app:layout_constraintVertical_bias="0.005" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addReqPostButton"
