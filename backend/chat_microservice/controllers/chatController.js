@@ -148,12 +148,12 @@ const createRoom = async roomDto => {
 
 const sendMessage = async (message, userId, postId) => {
   try {
-    const [msg, created] = await Message.upsert({
+    const msg = await Message.create({
       postId,
       userId,
       message,
     });
-    return { msgObj: msg.dataValues, isSent: created };
+    return { msgObj: msg.dataValues, isSent: true };
   } catch (e) {
     console.log('sendMessage Error ' + e);
   }

@@ -26,11 +26,16 @@
             android:name=".request_list.NewRequestForm"
             android:exported="false" />
         <activity
+            android:name=".SearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".request_list.RequestPosts"
             android:exported="false" />
         <activity
-            android:name=".SearchActivity"
-            android:exported="false" />
+            android:name=".ui.chat.message.MessageActivity"
+            android:exported="false"
+            android:label="@string/title_activity_message"
+            android:theme="@style/Theme.Community.NoActionBar" />
         <activity
             android:name=".ui.chat.ChatActivity"
             android:exported="false"
@@ -49,8 +54,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false"
-            android:label="@string/app_name" />
+            android:exported="false" />
     </application>
 
 </manifest>

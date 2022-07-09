@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.graphics.drawable.VectorDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +17,7 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.example.community.R;
 import com.example.community.classes.UserWithScore;
+import com.example.community.classes.Utils;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -64,48 +64,15 @@ public class LeaderboardAdapter extends BaseAdapter {
         name.setText(nameAndInitial);
         score.setText(String.valueOf(user.score));
 
-        ImageView avatar = (ImageView) view.findViewById(R.id.leaderboard_image);
+        ImageView avatar = (ImageView) view.findViewById(R.id.chat_avatar);
         if (!Objects.equals(user.profilePicture, "")) {
-            setImageWhenLoaded(user, avatar);
+            Utils.setImageWhenLoaded(context, user.profilePicture, avatar);
         } else {
-            avatar.setImageDrawable(GetDefaultAvatar());
+            avatar.setImageDrawable(Utils.GetDefaultAvatar(context));
         }
         return view;
     }
 
-    public void setImageWhenLoaded(UserWithScore user, ImageView imageView) {
-        Thread thread = new Thread(() -> {
-            try {
-                ((Activity) context).runOnUiThread( () ->{
-                    imageView.setImageDrawable(GetDefaultAvatar());
-                });
-                Drawable d = LoadImageFromWeb(user.profilePicture);
-                ((Activity) context).runOnUiThread( () ->{
-                    imageView.setImageDrawable(d);
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
 
-        thread.start();
-    }
 
-    public Drawable GetDefaultAvatar() {
-        Resources res = context.getResources();
-        VectorDrawable d =
-                (VectorDrawable) ResourcesCompat.getDrawable(res, R.drawable.ic_default_avatar, null);
-        return d;
-    }
-
-    public Drawable LoadImageFromWeb(String url) {
-        try {
-            InputStream is = (InputStream) new URL(url).getContent();
-            Drawable d = Drawable.createFromStream(is, "src name");
-            return d;
-        } catch (Exception e) {
-            Log.e(TAG, "LoadImageFromWeb: " + e);
-            return GetDefaultAvatar();
-        }
-    }
 }

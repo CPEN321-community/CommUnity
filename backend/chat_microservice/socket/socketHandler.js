@@ -1,6 +1,6 @@
 const { getAssociatedRooms, createRoom, sendMessage, getMessageFromSocket, addMessageToSocket } = require('../controllers/chatController');
 
-const socketHandler = (socket) => {
+const socketHandler = (socket, io) => {
     console.log("socket connection made with id: " + socket.id);
     
     socket.on('joinRooms', async ({ userId }) => {
@@ -31,9 +31,10 @@ const socketHandler = (socket) => {
         console.log(msgObj);
 
         if (isSent) {
-            socket.to(postId).emit('sendMessage', msgObj);
+            io.to(postId).emit('sendMessage', msgObj);
+            // socket.in(postId).emit('sendMessage', msgObj);
         } else {
-            socket.to(postId).emit('sendMessage', 'send_message_failure')
+            socket.emit('sendMessage', 'send_message_failure')
         }
     });
 }

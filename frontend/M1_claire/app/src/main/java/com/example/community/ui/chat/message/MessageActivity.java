@@ -11,6 +11,7 @@ import com.example.community.databinding.ActivityMessageListBinding;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -23,15 +24,13 @@ public class MessageActivity extends AppCompatActivity {
     private static final String TAG = "MESSAGE_ACTIVITY";
     private AppBarConfiguration appBarConfiguration;
     private ActivityMessageListBinding binding;
-    protected ArrayList<Message> initialMessages;
+    protected Chat chat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        Chat chat = (Chat) intent.getSerializableExtra("chat");
-        Log.d(TAG, "onCreate: "+ chat.messages);
-        this.initialMessages = chat.messages;
+        this.chat = (Chat) intent.getSerializableExtra("chat");
         binding = ActivityMessageListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -40,7 +39,6 @@ public class MessageActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_message);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
 
 
         binding.toolbar.setTitle(chat.other.firstName);
