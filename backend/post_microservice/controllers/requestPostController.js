@@ -89,21 +89,22 @@ const searchRequestsWithTags = async (req, res) => {
 //success! this works!
 const createRequest = async (req, res) => {
     try {
-        await RequestPost.create({
+        const createdRequest = await RequestPost.create({
             userId: req.body.userId,
             title: req.body.title,
             description: req.body.description,
             currentLocation: req.body.currentLocation,
             status: "Active"
           });
-        const newRequest = await RequestPost.findOne({where: {userId: req.body.userId}});
 
         let tagList = req.body.tagList;
-        for(let item of tagList) {
-            RequestPostTags.create({
-                postId: newRequest.requestId,
-                name: item
-              });
+        if (tagList) {
+            for(let item of tagList) {
+                RequestPostTags.create({
+                    postId: createdRequest.dataValues.requestId,
+                    name: item
+                  });
+            }
         }
           res.sendStatus(200);
     } catch (error) {

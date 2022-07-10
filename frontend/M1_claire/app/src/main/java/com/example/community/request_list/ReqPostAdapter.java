@@ -1,6 +1,7 @@
 package com.example.community.request_list;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,16 +43,16 @@ public class ReqPostAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflater.inflate(R.layout.fragment_req_post, null);
+        view = inflater.inflate(R.layout.fragment_req_post_individual, null);
         TextView itemName = (TextView) view.findViewById(R.id.req_item_name);
-        TextView postDate = (TextView) view.findViewById(R.id.post_date);
+        TextView postDate = (TextView) view.findViewById(R.id.req_post_date);
         TextView description = (TextView) view.findViewById(R.id.req_description);
 
         ReqPostObj post = this.reqPosts.get(i);
 
         itemName.setText(post.itemName);
-        //TODO: ensure this string returns the desired date string
-        postDate.setText(post.postDate.toString());
+        String postDateParsed = post.createdAt.toString().split(" ")[1] + " " + post.createdAt.toString().split(" ")[2];
+        postDate.setText("Posted on: " + postDateParsed);
         description.setText(post.description);
         return view;
     }
