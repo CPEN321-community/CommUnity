@@ -28,9 +28,9 @@ if (config.use_env_variable) {
     logging: console.log,
     maxConcurrentQueries: 100,
     dialect: 'mysql',
-    dialectOptions: {
-        ssl:'Amazon RDS'
-    },
+    dialectOptions: env === "development" ? undefined : {
+      ssl:'Amazon RDS'
+  },
     pool: { maxConnections: 5, maxIdleTime: 30},
     language: 'en'
   });

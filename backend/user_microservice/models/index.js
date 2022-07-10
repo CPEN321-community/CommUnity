@@ -49,24 +49,12 @@ if (config.use_env_variable) {
     port: 3306,
     logging: console.log,
     maxConcurrentQueries: 100,
-<<<<<<< Updated upstream
     dialect: 'mysql',
-    dialectOptions: {
+   dialectOptions: env === "development" ? undefined : {
         ssl:'Amazon RDS'
     },
     pool: { maxConnections: 5, maxIdleTime: 30},
     language: 'en'
-=======
-    dialect: "mysql",
-    dialectOptions:
-      env === "development"
-        ? undefined
-        : {
-            ssl: "Amazon RDS",
-          },
-    pool: { maxConnections: 5, maxIdleTime: 30 },
-    language: "en",
->>>>>>> Stashed changes
   });
 }
 
