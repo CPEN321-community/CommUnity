@@ -1,5 +1,5 @@
 const Router = require('express-promise-router');
-const { getTopNUsers, getUserRank, upsertUserRank } = require('./controllers/leaderboardController');
+const { getTopNUsers, getUserRank, upsertUserRank, getUserLeaderboardStats } = require('./controllers/leaderboardController');
 const { getUser, upsertUserPreference, createUser, updateUser } = require('./controllers/userController');
 const {getUserDietaryRestrictions, createDietaryRestriction, deleteDietaryRestriction} = require('./controllers/dietaryRestrictionController');
 
@@ -15,6 +15,7 @@ router.put('/user', updateUser);
 router.get('/rank/top/:N', getTopNUsers);
 router.get('/rank/:userId', getUserRank);
 router.put('/rank', upsertUserRank);
+router.get('/leaderboard/:userId', getUserLeaderboardStats);
 
 //diet
 router.get("/restriction/:userId", getUserDietaryRestrictions)

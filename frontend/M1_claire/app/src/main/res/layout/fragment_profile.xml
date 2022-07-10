@@ -16,6 +16,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:text="@string/my_profile_title"
+            android:textAlignment="center"
+            android:textSize="34sp"
+            android:textStyle="bold" />
+
         <ImageView
             android:id="@+id/profile_avatar"
             android:layout_width="50dp"
@@ -40,6 +50,11 @@
 
         </ListView>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,12 +63,37 @@
             android:textAlignment="center"
             android:textSize="24sp" />
 
-        <ListView
-            android:id="@+id/stats_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
 
-        </ListView>
+        <TextView
+            android:id="@+id/stat_offerpost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/offer_posts_sample"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/stat_requestpost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/request_posts_sample"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/stat_score"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/score_sample"
+            android:textAlignment="center"
+            android:textSize="16sp" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
