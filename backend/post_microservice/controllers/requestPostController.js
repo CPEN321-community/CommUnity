@@ -91,8 +91,7 @@ const searchRequestsWithTags = async (req, res) => {
 //success! this works!
 const createRequest = async (req, res) => {
     try {
-        console.log("hellooo world", req.body);
-        await RequestPost.create({
+        const createdRequest = await RequestPost.create({
             userId: req.body.userId,
             title: req.body.title,
             description: req.body.description,
