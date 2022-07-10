@@ -34,7 +34,6 @@ const searchOffers = async (req, res) => {
     const title = req.params.title;
     try {
         let response = [];
-
         const similarPosts = await OfferPost.findAll({
             where: {
                 title: {[Op.like]: "%" + title + "%"}, 
