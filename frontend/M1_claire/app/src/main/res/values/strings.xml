@@ -2,7 +2,7 @@
     <string name="app_name">Community</string>
     <string name="title_home">Home</string>
     <string name="title_leaderboard">Leaderboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_profile">Profile</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -42,4 +42,7 @@
     <string name="sample_name">John Doe</string>
     <string name="avatar_caption">User Icon</string>
     <string name="button_speakable">Search</string>
+    <string name="dietary_restrictions_text">Dietary Restrictions</string>
+    <string name="stats_label">Stats</string>
+    <string name="avatar_speakable">Avatar</string>
 </resources>
