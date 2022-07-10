@@ -29,18 +29,18 @@
 <script>
     var socket = io();
 
-    socket.emit('joinRooms', 'user1');
+    socket.emit('joinRooms', { userId: 'user2'});
 
     $('#button1').submit(() => {
         var createRoomObj = { 
             postId: 'post1', 
-            senderId: 'user1',
-            senderFirstName: 'John',
-            senderLastName: 'Doe',
+            senderId: 'user2',
+            senderFirstName: 'trevor',
+            senderLastName: 'f',
             senderProfilePicture: 'pfp123',
-            receiverId: 'user2',
-            receiverFirstName: 'Bob',
-            receiverLastName: 'Marley',
+            receiverId: '108191830243232770107',
+            receiverFirstName: 'sandy',
+            receiverLastName: 'sandyl',
             receiverProfilePicture: 'pfp456',
         };
         console.log('creating room...');
@@ -54,8 +54,8 @@
     $('#button2').submit(() => {
         socket.emit('sendMessage', { 
             message: $('#m').val(), 
-            userId: 'user1', 
-            postId: 'post1' 
+            userId: 'user2', 
+            postId: 'post1'
         });
         $('#messages').append($('<li>').text('me: ' + $('#m').val()));
         $('#m').val('');
