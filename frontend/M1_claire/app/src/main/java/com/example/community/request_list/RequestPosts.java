@@ -46,7 +46,6 @@ public class RequestPosts extends AppCompatActivity {
         viewOffersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("OfferButtonClick", "Offer button clicked");
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.setReorderingAllowed(true);

@@ -19,10 +19,14 @@ import com.example.community.SearchActivity;
 import com.example.community.classes.Global;
 import com.example.community.login.LoginActivity;
 import com.example.community.databinding.FragmentHomeBinding;
+import com.example.community.offer_list.OfferHomeFragment;
+import com.example.community.offer_list.OfferPosts;
+import com.example.community.request_list.NewRequestForm;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class HomeFragment extends Fragment {
@@ -53,14 +57,18 @@ public class HomeFragment extends Fragment {
             Intent searchIntent = new Intent(requireActivity(), SearchActivity.class);
             startActivity(searchIntent);
         });
-//        binding.signOutButton.setOnClickListener(v -> {
-//            mGoogleSignInClient.signOut().addOnCompleteListener(requireActivity(), (OnCompleteListener<Void>) task -> {
-//                Intent mainActivityIntent = new Intent(requireActivity(), LoginActivity.class);
-//                startActivity(mainActivityIntent);
-//                Global.setAccount(null);
-//                requireActivity().finish();
-//            });
-//        });
+
+        FloatingActionButton addNewReqButton = binding.addReqPostButton;
+        addNewReqButton.setOnClickListener(view -> {
+            Intent addReqIntent = new Intent(requireActivity(), NewRequestForm.class);
+            startActivity(addReqIntent);
+        });
+
+        binding.viewOffersButton.setOnClickListener(view -> {
+            Log.d("OfferButtonClick", "Offer button clicked");
+            Intent viewOffersIntent = new Intent(requireContext(), OfferPosts.class);
+            startActivity(viewOffersIntent);
+        });
         return root;
     }
 

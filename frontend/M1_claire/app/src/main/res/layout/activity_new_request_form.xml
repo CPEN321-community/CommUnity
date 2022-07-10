@@ -7,7 +7,7 @@
     tools:context=".request_list.NewRequestForm">
 
     <TextView
-        android:id="@+id/newreqpostform"
+        android:id="@+id/newReqPostForm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Form for new requests"

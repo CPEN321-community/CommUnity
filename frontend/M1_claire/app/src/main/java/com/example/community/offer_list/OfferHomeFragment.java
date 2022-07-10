@@ -17,10 +17,12 @@ import android.widget.Toast;
 import com.example.community.SearchActivity;
 import com.example.community.databinding.FragmentHomeBinding;
 import com.example.community.databinding.FragmentOfferHomeBinding;
+import com.example.community.request_list.NewRequestForm;
 import com.example.community.ui.home.HomeViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class OfferHomeFragment extends Fragment {
@@ -31,8 +33,6 @@ public class OfferHomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-//        HomeViewModel homeViewModel =
-//                new ViewModelProvider(this).get(HomeViewModel.class);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -49,6 +49,12 @@ public class OfferHomeFragment extends Fragment {
         searchButton.setOnClickListener(v -> {
             Intent searchIntent = new Intent(requireActivity(), SearchActivity.class);
             startActivity(searchIntent);
+        });
+
+        FloatingActionButton addNewOfferButton = binding.addOfferPostButton;
+        addNewOfferButton.setOnClickListener(view -> {
+            Intent addOfferIntent = new Intent(requireActivity(), NewOfferForm.class);
+            startActivity(addOfferIntent);
         });
         return root;
     }
