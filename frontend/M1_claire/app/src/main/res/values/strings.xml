@@ -49,4 +49,6 @@
     <string name="request_posts_sample">Request Posts: 10</string>
     <string name="offer_posts_sample">Offer Posts: 1</string>
     <string name="my_profile_title">My Profile</string>
+    <string name="searching_for">Searching For:</string>
+    <string name="request_sample">Request</string>
 </resources>
