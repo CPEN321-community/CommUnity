@@ -10,9 +10,10 @@ const getTopNUsers = async (req, res) => {
             limit: parseInt(N),
         });
         
-        const responseWithNames = await Promise.all(response.map(async userScore => {            
+        const responseWithNames = await Promise.all(response.map(async userScore => {
+            console.log(userScore);         
             const user = await User.findOne({
-                where: { userId: userScore.dataValues.userId }
+                where: { userId: userScore.dataValues.UserUserId }
             })
 
             return { 

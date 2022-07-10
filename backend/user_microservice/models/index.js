@@ -1,25 +1,48 @@
-'use strict';
+"use strict";
 
-const fs = require('fs');
-const path = require('path');
-const Sequelize = require('sequelize');
+const fs = require("fs");
+const path = require("path");
+const Sequelize = require("sequelize");
 const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
+const env = process.env.NODE_ENV || "development";
+const config = require(__dirname + "/../config/config.json")[env];
 const db = {};
 
 function applyRelationships(sequelize) {
-	const { User, Leaderboard, Preferences } = sequelize.models;
+  const { User, Leaderboard, Preferences } = sequelize.models;
 
-  User.hasMany(Leaderboard, { foreignKey: 'userId' });
-  Leaderboard.belongsTo(User, { foreignKey: 'userId' });
+  Leaderboard.User = Leaderboard.belongsTo(User, {
+    foreignKey: {
+      field: "userId",
+    }
+  });
+  User.Leaderboard = User.hasOne(Leaderboard, {
+   foreignKey: {
+      allowNull: false,
+      field: "userId",
+    },
+    as: "leaderboard",
+    onDelete: "cascade",
+  });
 
-  User.hasMany(Preferences, {as: "preferences"});
-  Preferences.belongsTo(User, {
-    foreignKey: "userId",
-    as: "user"
-  })
+  Preferences.User = Preferences.belongsTo(User, {
+    foreignKey: {
+      field: "userId",
+      as: "user",
+    }
+  });
+  User.Preferences = User.hasOne(Preferences, {
+    foreignKey: {
+      allowNull: false,
+      field: "userId",
+      as: "user",
+    },
+    onDelete: "cascade",
+    as: "preferences",
+  });
 }
+
+console.log(config);
 
 let sequelize;
 if (config.use_env_variable) {
@@ -39,18 +62,21 @@ if (config.use_env_variable) {
   });
 }
 
-
-fs
-  .readdirSync(__dirname)
-  .filter(file => {
-    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
+fs.readdirSync(__dirname)
+  .filter((file) => {
+    return (
+      file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js"
+    );
   })
-  .forEach(file => {
-    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
+  .forEach((file) => {
+    const model = require(path.join(__dirname, file))(
+      sequelize,
+      Sequelize.DataTypes
+    );
     db[model.name] = model;
   });
 
-Object.keys(db).forEach(modelName => {
+Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
