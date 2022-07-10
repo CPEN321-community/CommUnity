@@ -1,7 +1,6 @@
   const { Op } = require("sequelize");
   const { OfferPost, OfferPostTags } = require("../models");
  
-  //works
  const getOffer = async (req, res) => {
      try {
          const offerId = req.params.offerId;
@@ -12,8 +11,6 @@
      }
   };
 
-
-  //wahoo
   const getAllOffers = async (req, res) => {
     try {
         const response = await OfferPost.findAll();
@@ -23,8 +20,6 @@
     }
   }
 
-
-  //works!
   const getAllUserOffers = async (req, res) => {
     try{
         console.log(req.params.userId);
@@ -41,36 +36,29 @@
         let response = [];
 
         const identicalPosts = await OfferPost.findAll({
-            where: {title: title}
-        })
+            where: {
+                title: {[Op.like]: "%"+title+"%"}, 
+                status: "Active"
+            }
+        });
 
         if (identicalPosts != null){
-            
+            for (let i = 0; i < identicalPosts.length; i = i + 1){
+                response.push({
+                    offerId: identicalPosts[i].dataValues.offerId,
+                    title: identicalPosts[i].dataValues.title,
+                    description: identicalPosts[i].dataValues.description,
+                    quantity: identicalPosts[i].dataValues.quantity,
+                    pickUpLocation: identicalPosts[i].dataValues.pickUpLocation,
+                    image: identicalPosts[i].dataValues.image,
+                    status: identicalPosts[i].dataValues.status,
+                    bestBeforeDate: identicalPosts[i].dataValues.bestBeforeDate
+                });
+            }
         }
-        
-        // let similarPosts = await OfferPost.findAll({
-        //     where: {
-        //         title: {[Op.like]: title + "%"}
-        //     }
-        // });
-        
-        // similarPosts = await OfferPost.findAll({
-        //     where: {
-        //         title: {[Op.like]: "%" + title}
-        //     }
-        // });
 
-        // similarPosts = await OfferPost.findAll({
-        //     where: {
-        //         title: {[Op.like]: "%" + title + "%"}
-        //     }
-        // });
+        res.json(response);
 
-          if (response == null) {
-              res.sendStatus(200);
-          } else {
-              res.json(response);
-          }
       } catch (error) {
         console.log("Error with searching for offer posts: " + error);
         res.sendStatus(500);
