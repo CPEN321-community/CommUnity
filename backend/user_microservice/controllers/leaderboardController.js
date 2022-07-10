@@ -101,4 +101,4 @@ module.exports = {
     getUserRank,
     upsertUserMethod,
     upsertUserRank,
-};
+}; 

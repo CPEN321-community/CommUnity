@@ -1,6 +1,6 @@
 
 const { Op } = require("sequelize");
-const { User, Preferences } = require("../models");
+const { User, Preferences, Leaderboard } = require("../models");
 const { upsertUserMethod } = require("./leaderboardController.js");
 
 const getUser = async (req, res) => {
@@ -24,7 +24,6 @@ const upsertUserPreference = async (req, res) => {
             value: req.body.value
         });
         res.json(response);
-        res.sendStatus(200);
     } catch (error) {
         console.log("Error updating user preferences: " + error);
         res.sendStatus(500);        
@@ -49,7 +48,6 @@ const updateUser = async (req, res) => {
         });
 
         res.json(response);
-        res.sendStatus(200);
     } catch (error) {
         console.log("Error upserting user: " + error);
         res.sendStatus(500);
@@ -63,26 +61,6 @@ const createUser = async (req, res) => {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
-<<<<<<< Updated upstream
-            profilePicture: req.body.profilePicture
-        });
-
-        const result = await upsertUserMethod({ userId: req.body.userId, offerPosts: 0, requestPosts: 0 });
-        console.log(result);
-        if (result) {
-            res.json(response);
-        } else {
-            await User.destroy({
-                userId: req.body.userId,
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                email: req.body.email,
-                profilePicture: req.body.profilePicture    
-            });
-            console.log("Error creating scoreboard for user: " + error);
-            res.sendStatus(500);
-        }
-=======
             profilePicture: req.body.profilePicture,
             // TODO fix preference model
             preferences: {
@@ -100,7 +78,6 @@ const createUser = async (req, res) => {
         }
         );
         res.sendStatus(201)
->>>>>>> Stashed changes
     } catch (error) {
         console.log("Error upserting user: " + error);
         res.sendStatus(500);

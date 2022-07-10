@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
     tools:context=".ui.home.HomeFragment">
 
     <TextView
@@ -17,54 +20,31 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/sign_out_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sign_out"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_home" />
-
-    <ImageView
-        android:id="@+id/search_icon"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:contentDescription="@string/search_content_description"
-        app:layout_constraintBottom_toBottomOf="@+id/search_button"
-        app:layout_constraintEnd_toEndOf="@+id/search_button"
-        app:layout_constraintStart_toStartOf="@+id/search_button"
-        app:layout_constraintTop_toTopOf="@+id/search_button"
-        app:srcCompat="@drawable/ic_search" />
-
-    <Button
-        android:id="@+id/search_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/button_speakable"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="DuplicateSpeakableTextCheck" />
+        app:layout_constraintVertical_bias="0.044" />
+
     <fragment
         android:id="@+id/fragment_req_post"
         android:name="com.example.community.request_list.ReqPostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="120dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="140dp"
         app:defaultNavHost="true"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="8dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/searchReqPostButton"
-        android:layout_width="96dp"
+        android:id="@+id/search_button"
+        android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="@color/white"
         android:contentDescription="@string/search_content_description"
@@ -72,10 +52,21 @@
         android:src="@drawable/search"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.04" />
+        app:layout_constraintVertical_bias="0.0" />
+
+    <include
+        layout="@layout/fragment_req_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/addReqPostButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewOffersButton"
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addReqPostButton"
@@ -91,16 +82,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.882"
-        app:srcCompat="@drawable/add" />
+        app:srcCompat="@drawable/add"
+        tools:ignore="ImageContrastCheck" />
 
     <Button
         android:id="@+id/viewOffersButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="88dp"
         android:text="@string/view_offers_button_caption"
-        app:layout_constraintBottom_toBottomOf="@+id/fragment_req_post"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.109" />
+        app:layout_constraintVertical_bias="0.154" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
