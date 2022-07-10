@@ -9,7 +9,7 @@ const config = require(__dirname + "/../config/config.json")[env];
 const db = {};
 
 function applyRelationships(sequelize) {
-  const { User, Leaderboard, Preferences } = sequelize.models;
+  const { User, Leaderboard, Preferences, DietaryRestriction } = sequelize.models;
 
   Leaderboard.User = Leaderboard.belongsTo(User, {
     foreignKey: {
@@ -40,6 +40,22 @@ function applyRelationships(sequelize) {
     onDelete: "cascade",
     as: "preferences",
   });
+
+  User.DietaryRestriction = User.hasMany(DietaryRestriction, {
+    foreignKey: {
+      field: "userId",
+      as: "user"
+    },
+    onDelete: "cascade",
+    as: "restrictions",
+  })
+
+  DietaryRestriction.User = DietaryRestriction.belongsTo(User, {
+    foreignKey: {
+      field: "userId",
+      as: "user"
+    },
+  })
 }
 
 console.log(config);
