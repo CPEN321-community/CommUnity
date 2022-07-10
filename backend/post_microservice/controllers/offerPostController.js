@@ -4,13 +4,14 @@
   //works
  const getOffer = async (req, res) => {
      try {
-         const offerId = req.body.offerId;
+         const offerId = req.params.offerId;
          const response = await OfferPost.findOne({where: {offerId: offerId}});
          res.json(response);
      } catch (error) {
          console.log("Error finding an offer post: " + error);
      }
   };
+
 
   //wahoo
   const getAllOffers = async (req, res) => {
@@ -22,9 +23,12 @@
     }
   }
 
+
+  //works!
   const getAllUserOffers = async (req, res) => {
     try{
-        const response = await OfferPost.findAll({where: {userId: userId}});
+        console.log(req.params.userId);
+        const response = await OfferPost.findAll({where: {userId: req.params.userId}});
         res.json(response);
     } catch(error) {
         console.log("Error in retrieving offer posts made by user " + error);
@@ -119,20 +123,22 @@
       }
   }
 
+
+  //maaaaario
   const removeOfferTags = async (req, res) => {
     try {
-        const currentTags = OfferPostTags.findAll({
+        const currentTags = await OfferPostTags.findAll({
             where: {postId: req.body.offerId}
         });
+
         const updatedTags = req.body.tagList;
 
-        //currentTags.length > updatedTags.length
         for (let i = 0; i < currentTags.length; i = i + 1){
-            if (!(updatedTags.contains(currentTags[i]))) {
+            if (!(updatedTags.includes(currentTags[i].dataValues.name))) {
                 OfferPostTags.destroy({
                     where: {
                         postId: req.body.offerId,
-                        name: currentTags[i]
+                        name: currentTags[i].dataValues.name
                     }
                 });
             }
@@ -144,32 +150,22 @@
     }
   }
   
+  //mama mia
   const addOfferTags = async (req, res) => {
     try {
-        const currentTags = OfferPostTags.findAll({
-            where: {postId: req.body.offerId}
-        });
-        const updatedTags = req.body.tagList;
+        const currentTags = await OfferPostTags.findAll({where: {postId: req.body.offerId}});
 
-        //check if the post has tags associated with it first...
-        if (currentTags == null){
-            for(let item of updatedTags) {
+        const updatedTags = req.body.tagList;
+        const currentTagsList = currentTags.map(tag => tag.dataValues.name);
+        
+        updatedTags.forEach(tag => {
+            if (!currentTagsList.includes(tag)) {
                 OfferPostTags.create({
                     postId: req.body.offerId,
-                    name: item
+                    name: tag
                 });
             }
-        } else {
-            //updatedTags.length > currentTags.length
-            for (let i = 0; i < updatedTags.length; i = i + 1){
-                if(!(currentTags.contains(updatedTags[i]))){
-                    OfferPostTags.create({
-                        postId: req.body.offerId,
-                        name: updatedTags[i]
-                    });
-                }
-            }
-        }
+        });
         res.sendStatus(200);
     } catch (error) {
         console.log("Error with adding new offer tags: " + error);
@@ -195,6 +191,9 @@
                 status: req.body.status,
                 bestBeforeDate: req.body.bestBeforeDate
             }, {where: {offerId: req.body.offerId}});
+            if (req.body.status == "Fulfilled") {
+                await axios.delete(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/suggestedPosts/offer/${req.body.offerId}`);
+            }
             res.sendStatus(200);
         }else{
             res.sendStatus(200);
@@ -218,6 +217,7 @@
                 offerId: req.body.offerId
             }
         });
+        await axios.delete(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/suggestedPosts/offer/${req.body.offerId}`);
         res.sendStatus(200);
     } catch (error) {
         console.log("Error deleting post: " + error);

@@ -41,18 +41,12 @@ const updateUser = async (req, res) => {
             profilePicture: req.body.profilePicture
         });
 
-        // await fetch('http://localhost:1000/chat/changeUserInfo', {
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //   },
-        //   body: JSON.stringify({
-        //     userId: '',
-        //     firstName: '',
-        //     lastName: '',
-        //     profilePicture: '',
-        //   }),
-        // })
+        await axios.post('http://ec2-35-183-28-141.ca-central-1.compute.amazonaws.com:3000', {
+            userId: req.body.userId,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            profilePicture: req.body.profilePicture
+        });
 
         res.json(response);
         res.sendStatus(200);

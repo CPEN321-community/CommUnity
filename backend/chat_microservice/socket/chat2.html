@@ -26,13 +26,12 @@
 <script>
     var socket = io();
 
-    socket.emit('joinRooms', 'user2');
-
+    socket.emit('joinRooms', { userId: '108191830243232770107' });
 
     $('#button2').submit(() => {
         socket.emit('send_message', { 
             message: $('#m').val(), 
-            userId: 'user1', 
+            userId: '108191830243232770107', 
             postId: 'post1' 
         });
         $('#messages').append($('<li>').text('me: ' + $('#m').val()));
@@ -44,6 +43,7 @@
         // data = { messageId, postId, message }
         $('#messages').append($('<li>').text(data.userId + ': ' + data.message));
     });
+
 </script>
 </body>
 </html>

@@ -1,10 +1,11 @@
 const { Op } = require("sequelize");
+const axios = require("axios").default;
 const { RequestPost, RequestPostTags } = require("../models");
 
 //waaaaaaaaaluigi
 const getRequest = async (req, res) => {
    try {
-       const requestId = req.body.requestId;
+       const requestId = req.params.requestId;
        const response = await RequestPost.findOne({where: {requestId: requestId}});
        res.json(response);
    } catch (error) {
@@ -22,9 +23,10 @@ const getRequest = async (req, res) => {
     }
   }
 
+  //works!
   const getAllUserRequests = async (req, res) => {
     try{
-        const response = await RequestPost.findAll({where: {userId: userId}});
+        const response = await RequestPost.findAll({where: {userId: req.params.userId}});
         res.json(response);
     } catch(error) {
         console.log("Error in retrieving request posts made by user " + error);
@@ -34,7 +36,7 @@ const getRequest = async (req, res) => {
 
  const searchRequests = async (req, res) => {
     try {
-        const title = req.body.title;
+        const title = req.params.title;
         const query = "%" + title + "%";
 
         //find all posts which have a title containing the query
@@ -56,7 +58,7 @@ const getRequest = async (req, res) => {
 
 const searchRequestsWithTags = async (req, res) => {
   try {
-      const tagList = req.body.tagList;
+      const tagList = req.params.tagList;
 
       //list of postIds that have the tags
       const postIds = await RequestPostTags.findAll({
@@ -89,12 +91,17 @@ const searchRequestsWithTags = async (req, res) => {
 //success! this works!
 const createRequest = async (req, res) => {
     try {
+<<<<<<< HEAD
         const createdRequest = await RequestPost.create({
+=======
+        console.log("hellooo world", req.body);
+        await RequestPost.create({
+>>>>>>> c39d77e289a5d16ae0e31cbef84939b145e06f84
             userId: req.body.userId,
             title: req.body.title,
             description: req.body.description,
             currentLocation: req.body.currentLocation,
-            status: "Active"
+            status: req.body.status
           });
 
         let tagList = req.body.tagList;
@@ -128,6 +135,9 @@ const updateRequest = async (req, res) => {
                 currentLocation: req.body.currentLocation,
                 status: req.body.status
             }, {where: {requestId: req.body.requestId}});
+            if (req.body.status == "Fulfilled") {
+                await axios.delete(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/suggestedPosts/request/${req.body.requestId}`);
+            }
             res.json("Post updated");
         }else{
             res.json("You cannot update a post that does not exist");
@@ -139,20 +149,20 @@ const updateRequest = async (req, res) => {
 
 }
 
+//wwwweeeeee
 const removeRequestTags = async (req, res) => {
     try {
-        const currentTags = RequestPostTags.findAll({
+        const currentTags = await RequestPostTags.findAll({
             where: {postId: req.body.requestId}
         });
         const updatedTags = req.body.tagList;
 
-        //currentTags.length > updatedTags.length
         for (let i = 0; i < currentTags.length; i = i + 1){
-            if (!(updatedTags.contains(currentTags[i]))) {
+            if (!(updatedTags.includes(currentTags[i].dataValues.name))) {
                 RequestPostTags.destroy({
                     where: {
                         postId: req.body.requestId,
-                        name: currentTags[i]
+                        name: currentTags[i].dataValues.name
                     }
                 });
             }
@@ -163,33 +173,23 @@ const removeRequestTags = async (req, res) => {
         res.sendStatus(500);
     }
   }
-  
+
+  //ahhhhhhh
   const addRequestTags = async (req, res) => {
     try {
-        const currentTags = RequestPostTags.findAll({
-            where: {postId: req.body.requestId}
-        });
-        const updatedTags = req.body.tagList;
+        const currentTags = await RequestPostTags.findAll({where: {postId: req.body.requestId}});
 
-        //check if the post has tags associated with it first...
-        if (currentTags == null){
-            for(let item of updatedTags) {
-                RequestPostTags.create({
-                    postId: req.body.requestId,
-                    name: item
+        const updatedTags = req.body.tagList;
+        const currentTagsList = currentTags.map(tag => tag.dataValues.name);
+
+        updatedTags.forEach(tag => {
+            if (!currentTagsList.includes(tag)) {
+                OfferPostTags.create({
+                    postId: req.body.offerId,
+                    name: tag
                 });
             }
-        } else {
-            //updatedTags.length > currentTags.length
-            for (let i = 0; i < updatedTags.length; i = i + 1){
-                if(!(currentTags.contains(updatedTags[i]))){
-                    RequestPostTags.create({
-                        postId: req.body.requestId,
-                        name: updatedTags[i]
-                    });
-                }
-            }
-        }
+        });
         res.sendStatus(200);
     } catch (error) {
         console.log("Error with adding new offer tags: " + error);
@@ -211,6 +211,7 @@ const deleteRequest = async (req, res) => {
               requestId: req.body.requestId
           }
       });
+      await axios.delete(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/suggestedPosts/request/${req.body.requestId}`);
       res.sendStatus(200);
   } catch (error) {
       console.log("Error deleting post: " + error);
