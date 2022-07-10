@@ -58,12 +58,12 @@ const updateUser = async (req, res) => {
 
 const createUser = async (req, res) => {
     try {
-        console.log(req.body);
         const response = await User.create({
             userId: req.body.userId,
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
+<<<<<<< Updated upstream
             profilePicture: req.body.profilePicture
         });
 
@@ -82,6 +82,25 @@ const createUser = async (req, res) => {
             console.log("Error creating scoreboard for user: " + error);
             res.sendStatus(500);
         }
+=======
+            profilePicture: req.body.profilePicture,
+            // TODO fix preference model
+            preferences: {
+                type: "test",
+                value: "success"
+            },
+            leaderboard: {
+                offerPosts: 0,
+                requestPosts: 0,
+                score: 0,
+            }
+        },
+        {
+            include: [{association: User.Preferences, as: "preferences"}, {association: User.Leaderboard, as: "leaderboard"}]
+        }
+        );
+        res.sendStatus(201)
+>>>>>>> Stashed changes
     } catch (error) {
         console.log("Error upserting user: " + error);
         res.sendStatus(500);
