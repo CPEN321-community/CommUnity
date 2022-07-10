@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.community.R;
-import com.example.community.classes.OfferPostObj;
 import com.example.community.classes.ReqPostObj;
 
 import java.util.ArrayList;

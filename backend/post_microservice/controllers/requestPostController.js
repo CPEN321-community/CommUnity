@@ -95,7 +95,6 @@ const createRequest = async (req, res) => {
             userId: req.body.userId,
             title: req.body.title,
             description: req.body.description,
-            currentLocation: req.body.currentLocation,
             status: req.body.status
           });
 

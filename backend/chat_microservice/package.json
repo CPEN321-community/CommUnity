@@ -10,6 +10,7 @@
     "firebase-admin": "^11.0.0",
     "http": "^0.0.1-security",
     "mysql2": "^2.3.3",
+    "node-modules": "^1.0.1",
     "nodemon": "^2.0.18",
     "sequelize": "^6.21.1",
     "sequelize-cli": "^6.4.1",
