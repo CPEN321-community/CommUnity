@@ -2,7 +2,6 @@ const { Op } = require("sequelize");
 const axios = require("axios").default;
 const { RequestPost, RequestPostTags } = require("../models");
 
-//waaaaaaaaaluigi
 const getRequest = async (req, res) => {
    try {
        const requestId = req.params.requestId;
@@ -13,82 +12,84 @@ const getRequest = async (req, res) => {
    }
 }
 
- //yahoo
- const getAllRequests = async (req, res) => {
+const getAllRequests = async (req, res) => {
     try {
         const response = await RequestPost.findAll();
         res.json(response);
     } catch (error) {
         console.log("Error getting all of the offer posts: " + error);
     }
-  }
+}
 
-  //works!
-  const getAllUserRequests = async (req, res) => {
+const getAllUserRequests = async (req, res) => {
     try{
         const response = await RequestPost.findAll({where: {userId: req.params.userId}});
         res.json(response);
     } catch(error) {
         console.log("Error in retrieving request posts made by user " + error);
     }
-  }
+}
 
-
- const searchRequests = async (req, res) => {
+const searchRequests = async (req, res) => {
+    const title = req.params.title
     try {
-        const title = req.params.title;
-        const query = "%" + title + "%";
+        let response = [];
 
-        //find all posts which have a title containing the query
-        const response = await RequestPost.findAll({
+        const similarPosts = await RequestPost.findAll({
             where: {
-                title: {[Op.like]: query}, 
-              }
+                title: {[Op.like]: "%"+title+"%"}, 
+                status: "Active"
+            }
         });
-        if (response = null) {
-            res.sendStatus(200);
-        } else {
-            res.json(response);
+
+        if (similarPosts != null){
+            for (let i = 0; i < similarPosts.length; i = i + 1){
+                response.push({
+                    requestId: similarPosts[i].dataValues.offerId,
+                    title: similarPosts[i].dataValues.title,
+                    description: similarPosts[i].dataValues.description,
+                    currentLocation: similarPosts[i].dataValues.currentLocation,
+                    status: similarPosts[i].dataValues.status,
+                });
+            }
         }
+
+        res.json(response);
+
+    } catch (error) {
+        console.log("Error with searching for offer posts: " + error);
+        res.sendStatus(500);
+    }
+}
+
+const searchRequestsWithTags = async (req, res) => {
+    try {
+        const tagList = req.params.tagList;
+        const postTags = await RequestPostTags.findAll({
+            where: {name: tagList}
+        });
+        
+        let uniquePostIds = [];
+        let duplicateRequestTagIds = [];
+        for (let i = 0; i < postTags.length; i = i + 1){
+            if (uniquePostIds.includes(postTags[i].dataValues.postId)){
+                duplicateRequestTagIds.push(postTags[i].dataValues.offerId);
+            } else {
+                uniquePostIds.push(postTags[i].dataValues.postId);
+            }
+        }
+        
+        const postList = await RequestPost.findAll({
+            where: {offerId: uniquePostIds}
+        });
+
+        res.status(200).json(postList);
     } catch (error) {
       console.log("Error with searching for offer posts: " + error);
       res.sendStatus(500);
     }
 }
 
-const searchRequestsWithTags = async (req, res) => {
-  try {
-      const tagList = req.params.tagList;
-
-      //list of postIds that have the tags
-      const postIds = await RequestPostTags.findAll({
-          attributes: {include: ["requestId"]},
-          where: {name: tagList}
-      });
-      
-      //check whether there are duplicates in postIds list
-      let uniquePostIds = [...new Set(postIds)];
-      
-      //find list of posts that match postIds
-      const postList = await RequestPost.findAll({
-          where: {requestId: uniquePostIds}
-      });
-
-      if (postList = null) {
-          const message = "Sorry, there are no offer posts for " + tagList + "."
-          res.json({
-              message: message
-          });
-      } else {
-          res.json(postList);
-      }
-  } catch (error) {
-    console.log("Error with searching for offer posts: " + error);
-    res.sendStatus(500);
-  }
-}
-
-//success! this works!
 const createRequest = async (req, res) => {
     try {
         const createdRequest = await RequestPost.create({
@@ -114,7 +115,6 @@ const createRequest = async (req, res) => {
     }
 }
 
-//yay success :)
 const updateRequest = async (req, res) => {
     try {
         const updateRequest = RequestPost.findOne({
@@ -143,7 +143,6 @@ const updateRequest = async (req, res) => {
 
 }
 
-//wwwweeeeee
 const removeRequestTags = async (req, res) => {
     try {
         const currentTags = await RequestPostTags.findAll({
@@ -166,10 +165,9 @@ const removeRequestTags = async (req, res) => {
         console.log("Error deleting offer tags: " + error);
         res.sendStatus(500);
     }
-  }
+}
 
-  //ahhhhhhh
-  const addRequestTags = async (req, res) => {
+const addRequestTags = async (req, res) => {
     try {
         const currentTags = await RequestPostTags.findAll({where: {postId: req.body.requestId}});
 
@@ -189,28 +187,18 @@ const removeRequestTags = async (req, res) => {
         console.log("Error with adding new offer tags: " + error);
         res.sendStatus(500);
     }
-  }
+}
 
-//whaaaaaaaa
-//woop woop that's the sound of the police
 const deleteRequest = async (req, res) => {
-  try {
-    await RequestPostTags.destroy({
-        where: {
-            postId: req.body.requestId
-        }
-    })
-      await RequestPost.destroy({
-          where: {
-              requestId: req.body.requestId
-          }
-      });
-      await axios.delete(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/suggestedPosts/request/${req.body.requestId}`);
-      res.sendStatus(200);
-  } catch (error) {
-      console.log("Error deleting post: " + error);
-      res.sendStatus(500);
-  }
+    try {
+        await RequestPostTags.destroy({where: {postId: req.body.requestId}});
+        await RequestPost.destroy({where: {requestId: req.body.requestId}});
+        await axios.delete(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/suggestedPosts/request/${req.body.requestId}`);
+        res.sendStatus(200);
+    } catch (error) {
+        console.log("Error deleting post: " + error);
+        res.sendStatus(500);
+    }
 }
 
 module.exports = {
