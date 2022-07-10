@@ -3,20 +3,25 @@ package com.example.community.classes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class ReqPostObj {
-    public int reqId;
+    public String reqId;
     public String itemName;
     public String description;
-    //Change to date type?
-    public Object postDate;
+    public Date createdAt;
+    private final String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
 
     public ReqPostObj(JSONObject json) {
         try {
-            this.reqId = json.getInt("requestId");
+            this.reqId = json.getString("requestId");
             this.itemName = json.getString("title");
             this.description = json.getString("description");
-            this.postDate = json.get("creationDate");
-        } catch (JSONException e) {
+            String createdAtString = json.getString("createdAt");
+            this.createdAt = new SimpleDateFormat(dateFormat).parse(createdAtString);
+        } catch (JSONException | ParseException e) {
             e.printStackTrace();
         }
     }
