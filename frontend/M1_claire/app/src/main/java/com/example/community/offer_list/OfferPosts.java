@@ -14,7 +14,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class OfferPosts extends AppCompatActivity {
     private ImageButton searchOfferPostButton;
-    private ImageButton chatOfferPostButton;
     private FloatingActionButton addOfferPostButton;
 
     @Override
@@ -29,16 +28,6 @@ public class OfferPosts extends AppCompatActivity {
             public void onClick(View view) {
                 Intent searchIntent = new Intent(OfferPosts.this, SearchActivity.class);
                 startActivity(searchIntent);
-            }
-        });
-
-        // Chat button on Requests Posts page
-        chatOfferPostButton = findViewById(R.id.chatOfferPostButton);
-        chatOfferPostButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent chatIntent = new Intent(OfferPosts.this, ChatActivity.class);
-                startActivity(chatIntent);
             }
         });
 

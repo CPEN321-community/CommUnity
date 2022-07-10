@@ -5,39 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="start|center_vertical"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/item_name"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/button_refresh_offer_posts"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:layout_weight=".2"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:gravity="center"
+        android:text="@string/refresh_leaderboard_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.219"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.118" />
 
-    <ImageView
-        android:id="@+id/item_image"
-        android:layout_width="0dp"
-        android:layout_height="75dp"
-        android:layout_weight=".3"
-        android:contentDescription="@string/title_leaderboard"
-        android:maxWidth="50dp"
-        android:maxHeight="50dp"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/distance"
+    <ListView
+        android:id="@+id/offer_post_list"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:layout_weight=".5"
-        android:textAppearance="?attr/textAppearanceListItem" />
-
-    <TextView
-        android:id="@+id/best_before"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:layout_weight=".3"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_refresh_offer_posts"
+        android:background="@drawable/border_background"
+        app:layout_constraintVertical_bias="0.0" />
 </LinearLayout>
