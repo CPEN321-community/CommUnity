@@ -46,4 +46,8 @@
     <string name="dietary_restrictions_text">Dietary Restrictions</string>
     <string name="stats_label">Stats</string>
     <string name="avatar_speakable">Avatar</string>
+    <string name="score_sample">Score: 10</string>
+    <string name="request_posts_sample">Request Posts: 10</string>
+    <string name="offer_posts_sample">Offer Posts: 1</string>
+    <string name="my_profile_title">My Profile</string>
 </resources>

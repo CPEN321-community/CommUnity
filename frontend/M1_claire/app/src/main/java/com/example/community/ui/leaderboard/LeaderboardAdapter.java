@@ -1,11 +1,6 @@
 package com.example.community.ui.leaderboard;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.VectorDrawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.core.content.res.ResourcesCompat;
-
 import com.example.community.R;
 import com.example.community.classes.UserWithScore;
 import com.example.community.classes.Utils;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -55,7 +46,7 @@ public class LeaderboardAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflater.inflate(R.layout.fragment_leaderboard_user, null);
         TextView number = (TextView) view.findViewById(R.id.item_number);
-        TextView name = (TextView) view.findViewById(R.id.chat_name);
+        TextView name = (TextView) view.findViewById(R.id.restriction_name);
         TextView score = (TextView) view.findViewById(R.id.leaderboard_score);
         UserWithScore user = this.users.get(i);
 
@@ -72,7 +63,6 @@ public class LeaderboardAdapter extends BaseAdapter {
         }
         return view;
     }
-
 
 
 }
