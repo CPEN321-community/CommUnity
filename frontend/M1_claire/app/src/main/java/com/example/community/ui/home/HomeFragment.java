@@ -48,13 +48,11 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textHome;
         ImageButton searchButton = binding.searchButton;
         searchButton.setOnClickListener(v -> {
             Intent searchIntent = new Intent(requireActivity(), SearchActivity.class);
             startActivity(searchIntent);
         });
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 //        binding.signOutButton.setOnClickListener(v -> {
 //            mGoogleSignInClient.signOut().addOnCompleteListener(requireActivity(), (OnCompleteListener<Void>) task -> {
 //                Intent mainActivityIntent = new Intent(requireActivity(), LoginActivity.class);

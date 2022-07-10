@@ -102,11 +102,13 @@ const createRequest = async (req, res) => {
         const newRequest = await RequestPost.findOne({where: {userId: req.body.userId}});
 
         let tagList = req.body.tagList;
-        for(let item of tagList) {
-            RequestPostTags.create({
-                postId: newRequest.requestId,
-                name: item
-              });
+        if (tagList) {
+            for(let item of tagList) {
+                RequestPostTags.create({
+                    postId: newRequest.requestId,
+                    name: item
+                });
+            }
         }
           res.sendStatus(200);
     } catch (error) {
