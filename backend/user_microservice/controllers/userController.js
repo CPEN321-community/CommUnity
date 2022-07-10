@@ -56,39 +56,28 @@ const updateUser = async (req, res) => {
 
 const createUser = async (req, res) => {
     try {
-        console.log(req.body);
         const response = await User.create({
             userId: req.body.userId,
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
             profilePicture: req.body.profilePicture,
+            // TODO fix preference model
             preferences: {
                 type: "test",
                 value: "success"
+            },
+            leaderboard: {
+                offerPosts: 0,
+                requestPosts: 0,
+                score: 0,
             }
         },
         {
-            include: [{association: Preferences.User, as: "preferences"}]
+            include: [{association: User.Preferences, as: "preferences"}, {association: User.Leaderboard, as: "leaderboard"}]
         }
         );
         res.sendStatus(201)
-
-        // const result = await upsertUserMethod({ userId: req.body.userId, offerPosts: 0, requestPosts: 0 });
-        // console.log(result);
-        // if (result) {
-        //     res.json(response);
-        // } else {
-        //     await User.destroy({
-        //         userId: req.body.userId,
-        //         firstName: req.body.firstName,
-        //         lastName: req.body.lastName,
-        //         email: req.body.email,
-        //         profilePicture: req.body.profilePicture    
-        //     });
-        //     console.log("Error creating scoreboard for user: " + error);
-        //     res.sendStatus(500);
-        // }
     } catch (error) {
         console.log("Error upserting user: " + error);
         res.sendStatus(500);
