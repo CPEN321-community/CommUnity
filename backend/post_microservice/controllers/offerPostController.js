@@ -35,25 +35,40 @@
   }
   
   const searchOffers = async (req, res) => {
+    const title = req.params.title
       try {
-          const title = req.params.title;
-          const query = "%" + title + "%";
+        let response = [];
 
-          //find all posts which have a title containing the query
-          const response = await OfferPost.findAll({
-              where: {
-                  title: {[Op.like]: query}, 
-                }
-          });
-          if (response = null) {
-              const message = "Sorry, there are no offer posts for " + title + "."
-              res.json({
-                  message: message
-              });
+        const identicalPosts = await OfferPost.findAll({
+            where: {title: title}
+        })
+
+        if (identicalPosts != null){
+            
+        }
+        
+        // let similarPosts = await OfferPost.findAll({
+        //     where: {
+        //         title: {[Op.like]: title + "%"}
+        //     }
+        // });
+        
+        // similarPosts = await OfferPost.findAll({
+        //     where: {
+        //         title: {[Op.like]: "%" + title}
+        //     }
+        // });
+
+        // similarPosts = await OfferPost.findAll({
+        //     where: {
+        //         title: {[Op.like]: "%" + title + "%"}
+        //     }
+        // });
+
+          if (response == null) {
               res.sendStatus(200);
           } else {
               res.json(response);
-              res.sendStatus(200);
           }
       } catch (error) {
         console.log("Error with searching for offer posts: " + error);
