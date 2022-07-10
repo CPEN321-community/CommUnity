@@ -11,11 +11,15 @@ const db = {};
 function applyRelationships(sequelize) {
   const { User, Leaderboard, Preferences } = sequelize.models;
 
-  Leaderboard.User = Leaderboard.belongsTo(User);
+  Leaderboard.User = Leaderboard.belongsTo(User, {
+    foreignKey: {
+      field: "userId",
+    }
+  });
   User.Leaderboard = User.hasOne(Leaderboard, {
    foreignKey: {
+      allowNull: false,
       field: "userId",
-      as: "user",
     },
     as: "leaderboard",
     onDelete: "cascade",
