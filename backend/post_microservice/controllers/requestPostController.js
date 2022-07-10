@@ -33,7 +33,6 @@ const getRequest = async (req, res) => {
     }
   }
 
-
  const searchRequests = async (req, res) => {
     try {
         const title = req.params.title;
@@ -42,14 +41,14 @@ const getRequest = async (req, res) => {
         //find all posts which have a title containing the query
         const response = await RequestPost.findAll({
             where: {
-                title: {[Op.like]: query}, 
+                [Op.or]: [
+                    {title: {[Op.like]: query}}, 
+                    {description: {[Op.like]: query}}, 
+                  ]
               }
         });
-        if (response = null) {
-            res.sendStatus(200);
-        } else {
-            res.json(response);
-        }
+        
+        res.json(response);
     } catch (error) {
       console.log("Error with searching for offer posts: " + error);
       res.sendStatus(500);
