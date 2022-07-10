@@ -9,20 +9,34 @@ const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
 function applyRelationships(sequelize) {
-	const { User, Message, Room } = sequelize.models;
+	const { User, Message, Room, UserToken } = sequelize.models;
 
   User.hasMany(Message, { foreignKey: 'userId' });
   Message.belongsTo(User, { foreignKey: 'userId' });
 
   User.hasMany(Room, { foreignKey: 'userId' });
   Room.belongsTo(User, { foreignKey: 'userId' });
+
+  User.hasMany(UserToken, { foreignKey: 'userId' });
+  UserToken.belongsTo(User, { foreignKey: 'userId' });
 }
 
 let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
+  sequelize = new Sequelize(config.database, config.username, config.password, {
+    host: config.host,
+    port: 3306,
+    logging: console.log,
+    maxConcurrentQueries: 100,
+    dialect: 'mysql',
+    dialectOptions: env === "development" ? undefined : {
+        ssl:'Amazon RDS'
+    },
+    pool: { maxConnections: 5, maxIdleTime: 30},
+    language: 'en'
+  });
 }
 
 fs

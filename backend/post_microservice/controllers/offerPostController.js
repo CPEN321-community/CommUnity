@@ -12,6 +12,7 @@
      }
   };
 
+
   //wahoo
   const getAllOffers = async (req, res) => {
     try {
@@ -96,13 +97,11 @@
 
         if (postList = null) {
             const message = "Sorry, there are no offer posts for " + tagList + "."
-            res.json({
+            res.status(200).json({
                 message: message
             });
-            res.sendStatus(200);
         } else {
-            res.json(postList);
-            res.sendStatus(200);
+            res.status(200).json(postList);
         }
     } catch (error) {
       console.log("Error with searching for offer posts: " + error);
@@ -209,6 +208,9 @@
                 status: req.body.status,
                 bestBeforeDate: req.body.bestBeforeDate
             }, {where: {offerId: req.body.offerId}});
+            if (req.body.status == "Fulfilled") {
+                await axios.delete(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/suggestedPosts/offer/${req.body.offerId}`);
+            }
             res.sendStatus(200);
         }else{
             res.sendStatus(200);
@@ -232,6 +234,7 @@
                 offerId: req.body.offerId
             }
         });
+        await axios.delete(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/suggestedPosts/offer/${req.body.offerId}`);
         res.sendStatus(200);
     } catch (error) {
         console.log("Error deleting post: " + error);

@@ -7,23 +7,27 @@ const UserObject = (sequelize, DataTypes) => {
             primaryKey: true
         },
         firstName: {
-            type: DataTypes.STRING, 
+            type: DataTypes.STRING,
+            defaultValue: "",
             allowNull: false,
         },
         lastName: {
             type: DataTypes.STRING, 
+            defaultValue: "",
             allowNull: false,
         },
         email: {
             type: DataTypes.STRING, 
+            defaultValue: "",
             allowNull: false,
         },
         profilePicture: {
             type: DataTypes.STRING,
+            defaultValue: "",
             allowNull: false,
         }
     }, {
-        timestamp: false,
+        timestamps: false,
     });
     return User;
   };

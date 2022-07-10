@@ -1,4 +1,5 @@
 const { Op } = require("sequelize");
+const axios = require("axios").default;
 const { RequestPost, RequestPostTags } = require("../models");
 
 //waaaaaaaaaluigi
@@ -90,21 +91,21 @@ const searchRequestsWithTags = async (req, res) => {
 //success! this works!
 const createRequest = async (req, res) => {
     try {
-        await RequestPost.create({
+        const createdRequest = await RequestPost.create({
             userId: req.body.userId,
             title: req.body.title,
             description: req.body.description,
-            currentLocation: req.body.currentLocation,
             status: req.body.status
           });
-        const newRequest = await RequestPost.findOne({where: {userId: req.body.userId}});
 
         let tagList = req.body.tagList;
-        for(let item of tagList) {
-            RequestPostTags.create({
-                postId: newRequest.requestId,
-                name: item
-              });
+        if (tagList) {
+            for(let item of tagList) {
+                RequestPostTags.create({
+                    postId: createdRequest.dataValues.requestId,
+                    name: item
+                  });
+            }
         }
           res.sendStatus(200);
     } catch (error) {
@@ -128,6 +129,9 @@ const updateRequest = async (req, res) => {
                 currentLocation: req.body.currentLocation,
                 status: req.body.status
             }, {where: {requestId: req.body.requestId}});
+            if (req.body.status == "Fulfilled") {
+                await axios.delete(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/suggestedPosts/request/${req.body.requestId}`);
+            }
             res.json("Post updated");
         }else{
             res.json("You cannot update a post that does not exist");
@@ -201,6 +205,7 @@ const deleteRequest = async (req, res) => {
               requestId: req.body.requestId
           }
       });
+      await axios.delete(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/suggestedPosts/request/${req.body.requestId}`);
       res.sendStatus(200);
   } catch (error) {
       console.log("Error deleting post: " + error);

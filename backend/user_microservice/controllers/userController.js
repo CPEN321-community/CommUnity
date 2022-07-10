@@ -1,13 +1,16 @@
 
 const { Op } = require("sequelize");
-const { User, Preferences } = require("../models");
+const { User, Preferences, Leaderboard } = require("../models");
+const { upsertUserMethod } = require("./leaderboardController.js");
 
 const getUser = async (req, res) => {
    try {
        const userId = req.params.userId;
        const response = await User.findByPk(userId, {include: ["preferences"]});
-       res.json(response);
-       res.sendStatus(200);
+       console.log("Fetching user");
+       console.log(userId);
+       console.log(response);
+       res.json({user: response});
    } catch (error) {
        console.log("Error finding user: " + error);
        res.sendStatus(500);
@@ -21,38 +24,60 @@ const upsertUserPreference = async (req, res) => {
             value: req.body.value
         });
         res.json(response);
-        res.sendStatus(200);
     } catch (error) {
         console.log("Error updating user preferences: " + error);
         res.sendStatus(500);        
     }
 }
 
-const upsertUser = async (req, res) => {
+const updateUser = async (req, res) => {
     try {
-        const response = await User.upsert({
+        const response = await User.update({
+            userId: req.body.userId,
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
             profilePicture: req.body.profilePicture
         });
-        
-        // await fetch('http://localhost:1000/chat/changeUserInfo', {
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //   },
-        //   body: JSON.stringify({
-        //     userId: '',
-        //     firstName: '',
-        //     lastName: '',
-        //     profilePicture: '',
-        //   }),
-        // })
+
+        await axios.post('http://ec2-35-183-28-141.ca-central-1.compute.amazonaws.com:3000', {
+            userId: req.body.userId,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            profilePicture: req.body.profilePicture
+        });
 
         res.json(response);
-        res.sendStatus(200);
+    } catch (error) {
+        console.log("Error upserting user: " + error);
+        res.sendStatus(500);
+    }
+}
 
+const createUser = async (req, res) => {
+    try {
+        const response = await User.create({
+            userId: req.body.userId,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            profilePicture: req.body.profilePicture,
+            // TODO fix preference model
+            preferences: {
+                type: "test",
+                value: "success"
+            },
+            leaderboard: {
+                offerPosts: 0,
+                requestPosts: 0,
+                score: 0,
+            }
+        },
+        {
+            include: [{association: User.Preferences, as: "preferences"}, {association: User.Leaderboard, as: "leaderboard"}]
+        }
+        );
+        res.sendStatus(201)
     } catch (error) {
         console.log("Error upserting user: " + error);
         res.sendStatus(500);
@@ -63,5 +88,6 @@ const upsertUser = async (req, res) => {
 module.exports = {
     getUser,
     upsertUserPreference,
-    upsertUser
+    updateUser,
+    createUser,
   };
