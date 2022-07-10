@@ -1,31 +1,26 @@
-  const { Op } = require("sequelize");
-  const { OfferPost, OfferPostTags } = require("../models");
- 
-  //works
- const getOffer = async (req, res) => {
-     try {
-         const offerId = req.params.offerId;
-         const response = await OfferPost.findOne({where: {offerId: offerId}});
-         res.json(response);
-     } catch (error) {
-         console.log("Error finding an offer post: " + error);
-     }
-  };
+const { Op } = require("sequelize");
+const { OfferPost, OfferPostTags } = require("../models");
+  
+const getOffer = async (req, res) => {
+    try {
+        const offerId = req.params.offerId;
+        const response = await OfferPost.findOne({where: {offerId: offerId}});
+        res.json(response);
+    } catch (error) {
+        console.log("Error finding an offer post: " + error);
+    }
+}
 
-
-  //wahoo
-  const getAllOffers = async (req, res) => {
+const getAllOffers = async (req, res) => {
     try {
         const response = await OfferPost.findAll();
         res.json(response);
     } catch (error) {
         console.log("Error getting all of the offer posts: " + error);
     }
-  }
+}
 
-
-  //works!
-  const getAllUserOffers = async (req, res) => {
+const getAllUserOffers = async (req, res) => {
     try{
         console.log(req.params.userId);
         const response = await OfferPost.findAll({where: {userId: req.params.userId}});
@@ -33,84 +28,72 @@
     } catch(error) {
         console.log("Error in retrieving offer posts made by user " + error);
     }
-  }
+}
   
-  const searchOffers = async (req, res) => {
-    const title = req.params.title
-      try {
+const searchOffers = async (req, res) => {
+    const title = req.params.title;
+    try {
         let response = [];
 
-        const identicalPosts = await OfferPost.findAll({
-            where: {title: title}
-        })
+        const similarPosts = await OfferPost.findAll({
+            where: {
+                title: {[Op.like]: "%" + title + "%"}, 
+                status: "Active"
+            }
+        });
 
-        if (identicalPosts != null){
-            
+        if (similarPosts != null){
+            for (let i = 0; i < similarPosts.length; i = i + 1){
+                response.push({
+                    offerId: similarPosts[i].dataValues.offerId,
+                    title: similarPosts[i].dataValues.title,
+                    description: similarPosts[i].dataValues.description,
+                    quantity: similarPosts[i].dataValues.quantity,
+                    pickUpLocation: similarPosts[i].dataValues.pickUpLocation,
+                    image: similarPosts[i].dataValues.image,
+                    status: similarPosts[i].dataValues.status,
+                    bestBeforeDate: similarPosts[i].dataValues.bestBeforeDate
+                });
+            }
         }
-        
-        // let similarPosts = await OfferPost.findAll({
-        //     where: {
-        //         title: {[Op.like]: title + "%"}
-        //     }
-        // });
-        
-        // similarPosts = await OfferPost.findAll({
-        //     where: {
-        //         title: {[Op.like]: "%" + title}
-        //     }
-        // });
 
-        // similarPosts = await OfferPost.findAll({
-        //     where: {
-        //         title: {[Op.like]: "%" + title + "%"}
-        //     }
-        // });
+        res.json(response);
 
-          if (response == null) {
-              res.sendStatus(200);
-          } else {
-              res.json(response);
-          }
-      } catch (error) {
+    } catch (error) {
         console.log("Error with searching for offer posts: " + error);
         res.sendStatus(500);
-      }
-  }
+    }
+}
 
-  const searchOffersWithTags = async (req, res) => {
+const searchOffersWithTags = async (req, res) => {
     try {
         const tagList = req.params.tagList;
-
-        //list of postIds that have the tags
-        const postIds = await OfferPostTags.findAll({
-            attributes: {include: ["postId"]},
+        const postTags = await OfferPostTags.findAll({
             where: {name: tagList}
         });
         
-        //check whether there are duplicates in postIds list
-        let uniquePostIds = [...new Set(postIds)];
+        let uniquePostIds = [];
+        let duplicateOfferTagIds = [];
+        for (let i = 0; i < postTags.length; i = i + 1){
+            if (uniquePostIds.includes(postTags[i].dataValues.postId)){
+                duplicateOfferTagIds.push(postTags[i].dataValues.offerId);
+            } else {
+                uniquePostIds.push(postTags[i].dataValues.postId);
+            }
+        }
         
-        //find list of posts that match postIds
         const postList = await OfferPost.findAll({
             where: {offerId: uniquePostIds}
         });
 
-        if (postList = null) {
-            const message = "Sorry, there are no offer posts for " + tagList + "."
-            res.status(200).json({
-                message: message
-            });
-        } else {
-            res.status(200).json(postList);
-        }
+        res.status(200).json(postList);
     } catch (error) {
       console.log("Error with searching for offer posts: " + error);
       res.sendStatus(500);
     }
 }
 
-//woohoo
-  const createOffer = async (req, res) => {
+const createOffer = async (req, res) => {
     try {
         await OfferPost.create({
             userId: req.body.userId,
@@ -132,22 +115,18 @@
                 name: item
             });
         }
+
         res.sendStatus(200);
 
-      } catch (error) {
+    } catch (error) {
         console.log("Error creating a new post: " + error);
         res.sendStatus(500);
-      }
-  }
+    }
+}
 
-
-  //maaaaario
-  const removeOfferTags = async (req, res) => {
+const removeOfferTags = async (req, res) => {
     try {
-        const currentTags = await OfferPostTags.findAll({
-            where: {postId: req.body.offerId}
-        });
-
+        const currentTags = await OfferPostTags.findAll({where: {postId: req.body.offerId}});
         const updatedTags = req.body.tagList;
 
         for (let i = 0; i < currentTags.length; i = i + 1){
@@ -165,13 +144,11 @@
         console.log("Error deleting offer tags: " + error);
         res.sendStatus(500);
     }
-  }
+}
   
-  //mama mia
-  const addOfferTags = async (req, res) => {
+const addOfferTags = async (req, res) => {
     try {
         const currentTags = await OfferPostTags.findAll({where: {postId: req.body.offerId}});
-
         const updatedTags = req.body.tagList;
         const currentTagsList = currentTags.map(tag => tag.dataValues.name);
         
@@ -188,14 +165,11 @@
         console.log("Error with adding new offer tags: " + error);
         res.sendStatus(500);
     }
-  }
+}
 
-  //i am great success
-  const updateOffer = async (req, res) => {
-      try {
-        const updateOffer = OfferPost.findOne({
-            where: {offerId: req.body.offerId}
-        });
+const updateOffer = async (req, res) => {
+    try {
+        const updateOffer = OfferPost.findOne({where: {offerId: req.body.offerId}});
         const offerAlreadyExists = updateOffer != null;
         if(offerAlreadyExists){
             await OfferPost.update({
@@ -215,13 +189,12 @@
         }else{
             res.sendStatus(200);
         }
-      } catch (error) {
+    } catch (error) {
         console.log("Error updating post: " + error);
         res.sendStatus(500);
-      }
-  }
+    }
+}
 
-  //woop woop that's the sound of the beast
   const deleteOffer = async (req, res) => {
     try {
         await OfferPostTags.destroy({
