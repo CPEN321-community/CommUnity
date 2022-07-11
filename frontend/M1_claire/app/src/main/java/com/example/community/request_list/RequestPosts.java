@@ -28,11 +28,11 @@ public class RequestPosts extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_request_posts);
-        //setContentView(R.layout.fragment_home);
+//        setContentView(R.layout.activity_request_posts);
+        setContentView(R.layout.fragment_home);
 
         // Search button on Request Posts page
-        searchReqPostButton = findViewById(R.id.searchReqPostButton);
+        searchReqPostButton = findViewById(R.id.search_button);
         searchReqPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
