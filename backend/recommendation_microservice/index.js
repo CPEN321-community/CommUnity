@@ -18,7 +18,7 @@ setInterval(() => {
   model.trainModel();
 }, [36000 * 24]); // 24 hours
 
-const PORT = process.env.PORT || 6969;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });

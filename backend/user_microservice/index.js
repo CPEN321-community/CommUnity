@@ -7,10 +7,10 @@ const db = require('./models');
 const app = express();
 
 app.use(express.json());
-app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true
-}));
+// app.use(cors({
+//   origin: 'http://localhost:3000',
+//   credentials: true
+// }));
 app.use(routes);
 // app.use(express.urlencoded({ extended: true }));
 
@@ -20,7 +20,7 @@ db.sequelize.sync().then((req) => {
   // })
 }).catch(e => console.log(e));
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
