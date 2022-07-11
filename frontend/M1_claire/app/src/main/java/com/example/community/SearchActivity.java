@@ -2,6 +2,8 @@ package com.example.community;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -32,6 +35,7 @@ import com.example.community.request_list.ReqPostAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -89,9 +93,16 @@ public class SearchActivity extends AppCompatActivity {
             this.offerPostResultList.setAdapter(offerAdapter);
         });
         this.mRequestPosts.observe(this, newReqPostList -> {
+            Log.d(TAG, "onCreate: " + newReqPostList);
             ReqPostAdapter postAdapter = new ReqPostAdapter(this, newReqPostList);
             this.reqPostResultList.setAdapter(postAdapter);
         });
+
+        RecyclerView tagList = (RecyclerView) findViewById(R.id.tag_list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        tagList.setLayoutManager(layoutManager);
+
     }
 
     private void PerformRequestSearch() {
@@ -108,10 +119,14 @@ public class SearchActivity extends AppCompatActivity {
                         return;
                     }
                     ArrayList<ReqPostObj> searchResults = new ArrayList<>();
+                    Log.d(TAG, "PerformRequestSearch: " + response);
                     for (int i = 0; i < response.length(); i++) {
                         try {
+                            JSONObject jobj = response.getJSONObject(i);
+                            Log.d(TAG, "PerformRequestSearch: jobj" + jobj);
                             ReqPostObj currReqPost = new ReqPostObj(response.getJSONObject(i));
                             searchResults.add(currReqPost);
+                            Log.d(TAG, "PerformRequestSearch: " + currReqPost.createdAt);
                         } catch (JSONException e) {
                             Log.e(TAG, "getChats: " + e);
                             e.printStackTrace();
