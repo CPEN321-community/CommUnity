@@ -44,7 +44,7 @@ public class OfferPostAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflater.inflate(R.layout.fragment_offer_post, null);
+        view = inflater.inflate(R.layout.fragment_offer_post_individual, null);
         TextView itemName = (TextView) view.findViewById(R.id.offer_item_name);
         TextView itemQuantity = (TextView) view.findViewById(R.id.offer_quantity);
         TextView pickupLocation = (TextView) view.findViewById(R.id.offer_pickup_loc);

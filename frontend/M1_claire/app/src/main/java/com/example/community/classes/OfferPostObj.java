@@ -16,11 +16,9 @@ public class OfferPostObj {
     public String pickupAddr;
     public String image;
     public Date bestBefore;
-    private final String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
 
     public OfferPostObj(JSONObject json) {
         try {
-            //TBD
             this.offerId = json.getString("offerId");
             this.itemName = json.getString("title");
             this.description = json.getString("description");
@@ -29,7 +27,7 @@ public class OfferPostObj {
             this.pickupAddr = json.getString("pickUpLocation");
             this.image = json.getString("image");
             String bestBeforeString = json.getString("bestBeforeDate");
-            this.bestBefore = new SimpleDateFormat(dateFormat).parse(bestBeforeString);
+            this.bestBefore = new SimpleDateFormat(Utils.dateFormatString).parse(bestBeforeString);
         } catch (JSONException | ParseException e) {
             e.printStackTrace();
         }

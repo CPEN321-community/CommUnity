@@ -113,7 +113,7 @@ const createRequest = async (req, res) => {
                   });
             }
         }
-          res.sendStatus(200);
+          res.json(createdRequest);
     } catch (error) {
       console.log("Error creating a new post: " + error);
       res.sendStatus(500);
