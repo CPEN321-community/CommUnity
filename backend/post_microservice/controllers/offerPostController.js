@@ -108,13 +108,24 @@ const createOffer = async (req, res) => {
         const newOffer = await OfferPost.findOne({where: {userId: req.body.userId}});
 
         let tagList = req.body.tagList;
-        for(let item of tagList) {
-            OfferPostTags.create({
-                postId: newOffer.offerId,
-                name: item
-            });
+        if(tagList != null){
+            for(let item of tagList) {
+                OfferPostTags.create({
+                    postId: newOffer.offerId,
+                    name: item
+                });
+            }
         }
 
+        requestsForUser = await axios.get(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/communitpost/requests/${req.body.userId}`);
+        const offerPostsForUser = await OfferPost.findAll({where: {userId: req.body.userId}});
+        let response = [];
+        response.push({
+            userId: req.body.userId,
+            offerPosts: requestsForUser.length,
+            requestPosts: offerPostsForUser.length + 1
+        });
+        await axios.put(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/rank/${response}`);
         res.sendStatus(200);
 
     } catch (error) {

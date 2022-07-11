@@ -12,7 +12,6 @@ router.get('/chat/test2/html', (req, res) => res.sendFile(__dirname + '/socket/c
 
 // Tokens
 router.post('/token', createUserToken);
-router.post('/notification', sendNotifToUser);
 
 
 module.exports = router;

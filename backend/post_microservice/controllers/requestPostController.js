@@ -37,19 +37,24 @@ const searchRequests = async (req, res) => {
 
         const similarPosts = await RequestPost.findAll({
             where: {
-                title: {[Op.like]: "%"+title+"%"}, 
-                status: "Active"
+                [Op.or]: [
+                    {title: {[Op.like]: "%"+title+"%"}, 
+                    status: "Active"},
+                    {description: {[Op.like]: "%"+title+"%"}, 
+                    status: "Active"}
+                ]
             }
         });
 
         if (similarPosts != null){
             for (let i = 0; i < similarPosts.length; i = i + 1){
                 response.push({
-                    requestId: similarPosts[i].dataValues.offerId,
+                    requestId: similarPosts[i].dataValues.requestId,
                     title: similarPosts[i].dataValues.title,
                     description: similarPosts[i].dataValues.description,
                     currentLocation: similarPosts[i].dataValues.currentLocation,
                     status: similarPosts[i].dataValues.status,
+                    createdAt: similarPosts[i].dataValues.createdAt,
                 });
             }
         }
@@ -108,7 +113,17 @@ const createRequest = async (req, res) => {
                   });
             }
         }
-          res.sendStatus(200);
+
+        offersForUser = await axios.get(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/communitpost/offers/${req.body.userId}`);
+        const requestPostsForUser = await RequestPost.findAll({where: {userId: req.body.userId}});
+        let response = [];
+        response.push({
+            userId: req.body.userId,
+            offerPosts: offersForUser.length,
+            requestPosts: requestPostsForUser.length + 1
+        });
+        await axios.put(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/rank/${response}`);
+        res.sendStatus(200);
     } catch (error) {
       console.log("Error creating a new post: " + error);
       res.sendStatus(500);
