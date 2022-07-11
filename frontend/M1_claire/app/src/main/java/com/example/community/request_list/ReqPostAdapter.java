@@ -15,6 +15,7 @@ import com.example.community.classes.ReqPostObj;
 import java.util.ArrayList;
 
 public class ReqPostAdapter extends BaseAdapter {
+    private static final String TAG = "REQ_POST_ADAPTER";
     private Context context;
     private ArrayList<ReqPostObj> reqPosts;
     private LayoutInflater inflater;
@@ -50,6 +51,8 @@ public class ReqPostAdapter extends BaseAdapter {
         ReqPostObj post = this.reqPosts.get(i);
 
         itemName.setText(post.itemName);
+        // TODO format using JAVA API instead of manually
+        Log.d(TAG, "getView: " + post.description);
         String postDateParsed = post.createdAt.toString().split(" ")[1] + " " + post.createdAt.toString().split(" ")[2];
         postDate.setText("Posted on: " + postDateParsed);
         description.setText(post.description);

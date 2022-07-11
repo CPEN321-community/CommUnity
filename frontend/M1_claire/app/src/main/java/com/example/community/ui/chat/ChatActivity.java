@@ -38,7 +38,7 @@ public class ChatActivity extends AppCompatActivity {
 
     {
         try {
-            mSocket = IO.socket("http://10.0.2.2:3000");
+            mSocket = IO.socket(Global.CHAT_URL);
             Log.d(TAG, "instance initializer: Socket Initted");
         } catch (URISyntaxException e) {
             Log.e(TAG, "instance initializer: " + e);
@@ -76,7 +76,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void getChats(String uid) {
-        String url = "http://10.0.2.2:3000/chat/" + uid;
+        String url = Global.CHAT_URL + "/chat/" + uid;
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET,
                 url,

@@ -2,12 +2,14 @@ package com.example.community;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.community.databinding.ActivityMainBinding;
 import com.example.community.ui.chat.ChatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -17,6 +19,7 @@ import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MAIN_ACTIVITY";
     private ActivityMainBinding binding;
 
     @Override
@@ -29,6 +32,11 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            String token = task.getResult();
+            CustomFirebaseMessagingService.sendTokenToDatabase(token);
+            Log.d(TAG, "onCreateView: " + token);
+        });
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_leaderboard, R.id.navigation_profile)
                 .build();
