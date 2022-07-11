@@ -37,19 +37,24 @@ const searchRequests = async (req, res) => {
 
         const similarPosts = await RequestPost.findAll({
             where: {
-                title: {[Op.like]: "%"+title+"%"}, 
-                status: "Active"
+                [Op.or]: [
+                    {title: {[Op.like]: "%"+title+"%"}, 
+                    status: "Active"},
+                    {description: {[Op.like]: "%"+title+"%"}, 
+                    status: "Active"}
+                ]
             }
         });
 
         if (similarPosts != null){
             for (let i = 0; i < similarPosts.length; i = i + 1){
                 response.push({
-                    requestId: similarPosts[i].dataValues.offerId,
+                    requestId: similarPosts[i].dataValues.requestId,
                     title: similarPosts[i].dataValues.title,
                     description: similarPosts[i].dataValues.description,
                     currentLocation: similarPosts[i].dataValues.currentLocation,
                     status: similarPosts[i].dataValues.status,
+                    createdAt: similarPosts[i].dataValues.createdAt,
                 });
             }
         }
