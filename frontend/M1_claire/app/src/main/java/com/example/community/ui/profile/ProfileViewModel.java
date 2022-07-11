@@ -16,6 +16,7 @@ import com.example.community.classes.DietaryRestriction;
 import com.example.community.classes.Global;
 import com.example.community.classes.Preference;
 import com.example.community.classes.Stats;
+import com.example.community.classes.UserProfile;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,6 +29,7 @@ public class ProfileViewModel extends AndroidViewModel {
     private static final String TAG = "PROFILE_VIEW_MODEL";
     private final MutableLiveData<ArrayList<DietaryRestriction>> mRestrictionList;
     private final MutableLiveData<Stats> mStats;
+    private final MutableLiveData<UserProfile> mProfile;
     private final Application application;
 
     public ProfileViewModel(@NonNull Application application) {
@@ -35,11 +37,16 @@ public class ProfileViewModel extends AndroidViewModel {
         this.application = application;
         this.mRestrictionList = new MutableLiveData<>(new ArrayList<>());
         this.mStats = new MutableLiveData<>();
+        this.mProfile = new MutableLiveData<>();
         fetchUser();
     }
 
     public LiveData<ArrayList<DietaryRestriction>> getRestrictions() {
         return mRestrictionList;
+    }
+
+    public LiveData<UserProfile> getProfile() {
+        return mProfile;
     }
 
     private void parseRestrictions(JSONArray prefJSON) {
@@ -81,12 +88,13 @@ public class ProfileViewModel extends AndroidViewModel {
                 (JSONObject response) -> {
                     Log.d(TAG, "fetchRestrictions: " + response);
                     JSONObject user;
-                    ArrayList<Preference> preferences = new ArrayList<>();
                     JSONArray prefJSON;
                     JSONObject leaderboardJSON;
 
                     try {
                         user = response.getJSONObject("user");
+                        UserProfile fetchedProfile = new UserProfile(user);
+                        this.mProfile.setValue(fetchedProfile);
                         leaderboardJSON = user.getJSONObject("leaderboard");
                         prefJSON = user.getJSONArray("preferences");
                     } catch (JSONException e) {
