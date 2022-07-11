@@ -14,11 +14,7 @@ app.use(cors({
 app.use(routes);
 // app.use(express.urlencoded({ extended: true }));
 
-db.sequelize.sync().then((req) => {
-  // app.listen(3031, () => {
-  //   console.log("MySQL server running on http://localhost:3031");
-  // })
-}).catch(e => console.log(e));
+db.sequelize.sync().then((req) => {}).catch(e => console.log(e));
 
 const PORT = process.env.PORT || 8081;
 app.listen(PORT, () => {

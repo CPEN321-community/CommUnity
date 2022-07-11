@@ -69,6 +69,7 @@ public class NewRequestForm extends AppCompatActivity {
                     Toast toast = Toast.makeText(this, "Successfully created post!", Toast.LENGTH_LONG);
                     View toastView = toast.getView();
                     toastView.setBackgroundColor(Color.parseColor("#00ff00"));
+                    toast.show();
                     finish();
                 },
                 error -> {
