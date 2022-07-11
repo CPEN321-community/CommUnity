@@ -40,9 +40,6 @@ const sendNotifToUser = async (userId, payload) => {
   }
   catch (e) {
     console.error(e);
-    res.status(500).json({
-      error: e
-    });
   }
 }
 

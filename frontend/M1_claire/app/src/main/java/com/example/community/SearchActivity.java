@@ -27,6 +27,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.community.classes.Chat;
 import com.example.community.classes.ChatMessageHandler;
+import com.example.community.classes.Global;
 import com.example.community.classes.Message;
 import com.example.community.classes.OfferPostObj;
 import com.example.community.classes.ReqPostObj;
@@ -107,7 +108,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void PerformRequestSearch() {
         String query = this.searchField.getText().toString();
-        String url = "http://10.0.2.2:8081/communitypost/requests/search/" + query;
+        String url = Global.POST_URL + "/communitypost/requests/search/" + query;
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET,
                 url,
@@ -144,7 +145,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void PerformOfferSearch() {
         String query = this.searchField.getText().toString();
-        String url = "http://10.0.2.2:8081/communitypost/offers/search/" + query;
+        String url = Global.POST_URL + "/communitypost/offers/search/" + query;
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET,
                 url,

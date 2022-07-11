@@ -41,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Global.setAppContext(this);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -133,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
     private void createUser(GoogleSignInAccount account, VolleyCallBack volleyCallBack) {
         Log.d(TAG, "createUser: Start");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8080/user";
+        String url = Global.USER_URL + "/user";
         JSONObject data = new JSONObject();
         try {
             data.put("userId", account.getId());
@@ -162,7 +163,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void userDoesExist(String uid, VolleyCallBack callback) {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8080/user" + "/" + uid;
+        String url = Global.USER_URL + "/user" + "/" + uid;
         JsonObjectRequest sr = new JsonObjectRequest(Request.Method.GET, url,
                 null,
                 response -> {

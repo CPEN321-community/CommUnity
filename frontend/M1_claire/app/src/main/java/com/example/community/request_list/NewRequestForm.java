@@ -48,7 +48,7 @@ public class NewRequestForm extends AppCompatActivity {
 
     private void createOfferPost() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/communitypost/requests";
+        String url = Global.POST_URL + "/communitypost/requests";
         JSONObject postBody = new JSONObject();
         try {
             postBody.put("userId", Global.getAccount().getId());

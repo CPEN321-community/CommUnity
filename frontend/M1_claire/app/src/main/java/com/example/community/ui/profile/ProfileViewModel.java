@@ -46,7 +46,7 @@ public class ProfileViewModel extends AndroidViewModel {
 
     private void fetchRestrictions() {
         RequestQueue queue = Volley.newRequestQueue(this.application);
-        String url = "http://10.0.2.2:8080/user/" + Global.getAccount().getId();
+        String url = Global.USER_URL + "/user/" + Global.getAccount().getId();
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 url,
@@ -91,7 +91,7 @@ public class ProfileViewModel extends AndroidViewModel {
 
     private void fetchStats() {
         RequestQueue queue = Volley.newRequestQueue(this.application);
-        String url = "http://10.0.2.2:8080/leaderboard/" + Global.getAccount().getId();
+        String url = Global.USER_URL + "/leaderboard/" + Global.getAccount().getId();
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 url,
