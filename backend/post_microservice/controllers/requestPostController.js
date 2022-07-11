@@ -116,14 +116,10 @@ const createRequest = async (req, res) => {
             }
         }
         
-        const offersForUser = await axios.get(`${process.env.POST_URL}/communitypost/offers/${req.body.userId}`);
-        console.log("offersForUser");
-        console.log(offersForUser.data);
-        const requestPostsForUser = await RequestPost.findAll({where: {userId: req.body.userId}});
         const updateUserBody = {
             userId: req.body.userId,
-            offerPosts: offersForUser.length,
-            requestPosts: requestPostsForUser.length + 1
+            offerPosts: 0,
+            requestPosts: 1,
         };
         await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
         res.sendStatus(200);
