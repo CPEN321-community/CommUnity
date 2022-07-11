@@ -3,6 +3,9 @@ const bodyParser = require('body-parser');
 const routes = require('./routes');
 const cors = require('cors');
 const db = require('./models');
+const dotenv = require("dotenv")
+
+dotenv.config();
 
 const app = express();
 
@@ -14,13 +17,9 @@ app.use(cors({
 app.use(routes);
 // app.use(express.urlencoded({ extended: true }));
 
-db.sequelize.sync().then((req) => {
-  app.listen(3031, () => {
-    console.log("MySQL server running on http://localhost:3031");
-  })
-}).catch(e => console.log(e));
+db.sequelize.sync().then((req) => {}).catch(e => console.log(e));
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8081;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });

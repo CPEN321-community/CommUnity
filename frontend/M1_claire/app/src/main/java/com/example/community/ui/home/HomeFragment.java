@@ -19,30 +19,26 @@ import com.example.community.SearchActivity;
 import com.example.community.classes.Global;
 import com.example.community.login.LoginActivity;
 import com.example.community.databinding.FragmentHomeBinding;
+import com.example.community.offer_list.OfferHomeFragment;
+import com.example.community.offer_list.OfferPosts;
+import com.example.community.request_list.NewRequestForm;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class HomeFragment extends Fragment {
 
     private static final String TAG = "HOME_FRAGMENT";
     private FragmentHomeBinding binding;
-    private GoogleSignInClient mGoogleSignInClient;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
             String token = task.getResult();
-            Toast.makeText(requireContext(), token, Toast.LENGTH_LONG).show();
             Log.d(TAG, "onCreateView: " + token);
         });
         binding = FragmentHomeBinding.inflate(inflater, container, false);
@@ -53,14 +49,18 @@ public class HomeFragment extends Fragment {
             Intent searchIntent = new Intent(requireActivity(), SearchActivity.class);
             startActivity(searchIntent);
         });
-//        binding.signOutButton.setOnClickListener(v -> {
-//            mGoogleSignInClient.signOut().addOnCompleteListener(requireActivity(), (OnCompleteListener<Void>) task -> {
-//                Intent mainActivityIntent = new Intent(requireActivity(), LoginActivity.class);
-//                startActivity(mainActivityIntent);
-//                Global.setAccount(null);
-//                requireActivity().finish();
-//            });
-//        });
+
+        FloatingActionButton addNewReqButton = binding.addReqPostButton;
+        addNewReqButton.setOnClickListener(view -> {
+            Intent addReqIntent = new Intent(requireActivity(), NewRequestForm.class);
+            startActivity(addReqIntent);
+        });
+
+        binding.viewOffersButton.setOnClickListener(view -> {
+            Log.d("OfferButtonClick", "Offer button clicked");
+            Intent viewOffersIntent = new Intent(requireContext(), OfferPosts.class);
+            startActivity(viewOffersIntent);
+        });
         return root;
     }
 
