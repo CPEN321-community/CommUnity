@@ -20,7 +20,6 @@ public class OfferPostObj {
 
     public OfferPostObj(JSONObject json) {
         try {
-            //TBD
             this.offerId = json.getString("offerId");
             this.itemName = json.getString("title");
             this.description = json.getString("description");

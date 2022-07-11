@@ -108,11 +108,13 @@ const createOffer = async (req, res) => {
         const newOffer = await OfferPost.findOne({where: {userId: req.body.userId}});
 
         let tagList = req.body.tagList;
-        for(let item of tagList) {
-            OfferPostTags.create({
-                postId: newOffer.offerId,
-                name: item
-            });
+        if(tagList != null){
+            for(let item of tagList) {
+                OfferPostTags.create({
+                    postId: newOffer.offerId,
+                    name: item
+                });
+            }
         }
 
         res.sendStatus(200);
