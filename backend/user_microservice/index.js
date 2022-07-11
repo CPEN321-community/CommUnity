@@ -7,17 +7,14 @@ const db = require('./models');
 const app = express();
 
 app.use(express.json());
-app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true
-}));
+// app.use(cors({
+//   origin: 'http://localhost:3000',
+//   credentials: true
+// }));
 app.use(routes);
 // app.use(express.urlencoded({ extended: true }));
 
 db.sequelize.sync().then((req) => {
-  // app.listen(3031, () => {
-  //   console.log("MySQL server running on http://localhost:3031");
-  // })
 }).catch(e => console.log(e));
 
 const PORT = process.env.PORT || 8080;

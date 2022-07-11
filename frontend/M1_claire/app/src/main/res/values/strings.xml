@@ -13,6 +13,7 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="sign_out">Sign Out</string>
+    <string name="view_reqs_button_caption">View Requests</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -49,4 +50,6 @@
     <string name="request_posts_sample">Request Posts: 10</string>
     <string name="offer_posts_sample">Offer Posts: 1</string>
     <string name="my_profile_title">My Profile</string>
+    <string name="searching_for">Searching For:</string>
+    <string name="request_sample">Request</string>
 </resources>

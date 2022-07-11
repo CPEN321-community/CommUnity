@@ -9,7 +9,7 @@ const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
 function applyRelationships(sequelize) {
-    const { OfferPost, OfferPostTags, RequestPost, RequestPostTags, User} = sequelize.models;
+    const { OfferPost, OfferPostTags, RequestPost, RequestPostTags } = sequelize.models;
 
     OfferPost.hasMany(OfferPostTags, { foreignKey: 'offerId' });
     OfferPostTags.belongsTo(OfferPost, { foreignKey: 'offerId' });

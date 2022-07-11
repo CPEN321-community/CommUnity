@@ -23,22 +23,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.04" />
 
-    <ImageButton
-        android:id="@+id/chatOfferPostButton"
-        android:layout_width="96dp"
-        android:layout_height="48dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:background="@color/white"
-        android:contentDescription="@string/chat_content_description"
-        android:scaleType="fitCenter"
-        android:src="@drawable/chat"
+    <fragment
+        android:id="@+id/fragment_offer_post"
+        android:name="com.example.community.offer_list.OfferPostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="140dp"
+        app:defaultNavHost="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.921"
-        app:layout_constraintStart_toEndOf="@+id/searchOfferPostButton"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.039" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addOfferPostButton"
@@ -52,7 +52,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.856"
+        app:layout_constraintVertical_bias="0.882"
         android:contentDescription="@string/add_req_content_description"
         app:srcCompat="@drawable/add" />
 
