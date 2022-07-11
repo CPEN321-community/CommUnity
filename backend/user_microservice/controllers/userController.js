@@ -2,7 +2,7 @@
 const { Op } = require("sequelize");
 const { User, Preference, Leaderboard } = require("../models");
 const { upsertUserMethod } = require("./leaderboardController.js");
-
+const axios = require("axios");
 const getUser = async (req, res) => {
    try {
        const userId = req.params.userId;
@@ -39,14 +39,15 @@ const updateUser = async (req, res) => {
             lastName: req.body.lastName,
             email: req.body.email,
             profilePicture: req.body.profilePicture
-        });
+        }, {where: {userId: req.body.userId}});
 
-        await axios.post('http://ec2-35-183-28-141.ca-central-1.compute.amazonaws.com:3000', {
-            userId: req.body.userId,
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            profilePicture: req.body.profilePicture
-        });
+        // TODO: fix this
+        // await axios.post('http://ec2-35-183-28-141.ca-central-1.compute.amazonaws.com:3000', {
+        //     userId: req.body.userId,
+        //     firstName: req.body.firstName,
+        //     lastName: req.body.lastName,
+        //     profilePicture: req.body.profilePicture
+        // });
 
         res.json(response);
     } catch (error) {
