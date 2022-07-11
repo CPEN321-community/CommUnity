@@ -1,5 +1,7 @@
 package com.example.community.classes;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -8,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ReqPostObj {
+    private static final String TAG = "REQ_POST_CLASS";
     public String reqId;
     public String itemName;
     public String description;
@@ -16,11 +19,15 @@ public class ReqPostObj {
 
     public ReqPostObj(JSONObject json) {
         try {
+            Log.d(TAG, "ReqPostObj: " + json);
             this.reqId = json.getString("requestId");
             this.itemName = json.getString("title");
             this.description = json.getString("description");
             String createdAtString = json.getString("createdAt");
+            Log.d(TAG, "ReqPostObj: " + createdAtString);
             this.createdAt = new SimpleDateFormat(dateFormat).parse(createdAtString);
+            Log.d(TAG, "ReqPostObj: " + this.createdAt);
+
         } catch (JSONException | ParseException e) {
             e.printStackTrace();
         }

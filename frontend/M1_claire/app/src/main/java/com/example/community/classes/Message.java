@@ -13,7 +13,6 @@ public class Message implements Serializable {
     public String messageText;
     public String userId;
     public Date createdAt;
-    private final String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
 
     public Message(JSONObject messageJSON, String postId, Chat parentChat) {
         try {
@@ -22,7 +21,7 @@ public class Message implements Serializable {
             this.postId = postId;
             this.parentChat = parentChat;
             String createdAtString = messageJSON.getString("createdAt");
-            this.createdAt = new SimpleDateFormat(dateFormat).parse(createdAtString);
+            this.createdAt = new SimpleDateFormat(Utils.dateFormatString).parse(createdAtString);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -36,7 +35,7 @@ public class Message implements Serializable {
             this.postId = messageJSON.getString("postId");
             this.parentChat = Chat.getChat(this.postId);
             String createdAtString = messageJSON.getString("createdAt");
-            this.createdAt = new SimpleDateFormat(dateFormat).parse(createdAtString);
+            this.createdAt = new SimpleDateFormat(Utils.dateFormatString).parse(createdAtString);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -108,11 +108,13 @@ const createOffer = async (req, res) => {
         const newOffer = await OfferPost.findOne({where: {userId: req.body.userId}});
 
         let tagList = req.body.tagList;
-        for(let item of tagList) {
-            OfferPostTags.create({
-                postId: newOffer.offerId,
-                name: item
-            });
+        if(tagList != null){
+            for(let item of tagList) {
+                OfferPostTags.create({
+                    postId: newOffer.offerId,
+                    name: item
+                });
+            }
         }
 
         requestsForUser = await axios.get(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/communitpost/requests/${req.body.userId}`);

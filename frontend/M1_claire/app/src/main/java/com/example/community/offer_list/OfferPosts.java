@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 
 import com.example.community.R;
 import com.example.community.SearchActivity;
+import com.example.community.request_list.NewRequestForm;
 import com.example.community.ui.chat.ChatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
