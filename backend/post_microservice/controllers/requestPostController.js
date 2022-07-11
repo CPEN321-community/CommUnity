@@ -108,7 +108,16 @@ const createRequest = async (req, res) => {
                   });
             }
         }
-          res.sendStatus(200);
+        offersForUser = await axios.get(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/communitpost/offers/${req.body.userId}`);
+        const requestPostsForUser = await RequestPost.findAll({where: {userId: req.body.userId}});
+        let response = [];
+        response.push({
+            userId: req.body.userId,
+            offerPosts: offersForUser.length,
+            requestPosts: requestPostsForUser.length + 1
+        });
+        await axios.put(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/rank/${response}`);
+        res.sendStatus(200);
     } catch (error) {
       console.log("Error creating a new post: " + error);
       res.sendStatus(500);
