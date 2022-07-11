@@ -117,7 +117,7 @@ const createOffer = async (req, res) => {
             }
         }
 
-        res.sendStatus(200);
+        res.json(newOffer);
 
     } catch (error) {
         console.log("Error creating a new post: " + error);

@@ -46,7 +46,6 @@ public class HomeFragment extends Fragment {
         mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
             String token = task.getResult();
-            Toast.makeText(requireContext(), token, Toast.LENGTH_LONG).show();
             Log.d(TAG, "onCreateView: " + token);
         });
         binding = FragmentHomeBinding.inflate(inflater, container, false);
