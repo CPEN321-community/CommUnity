@@ -5,6 +5,9 @@ const bodyParser = require('body-parser');
 const routes = require('./routes');
 const socketHandler = require('./socket/socketHandler');
 const db = require('./models');
+const dotenv = require("dotenv")
+
+dotenv.config();
 
 const app = express();
 const server = http.Server(app);

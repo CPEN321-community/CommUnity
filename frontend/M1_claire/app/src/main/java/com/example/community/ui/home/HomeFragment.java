@@ -33,17 +33,10 @@ public class HomeFragment extends Fragment {
 
     private static final String TAG = "HOME_FRAGMENT";
     private FragmentHomeBinding binding;
-    private GoogleSignInClient mGoogleSignInClient;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
             String token = task.getResult();
             Log.d(TAG, "onCreateView: " + token);
