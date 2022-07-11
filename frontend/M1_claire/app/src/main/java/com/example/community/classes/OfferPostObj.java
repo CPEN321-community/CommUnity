@@ -3,11 +3,12 @@ package com.example.community.classes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class OfferPostObj {
+public class OfferPostObj implements Serializable {
 
     public String offerId;
     public String itemName;

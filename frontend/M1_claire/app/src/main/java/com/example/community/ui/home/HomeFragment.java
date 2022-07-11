@@ -15,13 +15,16 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.community.R;
 import com.example.community.SearchActivity;
 import com.example.community.classes.Global;
 import com.example.community.login.LoginActivity;
 import com.example.community.databinding.FragmentHomeBinding;
 import com.example.community.offer_list.OfferHomeFragment;
 import com.example.community.offer_list.OfferPosts;
+import com.example.community.request_list.ExpandedReqPost;
 import com.example.community.request_list.NewRequestForm;
+import com.example.community.request_list.RequestPosts;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
