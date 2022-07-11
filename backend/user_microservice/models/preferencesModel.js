@@ -1,5 +1,5 @@
-const PreferencesObject = (sequelize, DataTypes) => {
-    const Preferences = sequelize.define("Preferences", {
+const PreferenceObject = (sequelize, DataTypes) => {
+    const Preference = sequelize.define("Preference", {
         id: {
             type: DataTypes.STRING,
             defaultValue: DataTypes.UUIDV4,
@@ -17,7 +17,7 @@ const PreferencesObject = (sequelize, DataTypes) => {
     }, {
         timestamps: false,
     });
-    return Preferences;
+    return Preference;
   };
 
-module.exports = PreferencesObject;
+module.exports = PreferenceObject;

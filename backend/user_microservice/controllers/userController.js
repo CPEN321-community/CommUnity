@@ -1,15 +1,12 @@
 
 const { Op } = require("sequelize");
-const { User, Preferences, Leaderboard } = require("../models");
+const { User, Preference, Leaderboard } = require("../models");
 const { upsertUserMethod } = require("./leaderboardController.js");
 
 const getUser = async (req, res) => {
    try {
        const userId = req.params.userId;
-       const response = await User.findByPk(userId, {include: ["preferences"]});
-       console.log("Fetching user");
-       console.log(userId);
-       console.log(response);
+       const response = await User.findByPk(userId, {include: ["preferences", "leaderboard"]});
        res.json({user: response});
    } catch (error) {
        console.log("Error finding user: " + error);
@@ -19,11 +16,15 @@ const getUser = async (req, res) => {
 
 const upsertUserPreference = async (req, res) => {
     try {
-        const response = await Preferences.upsert({
+        const {userId} = req.body;
+        const user = await User.findByPk(userId);
+        const [preference, isCreated] = await Preference.upsert({
+            userId,
             type: req.body.type,
             value: req.body.value
         });
-        res.json(response);
+        await preference.setUser(user);
+        res.json(preference);
     } catch (error) {
         console.log("Error updating user preferences: " + error);
         res.sendStatus(500);        
@@ -62,11 +63,6 @@ const createUser = async (req, res) => {
             lastName: req.body.lastName,
             email: req.body.email,
             profilePicture: req.body.profilePicture,
-            // TODO fix preference model
-            preferences: {
-                type: "test",
-                value: "success"
-            },
             leaderboard: {
                 offerPosts: 0,
                 requestPosts: 0,
@@ -74,10 +70,10 @@ const createUser = async (req, res) => {
             }
         },
         {
-            include: [{association: User.Preferences, as: "preferences"}, {association: User.Leaderboard, as: "leaderboard"}]
+            include: [{association: User.Leaderboard, as: "leaderboard"}]
         }
         );
-        res.sendStatus(201)
+        res.status(201).json(response)
     } catch (error) {
         console.log("Error upserting user: " + error);
         res.sendStatus(500);

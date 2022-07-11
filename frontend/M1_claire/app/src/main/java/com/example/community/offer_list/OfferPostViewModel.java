@@ -12,6 +12,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.community.classes.Global;
 import com.example.community.classes.OfferPostObj;
 import com.example.community.classes.ReqPostObj;
 
@@ -38,7 +39,7 @@ public class OfferPostViewModel extends AndroidViewModel {
 
     protected void fetchOfferPosts() {
         RequestQueue queue = Volley.newRequestQueue(this.application);
-        String url = "http://10.0.2.2:8081/communitypost/offers";
+        String url = Global.POST_URL + "/communitypost/offers";
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET,
                 url,
