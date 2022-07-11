@@ -15,6 +15,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.community.classes.DietaryRestriction;
 import com.example.community.classes.Global;
+import com.example.community.classes.Preference;
 import com.example.community.classes.Stats;
 
 import org.json.JSONArray;
@@ -45,26 +46,42 @@ public class ProfileViewModel extends AndroidViewModel {
 
     private void fetchRestrictions() {
         RequestQueue queue = Volley.newRequestQueue(this.application);
-        String url = "http://10.0.2.2:8080/restriction/" + Global.getAccount().getId();
+        String url = "http://10.0.2.2:8080/user/" + Global.getAccount().getId();
 
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET,
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 url,
                 null,
-                (JSONArray response) -> {
+                (JSONObject response) -> {
                     Log.d(TAG, "fetchRestrictions: " + response);
-                    ArrayList<DietaryRestriction> restrictions = new ArrayList<>();
-                    if (response != null) {
-                        for (int i = 0; i < response.length(); i++) {
-                            try {
-                                DietaryRestriction currRestriction = new DietaryRestriction(response.getJSONObject(i));
-                                restrictions.add(currRestriction);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                    JSONObject user;
+                    ArrayList<Preference> preferences = new ArrayList<>();
+                    JSONArray prefJSON;
+
+                    try {
+                        user = response.getJSONObject("user");
+                        prefJSON = user.getJSONArray("preferences");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+
+                    for (int i = 0; i < prefJSON.length(); i++) {
+                        try {
+                            Preference preference = new Preference(prefJSON.getJSONObject(i));
+                            preferences.add(preference);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
                     }
-                    Log.d(TAG, "fetchRestrictions: " + restrictions);
-                    mRestrictionList.setValue(restrictions);
+                    Log.d(TAG, "fetchRestrictions: " + preferences);
+                    ArrayList<DietaryRestriction> diet = new ArrayList<>();
+                    for (Preference p: preferences) {
+                        if (p.isDietary()) {
+                            diet.add(new DietaryRestriction(p));
+                        }
+                    }
+
+                    mRestrictionList.setValue(diet);
                 },
                 error -> {
                     Log.e(TAG, "fetchLeaderboard: " + error);
