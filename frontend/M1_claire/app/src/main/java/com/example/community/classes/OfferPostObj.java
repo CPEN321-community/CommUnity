@@ -3,11 +3,12 @@ package com.example.community.classes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class OfferPostObj {
+public class OfferPostObj implements Serializable {
 
     public String offerId;
     public String itemName;
@@ -16,10 +17,12 @@ public class OfferPostObj {
     public String pickupAddr;
     public String image;
     public Date bestBefore;
+    public String userId;
 
     public OfferPostObj(JSONObject json) {
         try {
             this.offerId = json.getString("offerId");
+            this.userId = json.getString("userId");
             this.itemName = json.getString("title");
             this.description = json.getString("description");
             this.quantityKg = json.getInt("quantity");

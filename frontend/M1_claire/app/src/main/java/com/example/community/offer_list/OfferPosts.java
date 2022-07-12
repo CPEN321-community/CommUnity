@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.community.R;
 import com.example.community.SearchActivity;
@@ -16,6 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class OfferPosts extends AppCompatActivity {
     private ImageButton searchOfferPostButton;
     private FloatingActionButton addOfferPostButton;
+    private TextView offerName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
