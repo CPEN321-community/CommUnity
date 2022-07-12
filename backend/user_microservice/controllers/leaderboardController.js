@@ -77,13 +77,13 @@ const upsertUserMethod = async ({ userId, offerPosts, requestPosts }) => {
                     where: { userId }
         });
         const scoreAlreadyExists = currLeaderboard != null;
+        console.log(currLeaderboard);
         if (scoreAlreadyExists) {
-            const newOfferPosts = currLeaderboard.offerPosts + offerPosts;
-            const newRequestPosts = currLeaderboard.requestPosts + requestPosts;
+            const newOfferPosts = currLeaderboard.dataValues.offerPosts + offerPosts;
+            const newRequestPosts = currLeaderboard.dataValues.requestPosts + requestPosts;
             const score = (newOfferPosts * 7) + (newRequestPosts * 3);    
 
             await Leaderboard.update({
-                userId,
                 offerPosts: newOfferPosts,
                 requestPosts: newRequestPosts,
                 score,

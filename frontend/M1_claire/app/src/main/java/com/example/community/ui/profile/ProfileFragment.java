@@ -1,21 +1,26 @@
 package com.example.community.ui.profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.community.EditRestrictionsActivity;
 import com.example.community.classes.DietaryRestriction;
 import com.example.community.classes.Global;
 import com.example.community.classes.Stats;
+import com.example.community.classes.UserProfile;
 import com.example.community.classes.Utils;
 import com.example.community.databinding.FragmentProfileBinding;
 
@@ -26,22 +31,35 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
+    private UserProfile userProfile;
+    private static final int requestCode = 15;
+    private ProfileViewModel pvm;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         ProfileViewModel profileViewModel =
                 new ViewModelProvider(this).get(ProfileViewModel.class);
+        this.pvm = profileViewModel;
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         ImageView avatar = binding.profileAvatar;
-        String profileImageURL = Global.getAccount().getPhotoUrl().toString();
-        Utils.setImageWhenLoaded(requireContext(), profileImageURL, avatar);
+        ImageButton addRestrictionButton = binding.addRestrictionButton;
+        addRestrictionButton.setOnClickListener(v -> {
+            Intent addRestrictionIntent = new Intent(requireContext(), EditRestrictionsActivity.class);
+            startActivityForResult(addRestrictionIntent, requestCode);
+        });
         LiveData<ArrayList<DietaryRestriction>> restrictions = profileViewModel.getRestrictions();
         LiveData<Stats> stats = profileViewModel.getStats();
+        LiveData<UserProfile> profile = profileViewModel.getProfile();
+        profile.observe(getViewLifecycleOwner(), (newProfile) -> {
+            this.userProfile = newProfile;
+            String profileImageURL = newProfile.profilePicture;
+            Utils.setImageWhenLoaded(requireContext(), profileImageURL, avatar);
+        });
         ListView restrictionList = binding.dietaryRestrictionsList;
         restrictions.observe(getViewLifecycleOwner(), newRestrictons -> {
-        DietaryRestrictionsAdapter adapter = new DietaryRestrictionsAdapter(requireContext());
+            DietaryRestrictionsAdapter adapter = new DietaryRestrictionsAdapter(requireContext());
             restrictionList.setAdapter(adapter);
             adapter.updateList(newRestrictons);
         });
@@ -62,5 +80,13 @@ public class ProfileFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == ProfileFragment.requestCode) {
+            this.pvm.fetchUser();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
