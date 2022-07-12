@@ -56,6 +56,17 @@ const searchOffers = async (req, res) => {
                     bestBeforeDate: similarPosts[i].dataValues.bestBeforeDate
                 });
             }
+        } else {
+            const res = await axios.get(`${process.env.RECOMMENDATION_URL}/offer/${req.params.title}`);
+            if (res.length) {
+                res.forEach(r => {
+                    const item = await OfferPost.findOne({ where: { offerId: res.postId }});
+                    const { userId, offerId, title, description, quantity, pickUpLocation, image, status, bestBeforeDate } = item.dataValues;
+                    result.push({
+                        userId, offerId, title, description, quantity, pickUpLocation, image, status, bestBeforeDate
+                    })
+                })
+            }
         }
 
         res.json(response);

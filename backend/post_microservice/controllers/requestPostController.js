@@ -61,6 +61,17 @@ const searchRequests = async (req, res) => {
                     createdAt: similarPosts[i].dataValues.createdAt,
                 });
             }
+        } else {
+            const res = await axios.get(`${process.env.RECOMMENDATION_URL}/request/${req.params.title}`);
+            if (res.length) {
+                res.forEach(r => {
+                    const item = await OfferPost.findOne({ where: { requestId: res.postId }});
+                    const { userId, requestId, title, description, quantity, pickUpLocation, image, status, bestBeforeDate } = item.dataValues;
+                    result.push({
+                        userId, requestId, title, description, quantity, pickUpLocation, image, status, bestBeforeDate
+                    })
+                })
+            }
         }
 
         res.json(response);
