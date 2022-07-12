@@ -26,7 +26,7 @@ class Model extends IModel {
         const offerModel = await use.load();
         this.offerModel = offerModel;
 
-        const offerRes = await axios.get('http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/communityPost/offers');
+        const offerRes = await axios.get(`${process.env.POST_URL}/communitypost/offers`);
         const allOffers = offerRes.data;
 
         for (let i=0; i < allOffers.length; i+=1) {
@@ -45,7 +45,7 @@ class Model extends IModel {
         const requestModel = await use.load();
         this.requestModel = requestModel;
 
-        const requestRes = await axios.get('http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/communityPost/requests');
+        const requestRes = await axios.get(`${process.env.POST_URL}/communitypost/requests`);
         const allRequests = requestRes.data;
 
         for (let i=0; i < allRequests.length; i+=1) {

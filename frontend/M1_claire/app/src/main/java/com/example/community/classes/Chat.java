@@ -1,6 +1,12 @@
 package com.example.community.classes;
 
+import android.content.Context;
 import android.util.Log;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,5 +85,26 @@ public class Chat implements Serializable {
         });
     }
 
+    public static synchronized void createRoom(String roomId, boolean isOffer) {
+        JSONObject createRoomMessage = new JSONObject();
+        JSONObject senderData = new JSONObject();
+        try {
+            senderData.put("senderId", Global.getAccount().getId());
+            senderData.put("senderFirstName", Global.userProfile.firstName);
+            senderData.put("senderLastName", Global.userProfile.lastName);
+            senderData.put("senderProfilePicture", Global.userProfile.profilePicture);
+            createRoomMessage.put("postId", roomId);
+            createRoomMessage.put("senderData", senderData);
+            createRoomMessage.put("isOffer", isOffer);
+        } catch (JSONException e) {
+            Log.e(TAG, "createRoom: " + e);
+            e.printStackTrace();
+        }
+
+        Log.d(TAG, "createRoom: Tryna start some shut");
+        Log.d(TAG, "createRoom: " + Global.getSocket());
+        Global.getSocket().emit("createRoom", createRoomMessage);
+
+    }
 
 }

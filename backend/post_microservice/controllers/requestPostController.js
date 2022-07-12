@@ -3,6 +3,7 @@ const axios = require("axios").default;
 const { RequestPost, RequestPostTags } = require("../models");
 
 const getRequest = async (req, res) => {
+    console.log("Get request endpoint hit");
    try {
        const requestId = req.params.requestId;
        const response = await RequestPost.findOne({where: {requestId: requestId}});
@@ -22,6 +23,7 @@ const getAllRequests = async (req, res) => {
 }
 
 const getAllUserRequests = async (req, res) => {
+    console.log("get user endpoint hit");
     try{
         const response = await RequestPost.findAll({where: {userId: req.params.userId}});
         res.json(response);
@@ -46,9 +48,11 @@ const searchRequests = async (req, res) => {
             }
         });
 
+        console.log(similarPosts);
         if (similarPosts != null){
             for (let i = 0; i < similarPosts.length; i = i + 1){
                 response.push({
+                    userId: similarPosts[i].dataValues.userId,
                     requestId: similarPosts[i].dataValues.requestId,
                     title: similarPosts[i].dataValues.title,
                     description: similarPosts[i].dataValues.description,
@@ -113,16 +117,13 @@ const createRequest = async (req, res) => {
                   });
             }
         }
-
-        offersForUser = await axios.get(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/communitpost/offers/${req.body.userId}`);
-        const requestPostsForUser = await RequestPost.findAll({where: {userId: req.body.userId}});
-        let response = [];
-        response.push({
+        
+        const updateUserBody = {
             userId: req.body.userId,
-            offerPosts: offersForUser.length,
-            requestPosts: requestPostsForUser.length + 1
-        });
-        await axios.put(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/rank/${response}`);
+            offerPosts: 0,
+            requestPosts: 1,
+        };
+        await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
         res.sendStatus(200);
     } catch (error) {
       console.log("Error creating a new post: " + error);
@@ -145,7 +146,7 @@ const updateRequest = async (req, res) => {
                 status: req.body.status
             }, {where: {requestId: req.body.requestId}});
             if (req.body.status == "Fulfilled") {
-                await axios.delete(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/suggestedPosts/request/${req.body.requestId}`);
+                await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/request/${req.body.requestId}`);
             }
             res.json("Post updated");
         }else{
@@ -208,7 +209,7 @@ const deleteRequest = async (req, res) => {
     try {
         await RequestPostTags.destroy({where: {postId: req.body.requestId}});
         await RequestPost.destroy({where: {requestId: req.body.requestId}});
-        await axios.delete(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/suggestedPosts/request/${req.body.requestId}`);
+        await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/request/${req.body.requestId}`);
         res.sendStatus(200);
     } catch (error) {
         console.log("Error deleting post: " + error);
