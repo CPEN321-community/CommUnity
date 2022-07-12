@@ -89,10 +89,12 @@ const searchOffersWithTags = async (req, res) => {
             where: {offerId: uniquePostIds}
         });
 
-        console.log("postList");
-        console.log(postList);
+        const result = postList.map(post => {
+            return post.dataValues;
+        })
+        console.log(result);
 
-        res.status(200).json({results: postList});
+        res.status(200).json({results: result});
     } catch (error) {
       console.log("Error with searching for offer posts: " + error);
       res.sendStatus(500);
@@ -101,7 +103,7 @@ const searchOffersWithTags = async (req, res) => {
 
 const createOffer = async (req, res) => {
     try {
-        await OfferPost.create({
+        const createdOffer = await OfferPost.create({
             userId: req.body.userId,
             title: req.body.title,
             description: req.body.description,
@@ -112,13 +114,11 @@ const createOffer = async (req, res) => {
             bestBeforeDate: req.body.bestBeforeDate
         });
 
-        const newOffer = await OfferPost.findOne({where: {userId: req.body.userId}});
-
         let tagList = req.body.tagList;
         if(tagList != null){
             for(let item of tagList) {
                 OfferPostTags.create({
-                    postId: newOffer.offerId,
+                    postId: createdOffer.offerId,
                     name: item
                 });
             }

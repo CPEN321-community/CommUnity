@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -19,6 +20,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.community.R;
 import com.example.community.classes.Global;
+import com.example.community.classes.Tags;
 import com.example.community.classes.Utils;
 
 import org.json.JSONException;
@@ -37,7 +39,7 @@ public class NewOfferForm extends AppCompatActivity {
     private EditText pickup;
     private EditText desc;
     private Button createPostButton;
-    private ConstraintLayout taglist;
+    private Tags tags;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,13 @@ public class NewOfferForm extends AppCompatActivity {
         this.createPostButton.setOnClickListener(v -> {
             this.createOfferPost();
         });
-        Log.d(TAG, "onCreate: " + this.taglist);
+        TextView fruit = findViewById(R.id.fruit);
+        TextView vegetable = findViewById(R.id.vegetable);
+        TextView nut = findViewById(R.id.nut);
+
+        Tags tags = new Tags(fruit, vegetable, nut);
+        this.tags = tags;
+
         this.uploadPhotoButton.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.setType("image/*");
@@ -93,6 +101,7 @@ public class NewOfferForm extends AppCompatActivity {
             postBody.put("pickUpLocation", this.pickup.getText().toString());
             postBody.put("image", "");
             postBody.put("status", "ACTIVE");
+            postBody.put("tagList", this.tags.getJSONArr());
             Date selectedDate = new Date(this.bestBefore.getDate());
             String dateString = Utils.DateToString(selectedDate);
             postBody.put("bestBeforeDate", dateString);

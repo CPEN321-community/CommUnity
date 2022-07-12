@@ -1,4 +1,4 @@
-const { Op } = require("sequelize");
+const { Op, OptimisticLockError } = require("sequelize");
 const axios = require("axios").default;
 const { RequestPost, RequestPostTags } = require("../models");
 
@@ -89,12 +89,16 @@ const searchRequestsWithTags = async (req, res) => {
         }
         
         const postList = await RequestPost.findAll({
-            where: {offerId: uniquePostIds}
+            where: {requestId: uniquePostIds}
         });
 
-        res.status(200).json({results: postList});
+        const result = postList.map(post => {
+            return post.dataValues;
+        })
+
+        res.status(200).json({results: result});
     } catch (error) {
-      console.log("Error with searching for offer posts: " + error);
+      console.log("Error with searching for request posts: " + error);
       res.sendStatus(500);
     }
 }

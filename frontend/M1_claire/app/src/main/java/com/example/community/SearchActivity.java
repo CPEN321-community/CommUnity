@@ -284,6 +284,8 @@ public class SearchActivity extends AppCompatActivity {
                         }
                     }
 
+                    Log.d(TAG, "PerformRequestTagSearch: " + searchResults);
+
                     mRequestPosts.setValue(searchResults);
                 },
                 error -> {
