@@ -75,11 +75,11 @@
                 android:layout_height="wrap_content"
                 android:text="Select Tags" />
 
-            <TextView
-                android:id="@+id/textView10"
+            <include
+                android:id="@+id/tag_list_request"
+                layout="@layout/fragment_tag_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TODO TAGs" />
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/create_request_button"

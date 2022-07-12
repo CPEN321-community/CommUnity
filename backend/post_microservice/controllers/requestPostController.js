@@ -192,8 +192,8 @@ const addRequestTags = async (req, res) => {
 
         updatedTags.forEach(tag => {
             if (!currentTagsList.includes(tag)) {
-                OfferPostTags.create({
-                    postId: req.body.offerId,
+                RequestPostTags.create({
+                    postId: req.body.requestId,
                     name: tag
                 });
             }

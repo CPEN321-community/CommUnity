@@ -15,7 +15,7 @@ function applyRelationships(sequelize) {
     OfferPostTags.belongsTo(OfferPost, { foreignKey: 'offerId' });
 
     RequestPost.hasMany(RequestPostTags, { foreignKey: 'requestId' });
-    OfferPostTags.belongsTo(RequestPost, { foreignKey: 'requestId' })
+    RequestPostTags.belongsTo(RequestPost, { foreignKey: 'requestId' })
 }
 
 let sequelize;

@@ -77,10 +77,13 @@
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/tag_list"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+    <include
+        android:id="@+id/tag_list_search"
+        layout="@layout/fragment_tag_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <ListView
@@ -90,7 +93,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tag_list" />
+        app:layout_constraintTop_toBottomOf="@+id/tag_list_search">
+
+    </ListView>
 
     <ListView
         android:id="@+id/offer_post_result_list"
@@ -100,7 +105,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tag_list">
+        app:layout_constraintTop_toBottomOf="@+id/tag_list_search">
 
     </ListView>
 

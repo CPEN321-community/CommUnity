@@ -1,6 +1,7 @@
 package com.example.community;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +32,7 @@ import com.example.community.classes.Global;
 import com.example.community.classes.Message;
 import com.example.community.classes.OfferPostObj;
 import com.example.community.classes.ReqPostObj;
+import com.example.community.databinding.FragmentTagListBinding;
 import com.example.community.offer_list.OfferPostAdapter;
 import com.example.community.request_list.ReqPostAdapter;
 
@@ -48,11 +50,14 @@ public class SearchActivity extends AppCompatActivity {
     private MutableLiveData<ArrayList<OfferPostObj>> mOfferPosts = new MutableLiveData<>();
     private ListView reqPostResultList;
     private ListView offerPostResultList;
+    private ConstraintLayout tagListContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        this.tagListContainer = findViewById(R.id.tag_list_search);
+//        this.tagListContainer.
         this.searchField = findViewById(R.id.search_text_input);
         // Ack: https://stackoverflow.com/questions/4165414/how-to-hide-soft-keyboard-on-android-after-clicking-outside-edittext
         this.searchField.setOnFocusChangeListener((view, hasFocus) -> {
