@@ -25,9 +25,9 @@ public class Global {
     //    public static final String CHAT_URL = "http://10.0.2.2:3000";
 //    public static final String USER_URL = "http://10.0.2.2:8080";
 //    public static final String POST_URL = "http://10.0.2.2:8081";
-    public static final String CHAT_URL = "http://10.0.2.2:3000";
-    public static final String USER_URL = "http://10.0.2.2:8080";
-    public static final String POST_URL = "http://10.0.2.2:8081";
+    public static final String CHAT_URL = "http://ec2-35-183-28-141.ca-central-1.compute.amazonaws.com:3000";
+    public static final String USER_URL = "http://ec2-3-96-168-213.ca-central-1.compute.amazonaws.com:3000";
+    public static final String POST_URL = "http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000";
 
 
     public static void cleanup() {
