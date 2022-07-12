@@ -17,7 +17,7 @@ function applyRelationships(sequelize) {
   User.hasMany(Room, { foreignKey: 'userId' });
   Room.belongsTo(User, { foreignKey: 'userId' });
 
-  User.hasMany(UserToken, { foreignKey: 'userId' });
+  User.hasOne(UserToken, { foreignKey: 'userId' });
   UserToken.belongsTo(User, { foreignKey: 'userId' });
 }
 
