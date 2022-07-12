@@ -1,6 +1,7 @@
 const { Op } = require("sequelize");
-const { OfferPost, OfferPostTags } = require("../models");
-  
+const { OfferPost, OfferPostTags, RequestPostTags } = require("../models");
+const axios = require("axios")
+
 const getOffer = async (req, res) => {
     try {
         const offerId = req.params.offerId;
@@ -44,6 +45,7 @@ const searchOffers = async (req, res) => {
         if (similarPosts != null){
             for (let i = 0; i < similarPosts.length; i = i + 1){
                 response.push({
+                    userId: similarPosts[i].dataValues.userId,
                     offerId: similarPosts[i].dataValues.offerId,
                     title: similarPosts[i].dataValues.title,
                     description: similarPosts[i].dataValues.description,
@@ -66,7 +68,9 @@ const searchOffers = async (req, res) => {
 
 const searchOffersWithTags = async (req, res) => {
     try {
-        const tagList = req.params.tagList;
+        const tagList = req.body.tagList;
+        console.log("hello world!");
+        console.log(tagList);
         const postTags = await OfferPostTags.findAll({
             where: {name: tagList}
         });
@@ -85,7 +89,12 @@ const searchOffersWithTags = async (req, res) => {
             where: {offerId: uniquePostIds}
         });
 
-        res.status(200).json(postList);
+        const result = postList.map(post => {
+            return post.dataValues;
+        })
+        console.log(result);
+
+        res.status(200).json({results: result});
     } catch (error) {
       console.log("Error with searching for offer posts: " + error);
       res.sendStatus(500);
@@ -94,7 +103,7 @@ const searchOffersWithTags = async (req, res) => {
 
 const createOffer = async (req, res) => {
     try {
-        await OfferPost.create({
+        const createdOffer = await OfferPost.create({
             userId: req.body.userId,
             title: req.body.title,
             description: req.body.description,
@@ -105,27 +114,24 @@ const createOffer = async (req, res) => {
             bestBeforeDate: req.body.bestBeforeDate
         });
 
-        const newOffer = await OfferPost.findOne({where: {userId: req.body.userId}});
-
         let tagList = req.body.tagList;
         if(tagList != null){
             for(let item of tagList) {
                 OfferPostTags.create({
-                    postId: newOffer.offerId,
+                    postId: createdOffer.offerId,
                     name: item
                 });
             }
-        }
+            }
 
-        requestsForUser = await axios.get(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/communitpost/requests/${req.body.userId}`);
-        const offerPostsForUser = await OfferPost.findAll({where: {userId: req.body.userId}});
-        let response = [];
-        response.push({
+        const updateUserBody = {
             userId: req.body.userId,
-            offerPosts: requestsForUser.length,
-            requestPosts: offerPostsForUser.length + 1
-        });
-        await axios.put(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/rank/${response}`);
+            offerPosts: 1,
+            requestPosts: 0,
+        };
+        console.log(updateUserBody);
+
+        await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
         res.sendStatus(200);
 
     } catch (error) {
@@ -193,7 +199,7 @@ const updateOffer = async (req, res) => {
                 bestBeforeDate: req.body.bestBeforeDate
             }, {where: {offerId: req.body.offerId}});
             if (req.body.status == "Fulfilled") {
-                await axios.delete(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/suggestedPosts/offer/${req.body.offerId}`);
+                await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/offer/${req.body.offerId}`);
             }
             res.sendStatus(200);
         }else{
@@ -205,7 +211,7 @@ const updateOffer = async (req, res) => {
     }
 }
 
-  const deleteOffer = async (req, res) => {
+const deleteOffer = async (req, res) => {
     try {
         await OfferPostTags.destroy({
             where: {
@@ -217,15 +223,15 @@ const updateOffer = async (req, res) => {
                 offerId: req.body.offerId
             }
         });
-        await axios.delete(`http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000/suggestedPosts/offer/${req.body.offerId}`);
+        await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/offer/${req.body.offerId}`);
         res.sendStatus(200);
     } catch (error) {
         console.log("Error deleting post: " + error);
         res.sendStatus(500);
     }
-  }
+}
 
-  module.exports = {
+module.exports = {
     getOffer,
     getAllOffers,
     getAllUserOffers,
@@ -236,4 +242,4 @@ const updateOffer = async (req, res) => {
     removeOfferTags,
     addOfferTags,
     deleteOffer
-  };
+};

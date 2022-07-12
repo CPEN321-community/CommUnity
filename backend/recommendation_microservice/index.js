@@ -4,6 +4,10 @@ const routes = require('./routes');
 const cors = require('cors');
 const Singleton = require('./singleton');
 const model = (new Singleton()).getInstance();
+const dotenv = require("dotenv");
+
+dotenv.config({path: "../ports.env"});
+dotenv.config();
 
 const app = express();
 

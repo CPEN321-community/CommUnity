@@ -2,6 +2,7 @@ package com.example.community.classes;
 
 import android.util.Log;
 
+import com.example.community.exceptions.NoMessagesException;
 import com.example.community.ui.chat.ChatAdapter;
 import com.example.community.ui.chat.message.MessageAdapter;
 
@@ -37,12 +38,16 @@ public class ChatMessageHandler {
         chatAdapter.notifySelf();
     }
 
-    public static Message GetPreview(String roomId) {
+    public static Message GetPreview(String roomId) throws NoMessagesException {
+        try {
         if (!adapterHashMap.containsKey(roomId)) {
             ArrayList<Message> messages = chatMap.get(roomId);
             return messages.get(messages.size() - 1);
         } else {
             return adapterHashMap.get(roomId).getLastMessage();
+        }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new NoMessagesException();
         }
     }
 

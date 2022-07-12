@@ -1,9 +1,12 @@
 package com.example.community;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.adapter.FragmentViewHolder;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -24,6 +27,7 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.community.classes.Chat;
 import com.example.community.classes.ChatMessageHandler;
@@ -31,6 +35,7 @@ import com.example.community.classes.Global;
 import com.example.community.classes.Message;
 import com.example.community.classes.OfferPostObj;
 import com.example.community.classes.ReqPostObj;
+import com.example.community.classes.Tags;
 import com.example.community.offer_list.OfferPostAdapter;
 import com.example.community.request_list.ReqPostAdapter;
 
@@ -48,12 +53,23 @@ public class SearchActivity extends AppCompatActivity {
     private MutableLiveData<ArrayList<OfferPostObj>> mOfferPosts = new MutableLiveData<>();
     private ListView reqPostResultList;
     private ListView offerPostResultList;
+    private TextView fruit;
+    private TextView vegetable;
+    private TextView nut;
+    private Tags tags;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         this.searchField = findViewById(R.id.search_text_input);
+        this.fruit = findViewById(R.id.fruit);
+        this.vegetable = findViewById(R.id.vegetable);
+        this.nut = findViewById(R.id.nut);
+
+        Tags tags = new Tags(this.fruit, this.vegetable, this.nut);
+        this.tags = tags;
+
         // Ack: https://stackoverflow.com/questions/4165414/how-to-hide-soft-keyboard-on-android-after-clicking-outside-edittext
         this.searchField.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
@@ -99,11 +115,6 @@ public class SearchActivity extends AppCompatActivity {
             this.reqPostResultList.setAdapter(postAdapter);
         });
 
-        RecyclerView tagList = (RecyclerView) findViewById(R.id.tag_list);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        tagList.setLayoutManager(layoutManager);
-
     }
 
     private void PerformRequestSearch() {
@@ -142,7 +153,6 @@ public class SearchActivity extends AppCompatActivity {
         queue.add(request);
     }
 
-
     private void PerformOfferSearch() {
         String query = this.searchField.getText().toString();
         String url = Global.POST_URL + "/communitypost/offers/search/" + query;
@@ -176,10 +186,112 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void PerformSearch() {
-        this.mOfferPosts.setValue(new ArrayList<>());
-        this.mRequestPosts.setValue(new ArrayList<>());
-        PerformOfferSearch();
-        PerformRequestSearch();
+        if (!this.searchField.getText().toString().equals("")) {
+            this.mOfferPosts.setValue(new ArrayList<>());
+            this.mRequestPosts.setValue(new ArrayList<>());
+            PerformRequestSearch();
+            PerformOfferSearch();
+        } else {
+            Log.d(TAG, "PerformSearch: TAGSEARCH");
+            PerformTagSearch();
+        }
+    }
+
+    private void PerformTagSearch() {
+        PerformOfferTagSearch();
+        PerformRequestTagSearch();
+    }
+
+    private void PerformOfferTagSearch() {
+        String url = Global.POST_URL + "/communitypost/offerTags/";
+        JSONObject body = new JSONObject();
+        try {
+            body.put("tagList", this.tags.getJSONArr());
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e(TAG, "PerformOfferTagSearch: " + e);
+            return;
+        }
+        RequestQueue queue = Volley.newRequestQueue(this);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT,
+                url,
+                body,
+                (JSONObject response) -> {
+                    Log.d(TAG, "tagSearch: " + response);
+                    if (response.length() == 0) {
+                        return;
+                    }
+                    JSONArray results;
+                    try {
+                        results = response.getJSONArray("results");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+                    ArrayList<OfferPostObj> searchResults = new ArrayList<>();
+                    for (int i = 0; i < results.length(); i++) {
+                        try {
+                            OfferPostObj currReqPost = new OfferPostObj(results.getJSONObject(i));
+                            searchResults.add(currReqPost);
+                        } catch (JSONException e) {
+                            Log.e(TAG, "tagSearch: " + e);
+                            e.printStackTrace();
+                        }
+                    }
+
+                    mOfferPosts.setValue(searchResults);
+                },
+                error -> {
+                    Log.e(TAG, "tagSearch: " + error);
+                });
+        queue.add(request);
+    }
+
+    private void PerformRequestTagSearch() {
+        String url = Global.POST_URL + "/communitypost/requestTags";
+        JSONObject body = new JSONObject();
+        try {
+            body.put("tagList", this.tags.getJSONArr());
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e(TAG, "PerformOfferTagSearch: " + e);
+            return;
+        }
+        RequestQueue queue = Volley.newRequestQueue(this);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT,
+                url,
+                body,
+                (JSONObject response) -> {
+                    Log.d(TAG, "tagSearch: " + response);
+                    if (response.length() == 0) {
+                        return;
+                    }
+                    JSONArray results;
+                    try {
+                        results = response.getJSONArray("results");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+                    ArrayList<ReqPostObj> searchResults = new ArrayList<>();
+                    for (int i = 0; i < results.length(); i++) {
+                        try {
+                            ReqPostObj currReqPost = new ReqPostObj(results.getJSONObject(i));
+                            searchResults.add(currReqPost);
+                        } catch (JSONException e) {
+                            Log.e(TAG, "tagSearch: " + e);
+                            e.printStackTrace();
+                        }
+                    }
+
+                    Log.d(TAG, "PerformRequestTagSearch: " + searchResults);
+
+                    mRequestPosts.setValue(searchResults);
+                },
+                error -> {
+                    Log.e(TAG, "getChats: " + error);
+                });
+        queue.add(request);
     }
 
     public void hideKeyboard(View view) {

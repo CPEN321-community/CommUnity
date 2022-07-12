@@ -7,6 +7,7 @@ const socketHandler = require('./socket/socketHandler');
 const db = require('./models');
 const dotenv = require("dotenv")
 
+dotenv.config({path: "../ports.env"});
 dotenv.config();
 
 const app = express();

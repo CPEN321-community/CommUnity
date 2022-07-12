@@ -119,11 +119,10 @@
                 android:layout_height="wrap_content"
                 android:text="Select Tags" />
 
-            <TextView
-                android:id="@+id/textView10"
+            <include
+                layout="@layout/fragment_tags"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TODO TAGs" />
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/create_offer_button"
