@@ -1,11 +1,13 @@
 package com.example.community.offer_list;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
@@ -18,6 +20,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.community.R;
 import com.example.community.classes.Global;
 import com.example.community.classes.Utils;
+import com.example.community.databinding.FragmentTagListBinding;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,6 +38,7 @@ public class NewOfferForm extends AppCompatActivity {
     private EditText pickup;
     private EditText desc;
     private Button createPostButton;
+    private ConstraintLayout taglist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,9 @@ public class NewOfferForm extends AppCompatActivity {
         this.createPostButton.setOnClickListener(v -> {
             this.createOfferPost();
         });
+        this.taglist = this.findViewById(R.id.tag_list_offer);
+//        taglist.findViewById()
+        Log.d(TAG, "onCreate: " + this.taglist);
         this.uploadPhotoButton.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.setType("image/*");

@@ -31,6 +31,20 @@ const upsertUserPreference = async (req, res) => {
     }
 }
 
+const deleteUserPreference = async (req, res) => {
+    console.log("Delete user pref");
+    try {
+        const {preferenceId} = req.params;
+        const deleted = await Preference.destroy({
+            where: {id: preferenceId},
+        });
+        res.json({deleted});
+    } catch (error) {
+        console.log("Error deleting user preferences: " + error);
+        res.sendStatus(500);        
+    }
+}
+
 const updateUser = async (req, res) => {
     try {
         const response = await User.update({
@@ -87,4 +101,5 @@ module.exports = {
     upsertUserPreference,
     updateUser,
     createUser,
+    deleteUserPreference
   };

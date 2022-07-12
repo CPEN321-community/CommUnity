@@ -1,18 +1,30 @@
 package com.example.community.ui.profile;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.community.R;
 import com.example.community.classes.DietaryRestriction;
+import com.example.community.classes.Global;
+import com.example.community.classes.Preference;
+import com.example.community.classes.UserProfile;
 import com.example.community.classes.UserWithScore;
 import com.example.community.classes.Utils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -41,7 +53,11 @@ public class DietaryRestrictionsAdapter extends BaseAdapter {
         this.restrictions.addAll(newRestrictons);
     }
 
-
+    public void notifySelf() {
+        ((Activity) context).runOnUiThread(() -> {
+            this.notifyDataSetChanged();
+        });
+    }
 
     @Override
     public int getCount() {
@@ -62,7 +78,11 @@ public class DietaryRestrictionsAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflater.inflate(R.layout.fragment_dietary_restriction, null);
         TextView name = (TextView) view.findViewById(R.id.restriction_name);
+        ImageButton removeButton = view.findViewById(R.id.remove_restriction_button);
         DietaryRestriction restriction = this.restrictions.get(i);
+        removeButton.setOnClickListener(v -> {
+            removePreference(restriction, i);
+        });
         Log.d(TAG, "getView: " + restriction.name);
 
         name.setText(restriction.name);
@@ -70,6 +90,23 @@ public class DietaryRestrictionsAdapter extends BaseAdapter {
         return view;
     }
 
+    private void removePreference(DietaryRestriction pref, int index) {
+        RequestQueue queue = Volley.newRequestQueue(this.context);
+        String url = Global.USER_URL + "/user/preference/" + pref.getId();
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE,
+                url,
+                null,
+                res -> {
+                    this.restrictions.remove(index);
+                    this.notifySelf();
+                },
+                error -> {
+                    Log.e(TAG, "fetchLeaderboard: " + error);
+                });
+        queue.add(request);
+
+    }
 
 
 }

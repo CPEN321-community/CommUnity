@@ -31,9 +31,13 @@ public class DietaryRestriction {
     }
 
     public DietaryRestriction(Preference pref) {
-        if (!pref.isDietary()) throw new RuntimeException("Attempt to construct DietaryRestriction from non-DIETARY preference");
+        if (!pref.isDietary())
+            throw new RuntimeException("Attempt to construct DietaryRestriction from non-DIETARY preference");
         this.id = pref.getId();
         this.name = pref.getValue();
     }
 
+    public String getId() {
+        return id;
+    }
 }
