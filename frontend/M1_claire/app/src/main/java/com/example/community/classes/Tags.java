@@ -51,13 +51,13 @@ public class Tags {
     public JSONArray getJSONArr() {
         JSONArray arr = new JSONArray();
         if (fruitClicked) {
-            arr.put("fruit");
+            arr.put("Fruit");
         }
         if (vegClicked) {
-            arr.put("fruit");
+            arr.put("Vegetable");
         }
         if (nutClicked) {
-            arr.put("nut");
+            arr.put("Nut");
         }
         return arr;
     }
