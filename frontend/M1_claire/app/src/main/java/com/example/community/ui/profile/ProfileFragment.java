@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.community.classes.DietaryRestriction;
 import com.example.community.classes.Global;
 import com.example.community.classes.Stats;
+import com.example.community.classes.UserProfile;
 import com.example.community.classes.Utils;
 import com.example.community.databinding.FragmentProfileBinding;
 
@@ -26,7 +27,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
-
+    private UserProfile userProfile;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         ProfileViewModel profileViewModel =
@@ -35,10 +36,14 @@ public class ProfileFragment extends Fragment {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         ImageView avatar = binding.profileAvatar;
-        String profileImageURL = Global.getAccount().getPhotoUrl().toString();
-        Utils.setImageWhenLoaded(requireContext(), profileImageURL, avatar);
         LiveData<ArrayList<DietaryRestriction>> restrictions = profileViewModel.getRestrictions();
         LiveData<Stats> stats = profileViewModel.getStats();
+        LiveData<UserProfile> profile = profileViewModel.getProfile();
+        profile.observe(getViewLifecycleOwner(), (newProfile) -> {
+            this.userProfile = newProfile;
+            String profileImageURL = newProfile.profilePicture;
+            Utils.setImageWhenLoaded(requireContext(), profileImageURL, avatar);
+        });
         ListView restrictionList = binding.dietaryRestrictionsList;
         restrictions.observe(getViewLifecycleOwner(), newRestrictons -> {
         DietaryRestrictionsAdapter adapter = new DietaryRestrictionsAdapter(requireContext());

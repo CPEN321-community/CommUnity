@@ -1,5 +1,6 @@
 package com.example.community.ui.chat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
@@ -18,12 +19,14 @@ import com.example.community.classes.ChatMessageHandler;
 import com.example.community.classes.Global;
 import com.example.community.classes.Message;
 import com.example.community.databinding.ActivityChatBinding;
+import com.example.community.ui.chat.message.MessageActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -64,6 +67,12 @@ public class ChatActivity extends AppCompatActivity {
         ChatAdapter adapter = new ChatAdapter(this);
         ChatMessageHandler.setChatAdapter(adapter);
         chatListView.setAdapter(adapter);
+        Intent intent = getIntent();
+        String createRoomId = intent.getStringExtra("createRoomId");
+        Log.d(TAG, "onCreate: " + createRoomId);
+        if (createRoomId != null) {
+            Chat.createRoom(createRoomId, true);
+        }
 
         mChatList.observe(this, chatsList -> {
             adapter.setChats(chatsList);
@@ -72,6 +81,11 @@ public class ChatActivity extends AppCompatActivity {
         Chat.joinRooms();
         Chat.listenForMessages();
         getChats(Global.getAccount().getId());
+        if (createRoomId != null) {
+            Intent messageIntent = new Intent(this, MessageActivity.class);
+            messageIntent.putExtra("chat", Chat.getChat(createRoomId));
+            startActivity(messageIntent);
+        }
 
     }
 

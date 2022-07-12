@@ -2,6 +2,8 @@ package com.example.community.offer_list;
 
 import android.content.Context;
 
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +54,12 @@ public class OfferPostAdapter extends BaseAdapter {
         OfferPostObj post = this.offerPosts.get(i);
 
         itemName.setText(post.itemName);
+        view.setOnClickListener(view_name -> {
+            Log.d("ExpOfferButtonClick", "Offer button clicked");
+            Intent expOffersIntent = new Intent(this.context, ExpandedOfferPost.class);
+            expOffersIntent.putExtra("currOffer", post);
+            this.context.startActivity(expOffersIntent);
+        });
         //TODO: fix once we have calculated distance
         //distance.setText(post.distanceKm);
         pickupLocation.setText(post.pickupAddr);

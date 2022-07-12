@@ -45,6 +45,7 @@ const searchOffers = async (req, res) => {
         if (similarPosts != null){
             for (let i = 0; i < similarPosts.length; i = i + 1){
                 response.push({
+                    userId: similarPosts[i].dataValues.userId,
                     offerId: similarPosts[i].dataValues.offerId,
                     title: similarPosts[i].dataValues.title,
                     description: similarPosts[i].dataValues.description,
