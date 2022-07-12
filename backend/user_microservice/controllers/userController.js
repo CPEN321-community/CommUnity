@@ -55,13 +55,12 @@ const updateUser = async (req, res) => {
             profilePicture: req.body.profilePicture
         }, {where: {userId: req.body.userId}});
 
-        // TODO: fix this
-        // await axios.post('http://ec2-35-183-28-141.ca-central-1.compute.amazonaws.com:3000', {
-        //     userId: req.body.userId,
-        //     firstName: req.body.firstName,
-        //     lastName: req.body.lastName,
-        //     profilePicture: req.body.profilePicture
-        // });
+        await axios.post(`${process.env.CHAT_URL}/chat/changeUserInfo`, {
+            userId: req.body.userId,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            profilePicture: req.body.profilePicture
+        });
 
         res.json(response);
     } catch (error) {
