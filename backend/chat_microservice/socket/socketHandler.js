@@ -18,11 +18,13 @@ const socketHandler = (socket, io) => {
         }
     });
 
-    socket.on('createRoom', async roomDto => {
-        const isCreated = await createRoom(roomDto);
+    socket.on('createRoom', async ({postId, isOffer, senderData}) => {
+        console.log("Hello world!******");
+        console.log(postId, isOffer, senderData);
+        const isCreated = await createRoom(postId, isOffer, senderData);
 
         if (isCreated) {
-            socket.join(roomDto.postId);
+            socket.join(postId);
             socket.emit('createRoom', 'create_room_success')
         } else {
             socket.emit('createRoom', 'create_room_failure')
