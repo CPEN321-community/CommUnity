@@ -67,7 +67,7 @@ const searchOffers = async (req, res) => {
 
 const searchOffersWithTags = async (req, res) => {
     try {
-        const tagList = req.params.tagList;
+        const tagList = req.body.tagList;
         const postTags = await OfferPostTags.findAll({
             where: {name: tagList}
         });
@@ -116,7 +116,7 @@ const createOffer = async (req, res) => {
                     name: item
                 });
             }
-        }
+            }
 
         const updateUserBody = {
             userId: req.body.userId,
