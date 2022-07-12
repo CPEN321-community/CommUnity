@@ -92,7 +92,7 @@ const searchRequestsWithTags = async (req, res) => {
             where: {offerId: uniquePostIds}
         });
 
-        res.status(200).json(postList);
+        res.status(200).json({results: postList});
     } catch (error) {
       console.log("Error with searching for offer posts: " + error);
       res.sendStatus(500);

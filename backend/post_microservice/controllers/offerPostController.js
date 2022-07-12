@@ -69,6 +69,7 @@ const searchOffers = async (req, res) => {
 const searchOffersWithTags = async (req, res) => {
     try {
         const tagList = req.body.tagList;
+        console.log(tagList);
         const postTags = await OfferPostTags.findAll({
             where: {name: tagList}
         });
@@ -87,7 +88,10 @@ const searchOffersWithTags = async (req, res) => {
             where: {offerId: uniquePostIds}
         });
 
-        res.status(200).json(postList);
+        console.log("postList");
+        console.log(postList);
+
+        res.status(200).json({results: postList});
     } catch (error) {
       console.log("Error with searching for offer posts: " + error);
       res.sendStatus(500);
