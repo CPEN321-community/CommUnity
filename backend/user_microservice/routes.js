@@ -14,6 +14,5 @@ router.put('/user', updateUser);
 router.get('/rank/top/:N', getTopNUsers);
 router.get('/rank/:userId', getUserRank);
 router.put('/rank', upsertUserRank);
-router.get('/leaderboard/:userId', getUserLeaderboardStats);
 
 module.exports = router;
