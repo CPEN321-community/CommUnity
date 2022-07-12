@@ -55,7 +55,6 @@ public class OfferPostAdapter extends BaseAdapter {
 
         itemName.setText(post.itemName);
         view.setOnClickListener(view_name -> {
-            Log.d("ExpOfferButtonClick", "Offer button clicked");
             Intent expOffersIntent = new Intent(this.context, ExpandedOfferPost.class);
             expOffersIntent.putExtra("currOffer", post);
             this.context.startActivity(expOffersIntent);
