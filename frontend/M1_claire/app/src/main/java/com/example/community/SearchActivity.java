@@ -192,6 +192,7 @@ public class SearchActivity extends AppCompatActivity {
             PerformRequestSearch();
             PerformOfferSearch();
         } else {
+            Log.d(TAG, "PerformSearch: TAGSEARCH");
             PerformTagSearch();
         }
     }
@@ -202,7 +203,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void PerformOfferTagSearch() {
-        String url = Global.POST_URL + "/communitypost/offers/searchTags/";
+        String url = Global.POST_URL + "/communitypost/offerTags/";
         JSONObject body = new JSONObject();
         try {
             body.put("tagList", this.tags.getJSONArr());
@@ -218,13 +219,19 @@ public class SearchActivity extends AppCompatActivity {
                 (JSONObject response) -> {
                     Log.d(TAG, "tagSearch: " + response);
                     if (response.length() == 0) {
-//                        TODO tell user they have no chats
+                        return;
+                    }
+                    JSONArray results;
+                    try {
+                        results = response.getJSONArray("results");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                         return;
                     }
                     ArrayList<OfferPostObj> searchResults = new ArrayList<>();
-                    for (int i = 0; i < response.length(); i++) {
+                    for (int i = 0; i < results.length(); i++) {
                         try {
-                            OfferPostObj currReqPost = new OfferPostObj(response.getJSONObject(i));
+                            OfferPostObj currReqPost = new OfferPostObj(results.getJSONObject(i));
                             searchResults.add(currReqPost);
                         } catch (JSONException e) {
                             Log.e(TAG, "tagSearch: " + e);
@@ -235,12 +242,54 @@ public class SearchActivity extends AppCompatActivity {
                     mOfferPosts.setValue(searchResults);
                 },
                 error -> {
-                    Log.e(TAG, "getChats: " + error);
+                    Log.e(TAG, "tagSearch: " + error);
                 });
         queue.add(request);
     }
 
     private void PerformRequestTagSearch() {
+        String url = Global.POST_URL + "/communitypost/requestTags";
+        JSONObject body = new JSONObject();
+        try {
+            body.put("tagList", this.tags.getJSONArr());
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e(TAG, "PerformOfferTagSearch: " + e);
+            return;
+        }
+        RequestQueue queue = Volley.newRequestQueue(this);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                url,
+                body,
+                (JSONObject response) -> {
+                    Log.d(TAG, "tagSearch: " + response);
+                    if (response.length() == 0) {
+                        return;
+                    }
+                    JSONArray results;
+                    try {
+                        results = response.getJSONArray("results");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+                    ArrayList<ReqPostObj> searchResults = new ArrayList<>();
+                    for (int i = 0; i < results.length(); i++) {
+                        try {
+                            ReqPostObj currReqPost = new ReqPostObj(results.getJSONObject(i));
+                            searchResults.add(currReqPost);
+                        } catch (JSONException e) {
+                            Log.e(TAG, "tagSearch: " + e);
+                            e.printStackTrace();
+                        }
+                    }
+
+                    mRequestPosts.setValue(searchResults);
+                },
+                error -> {
+                    Log.e(TAG, "getChats: " + error);
+                });
+        queue.add(request);
     }
 
     public void hideKeyboard(View view) {
