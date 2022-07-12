@@ -66,7 +66,7 @@ const searchRequests = async (req, res) => {
         res.json(response);
 
     } catch (error) {
-        console.log("Error with searching for offer posts: " + error);
+        console.log("Error with searching for request posts: " + error);
         res.sendStatus(500);
     }
 }
