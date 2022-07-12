@@ -78,7 +78,7 @@ public class ProfileViewModel extends AndroidViewModel {
         mStats.setValue(leaderBoardStats);
     }
 
-    private void fetchUser() {
+    public void fetchUser() {
         RequestQueue queue = Volley.newRequestQueue(this.application);
         String url = Global.USER_URL + "/user/" + Global.getAccount().getId();
 

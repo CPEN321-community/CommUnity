@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -17,12 +17,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.community.R;
 import com.example.community.classes.Global;
-import com.example.community.classes.Utils;
+import com.example.community.classes.Tags;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Date;
 
 public class NewRequestForm extends AppCompatActivity {
 
@@ -31,6 +29,8 @@ public class NewRequestForm extends AppCompatActivity {
     private EditText itemQuantity;
     private EditText desc;
     private Button createPostButton;
+    private Tags tags;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +41,18 @@ public class NewRequestForm extends AppCompatActivity {
         this.desc = this.findViewById(R.id.description_input);
         this.createPostButton = this.findViewById(R.id.create_request_button);
         this.createPostButton.setOnClickListener(v -> {
-            this.createOfferPost();
+            this.createRequestPost();
         });
+        TextView fruit = findViewById(R.id.fruit);
+        TextView vegetable = findViewById(R.id.vegetable);
+        TextView nut = findViewById(R.id.nut);
+
+        Tags tags = new Tags(fruit, vegetable, nut);
+        this.tags = tags;
     }
 
 
-    private void createOfferPost() {
+    private void createRequestPost() {
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Global.POST_URL + "/communitypost/requests";
         JSONObject postBody = new JSONObject();
@@ -55,6 +61,7 @@ public class NewRequestForm extends AppCompatActivity {
             postBody.put("title", this.itemName.getText().toString());
             postBody.put("description", this.desc.getText().toString());
             postBody.put("status", "ACTIVE");
+            postBody.put("tagList", tags.getJSONArr());
         } catch (JSONException e) {
             Log.e(TAG, "createPost: " + e);
             e.printStackTrace();

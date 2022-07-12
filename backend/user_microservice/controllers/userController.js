@@ -31,6 +31,20 @@ const upsertUserPreference = async (req, res) => {
     }
 }
 
+const deleteUserPreference = async (req, res) => {
+    console.log("Delete user pref");
+    try {
+        const {preferenceId} = req.params;
+        const deleted = await Preference.destroy({
+            where: {id: preferenceId},
+        });
+        res.json({deleted});
+    } catch (error) {
+        console.log("Error deleting user preferences: " + error);
+        res.sendStatus(500);        
+    }
+}
+
 const updateUser = async (req, res) => {
     try {
         const response = await User.update({
@@ -41,13 +55,12 @@ const updateUser = async (req, res) => {
             profilePicture: req.body.profilePicture
         }, {where: {userId: req.body.userId}});
 
-        // TODO: fix this
-        // await axios.post('http://ec2-35-183-28-141.ca-central-1.compute.amazonaws.com:3000', {
-        //     userId: req.body.userId,
-        //     firstName: req.body.firstName,
-        //     lastName: req.body.lastName,
-        //     profilePicture: req.body.profilePicture
-        // });
+        await axios.post(`${process.env.CHAT_URL}/chat/changeUserInfo`, {
+            userId: req.body.userId,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            profilePicture: req.body.profilePicture
+        });
 
         res.json(response);
     } catch (error) {
@@ -87,4 +100,5 @@ module.exports = {
     upsertUserPreference,
     updateUser,
     createUser,
+    deleteUserPreference
   };

@@ -1,4 +1,4 @@
-const { Op } = require("sequelize");
+const { Op, OptimisticLockError } = require("sequelize");
 const axios = require("axios").default;
 const { RequestPost, RequestPostTags } = require("../models");
 
@@ -66,14 +66,14 @@ const searchRequests = async (req, res) => {
         res.json(response);
 
     } catch (error) {
-        console.log("Error with searching for offer posts: " + error);
+        console.log("Error with searching for request posts: " + error);
         res.sendStatus(500);
     }
 }
 
 const searchRequestsWithTags = async (req, res) => {
     try {
-        const tagList = req.params.tagList;
+        const tagList = req.body.tagList;
         const postTags = await RequestPostTags.findAll({
             where: {name: tagList}
         });
@@ -89,12 +89,16 @@ const searchRequestsWithTags = async (req, res) => {
         }
         
         const postList = await RequestPost.findAll({
-            where: {offerId: uniquePostIds}
+            where: {requestId: uniquePostIds}
         });
 
-        res.status(200).json(postList);
+        const result = postList.map(post => {
+            return post.dataValues;
+        })
+
+        res.status(200).json({results: result});
     } catch (error) {
-      console.log("Error with searching for offer posts: " + error);
+      console.log("Error with searching for request posts: " + error);
       res.sendStatus(500);
     }
 }
@@ -192,8 +196,8 @@ const addRequestTags = async (req, res) => {
 
         updatedTags.forEach(tag => {
             if (!currentTagsList.includes(tag)) {
-                OfferPostTags.create({
-                    postId: req.body.offerId,
+                RequestPostTags.create({
+                    postId: req.body.requestId,
                     name: tag
                 });
             }
