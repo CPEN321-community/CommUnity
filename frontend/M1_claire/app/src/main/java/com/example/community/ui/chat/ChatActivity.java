@@ -69,9 +69,10 @@ public class ChatActivity extends AppCompatActivity {
         chatListView.setAdapter(adapter);
         Intent intent = getIntent();
         String createRoomId = intent.getStringExtra("createRoomId");
+        boolean isOffer = intent.getBooleanExtra("isOffer", true);
         Log.d(TAG, "onCreate: " + createRoomId);
         if (createRoomId != null) {
-            Chat.createRoom(createRoomId, true);
+            Chat.createRoom(createRoomId, isOffer);
         }
 
         mChatList.observe(this, chatsList -> {

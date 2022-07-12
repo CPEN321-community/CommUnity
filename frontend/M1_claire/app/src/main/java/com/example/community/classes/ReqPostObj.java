@@ -14,6 +14,7 @@ public class ReqPostObj implements Serializable{
     private static final String TAG = "REQ_POST_CLASS";
     public String reqId;
     public String itemName;
+    public String userId;
     public String description;
     public Date createdAt;
     private final String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
@@ -23,6 +24,7 @@ public class ReqPostObj implements Serializable{
             Log.d(TAG, "ReqPostObj: " + json);
             this.reqId = json.getString("requestId");
             this.itemName = json.getString("title");
+            this.userId = json.getString("userId");
             this.description = json.getString("description");
             String createdAtString = json.getString("createdAt");
             Log.d(TAG, "ReqPostObj: " + createdAtString);
