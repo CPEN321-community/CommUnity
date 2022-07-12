@@ -119,12 +119,6 @@
                 android:layout_height="wrap_content"
                 android:text="Select Tags" />
 
-            <include
-                android:id="@+id/tag_list_offer"
-                layout="@layout/fragment_tag_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
             <Button
                 android:id="@+id/create_offer_button"
                 android:layout_width="match_parent"

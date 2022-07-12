@@ -20,7 +20,6 @@ import com.android.volley.toolbox.Volley;
 import com.example.community.R;
 import com.example.community.classes.Global;
 import com.example.community.classes.Utils;
-import com.example.community.databinding.FragmentTagListBinding;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,8 +53,6 @@ public class NewOfferForm extends AppCompatActivity {
         this.createPostButton.setOnClickListener(v -> {
             this.createOfferPost();
         });
-        this.taglist = this.findViewById(R.id.tag_list_offer);
-//        taglist.findViewById()
         Log.d(TAG, "onCreate: " + this.taglist);
         this.uploadPhotoButton.setOnClickListener(v -> {
             Intent intent = new Intent();

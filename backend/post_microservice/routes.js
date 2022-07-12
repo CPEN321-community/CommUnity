@@ -16,7 +16,6 @@ router.put('/communitypost/requests', updateRequest);
 router.put('/communitypost/requests/tags', addRequestTags);
 router.delete('/communitypost/requests/tags', removeRequestTags);
 router.delete('/communitypost/requests/:requestId', deleteRequest);
-router.get('/communitypost/tags', getAllTags);
 
 
 // Offers
