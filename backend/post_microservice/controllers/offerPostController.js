@@ -69,6 +69,7 @@ const searchOffers = async (req, res) => {
 const searchOffersWithTags = async (req, res) => {
     try {
         const tagList = req.body.tagList;
+        console.log("hello world!");
         console.log(tagList);
         const postTags = await OfferPostTags.findAll({
             where: {name: tagList}

@@ -213,7 +213,7 @@ public class SearchActivity extends AppCompatActivity {
             return;
         }
         RequestQueue queue = Volley.newRequestQueue(this);
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT,
                 url,
                 body,
                 (JSONObject response) -> {
@@ -258,7 +258,7 @@ public class SearchActivity extends AppCompatActivity {
             return;
         }
         RequestQueue queue = Volley.newRequestQueue(this);
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT,
                 url,
                 body,
                 (JSONObject response) -> {
