@@ -73,7 +73,7 @@ const searchRequests = async (req, res) => {
 
 const searchRequestsWithTags = async (req, res) => {
     try {
-        const tagList = req.params.tagList;
+        const tagList = req.body.tagList;
         const postTags = await RequestPostTags.findAll({
             where: {name: tagList}
         });
