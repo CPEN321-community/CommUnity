@@ -10,10 +10,10 @@ router.get('/communitypost/requests/:requestId', getRequest);
 router.get('/communitypost/requests', getAllRequests);
 router.get('/communitypost/requests/users/:userId', getAllUserRequests);
 router.get('/communitypost/requests/search/:title', searchRequests);
-router.get('/communitypost/requestTags', searchRequestsWithTags);
+router.put('/communitypost/requestTags', searchRequestsWithTags);
 router.post('/communitypost/requests', createRequest);
 router.put('/communitypost/requests', updateRequest);
-router.put('/communitypost/requestTags', addRequestTags);
+router.post('/communitypost/requestTags', addRequestTags);
 router.delete('/communitypost/requests/tags', removeRequestTags);
 router.delete('/communitypost/requests/:requestId', deleteRequest);
 
@@ -23,10 +23,10 @@ router.get('/communitypost/offers/:offerId', getOffer);
 router.get('/communitypost/offers', getAllOffers);
 router.get('/communitpost/offers/users/:userId', getAllUserOffers);
 router.get('/communitypost/offers/search/:title', searchOffers);
-router.get('/communitypost/offerTags', searchOffersWithTags);
+router.put('/communitypost/offerTags', searchOffersWithTags);
 router.post('/communitypost/offers', createOffer);
 router.put('/communitypost/offers', updateOffer);
-router.put('/communitypost/offerTags', addOfferTags);
+router.post('/communitypost/offerTags', addOfferTags);
 router.delete('/communitypost/offers/tags', removeOfferTags);
 router.delete('/communitypost/offers/:offerId', deleteOffer);
 
