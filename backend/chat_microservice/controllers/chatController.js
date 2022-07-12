@@ -2,7 +2,7 @@ const { Op } = require("sequelize");
 const { User, Message, Room } = require('../models');
 const { sendNotifToUser } = require('./userTokenController');
 const Singleton = require('../singleton');
-
+const axios = require("axios");
 const deleteRoom = async (req, res) => {
   try {
     await Room.destroy({
@@ -104,21 +104,43 @@ const getAssociatedRooms = async (userId) => {
   }
 }
 
-const createRoom = async roomDto => {
+const createRoom = async (postId, isOffer, senderData) => {
   try {
+    let typeString = isOffer ? "offers" : "requests";
+    let post = await axios.get(`${process.env.POST_URL}/communitypost/${typeString}/${postId}`);
+    let postData = post.data;
+    console.log("POSTDATA");
+    console.log(postData);
+    if (!postData){
+      console.error("Tried to make chat for non-existent post");
+      return false;
+    }
+
+    const postOwnerId = postData.userId;
+    const receiverReq = await axios.get(`${process.env.USER_URL}/user/${postOwnerId}`);
+    console.log("RECIEVERREQ!!");
+    console.log(receiverReq);
+    const userData = receiverReq.data;
+    console.log("userData");
+    console.log(userData);
+    if (!userData || !userData.user) {
+      console.error("Failed to get user data to create chat");
+      return false;
+    }
+
+    const user = userData.user;
+
+    const receiverId = user.userId;
+    const receiverFirstName = user.firstName;
+    const receiverLastName =  user.lastName;
+    const receiverProfilePicture = user.profilePicture;
+
     const { 
-      postId,
-      receiverId,
-      receiverFirstName,
-      receiverLastName,
-      receiverProfilePicture,
       senderId,
       senderFirstName,
       senderLastName,
-      senderProfilePicture } = roomDto;
-      console.log(roomDto);
+      senderProfilePicture } = senderData;
 
-      console.log(receiverFirstName);
     await User.upsert({
       userId: receiverId,
       firstName: receiverFirstName,

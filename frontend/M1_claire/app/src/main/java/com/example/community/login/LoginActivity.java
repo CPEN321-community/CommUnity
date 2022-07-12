@@ -95,6 +95,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void finishLogin(GoogleSignInAccount account) {
         Global.setAccount(account);
+        Global.FetchUser();
         Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(mainActivityIntent);
         finish();

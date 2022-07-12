@@ -17,10 +17,12 @@ public class OfferPostObj implements Serializable {
     public String pickupAddr;
     public String image;
     public Date bestBefore;
+    public String userId;
 
     public OfferPostObj(JSONObject json) {
         try {
             this.offerId = json.getString("offerId");
+            this.userId = json.getString("userId");
             this.itemName = json.getString("title");
             this.description = json.getString("description");
             this.quantityKg = json.getInt("quantity");
