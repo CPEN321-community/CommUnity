@@ -19,6 +19,7 @@ import com.example.community.classes.ChatMessageHandler;
 import com.example.community.classes.Global;
 import com.example.community.classes.Message;
 import com.example.community.classes.Utils;
+import com.example.community.exceptions.NoMessagesException;
 import com.example.community.ui.chat.message.MessageActivity;
 
 import java.util.ArrayList;
@@ -65,11 +66,17 @@ public class ChatAdapter extends BaseAdapter {
         ImageView avatar = (ImageView) view.findViewById(R.id.chat_avatar);
         TextView chatPreview = (TextView) view.findViewById(R.id.chat_message_preview);
         LinearLayout chatBubble = (LinearLayout) view.findViewById(R.id.chat_message_bubble);
-        Message previewMessage = ChatMessageHandler.GetPreview(chat.postId);
-        chatPreview.setText(previewMessage.messageText);
-        if (!Objects.equals(previewMessage.userId, Global.getAccount().getId())) {
-            chatBubble.setBackgroundColor(ContextCompat.getColor(context, R.color.black));
-            chatPreview.setTextColor(ContextCompat.getColor(context, R.color.white));
+        Message previewMessage;
+        try {
+            previewMessage = ChatMessageHandler.GetPreview(chat.postId);
+            chatPreview.setText(previewMessage.messageText);
+            if (!Objects.equals(previewMessage.userId, Global.getAccount().getId())) {
+                chatBubble.setBackgroundColor(ContextCompat.getColor(context, R.color.black));
+                chatPreview.setTextColor(ContextCompat.getColor(context, R.color.white));
+            }
+        } catch (NoMessagesException e) {
+            chatBubble.setBackgroundColor(ContextCompat.getColor(context, R.color.transparent));
+            chatPreview.setText("No messages yet!");
         }
         Utils.setImageWhenLoaded(context, chat.other.profilePicture, avatar);
         view.setOnClickListener(v -> {
