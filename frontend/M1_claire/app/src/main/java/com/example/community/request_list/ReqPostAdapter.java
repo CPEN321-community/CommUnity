@@ -1,6 +1,7 @@
 package com.example.community.request_list;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.community.R;
 import com.example.community.classes.ReqPostObj;
+import com.example.community.offer_list.ExpandedOfferPost;
 
 import java.util.ArrayList;
 
@@ -49,6 +51,11 @@ public class ReqPostAdapter extends BaseAdapter {
         TextView description = (TextView) view.findViewById(R.id.req_description);
 
         ReqPostObj post = this.reqPosts.get(i);
+        view.setOnClickListener(view_name -> {
+            Intent expReqsIntent = new Intent(this.context, ExpandedReqPost.class);
+            expReqsIntent.putExtra("currReq", post);
+            this.context.startActivity(expReqsIntent);
+        });
 
         itemName.setText(post.itemName);
         // TODO format using JAVA API instead of manually
