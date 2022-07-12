@@ -226,31 +226,7 @@ const deleteOffer = async (req, res) => {
     }
 }
 
-const getAllTags = async (req, res) => {
-    try {
-        const offerTags = await OfferPostTags.findAll({
-            attributes: ['name'],
-            distinct: true
-        });
-        const requestTags = await RequestPostTags.findAll({
-            attributes: ["name"],
-            distinct: true
-        });
-        let offerNames = offerTags.map(offer => offer.dataValues.name);
-        let requestNames = requestTags.map(request => request.dataValues.name);
-
-        let set = new Set([...requestNames, ...offerNames]);
-        let arr = [...set]
-        res.json(arr)
-    } catch (e) {
-        console.error(e);
-        res.sendStatus(500)
-    }
-
-}
-
 module.exports = {
-    getAllTags,
     getOffer,
     getAllOffers,
     getAllUserOffers,
