@@ -70,4 +70,10 @@ public class ChatMessageHandler {
     public static void setChatAdapter(ChatAdapter chatAdapter) {
         ChatMessageHandler.chatAdapter = chatAdapter;
     }
+
+    public static void cleanup() {
+        chatAdapter = null;
+        chatMap = new HashMap<>();
+        adapterHashMap = new HashMap<>();
+    }
 }

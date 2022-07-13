@@ -35,14 +35,14 @@ public class ExpandedReqPost extends AppCompatActivity {
         if (post.userId.equals(Global.getAccount().getId())) {
             acceptButton.setVisibility(View.GONE);
         } else {
-            acceptButton.setVisibility(View.GONE);
-//            acceptButton.setOnClickListener(v -> {
-//                Intent chatIntent = new Intent(this, ChatActivity.class);
-//                chatIntent.putExtra("createRoomId", post.reqId);
-//                chatIntent.putExtra("isOffer", false);
-//                startActivity(chatIntent);
-//                finish();
-//            });
+//            acceptButton.setVisibility(View.GONE);
+            acceptButton.setOnClickListener(v -> {
+                Intent chatIntent = new Intent(this, ChatActivity.class);
+                chatIntent.putExtra("createRoomId", post.reqId);
+                chatIntent.putExtra("isOffer", false);
+                startActivity(chatIntent);
+                finish();
+            });
         }
 
         itemName.setText(post.itemName);
