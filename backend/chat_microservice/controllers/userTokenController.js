@@ -1,4 +1,4 @@
-const {UserToken} = require("../models");
+const {User, UserToken} = require("../models");
 const admin = require('firebase-admin/app');
 const {getMessaging} = require("firebase-admin/messaging");
 var serviceAccount = require("../firebase_service_key.json");
@@ -12,6 +12,14 @@ const FCM = getMessaging();
 const createUserToken = async (req, res) => {
   try {
     const {userId, token} = req.body;
+
+    await User.upsert({
+      userId,
+      firstName: "",
+      lastName: "",
+      profilePicture: "",
+    });
+
     const [data, created] = await UserToken.upsert({
       userId,
       token,
