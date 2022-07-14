@@ -13,11 +13,6 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
-    defaults:
-       run:
-         working-directory: ../backend/recommendation_microservice
-
     strategy:
       matrix:
         node-version: [8.x]
@@ -30,4 +25,5 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - run: npm install
     - run: npm test
