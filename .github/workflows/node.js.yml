@@ -16,7 +16,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./backend/recommendation_microservice
+        working-directory: ../../backend/recommendation_microservice
 
     strategy:
       matrix:
