@@ -1,5 +1,4 @@
 node_modules
-package-lock.json
 firebase_service_key.json
 .DS_Store
 **/.env
