@@ -31,4 +31,5 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: ./backend/recommendation_microservice/package-lock.json
+    - run: npm i jest
     - run: npm test
