@@ -14,6 +14,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    defaults:
+       run:
+         working-directory: ../backend/recommendation_microservice
+
     strategy:
       matrix:
         node-version: [8.x]
