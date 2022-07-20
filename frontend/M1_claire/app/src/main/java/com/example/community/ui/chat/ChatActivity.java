@@ -23,6 +23,7 @@ import com.example.community.ui.chat.message.MessageActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -48,7 +49,20 @@ public class ChatActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
+    @Override
+    public void onDestroy () {
+        JSONObject userId = new JSONObject();
+        try {
+            userId.put("userId", Global.getAccount().getId());
+            this.mSocket.emit("leave-all", userId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        this.mSocket.disconnect();
+        ChatMessageHandler.cleanup();
+        Log.d(TAG, "onStop: Disconnected");
+        super.onDestroy();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +97,10 @@ public class ChatActivity extends AppCompatActivity {
         Chat.listenForMessages();
         getChats(Global.getAccount().getId());
         if (createRoomId != null) {
-            Intent messageIntent = new Intent(this, MessageActivity.class);
-            messageIntent.putExtra("chat", Chat.getChat(createRoomId));
-            startActivity(messageIntent);
+//            TODO: join room automatically
+//            Intent messageIntent = new Intent(this, MessageActivity.class);
+//            messageIntent.putExtra("chat", Chat.getChat(createRoomId));
+//            startActivity(messageIntent);
         }
 
     }

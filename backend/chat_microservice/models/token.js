@@ -3,7 +3,12 @@ const UserTokenObj = (sequelize, DataTypes) => {
     token: {
       type: DataTypes.STRING,
       allowNull: false
-    }
+    },
+    userId: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      primaryKey: true,
+    },
   }, {
     timestamps: false,
   });

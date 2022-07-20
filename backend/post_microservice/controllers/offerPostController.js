@@ -59,13 +59,23 @@ const searchOffers = async (req, res) => {
         } else {
             const res = await axios.get(`${process.env.RECOMMENDATION_URL}/offer/${req.params.title}`);
             if (res.length) {
-                res.forEach(r => {
-                    const item = await OfferPost.findOne({ where: { offerId: res.postId }});
+                const resolved = await Promise.all(res.map(async r => {
+                    const item = await OfferPost.findOne({ where: { offerId: r.postId }});
                     const { userId, offerId, title, description, quantity, pickUpLocation, image, status, bestBeforeDate } = item.dataValues;
-                    result.push({
-                        userId, offerId, title, description, quantity, pickUpLocation, image, status, bestBeforeDate
-                    })
-                })
+                    return {
+                        userId,
+                        offerId,
+                        title,
+                        description,
+                        quantity,
+                        pickUpLocation,
+                        image,
+                        status,
+                        bestBeforeDate
+                    };
+                }));
+
+                response = response.concat(resolved);
             }
         }
 
