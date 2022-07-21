@@ -3,9 +3,8 @@ const axios = require("axios");
 const { OK, CREATED, INTERNAL_SERVER_ERROR, UNAUTHORIZED, NOT_FOUND } = require("../index.js");
 
 const verifyToken = async (req, res) => {
-    const { token } = req.body;
     try {
-        let response = await axios(`https://oauth2.googleapis.com/tokeninfo?id_token=${token}`);
+        let response = await axios(`https://oauth2.googleapis.com/tokeninfo?id_token=${req.body.token}`);
         if (response.status == OK) {
             let foundUser = await userStore.findUserForLogin(response.data.sub);
             if (foundUser == null) {

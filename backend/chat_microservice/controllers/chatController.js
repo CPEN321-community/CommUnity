@@ -25,9 +25,9 @@ const deleteRoom = async (req, res) => {
 }
 
 const getChats = async (req, res) => {
-  try {
     const { userId } = req.params;
-  
+
+    if (userId) {
     const user = await User.findOne({ 
       where: { userId } 
     });
@@ -49,7 +49,7 @@ const getChats = async (req, res) => {
         return { id, message, userId, createdAt, updatedAt };
       })
 
-      return {
+      const returnObj = {
         postId,
         sender: userId,
         senderFirstName: firstName,
@@ -61,12 +61,14 @@ const getChats = async (req, res) => {
         receiverProfilePicture: receiverUser.profilePicture,
         messages: msg,
       }
+
+      return returnObj;
     }));
   
     res.status(OK).json(allChats);
-  } catch (e) {
-    console.log("getChats Error: " + e);
-    res.status(INTERNAL_SERVER_ERROR).json({err: e.toString()})
+  } else {
+    console.log("getChats Error: userId does not exist in parameter");
+    res.status(INTERNAL_SERVER_ERROR);
   }
 };
 
