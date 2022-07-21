@@ -14,8 +14,8 @@ const getRequest = async (req, res) => {
 }
 
 const getAllRequests = async (req, res) => {
+    const response = await RequestPost.findAll();
     if (response) {
-        const response = await RequestPost.findAll();
         res.status(OK).json(response);
     } else {
         console.log("Error getting all of the offer posts: " + error);
