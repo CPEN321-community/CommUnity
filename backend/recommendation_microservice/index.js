@@ -16,12 +16,16 @@ app.use(routes);
 
 axios.defaults.headers = { s2sToken }
 app.use(async (req, res, next) => {
-  const token = req.headers['token'] || req.headers['s2sToken'];
-  await axios.post(`${process.env.USER_URL}/token/verify${token}`);
-  if (user) {
+  if (req.headers["s2sToken"] && req.headers["s2sToken"] == s2sToken) {
     next();
   } else {
-    res.status(UNAUTHORIZED).send("Unsuccessfull");
+    const token = req.headers['token'];
+    await axios.post(`${process.env.USER_URL}/token/verify${token}`);
+    if (user) {
+      next();
+    } else {
+      res.status(UNAUTHORIZED).send("Unsuccessfull");
+    }
   }
 });
 
