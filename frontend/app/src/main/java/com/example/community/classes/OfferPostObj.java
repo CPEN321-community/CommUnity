@@ -30,7 +30,7 @@ public class OfferPostObj implements Serializable {
             this.pickupAddr = json.getString("pickUpLocation");
             this.image = json.getString("image");
             String bestBeforeString = json.getString("bestBeforeDate");
-            this.bestBefore = new SimpleDateFormat(Utils.dateFormatString).parse(bestBeforeString);
+            this.bestBefore = new SimpleDateFormat(Util.dateFormatString).parse(bestBeforeString);
         } catch (JSONException | ParseException e) {
             e.printStackTrace();
         }

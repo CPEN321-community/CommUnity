@@ -9,7 +9,7 @@ import com.example.community.ui.chat.message.MessageAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ChatMessageHandler {
+public class ChatMessageHandlerUtil {
     private static ChatAdapter chatAdapter;
     private static final String TAG = "CHAT_MESSAGE_HANDLER_CLASS";
     private static HashMap<String, ArrayList<Message>> chatMap = new HashMap<>();
@@ -56,7 +56,7 @@ public class ChatMessageHandler {
     }
 
     public static void SetChatMap(HashMap<String, ArrayList<Message>> chatMap) {
-        ChatMessageHandler.chatMap = chatMap;
+        ChatMessageHandlerUtil.chatMap = chatMap;
     }
 
     public static HashMap<String, MessageAdapter> GetAdapterHashMap() {
@@ -68,7 +68,7 @@ public class ChatMessageHandler {
     }
 
     public static void setChatAdapter(ChatAdapter chatAdapter) {
-        ChatMessageHandler.chatAdapter = chatAdapter;
+        ChatMessageHandlerUtil.chatAdapter = chatAdapter;
     }
 
     public static void cleanup() {

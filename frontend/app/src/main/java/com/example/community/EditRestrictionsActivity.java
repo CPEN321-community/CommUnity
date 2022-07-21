@@ -14,7 +14,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.community.classes.GlobalUtility;
+import com.example.community.classes.GlobalUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,10 +37,10 @@ public class EditRestrictionsActivity extends AppCompatActivity {
 
     private void CreatePreference() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = GlobalUtility.USER_URL + "/user/preference";
+        String url = GlobalUtil.USER_URL + "/user/preference";
         JSONObject postBody = new JSONObject();
         try {
-            postBody.put("userId", GlobalUtility.getAccount().getId());
+            postBody.put("userId", GlobalUtil.getAccount().getId());
             postBody.put("value", this.textField.getText().toString());
             postBody.put("type", "DIETARY");
         } catch (JSONException e) {

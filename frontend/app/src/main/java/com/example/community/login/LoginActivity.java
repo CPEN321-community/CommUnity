@@ -18,7 +18,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.community.MainActivity;
 import com.example.community.R;
 import com.example.community.VolleyCallBack;
-import com.example.community.classes.Global;
+import com.example.community.classes.GlobalUtil;
 import com.example.community.databinding.ActivityLoginBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -33,14 +33,13 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 1;
     private static final String TAG = "LOGIN_ACTIVITY";
-    private AppBarConfiguration appBarConfiguration;
     private GoogleSignInClient mGoogleSignInClient;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Global.setAppContext(this);
+        GlobalUtil.setAppContext(this);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -56,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_login);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
     }
 
@@ -93,8 +92,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void finishLogin(GoogleSignInAccount account) {
-        Global.setAccount(account);
-        Global.FetchUser();
+        GlobalUtil.setAccount(account);
+        GlobalUtil.FetchUser();
         Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(mainActivityIntent);
         finish();
@@ -134,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
     private void createUser(GoogleSignInAccount account, VolleyCallBack volleyCallBack) {
         Log.d(TAG, "createUser: Start");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Global.USER_URL + "/user";
+        String url = GlobalUtil.USER_URL + "/user";
         JSONObject data = new JSONObject();
         try {
             data.put("userId", account.getId());
@@ -163,7 +162,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void userDoesExist(String uid, VolleyCallBack callback) {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Global.USER_URL + "/user" + "/" + uid;
+        String url = GlobalUtil.USER_URL + "/user" + "/" + uid;
         JsonObjectRequest sr = new JsonObjectRequest(Request.Method.GET, url,
                 null,
                 response -> {

@@ -17,9 +17,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.community.R;
-import com.example.community.classes.GlobalUtility;
+import com.example.community.classes.GlobalUtil;
 import com.example.community.classes.Tags;
-import com.example.community.classes.Utils;
+import com.example.community.classes.Util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,10 +33,8 @@ public class NewOfferForm extends AppCompatActivity {
     private EditText itemName;
     private EditText itemQuantity;
     private CalendarView bestBefore;
-    private Button uploadPhotoButton;
     private EditText pickup;
     private EditText desc;
-    private Button createPostButton;
     private Tags tags;
 
     @Override
@@ -46,10 +44,10 @@ public class NewOfferForm extends AppCompatActivity {
         this.itemName = this.findViewById(R.id.offer_name_input);
         this.itemQuantity = this.findViewById(R.id.quantity_input);
         this.bestBefore = this.findViewById(R.id.best_before_input);
-        this.uploadPhotoButton = this.findViewById(R.id.upload_button);
+        Button uploadPhotoButton = this.findViewById(R.id.upload_button);
         this.pickup = this.findViewById(R.id.pickup_location_input);
         this.desc = this.findViewById(R.id.description_input);
-        this.createPostButton = this.findViewById(R.id.create_offer_button);
+        Button createPostButton = this.findViewById(R.id.create_offer_button);
         this.createPostButton.setOnClickListener(v -> {
             this.createOfferPost();
         });
@@ -71,16 +69,13 @@ public class NewOfferForm extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {
-            switch (requestCode) {
-                case REQUEST_CODE:
-                    if (resultCode == Activity.RESULT_OK) {
-                        //data gives you the image uri. Try to convert that to bitmap
-                        break;
-                    } else if (resultCode == Activity.RESULT_CANCELED) {
-                        Log.e(TAG, "Selecting picture cancelled");
-                    }
-                    break;
+            if (resultCode == Activity.RESULT_OK) {
+                //data gives you the image uri. Try to convert that to bitmap
+                break;
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                 Log.e(TAG, "Selecting picture cancelled");
             }
+            break;
         } catch (Exception e) {
             Log.e(TAG, "Exception in onActivityResult : " + e.getMessage());
         }
@@ -89,10 +84,10 @@ public class NewOfferForm extends AppCompatActivity {
 
     private void createOfferPost() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = GlobalUtility.POST_URL + "/communitypost/offers";
+        String url = GlobalUtil.POST_URL + "/communitypost/offers";
         JSONObject postBody = new JSONObject();
         try {
-            postBody.put("userId", GlobalUtility.getAccount().getId());
+            postBody.put("userId", GlobalUtil.getAccount().getId());
             postBody.put("title", this.itemName.getText().toString());
             postBody.put("description", this.desc.getText().toString());
             postBody.put("quantity", Integer.parseInt(this.itemQuantity.getText().toString()));
@@ -101,7 +96,7 @@ public class NewOfferForm extends AppCompatActivity {
             postBody.put("status", "ACTIVE");
             postBody.put("tagList", this.tags.getJSONArr());
             Date selectedDate = new Date(this.bestBefore.getDate());
-            String dateString = Utils.DateToString(selectedDate);
+            String dateString = Util.DateToString(selectedDate);
             postBody.put("bestBeforeDate", dateString);
 
         } catch (JSONException e) {

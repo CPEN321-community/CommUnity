@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 import io.socket.client.Socket;
 
-public class GlobalUtility {
+public class GlobalUtil {
     private static final String TAG = "GLOBAL_CLASS";
     private static GoogleSignInAccount account;
     private static Socket socket;
@@ -43,7 +43,7 @@ public class GlobalUtility {
     }
 
     public static void setAccount(GoogleSignInAccount account) {
-        Global.account = account;
+        GlobalUtil.account = account;
     }
 
     public static Socket getSocket() {
@@ -51,7 +51,7 @@ public class GlobalUtility {
     }
 
     public static void setSocket(Socket socket) {
-        Global.socket = socket;
+        GlobalUtil.socket = socket;
     }
 
 
@@ -60,7 +60,7 @@ public class GlobalUtility {
     }
 
     public static void setAppContext(Context appContext) {
-        Global.appContext = appContext;
+        GlobalUtil.appContext = appContext;
     }
 
     public static void FetchUser() {
@@ -69,7 +69,7 @@ public class GlobalUtility {
         }
 
         RequestQueue queue = Volley.newRequestQueue(appContext);
-        String url = Global.USER_URL + "/user/" + Global.getAccount().getId();
+        String url = GlobalUtil.USER_URL + "/user/" + GlobalUtil.getAccount().getId();
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 url,
@@ -79,7 +79,7 @@ public class GlobalUtility {
                     JSONObject user;
                     try {
                         user = response.getJSONObject("user");
-                        Global.userProfile = new UserProfile(user);
+                        GlobalUtil.userProfile = new UserProfile(user);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

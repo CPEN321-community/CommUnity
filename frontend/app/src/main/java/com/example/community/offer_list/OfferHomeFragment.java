@@ -15,7 +15,6 @@ import com.example.community.databinding.FragmentOfferHomeBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class OfferHomeFragment extends Fragment {
-    private static final String TAG = "OFFER_HOME_FRAGMENT";
     private FragmentOfferHomeBinding binding;
 
 

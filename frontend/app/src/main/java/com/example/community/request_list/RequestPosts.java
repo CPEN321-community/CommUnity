@@ -15,8 +15,6 @@ import com.example.community.offer_list.OfferHomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class RequestPosts extends AppCompatActivity {
-    private ImageButton chatReqPostButton;
-    private TextView reqName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

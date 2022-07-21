@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.community.R;
 import com.example.community.classes.UserWithScore;
-import com.example.community.classes.Utils;
+import com.example.community.classes.Util;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -19,7 +19,6 @@ public class LeaderboardAdapter extends BaseAdapter {
     private final Context context;
     private final ArrayList<UserWithScore> users;
     private final LayoutInflater inflater;
-    private final String TAG = "LEADERBOARD_ADAPTER";
 
     public LeaderboardAdapter(Context applicationContext, ArrayList<UserWithScore> userList) {
         this.context = applicationContext;
@@ -44,10 +43,11 @@ public class LeaderboardAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflater.inflate(R.layout.fragment_leaderboard_user, null);
-        TextView number = (TextView) view.findViewById(R.id.item_number);
-        TextView name = (TextView) view.findViewById(R.id.restriction_name);
-        TextView score = (TextView) view.findViewById(R.id.leaderboard_score);
+        View newView = view;
+        newView = inflater.inflate(R.layout.fragment_leaderboard_user, null);
+        TextView number = (TextView) newView.findViewById(R.id.item_number);
+        TextView name = (TextView) newView.findViewById(R.id.restriction_name);
+        TextView score = (TextView) newView.findViewById(R.id.leaderboard_score);
         UserWithScore user = this.users.get(i);
 
         number.setText(String.valueOf(i + 1));
@@ -55,13 +55,13 @@ public class LeaderboardAdapter extends BaseAdapter {
         name.setText(nameAndInitial);
         score.setText(String.valueOf(user.score));
 
-        ImageView avatar = (ImageView) view.findViewById(R.id.chat_avatar);
+        ImageView avatar = (ImageView) newView.findViewById(R.id.chat_avatar);
         if (!Objects.equals(user.profilePicture, "")) {
-            Utils.setImageWhenLoaded(context, user.profilePicture, avatar);
+            Util.setImageWhenLoaded(context, user.profilePicture, avatar);
         } else {
-            avatar.setImageDrawable(Utils.GetDefaultAvatar(context));
+            avatar.setImageDrawable(Util.GetDefaultAvatar(context));
         }
-        return view;
+        return newView;
     }
 
 

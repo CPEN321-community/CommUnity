@@ -43,13 +43,14 @@ public class ReqPostAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflater.inflate(R.layout.fragment_req_post_individual, null);
-        TextView itemName = (TextView) view.findViewById(R.id.req_item_name);
-        TextView postDate = (TextView) view.findViewById(R.id.req_post_date);
-        TextView description = (TextView) view.findViewById(R.id.req_description);
+        View newView = view
+        newView = inflater.inflate(R.layout.fragment_req_post_individual, null);
+        TextView itemName = (TextView) newView.findViewById(R.id.req_item_name);
+        TextView postDate = (TextView) newView.findViewById(R.id.req_post_date);
+        TextView description = (TextView) newView.findViewById(R.id.req_description);
 
         ReqPostObj post = this.reqPosts.get(i);
-        view.setOnClickListener(view_name -> {
+        newView.setOnClickListener(view_name -> {
             Intent expReqsIntent = new Intent(this.context, ExpandedReqPost.class);
             expReqsIntent.putExtra("currReq", post);
             this.context.startActivity(expReqsIntent);
@@ -61,6 +62,6 @@ public class ReqPostAdapter extends BaseAdapter {
         String postDateParsed = post.createdAt.toString().split(" ")[1] + " " + post.createdAt.toString().split(" ")[2];
         postDate.setText("Posted on: " + postDateParsed);
         description.setText(post.description);
-        return view;
+        return newView;
     }
 }

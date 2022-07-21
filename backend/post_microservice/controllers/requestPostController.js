@@ -14,10 +14,10 @@ const getRequest = async (req, res) => {
 }
 
 const getAllRequests = async (req, res) => {
-    try {
+    if (response) {
         const response = await RequestPost.findAll();
         res.status(OK).json(response);
-    } catch (error) {
+    } else {
         console.log("Error getting all of the offer posts: " + error);
         res.status(INTERNAL_SERVER_ERROR);
     }

@@ -15,8 +15,8 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.community.R;
 import com.example.community.classes.Chat;
-import com.example.community.classes.ChatMessageHandler;
-import com.example.community.classes.Global;
+import com.example.community.classes.ChatMessageHandlerUtil;
+import com.example.community.classes.GlobalUtil;
 import com.example.community.classes.Message;
 import com.example.community.databinding.ActivityChatBinding;
 
@@ -34,31 +34,28 @@ import io.socket.client.Socket;
 public class ChatActivity extends AppCompatActivity {
 
     private static final String TAG = "CHAT_ACTIVITY";
-    private ActivityChatBinding binding;
     private MutableLiveData<ArrayList<Chat>> mChatList;
     private Socket mSocket;
-
-    {
-        try {
-            mSocket = IO.socket(Global.CHAT_URL);
-            Log.d(TAG, "instance initializer: Socket Initted");
-        } catch (URISyntaxException e) {
-            Log.e(TAG, "instance initializer: " + e);
-            e.printStackTrace();
-        }
+    try {
+        mSocket = IO.socket(GlobalUtil.CHAT_URL);
+        Log.d(TAG, "instance initializer: Socket Initted");
+    } catch (URISyntaxException e) {
+        Log.e(TAG, "instance initializer: " + e);
+        e.printStackTrace();
     }
+
 
     @Override
     public void onDestroy() {
         JSONObject userId = new JSONObject();
         try {
-            userId.put("userId", Global.getAccount().getId());
+            userId.put("userId", GlobalUtil.getAccount().getId());
             this.mSocket.emit("leave-all", userId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         this.mSocket.disconnect();
-        ChatMessageHandler.cleanup();
+        ChatMessageHandlerUtil.cleanup();
         Log.d(TAG, "onStop: Disconnected");
         super.onDestroy();
     }
@@ -67,10 +64,10 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSocket.connect();
-        Global.setSocket(mSocket);
+        GlobalUtil.setSocket(mSocket);
 
         this.mChatList = new MutableLiveData<>();
-        binding = ActivityChatBinding.inflate(getLayoutInflater());
+        ActivityChatBinding binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         Toolbar toolbar = binding.toolbar;
@@ -78,7 +75,7 @@ public class ChatActivity extends AppCompatActivity {
         toolbar.setTitle("Chats");
         ListView chatListView = findViewById(R.id.chat_list);
         ChatAdapter adapter = new ChatAdapter(this);
-        ChatMessageHandler.setChatAdapter(adapter);
+        ChatMessageHandlerUtil.setChatAdapter(adapter);
         chatListView.setAdapter(adapter);
         Intent intent = getIntent();
         String createRoomId = intent.getStringExtra("createRoomId");
@@ -94,18 +91,18 @@ public class ChatActivity extends AppCompatActivity {
 
         Chat.joinRooms();
         Chat.listenForMessages();
-        getChats(Global.getAccount().getId());
-        if (createRoomId != null) {
+        getChats(GlobalUtil.getAccount().getId());
+        // if (createRoomId != null) {
 //            TODO: join room automatically
 //            Intent messageIntent = new Intent(this, MessageActivity.class);
 //            messageIntent.putExtra("chat", Chat.getChat(createRoomId));
 //            startActivity(messageIntent);
-        }
+        // }
 
     }
 
     private void getChats(String uid) {
-        String url = Global.CHAT_URL + "/chat/" + uid;
+        String url = GlobalUtil.CHAT_URL + "/chat/" + uid;
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET,
                 url,
@@ -120,9 +117,9 @@ public class ChatActivity extends AppCompatActivity {
                     for (int i = 0; i < response.length(); i++) {
                         try {
                             Chat currChat = new Chat(response.getJSONObject(i));
-                            ChatMessageHandler.AddRoom(currChat.postId);
+                            ChatMessageHandlerUtil.AddRoom(currChat.postId);
                             for (Message message : currChat.messages) {
-                                ChatMessageHandler.AddMessage(currChat.postId, message);
+                                ChatMessageHandlerUtil.AddMessage(currChat.postId, message);
                             }
                             currChats.add(currChat);
                         } catch (JSONException e) {
