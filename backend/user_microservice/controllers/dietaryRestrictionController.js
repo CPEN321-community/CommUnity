@@ -1,4 +1,3 @@
-const sequelize = require("sequelize");
 const { DietaryRestriction } = require("../models");
 
 const getUserDietaryRestrictions = async (req, res) => {

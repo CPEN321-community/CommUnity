@@ -1,5 +1,4 @@
 const { Op } = require("sequelize");
-const sequelize = require('sequelize');
 const { Leaderboard, User } = require("../models");
 
 const getTopNUsers = async (req, res) => {
@@ -56,21 +55,6 @@ const getUserRank = async (req, res) => {
     }
 };
 
-const getUserLeaderboardStats = async (req, res) => {
-    try {
-        const { userId } = req.params;
-        const user = await Leaderboard.findOne({ 
-            where: { userId }
-        });
-
-        res.json(user);
-    }
-    catch (e) {
-        console.error(e);
-        res.sendStatus(500);
-    }
-}
-
 const upsertUserMethod = async ({ userId, offerPosts, requestPosts }) => {
     try {
         const currLeaderboard = await Leaderboard.findOne({
@@ -117,5 +101,4 @@ module.exports = {
     getUserRank,
     upsertUserMethod,
     upsertUserRank,
-    getUserLeaderboardStats,
 }; 

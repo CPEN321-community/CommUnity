@@ -1,14 +1,14 @@
 const { Op } = require("sequelize");
-const { OfferPost, OfferPostTags, RequestPostTags } = require("../models");
-const axios = require("axios")
+const { OfferPost, OfferPostTags } = require("../models");
+const axios = require("axios");
+const {INTERNAL_SERVER_ERROR} = require()
 
 const getOffer = async (req, res) => {
-    try {
-        const offerId = req.params.offerId;
-        const response = await OfferPost.findOne({where: {offerId: offerId}});
+    if(req.params.offerId) {
+        const response = await OfferPost.findOne({where: {offerId}});
         res.json(response);
-    } catch (error) {
-        console.log("Error finding an offer post: " + error);
+    } else {
+        res.status(INTERNAL_SERVER_ERROR);
     }
 }
 

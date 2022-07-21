@@ -1,11 +1,8 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
 const Sequelize = require('sequelize');
-const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
+const config = require('./../config/config.json')[env];
 const db = {};
 
 function applyRelationships(sequelize) {
@@ -28,7 +25,9 @@ if (config.use_env_variable) {
     logging: console.log,
     maxConcurrentQueries: 100,
     dialect: 'mysql',
-    dialectOptions: env === "development" ? undefined : {
+    dialectOptions: env === "development" ? 
+    undefined
+: {
       ssl:'Amazon RDS'
   },
     pool: { maxConnections: 5, maxIdleTime: 30},
@@ -36,15 +35,15 @@ if (config.use_env_variable) {
   });
 }
 
-fs
-  .readdirSync(__dirname)
-  .filter(file => {
-    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
-  })
-  .forEach(file => {
-    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-    db[model.name] = model;
-  });
+
+const offerPostModel = require('./offerPostModel.js')(sequelize, Sequelize.DataTypes);
+db[offerPostModel.name] = offerPostModel;
+const offerPostTagsModel = require('./offerPostTagsModel.js')(sequelize, Sequelize.DataTypes);
+db[offerPostTagsModel.name] = offerPostTagsModel;
+const requestPostModel = require('./requestPostModel.js')(sequelize, Sequelize.DataTypes);
+db[requestPostModel.name] = requestPostModel;
+const requestPostTagsModel = require('./requestPostTagsModel.js')(sequelize, Sequelize.DataTypes);
+db[requestPostTagsModel.name] = requestPostTagsModel;
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {

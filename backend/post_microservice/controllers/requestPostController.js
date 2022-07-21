@@ -1,15 +1,15 @@
-const { Op, OptimisticLockError } = require("sequelize");
+const { Op } = require("sequelize");
 const axios = require("axios").default;
 const { RequestPost, RequestPostTags } = require("../models");
+const { OK, INTERNAL_SERVER_ERROR } = require("../index.js");
 
 const getRequest = async (req, res) => {
     console.log("Get request endpoint hit");
-   try {
-       const requestId = req.params.requestId;
-       const response = await RequestPost.findOne({where: {requestId: requestId}});
+   if(req.params.requestId){
+       const response = await RequestPost.findOne({where: {requestId}});
        res.json(response);
-   } catch (error) {
-       console.log("Error finding an offer post: " + error);
+   } else {
+       res.status(INTERNAL_SERVER_ERROR);
    }
 }
 

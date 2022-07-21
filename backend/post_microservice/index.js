@@ -1,9 +1,12 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const routes = require('./routes');
 const cors = require('cors');
 const db = require('./models');
 const dotenv = require("dotenv")
+
+const OK = 200;
+const CREATED = 201
+const INTERNAL_SERVER_ERROR = 500;
 
 dotenv.config({path: "../ports.env"});
 dotenv.config();
@@ -24,3 +27,5 @@ const PORT = process.env.PORT || 8081;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
+
+module.exports = { OK, CREATED, INTERNAL_SERVER_ERROR };
