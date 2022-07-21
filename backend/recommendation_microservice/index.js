@@ -4,6 +4,7 @@ const routes = require('./routes');
 const Singleton = require('./singleton');
 const model = (new Singleton()).getInstance();
 const dotenv = require("dotenv");
+const s2sToken = require('./config/config')["s2sToken"];
 
 dotenv.config({path: "../ports.env"});
 dotenv.config();
@@ -12,8 +13,10 @@ const app = express();
 
 app.use(express.json());
 app.use(routes);
+
+axios.defaults.headers = { s2sToken }
 app.use(async (req, res, next) => {
-  let token = req.headers['token'];
+  const token = req.headers['token'] || req.headers['s2sToken'];
   await axios.post(`${process.env.USER_URL}/token/verify${token}`);
   if (user) {
     next();

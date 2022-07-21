@@ -7,6 +7,7 @@ const routes = require('./routes');
 const socketHandler = require('./socket/socketHandler');
 const db = require('./models');
 const dotenv = require("dotenv");
+const s2sToken = require('./config/config')["s2sToken"];
 
 const OK = 200;
 const CREATED = 201
@@ -20,8 +21,10 @@ const server = http.Server(app);
 const io = socket(server);
 
 io.on('connection', (socket) => socketHandler(socket, io));
+
+axios.defaults.headers = { s2sToken }
 app.use(async (req, res, next) => {
-  let token = req.headers['token'];
+  const token = req.headers['token'] || req.headers['s2sToken'];
   await axios.post(`${process.env.USER_URL}/token/verify${token}`);
   if (user) {
     next();
