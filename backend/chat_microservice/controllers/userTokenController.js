@@ -11,17 +11,16 @@ admin.initializeApp({
 const FCM = getMessaging();
 
 const createUserToken = async (req, res) => {
-    const {userId, token} = req.body;
-    if (userId && token) {
+    if (req.body.userId && req.body.token) {
       const created1 = await User.upsert({
-        userId,
+        userId: req.body.userId,
         firstName: "",
         lastName: "",
         profilePicture: "",
       });
       const created2 = await UserToken.upsert({
-        userId,
-        token,
+        userId: req.body.userId,
+        token: req.body.token,
       });
       // index 0: entity (obj), index 1: created (bool)
       if (created1[1] && created2[1]) {
@@ -40,13 +39,12 @@ const createUserToken = async (req, res) => {
 }
   
 const sendNotifToUser = async (userId, payload) => {
-  try {
+  if (userId) {
     const usertoken = await UserToken.findOne({ where: {userId} });
     const token = usertoken.dataValues.token;
     await FCM.sendToDevice(token, { notification: payload });
-  }
-  catch (e) {
-    console.error(e);
+  } else {
+    console.error("Error: no userId");
   }
 }
 

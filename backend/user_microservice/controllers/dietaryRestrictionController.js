@@ -1,9 +1,8 @@
 const { DietaryRestriction } = require("../models");
 
 const getUserDietaryRestrictions = async (req, res) => {
-  try {
+  if (req.params.id) {
     const { userId } = req.params;
-    console.log("userId", userId);
 
     let restrictions = await DietaryRestriction.findAll({
       where: {
@@ -13,8 +12,7 @@ const getUserDietaryRestrictions = async (req, res) => {
     console.log(restrictions);
 
     res.json(restrictions);
-  } catch (e) {
-    console.error(e);
+  } else {
     res.sendStatus(500);
   }
 };

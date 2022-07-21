@@ -3,19 +3,15 @@ const axios = require("axios");
 const { OK, CREATED, INTERNAL_SERVER_ERROR, UNAUTHORIZED, NOT_FOUND } = require("../index.js");
 
 const verifyToken = async (req, res) => {
-    try {
-        let response = await axios(`https://oauth2.googleapis.com/tokeninfo?id_token=${req.body.token}`);
-        if (response.status == OK) {
-            let foundUser = await userStore.findUserForLogin(response.data.sub);
-            if (foundUser == null) {
-                res.status(NOT_FOUND).send({ token: response.data.sub });
-            }
-        } else {
-            res.status(UNAUTHORIZED).send("Unauthorized");
+    let response = await axios(`https://oauth2.googleapis.com/tokeninfo?id_token=${req.body.token}`);
+    if (response.status == OK) {
+        let foundUser = await userStore.findUserForLogin(response.data.sub);
+        if (!foundUser) {
+            res.status(NOT_FOUND).send({ token: response.data.sub });
         }
-    } catch (e) {
-        res.status(INTERNAL_SERVER_ERROR).send(e);
-    }
+    } else {
+        res.status(UNAUTHORIZED).send(e);
+    } 
 }
 
 const getUser = async (req, res) => {

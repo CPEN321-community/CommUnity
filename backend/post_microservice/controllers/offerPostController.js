@@ -13,10 +13,10 @@ const getOffer = async (req, res) => {
 }
 
 const getAllOffers = async (req, res) => {
-    try {
-        const response = await OfferPost.findAll();
+    const response = await OfferPost.findAll();
+    if (response) {
         res.json(response);
-    } catch (error) {
+    } else {
         console.log("Error getting all of the offer posts: " + error);
     }
 }
@@ -62,7 +62,7 @@ const searchOffers = async (req, res) => {
                 const resolved = await Promise.all(res.map(async r => {
                     const item = await OfferPost.findOne({ where: { offerId: r.postId }});
                     const { userId, offerId, title, description, quantity, pickUpLocation, image, status, bestBeforeDate } = item.dataValues;
-                    return {
+                    const returnObj = {
                         userId,
                         offerId,
                         title,
@@ -73,6 +73,7 @@ const searchOffers = async (req, res) => {
                         status,
                         bestBeforeDate
                     };
+                    return returnObj;
                 }));
 
                 response = response.concat(resolved);
