@@ -14,7 +14,7 @@
 
 # Technology Stack
 
-Community consiste of an Android frontend (Java), Node.js backend, and MySql database. Community will be hosted through AWS.
+Community consists of an Android frontend (Java), Node.js backend, and MySql database. Community will be hosted through AWS.
 
 
 

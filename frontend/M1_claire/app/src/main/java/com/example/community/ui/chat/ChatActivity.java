@@ -19,7 +19,6 @@ import com.example.community.classes.ChatMessageHandler;
 import com.example.community.classes.Global;
 import com.example.community.classes.Message;
 import com.example.community.databinding.ActivityChatBinding;
-import com.example.community.ui.chat.message.MessageActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +26,6 @@ import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -36,19 +34,9 @@ import io.socket.client.Socket;
 public class ChatActivity extends AppCompatActivity {
 
     private static final String TAG = "CHAT_ACTIVITY";
-    private ActivityChatBinding binding;
     private MutableLiveData<ArrayList<Chat>> mChatList;
     private Socket mSocket;
 
-    {
-        try {
-            mSocket = IO.socket(Global.CHAT_URL);
-            Log.d(TAG, "instance initializer: Socket Initted");
-        } catch (URISyntaxException e) {
-            Log.e(TAG, "instance initializer: " + e);
-            e.printStackTrace();
-        }
-    }
     @Override
     public void onDestroy () {
         JSONObject userId = new JSONObject();
@@ -66,6 +54,16 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        try {
+            mSocket = IO.socket(Global.CHAT_URL);
+            Log.d(TAG, "instance initializer: Socket Initted");
+        } catch (URISyntaxException e) {
+            Log.e(TAG, "instance initializer: " + e);
+            e.printStackTrace();
+        }
+
+        ActivityChatBinding binding;
+
         super.onCreate(savedInstanceState);
         mSocket.connect();
         Global.setSocket(mSocket);
@@ -85,9 +83,10 @@ public class ChatActivity extends AppCompatActivity {
         String createRoomId = intent.getStringExtra("createRoomId");
         boolean isOffer = intent.getBooleanExtra("isOffer", true);
         Log.d(TAG, "onCreate: " + createRoomId);
-        if (createRoomId != null) {
-            Chat.createRoom(createRoomId, isOffer);
+        if (createRoomId == null) {
+            Log.d(TAG, "Chat room was not created");
         }
+        Chat.createRoom(createRoomId, isOffer);
 
         mChatList.observe(this, chatsList -> {
             adapter.setChats(chatsList);
@@ -96,12 +95,12 @@ public class ChatActivity extends AppCompatActivity {
         Chat.joinRooms();
         Chat.listenForMessages();
         getChats(Global.getAccount().getId());
-        if (createRoomId != null) {
+//      if (createRoomId != null) {
 //            TODO: join room automatically
 //            Intent messageIntent = new Intent(this, MessageActivity.class);
 //            messageIntent.putExtra("chat", Chat.getChat(createRoomId));
 //            startActivity(messageIntent);
-        }
+//        }
 
     }
 

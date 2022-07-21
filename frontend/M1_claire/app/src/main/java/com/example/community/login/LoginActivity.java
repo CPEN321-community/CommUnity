@@ -33,13 +33,14 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 1;
     private static final String TAG = "LOGIN_ACTIVITY";
-    private AppBarConfiguration appBarConfiguration;
     private ActivityLoginBinding binding;
     private GoogleSignInClient mGoogleSignInClient;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AppBarConfiguration appBarConfiguration;
+
         super.onCreate(savedInstanceState);
         Global.setAppContext(this);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
