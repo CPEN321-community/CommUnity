@@ -1,4 +1,5 @@
 const express = require('express');
+const axios = require('axios');
 const routes = require('./routes');
 const Singleton = require('./singleton');
 const model = (new Singleton()).getInstance();
@@ -10,11 +11,16 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
-// app.use(cors({
-//   origin: 'http://localhost:3000',
-//   credentials: true
-// }));
 app.use(routes);
+app.use(async (req, res, next) => {
+  let token = req.headers['token'];
+  await axios.post(`${process.env.USER_URL}/token/verify${token}`);
+  if (user) {
+    next();
+  } else {
+    res.status(UNAUTHORIZED).send("Unsuccessfull");
+  }
+});
 
 setInterval(() => {
   model.trainModel();

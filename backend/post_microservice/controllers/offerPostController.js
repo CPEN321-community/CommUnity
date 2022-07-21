@@ -1,7 +1,7 @@
 const { Op } = require("sequelize");
 const { OfferPost, OfferPostTags } = require("../models");
 const axios = require("axios");
-const {INTERNAL_SERVER_ERROR} = require()
+const { INTERNAL_SERVER_ERROR, OK } = require('../index');
 
 const getOffer = async (req, res) => {
     if(req.params.offerId) {
@@ -83,7 +83,7 @@ const searchOffers = async (req, res) => {
 
     } catch (error) {
         console.log("Error with searching for offer posts: " + error);
-        res.sendStatus(500);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
@@ -115,10 +115,10 @@ const searchOffersWithTags = async (req, res) => {
         })
         console.log(result);
 
-        res.status(200).json({results: result});
+        res.status(OK).json({results: result});
     } catch (error) {
       console.log("Error with searching for offer posts: " + error);
-      res.sendStatus(500);
+      res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
@@ -153,11 +153,11 @@ const createOffer = async (req, res) => {
         console.log(updateUserBody);
 
         await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
-        res.sendStatus(200);
+        res.sendStatus(OK);
 
     } catch (error) {
         console.log("Error creating a new post: " + error);
-        res.sendStatus(500);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
@@ -176,10 +176,10 @@ const removeOfferTags = async (req, res) => {
                 });
             }
         }
-        res.sendStatus(200);
+        res.sendStatus(OK);
     } catch (error) {
         console.log("Error deleting offer tags: " + error);
-        res.sendStatus(500);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
   
@@ -197,10 +197,10 @@ const addOfferTags = async (req, res) => {
                 });
             }
         });
-        res.sendStatus(200);
+        res.sendStatus(OK);
     } catch (error) {
         console.log("Error with adding new offer tags: " + error);
-        res.sendStatus(500);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
@@ -222,13 +222,13 @@ const updateOffer = async (req, res) => {
             if (req.body.status == "Fulfilled") {
                 await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/offer/${req.body.offerId}`);
             }
-            res.sendStatus(200);
+            res.sendStatus(OK);
         }else{
-            res.sendStatus(200);
+            res.sendStatus(OK);
         }
     } catch (error) {
         console.log("Error updating post: " + error);
-        res.sendStatus(500);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
@@ -245,10 +245,10 @@ const deleteOffer = async (req, res) => {
             }
         });
         await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/offer/${req.body.offerId}`);
-        res.sendStatus(200);
+        res.sendStatus(OK);
     } catch (error) {
         console.log("Error deleting post: " + error);
-        res.sendStatus(500);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 

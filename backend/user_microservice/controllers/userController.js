@@ -1,5 +1,24 @@
 const { User, Preference } = require("../models");
 const axios = require("axios");
+const { OK, CREATED, INTERNAL_SERVER_ERROR, UNAUTHORIZED, NOT_FOUND } = require("../index.js");
+
+const verifyToken = async (req, res) => {
+    const { token } = req.body;
+    try {
+        let response = await axios(`https://oauth2.googleapis.com/tokeninfo?id_token=${token}`);
+        if (response.status == OK) {
+            let foundUser = await userStore.findUserForLogin(response.data.sub);
+            if (foundUser == null) {
+                res.status(NOT_FOUND).send({ token: response.data.sub });
+            }
+        } else {
+            res.status(UNAUTHORIZED).send("Unauthorized");
+        }
+    } catch (e) {
+        res.status(INTERNAL_SERVER_ERROR).send(e);
+    }
+}
+
 const getUser = async (req, res) => {
    try {
        const userId = req.params.userId;
@@ -7,7 +26,7 @@ const getUser = async (req, res) => {
        res.json({user: response});
    } catch (error) {
        console.log("Error finding user: " + error);
-       res.sendStatus(500);
+       res.sendStatus(INTERNAL_SERVER_ERROR);
    }
 };
 
@@ -24,7 +43,7 @@ const upsertUserPreference = async (req, res) => {
         res.json(preference);
     } catch (error) {
         console.log("Error updating user preferences: " + error);
-        res.sendStatus(500);        
+        res.sendStatus(INTERNAL_SERVER_ERROR);        
     }
 }
 
@@ -38,7 +57,7 @@ const deleteUserPreference = async (req, res) => {
         res.json({deleted});
     } catch (error) {
         console.log("Error deleting user preferences: " + error);
-        res.sendStatus(500);        
+        res.sendStatus(INTERNAL_SERVER_ERROR);        
     }
 }
 
@@ -62,14 +81,14 @@ const updateUser = async (req, res) => {
         res.json(response);
     } catch (error) {
         console.log("Error upserting user: " + error);
-        res.sendStatus(500);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
 const createUser = async (req, res) => {
     try {
         const response = await User.create({
-            userId: req.body.userId,
+            token: req.body.token,
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
@@ -84,10 +103,10 @@ const createUser = async (req, res) => {
             include: [{association: User.Leaderboard, as: "leaderboard"}]
         }
         );
-        res.status(201).json(response)
+        res.status(CREATED).json(response)
     } catch (error) {
         console.log("Error upserting user: " + error);
-        res.sendStatus(500);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
@@ -97,5 +116,6 @@ module.exports = {
     upsertUserPreference,
     updateUser,
     createUser,
-    deleteUserPreference
+    deleteUserPreference,
+    verifyToken
   };

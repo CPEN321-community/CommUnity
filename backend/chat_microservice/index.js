@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const socket = require('socket.io');
 const bodyParser = require('body-parser');
+const axios = require('axios');
 const routes = require('./routes');
 const socketHandler = require('./socket/socketHandler');
 const db = require('./models');
@@ -19,6 +20,15 @@ const server = http.Server(app);
 const io = socket(server);
 
 io.on('connection', (socket) => socketHandler(socket, io));
+app.use(async (req, res, next) => {
+  let token = req.headers['token'];
+  await axios.post(`${process.env.USER_URL}/token/verify${token}`);
+  if (user) {
+    next();
+  } else {
+    res.status(UNAUTHORIZED).send("Unsuccessfull");
+  }
+});
 app.use(bodyParser.json());
 app.use(routes);
 
