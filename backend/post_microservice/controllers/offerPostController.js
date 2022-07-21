@@ -1,22 +1,22 @@
 const { Op } = require("sequelize");
-const { OfferPost, OfferPostTags, RequestPostTags } = require("../models");
-const axios = require("axios")
+const { OfferPost, OfferPostTags } = require("../models");
+const axios = require("axios");
+const { INTERNAL_SERVER_ERROR, OK } = require('../index');
 
 const getOffer = async (req, res) => {
-    try {
-        const offerId = req.params.offerId;
-        const response = await OfferPost.findOne({where: {offerId: offerId}});
+    if(req.params.offerId) {
+        const response = await OfferPost.findOne({where: {offerId}});
         res.json(response);
-    } catch (error) {
-        console.log("Error finding an offer post: " + error);
+    } else {
+        res.status(INTERNAL_SERVER_ERROR);
     }
 }
 
 const getAllOffers = async (req, res) => {
-    try {
-        const response = await OfferPost.findAll();
+    const response = await OfferPost.findAll();
+    if (response) {
         res.json(response);
-    } catch (error) {
+    } else {
         console.log("Error getting all of the offer posts: " + error);
     }
 }
@@ -62,7 +62,7 @@ const searchOffers = async (req, res) => {
                 const resolved = await Promise.all(res.map(async r => {
                     const item = await OfferPost.findOne({ where: { offerId: r.postId }});
                     const { userId, offerId, title, description, quantity, pickUpLocation, image, status, bestBeforeDate } = item.dataValues;
-                    return {
+                    const returnObj = {
                         userId,
                         offerId,
                         title,
@@ -73,6 +73,7 @@ const searchOffers = async (req, res) => {
                         status,
                         bestBeforeDate
                     };
+                    return returnObj;
                 }));
 
                 response = response.concat(resolved);
@@ -83,7 +84,7 @@ const searchOffers = async (req, res) => {
 
     } catch (error) {
         console.log("Error with searching for offer posts: " + error);
-        res.sendStatus(500);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
@@ -115,10 +116,10 @@ const searchOffersWithTags = async (req, res) => {
         })
         console.log(result);
 
-        res.status(200).json({results: result});
+        res.status(OK).json({results: result});
     } catch (error) {
       console.log("Error with searching for offer posts: " + error);
-      res.sendStatus(500);
+      res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
@@ -153,11 +154,11 @@ const createOffer = async (req, res) => {
         console.log(updateUserBody);
 
         await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
-        res.sendStatus(200);
+        res.sendStatus(OK);
 
     } catch (error) {
         console.log("Error creating a new post: " + error);
-        res.sendStatus(500);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
@@ -176,10 +177,10 @@ const removeOfferTags = async (req, res) => {
                 });
             }
         }
-        res.sendStatus(200);
+        res.sendStatus(OK);
     } catch (error) {
         console.log("Error deleting offer tags: " + error);
-        res.sendStatus(500);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
   
@@ -197,10 +198,10 @@ const addOfferTags = async (req, res) => {
                 });
             }
         });
-        res.sendStatus(200);
+        res.sendStatus(OK);
     } catch (error) {
         console.log("Error with adding new offer tags: " + error);
-        res.sendStatus(500);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
@@ -222,13 +223,13 @@ const updateOffer = async (req, res) => {
             if (req.body.status == "Fulfilled") {
                 await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/offer/${req.body.offerId}`);
             }
-            res.sendStatus(200);
+            res.sendStatus(OK);
         }else{
-            res.sendStatus(200);
+            res.sendStatus(OK);
         }
     } catch (error) {
         console.log("Error updating post: " + error);
-        res.sendStatus(500);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
@@ -245,10 +246,10 @@ const deleteOffer = async (req, res) => {
             }
         });
         await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/offer/${req.body.offerId}`);
-        res.sendStatus(200);
+        res.sendStatus(OK);
     } catch (error) {
         console.log("Error deleting post: " + error);
-        res.sendStatus(500);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 

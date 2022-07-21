@@ -1,15 +1,12 @@
 "use strict";
 
-const fs = require("fs");
-const path = require("path");
 const Sequelize = require("sequelize");
-const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || "development";
-const config = require(__dirname + "/../config/config.json")[env];
+const config = require("./../config/config.json")[env];
 const db = {};
 
 function applyRelationships(sequelize) {
-  const { User, Leaderboard, Preference, DietaryRestriction } = sequelize.models;
+  const { User, Leaderboard, Preference } = sequelize.models;
 
   Leaderboard.User = Leaderboard.belongsTo(User, {
     foreignKey: {
@@ -53,7 +50,9 @@ if (config.use_env_variable) {
     logging: console.log,
     maxConcurrentQueries: 100,
     dialect: 'mysql',
-   dialectOptions: env === "development" ? undefined : {
+   dialectOptions: env === "development" ? 
+   undefined
+: {
         ssl:'Amazon RDS'
     },
     pool: { maxConnections: 5, maxIdleTime: 30},
@@ -61,19 +60,12 @@ if (config.use_env_variable) {
   });
 }
 
-fs.readdirSync(__dirname)
-  .filter((file) => {
-    return (
-      file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js"
-    );
-  })
-  .forEach((file) => {
-    const model = require(path.join(__dirname, file))(
-      sequelize,
-      Sequelize.DataTypes
-    );
-    db[model.name] = model;
-  });
+const leaderboardModel = require('./leaderboardModel.js')(sequelize, Sequelize.DataTypes);
+db[leaderboardModel.name] = leaderboardModel;
+const preferencesModel = require('./preferencesModel.js')(sequelize, Sequelize.DataTypes);
+db[preferencesModel.name] = preferencesModel;
+const userModel = require('./userModel.js')(sequelize, Sequelize.DataTypes);
+db[userModel.name] = userModel;
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {

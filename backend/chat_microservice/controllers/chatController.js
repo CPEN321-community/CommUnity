@@ -3,8 +3,10 @@ const { User, Message, Room } = require('../models');
 const { sendNotifToUser } = require('./userTokenController');
 const Singleton = require('../singleton');
 const axios = require("axios");
+const { OK, INTERNAL_SERVER_ERROR } = require("../index.js");
+
 const deleteRoom = async (req, res) => {
-  try {
+  if (req.params.postId) {
     await Room.destroy({
       where: {
         postId: req.params.postId,
@@ -15,27 +17,22 @@ const deleteRoom = async (req, res) => {
         postId: req.params.postId,
       }
     });
-
-    res.sendStatus(200);
-  } catch (e) {
+    res.sendStatus(OK);
+  } else {
     console.log('deleteRoom Error ' + e);
-    res.sendStatus(500);
+    res.sendStatus(INTERNAL_SERVER_ERROR);
   }
 }
 
 const getChats = async (req, res) => {
-  try {
     const { userId } = req.params;
-    console.log("***", userId);
-  
+
+    if (userId) {
     const user = await User.findOne({ 
       where: { userId } 
     });
-    console.log(user);
 
     const { firstName, lastName, profilePicture } = user;
-    
-    console.log("Got here");
     
     const rooms = await Room.findAll({ 
       where: { userId } 
@@ -48,11 +45,11 @@ const getChats = async (req, res) => {
       const receiverUser = await User.findByPk(receiver.userId);
       const unformattedMessages = await Message.findAll({where: { postId }, order: [["createdAt", "ASC"]]});
       const msg = unformattedMessages.map(m => {
-        const { postId, ...rest } = m.dataValues;
-        return rest;
+        const { id, message, userId, createdAt, updatedAt } = m.dataValues;
+        return { id, message, userId, createdAt, updatedAt };
       })
 
-      return {
+      const returnObj = {
         postId,
         sender: userId,
         senderFirstName: firstName,
@@ -64,12 +61,14 @@ const getChats = async (req, res) => {
         receiverProfilePicture: receiverUser.profilePicture,
         messages: msg,
       }
+
+      return returnObj;
     }));
   
-    res.status(200).json(allChats);
-  } catch (e) {
-    console.log("getChats Error: " + e);
-    res.status(500).json({err: e.toString()})
+    res.status(OK).json(allChats);
+  } else {
+    console.log("getChats Error: userId does not exist in parameter");
+    res.status(INTERNAL_SERVER_ERROR);
   }
 };
 
@@ -84,16 +83,16 @@ const changeUserInfo = async (req, res) => {
       profilePicture,
     });
 
-    res.sendStatus(200);
+    res.sendStatus(OK);
   } catch (e) {
     console.log("changeInfo Error: " + e);
-    res.sendStatus(500);
+    res.sendStatus(INTERNAL_SERVER_ERROR);
   }
 }
 
 const getAssociatedRooms = async (userId) => {
   try {
-    const user = await Room.findAll({ where: { userId: userId } });
+    const user = await Room.findAll({ where: { userId } });
     if (user) {
       return user.map(room => room.postId); 
     } else {
@@ -109,8 +108,6 @@ const createRoom = async (postId, isOffer, senderData) => {
     let typeString = isOffer ? "offers" : "requests";
     let post = await axios.get(`${process.env.POST_URL}/communitypost/${typeString}/${postId}`);
     let postData = post.data;
-    console.log("POSTDATA");
-    console.log(postData);
     if (!postData){
       console.error("Tried to make chat for non-existent post");
       return false;
@@ -118,11 +115,7 @@ const createRoom = async (postId, isOffer, senderData) => {
 
     const postOwnerId = postData.userId;
     const receiverReq = await axios.get(`${process.env.USER_URL}/user/${postOwnerId}`);
-    console.log("RECIEVERREQ!!");
-    console.log(receiverReq);
     const userData = receiverReq.data;
-    console.log("userData");
-    console.log(userData);
     if (!userData || !userData.user) {
       console.error("Failed to get user data to create chat");
       return false;
@@ -148,23 +141,22 @@ const createRoom = async (postId, isOffer, senderData) => {
       profilePicture: receiverProfilePicture,
     });
 
-    console.log("first one");
     await User.upsert({
       userId: senderId,
       firstName: senderFirstName,
       lastName: senderLastName,
       profilePicture: senderProfilePicture,
     });
-    const [r1, created1] = await Room.upsert({
+    const room1 = await Room.upsert({
       postId,
       userId: receiverId,
     });
-    const [r2, created2] = await Room.upsert({
+    const room2 = await Room.upsert({
       postId,
       userId: senderId,
     });
 
-    return created1 && created2;
+    return room1[1] && room2[1];
   } catch (e) {
     console.log('createRoom Error ' + e);
   }
