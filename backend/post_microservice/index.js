@@ -9,6 +9,7 @@ const OK = 200;
 const CREATED = 201
 const INTERNAL_SERVER_ERROR = 500;
 const UNAUTHORIZED = 401;
+const NOT_FOUND = 404;
 
 dotenv.config({path: "../ports.env"});
 dotenv.config();
@@ -42,4 +43,4 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
 
-module.exports = { OK, CREATED, INTERNAL_SERVER_ERROR , UNAUTHORIZED };
+module.exports = { OK, CREATED, INTERNAL_SERVER_ERROR , UNAUTHORIZED, NOT_FOUND};

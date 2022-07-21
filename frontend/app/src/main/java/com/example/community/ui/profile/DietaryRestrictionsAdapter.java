@@ -16,7 +16,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.community.R;
 import com.example.community.classes.DietaryRestriction;
-import com.example.community.classes.Global;
+import com.example.community.classes.GlobalUtility;
 
 import java.util.ArrayList;
 
@@ -83,7 +83,7 @@ public class DietaryRestrictionsAdapter extends BaseAdapter {
 
     private void removePreference(DietaryRestriction pref, int index) {
         RequestQueue queue = Volley.newRequestQueue(this.context);
-        String url = Global.USER_URL + "/user/preference/" + pref.getId();
+        String url = GlobalUtility.USER_URL + "/user/preference/" + pref.getId();
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE,
                 url,

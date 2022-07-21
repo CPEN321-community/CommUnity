@@ -48,9 +48,9 @@ public class Chat implements Serializable {
         JSONObject sendMessage = new JSONObject();
         try {
             sendMessage.put("postId", roomId);
-            sendMessage.put("userId", Global.getAccount().getId());
+            sendMessage.put("userId", GlobalUtility.getAccount().getId());
             sendMessage.put("message", message);
-            Global.getSocket().emit("sendMessage", sendMessage);
+            GlobalUtility.getSocket().emit("sendMessage", sendMessage);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -60,15 +60,15 @@ public class Chat implements Serializable {
         Log.d(TAG, "joinRooms: Start");
         JSONObject joinRoomsMessage = new JSONObject();
         try {
-            joinRoomsMessage.put("userId", Global.getAccount().getId());
-            Global.getSocket().emit("joinRooms", joinRoomsMessage);
+            joinRoomsMessage.put("userId", GlobalUtility.getAccount().getId());
+            GlobalUtility.getSocket().emit("joinRooms", joinRoomsMessage);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
     public static synchronized void listenForMessages() {
-        Global.getSocket().on("sendMessage", args -> {
+        GlobalUtility.getSocket().on("sendMessage", args -> {
             JSONObject data = (JSONObject) args[0];
             Message message = new Message(data);
             String postId = message.postId;
@@ -83,10 +83,10 @@ public class Chat implements Serializable {
         JSONObject createRoomMessage = new JSONObject();
         JSONObject senderData = new JSONObject();
         try {
-            senderData.put("senderId", Global.getAccount().getId());
-            senderData.put("senderFirstName", Global.userProfile.firstName);
-            senderData.put("senderLastName", Global.userProfile.lastName);
-            senderData.put("senderProfilePicture", Global.userProfile.profilePicture);
+            senderData.put("senderId", GlobalUtility.getAccount().getId());
+            senderData.put("senderFirstName", GlobalUtility.userProfile.firstName);
+            senderData.put("senderLastName", GlobalUtility.userProfile.lastName);
+            senderData.put("senderProfilePicture", GlobalUtility.userProfile.profilePicture);
             createRoomMessage.put("postId", roomId);
             createRoomMessage.put("senderData", senderData);
             createRoomMessage.put("isOffer", isOffer);
@@ -96,8 +96,8 @@ public class Chat implements Serializable {
         }
 
         Log.d(TAG, "createRoom: Tryna start some shut");
-        Log.d(TAG, "createRoom: " + Global.getSocket());
-        Global.getSocket().emit("createRoom", createRoomMessage);
+        Log.d(TAG, "createRoom: " + GlobalUtility.getSocket());
+        GlobalUtility.getSocket().emit("createRoom", createRoomMessage);
 
     }
 

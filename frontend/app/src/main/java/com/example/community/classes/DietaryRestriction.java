@@ -5,7 +5,6 @@ import com.example.community.exceptions.PreferenceException;
 import org.json.JSONObject;
 
 public class DietaryRestriction {
-    private static final String TAG = "DIETARY_RESTRICTION_CLASS";
     private String id;
     public String name;
 

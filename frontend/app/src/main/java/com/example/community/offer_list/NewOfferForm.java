@@ -17,7 +17,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.community.R;
-import com.example.community.classes.Global;
+import com.example.community.classes.GlobalUtility;
 import com.example.community.classes.Tags;
 import com.example.community.classes.Utils;
 
@@ -89,10 +89,10 @@ public class NewOfferForm extends AppCompatActivity {
 
     private void createOfferPost() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Global.POST_URL + "/communitypost/offers";
+        String url = GlobalUtility.POST_URL + "/communitypost/offers";
         JSONObject postBody = new JSONObject();
         try {
-            postBody.put("userId", Global.getAccount().getId());
+            postBody.put("userId", GlobalUtility.getAccount().getId());
             postBody.put("title", this.itemName.getText().toString());
             postBody.put("description", this.desc.getText().toString());
             postBody.put("quantity", Integer.parseInt(this.itemQuantity.getText().toString()));

@@ -16,7 +16,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.community.R;
-import com.example.community.classes.Global;
+import com.example.community.classes.GlobalUtility;
 import com.example.community.classes.Tags;
 
 import org.json.JSONException;
@@ -52,7 +52,7 @@ public class NewRequestForm extends AppCompatActivity {
 
     private void createRequestPost() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Global.POST_URL + "/communitypost/requests";
+        String url = GlobalUtility.POST_URL + "/communitypost/requests";
         JSONObject postBody = new JSONObject();
         try {
             postBody.put("userId", Global.getAccount().getId());

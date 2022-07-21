@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 import io.socket.client.Socket;
 
-public class Global {
+public class GlobalUtility {
     private static final String TAG = "GLOBAL_CLASS";
     private static GoogleSignInAccount account;
     private static Socket socket;

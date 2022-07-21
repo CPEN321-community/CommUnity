@@ -21,7 +21,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.community.classes.Global;
+import com.example.community.classes.GlobalUtility;
 import com.example.community.classes.OfferPostObj;
 import com.example.community.classes.ReqPostObj;
 import com.example.community.classes.Tags;
@@ -37,7 +37,6 @@ import java.util.ArrayList;
 public class SearchActivity extends AppCompatActivity {
     private static final String TAG = "SEARCH_ACTIVITY";
     private EditText searchField;
-    private boolean isChecked;
     private final MutableLiveData<ArrayList<ReqPostObj>> mRequestPosts = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<OfferPostObj>> mOfferPosts = new MutableLiveData<>();
     private ListView reqPostResultList;
@@ -105,7 +104,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void PerformRequestSearch() {
         String query = this.searchField.getText().toString();
-        String url = Global.POST_URL + "/communitypost/requests/search/" + query;
+        String url = GlobalUtility.POST_URL + "/communitypost/requests/search/" + query;
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET,
                 url,
@@ -141,7 +140,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void PerformOfferSearch() {
         String query = this.searchField.getText().toString();
-        String url = Global.POST_URL + "/communitypost/offers/search/" + query;
+        String url = GlobalUtility.POST_URL + "/communitypost/offers/search/" + query;
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET,
                 url,
@@ -189,7 +188,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void PerformOfferTagSearch() {
-        String url = Global.POST_URL + "/communitypost/offerTags/";
+        String url = GlobalUtility.POST_URL + "/communitypost/offerTags/";
         JSONObject body = new JSONObject();
         try {
             body.put("tagList", this.tags.getJSONArr());
@@ -234,7 +233,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void PerformRequestTagSearch() {
-        String url = Global.POST_URL + "/communitypost/requestTags";
+        String url = GlobalUtility.POST_URL + "/communitypost/requestTags";
         JSONObject body = new JSONObject();
         try {
             body.put("tagList", this.tags.getJSONArr());

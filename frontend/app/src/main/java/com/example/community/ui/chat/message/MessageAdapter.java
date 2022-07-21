@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.community.R;
 import com.example.community.classes.Chat;
-import com.example.community.classes.Global;
+import com.example.community.classes.GlobalUtility;
 import com.example.community.classes.Message;
 
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class MessageAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         Message message = this.messages.get(i);
-        if (Objects.equals(message.userId, Global.getAccount().getId())) {
+        if (Objects.equals(message.userId, GlobalUtility.getAccount().getId())) {
             return renderMyMessage(message);
         } else {
             return renderOtherMessage(message);

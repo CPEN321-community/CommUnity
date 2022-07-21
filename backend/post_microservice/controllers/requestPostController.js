@@ -1,7 +1,7 @@
 const { Op } = require("sequelize");
 const axios = require("axios").default;
 const { RequestPost, RequestPostTags } = require("../models");
-const { OK, INTERNAL_SERVER_ERROR } = require("../index.js");
+const { OK, INTERNAL_SERVER_ERROR, NOT_FOUND } = require("../index.js");
 
 const getRequest = async (req, res) => {
     console.log("Get request endpoint hit");
@@ -16,9 +16,10 @@ const getRequest = async (req, res) => {
 const getAllRequests = async (req, res) => {
     try {
         const response = await RequestPost.findAll();
-        res.json(response);
+        res.status(OK).json(response);
     } catch (error) {
         console.log("Error getting all of the offer posts: " + error);
+        res.status(INTERNAL_SERVER_ERROR);
     }
 }
 
@@ -26,9 +27,10 @@ const getAllUserRequests = async (req, res) => {
     console.log("get user endpoint hit");
     try{
         const response = await RequestPost.findAll({where: {userId: req.params.userId}});
-        res.json(response);
+        res.status(OK).json(response);
     } catch(error) {
         console.log("Error in retrieving request posts made by user " + error);
+        res.status(INTERNAL_SERVER_ERROR);
     }
 }
 
@@ -84,11 +86,11 @@ const searchRequests = async (req, res) => {
             }
         }
 
-        res.json(response);
+        res.status(OK).json(response);
 
     } catch (error) {
         console.log("Error with searching for request posts: " + error);
-        res.sendStatus(500);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
@@ -117,10 +119,10 @@ const searchRequestsWithTags = async (req, res) => {
             return post.dataValues;
         })
 
-        res.status(200).json({results: result});
+        res.status(OK).json({results: result});
     } catch (error) {
       console.log("Error with searching for request posts: " + error);
-      res.sendStatus(500);
+      res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
@@ -149,10 +151,10 @@ const createRequest = async (req, res) => {
             requestPosts: 1,
         };
         await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
-        res.sendStatus(200);
+        res.sendStatus(OK);
     } catch (error) {
       console.log("Error creating a new post: " + error);
-      res.sendStatus(500);
+      res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
@@ -173,13 +175,13 @@ const updateRequest = async (req, res) => {
             if (req.body.status == "Fulfilled") {
                 await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/request/${req.body.requestId}`);
             }
-            res.json("Post updated");
+            res.status(OK).json("Post updated");
         }else{
-            res.json("You cannot update a post that does not exist");
+            res.status(NOT_FOUND).json("You cannot update a post that does not exist");
         }
     } catch (error) {
       console.log("Error updating post: " + error);
-      res.sendStatus(500);
+      res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 
 }
@@ -201,10 +203,10 @@ const removeRequestTags = async (req, res) => {
                 });
             }
         }
-        res.sendStatus(200);
+        res.sendStatus(OK);
     } catch (error) {
         console.log("Error deleting offer tags: " + error);
-        res.sendStatus(500);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
@@ -223,10 +225,10 @@ const addRequestTags = async (req, res) => {
                 });
             }
         });
-        res.sendStatus(200);
+        res.sendStatus(OK);
     } catch (error) {
         console.log("Error with adding new offer tags: " + error);
-        res.sendStatus(500);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
@@ -235,10 +237,10 @@ const deleteRequest = async (req, res) => {
         await RequestPostTags.destroy({where: {postId: req.body.requestId}});
         await RequestPost.destroy({where: {requestId: req.body.requestId}});
         await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/request/${req.body.requestId}`);
-        res.sendStatus(200);
+        res.sendStatus(OK);
     } catch (error) {
         console.log("Error deleting post: " + error);
-        res.sendStatus(500);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 

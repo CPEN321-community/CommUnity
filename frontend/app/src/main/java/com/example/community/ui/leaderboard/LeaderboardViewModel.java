@@ -12,7 +12,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.community.classes.Global;
+import com.example.community.classes.GlobalUtility;
 import com.example.community.classes.UserWithScore;
 
 import org.json.JSONArray;
@@ -39,7 +39,7 @@ public class LeaderboardViewModel extends AndroidViewModel {
 
     protected void fetchLeaderboard() {
         RequestQueue queue = Volley.newRequestQueue(this.application);
-        String url = Global.USER_URL + "/rank/top/10";
+        String url = GlobalUtility.USER_URL + "/rank/top/10";
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET,
                 url,
