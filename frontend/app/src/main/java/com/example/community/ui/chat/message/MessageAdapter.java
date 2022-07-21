@@ -37,6 +37,7 @@ public class MessageAdapter extends BaseAdapter {
     }
 
     public void AddMessages(ArrayList<Message> messages) {
+        this.messages.clear();
         this.messages.addAll(messages);
         ((MessageActivity) context).runOnUiThread(() -> {
             this.notifyDataSetChanged();

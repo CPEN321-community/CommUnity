@@ -23,8 +23,9 @@ public class ChatMessageHandler {
     public static void AddAdapter(String roomId, MessageAdapter adapter) {
         adapterHashMap.put(roomId, adapter);
         chatMap.putIfAbsent(roomId, new ArrayList<>());
-        Log.d(TAG, "AddAdapter: " + adapter);
-        adapter.AddMessages(chatMap.get(roomId));
+        Log.d(TAG, "AddAdapter: " + adapter.getCount());
+        Log.d(TAG, "AddAdapter: " + chatMap.get(roomId));
+//        adapter.AddMessages(chatMap.get(roomId));
         adapter.notifyDataSetChanged();
     }
 

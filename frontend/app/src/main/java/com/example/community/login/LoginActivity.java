@@ -3,6 +3,7 @@ package com.example.community.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -100,6 +101,12 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
+    private void handleLoginError() {
+        // TODO Pretty-ify toast
+        Toast errorToast = Toast.makeText(this, "Failed to create user", Toast.LENGTH_SHORT);
+        errorToast.show();
+    }
+
     private void updateUI(GoogleSignInAccount account) {
         if (account != null) {
             userDoesExist(account.getId(), new LoginCallback() {
@@ -109,7 +116,7 @@ public class LoginActivity extends AppCompatActivity {
                         createUser(account, new LoginCallback() {
                             @Override
                             public void onError(VolleyError error) {
-                                // TODO handle create user error
+                                handleLoginError();
                             }
 
                             @Override
@@ -124,7 +131,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 @Override
                 public void onError(VolleyError error) {
-                    // TODO handle userDoesExist error
+                    handleLoginError();
                 }
             });
 
