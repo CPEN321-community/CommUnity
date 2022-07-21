@@ -1,5 +1,5 @@
 const Router = require('express-promise-router');
-const { getTopNUsers, getUserRank, upsertUserRank, getUserLeaderboardStats } = require('./controllers/leaderboardController');
+const { getTopNUsers, getUserRank, upsertUserRank } = require('./controllers/leaderboardController');
 const { getUser, upsertUserPreference, createUser, updateUser, deleteUserPreference } = require('./controllers/userController');
 
 const router = Router();

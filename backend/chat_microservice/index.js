@@ -5,7 +5,11 @@ const bodyParser = require('body-parser');
 const routes = require('./routes');
 const socketHandler = require('./socket/socketHandler');
 const db = require('./models');
-const dotenv = require("dotenv")
+const dotenv = require("dotenv");
+
+const OK = 200;
+const CREATED = 201
+const INTERNAL_SERVER_ERROR = 500;
 
 dotenv.config({path: "../ports.env"});
 dotenv.config();
@@ -26,3 +30,5 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Node.js Server running on port ${PORT}`);
 });
+
+module.exports = { OK, CREATED, INTERNAL_SERVER_ERROR };

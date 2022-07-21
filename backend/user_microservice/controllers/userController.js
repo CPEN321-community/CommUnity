@@ -1,7 +1,4 @@
-
-const { Op } = require("sequelize");
-const { User, Preference, Leaderboard } = require("../models");
-const { upsertUserMethod } = require("./leaderboardController.js");
+const { User, Preference } = require("../models");
 const axios = require("axios");
 const getUser = async (req, res) => {
    try {
@@ -18,7 +15,7 @@ const upsertUserPreference = async (req, res) => {
     try {
         const {userId} = req.body;
         const user = await User.findByPk(userId);
-        const [preference, isCreated] = await Preference.upsert({
+        const [preference] = await Preference.upsert({
             userId,
             type: req.body.type,
             value: req.body.value
