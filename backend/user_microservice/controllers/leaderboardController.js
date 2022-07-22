@@ -35,8 +35,8 @@ const getTopNUsers = async (req, res) => {
 /**
  * Only return the user's position on the leaderboard
  */
-const getUserRank = async (req, res) => {{
-        const { userId } = req.params;
+const getUserRank = async (req, res) => {
+    const userId  = req.params.userId;
     if (userId) {
         const user = await Leaderboard.findOne({ 
             where: { userId }
@@ -56,7 +56,7 @@ const getUserRank = async (req, res) => {{
 };
 
 const upsertUserMethod = async ({ userId, offerPosts, requestPosts }) => {
-    try {
+    if (userId) {
         const currLeaderboard = await Leaderboard.findOne({
                     where: { userId }
         });
@@ -81,7 +81,7 @@ const upsertUserMethod = async ({ userId, offerPosts, requestPosts }) => {
             });
         }
         return true;
-    } catch (error) {
+    } else {
         console.log("Error upserting user rank: " + error);
         return false;
     }

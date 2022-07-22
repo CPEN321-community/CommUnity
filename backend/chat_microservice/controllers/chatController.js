@@ -72,7 +72,10 @@ const getChats = async (req, res) => {
 };
 
 const changeUserInfo = async (req, res) => {
-  const { userId, firstName, lastName, profilePicture } = req.body;
+  const userId = req.body.userId;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+  const profilePicture = req.body.profilePicture;
   if (userId && firstName && lastName && profilePicture) {
     await User.upsert({
       userId,
@@ -88,14 +91,14 @@ const changeUserInfo = async (req, res) => {
 }
 
 const getAssociatedRooms = async (userId) => {
-  try {
+  if (userId) {
     const user = await Room.findAll({ where: { userId } });
     if (user) {
       return user.map(room => room.postId); 
     } else {
       console.log('no rooms were found for userId: ' + userId);
     }
-  } catch (e) {
+  } else {
     console.log('getAssociatedRooms Error: ' + e);
   }
 }

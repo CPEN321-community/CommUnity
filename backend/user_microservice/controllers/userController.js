@@ -26,8 +26,8 @@ const getUser = async (req, res) => {
 };
 
 const upsertUserPreference = async (req, res) => {
-    try {
-        const {userId} = req.body;
+    if(req.body.userId) {
+        const userId = req.body.userId;
         const user = await User.findByPk(userId);
         const [preference] = await Preference.upsert({
             userId,

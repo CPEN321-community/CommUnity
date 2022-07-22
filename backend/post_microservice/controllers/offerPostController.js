@@ -88,7 +88,7 @@ const searchOffers = async (req, res) => {
 }
 
 const searchOffersWithTags = async (req, res) => {
-    try {
+    if(req.body.tagList) {
         const tagList = req.body.tagList;
         console.log("hello world!");
         console.log(tagList);
@@ -116,7 +116,7 @@ const searchOffersWithTags = async (req, res) => {
         console.log(result);
 
         res.status(OK).json({results: result});
-    } catch (error) {
+    } else {
       console.log("Error with searching for offer posts: " + error);
       res.sendStatus(INTERNAL_SERVER_ERROR);
     }
