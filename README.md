@@ -5,7 +5,7 @@
 
 <br/>
 
-<div align="center"><img src="https://github.com/JoshParkSJ/CommUnity/blob/main/assets/logos/logo_art.png" width="125" height="125" style="vertical-align:middle"></div>
+<div align="center"><img src="https://github.com/JoshParkSJ/CommUnity/blob/main/frontend/readme_assets/logos/logo_art.png" width="125" height="125" style="vertical-align:middle"></div>
 
 <div align="center">
 <h4>37% of students at UBC Vancouver report low to very low food security. Globally, approximately one third of the food produced for human consumption gets lost or wasted each year. COMMUNITY aims to reduce food waste and increase food security amongst students by sharing food which might otherwise go to waste</h4>
@@ -21,8 +21,8 @@ Community consiste of an Android frontend (Java), Node.js backend, and MySql dat
 # Mockups
 
 <div align="center">
-	<img src="https://github.com/JoshParkSJ/CommUnity/blob/main/assets/mockups/main_day.png" style="vertical-align:middle">
-	<img src="https://github.com/JoshParkSJ/CommUnity/blob/main/assets/mockups/main_night.png"style="vertical-align:middle">
+	<img src="https://github.com/JoshParkSJ/CommUnity/blob/main/frontend/readme_assets/mockups/main_day.png" style="vertical-align:middle">
+	<img src="https://github.com/JoshParkSJ/CommUnity/blob/main/frontend/readme_assets/mockups/main_night.png"style="vertical-align:middle">
 </div>
 
 
