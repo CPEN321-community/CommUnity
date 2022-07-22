@@ -1,25 +1,25 @@
 const { DietaryRestriction } = require("../models");
+const { INTERNAL_SERVER_ERROR } = require('../index');
 
 const getUserDietaryRestrictions = async (req, res) => {
   if (req.params.id) {
-    const { userId } = req.params;
 
     let restrictions = await DietaryRestriction.findAll({
       where: {
-        userId,
+        userId: req.params.userId,
       },
     });
     console.log(restrictions);
 
     res.json(restrictions);
   } else {
-    res.sendStatus(500);
+    res.sendStatus(INTERNAL_SERVER_ERROR);
   }
 };
 
 const createDietaryRestriction = async (req, res) => {
-  try {
-    const {userId, name} = req.body;
+  const {userId, name} = req.body;
+  if (userId && name) {
     console.log("userId", userId);
     let createdRestriction = await DietaryRestriction.create({
       UserUserId: userId,
@@ -29,8 +29,8 @@ const createDietaryRestriction = async (req, res) => {
 
     res.json(createdRestriction.dataValues);
   }
-  catch(e) {
-    res.sendStatus(500);
+  else {
+    res.sendStatus(INTERNAL_SERVER_ERROR);
   }
 }
 
@@ -47,7 +47,7 @@ const deleteDietaryRestriction = async (req, res) => {
   }
   catch(e) {
     console.error(e);
-    res.sendStatus(500);
+    res.sendStatus(INTERNAL_SERVER_ERROR);
   }
 }
 

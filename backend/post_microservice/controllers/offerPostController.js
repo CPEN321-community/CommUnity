@@ -22,12 +22,11 @@ const getAllOffers = async (req, res) => {
 }
 
 const getAllUserOffers = async (req, res) => {
-    try{
-        console.log(req.params.userId);
+    if (req.params.userId) {
         const response = await OfferPost.findAll({where: {userId: req.params.userId}});
         res.json(response);
-    } catch(error) {
-        console.log("Error in retrieving offer posts made by user " + error);
+    } else {
+        console.log("Error in retrieving offer posts made by user");
     }
 }
   

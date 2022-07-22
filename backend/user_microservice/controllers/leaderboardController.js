@@ -1,5 +1,6 @@
 const { Op } = require("sequelize");
 const { Leaderboard, User } = require("../models");
+const { INTERNAL_SERVER_ERROR } = require('../index');
 
 const getTopNUsers = async (req, res) => {
    if (req.params.N) {
@@ -27,17 +28,16 @@ const getTopNUsers = async (req, res) => {
        res.status(200).json(responseWithNames);
    } else {
        console.log("Error getting top N users");
-       res.sendStatus(500);
+       res.sendStatus(INTERNAL_SERVER_ERROR);
    }
 };
 
 /**
  * Only return the user's position on the leaderboard
  */
-const getUserRank = async (req, res) => {
-    try {
+const getUserRank = async (req, res) => {{
         const { userId } = req.params;
-        console.log(userId);
+    if (userId) {
         const user = await Leaderboard.findOne({ 
             where: { userId }
         });
@@ -49,9 +49,9 @@ const getUserRank = async (req, res) => {
         })
         const rank = higherScoringUsers.length;
         res.status(200).json({ rank });
-    } catch (error) {
-        console.log("Error getting user rank: " + error);
-        res.sendStatus(500);
+    } else {
+        console.log("Error getting user rank");
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -92,7 +92,7 @@ const upsertUserRank = async (req, res) => {
     if (result) {
         res.sendStatus(200);
     } else {
-        res.sendStatus(500);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 };
 

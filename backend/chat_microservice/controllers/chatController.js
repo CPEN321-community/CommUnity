@@ -25,23 +25,22 @@ const deleteRoom = async (req, res) => {
 }
 
 const getChats = async (req, res) => {
-    const { userId } = req.params;
 
-    if (userId) {
+    if (req.params.userId) {
     const user = await User.findOne({ 
-      where: { userId } 
+      where: { userId: req.params.userId } 
     });
 
     const { firstName, lastName, profilePicture } = user;
     
     const rooms = await Room.findAll({ 
-      where: { userId } 
+      where: { userId: req.params.userId } 
     });
   
     const allChats = await Promise.all(rooms.map(async room => {
 
       const postId = room.dataValues.postId;      
-      const receiver = await Room.findOne({ where: {userId: {[Op.ne]: userId}, postId} });
+      const receiver = await Room.findOne({ where: {userId: {[Op.ne]: req.params.userId}, postId} });
       const receiverUser = await User.findByPk(receiver.userId);
       const unformattedMessages = await Message.findAll({where: { postId }, order: [["createdAt", "ASC"]]});
       const msg = unformattedMessages.map(m => {
@@ -51,7 +50,7 @@ const getChats = async (req, res) => {
 
       const returnObj = {
         postId,
-        sender: userId,
+        sender: req.params.userId,
         senderFirstName: firstName,
         senderLastName: lastName,
         senderProfilePicture: profilePicture,
@@ -73,9 +72,8 @@ const getChats = async (req, res) => {
 };
 
 const changeUserInfo = async (req, res) => {
-  try {
-    const { userId, firstName, lastName, profilePicture } = req.body;
-    
+  const { userId, firstName, lastName, profilePicture } = req.body;
+  if (userId && firstName && lastName && profilePicture) {
     await User.upsert({
       userId,
       firstName,
@@ -84,8 +82,7 @@ const changeUserInfo = async (req, res) => {
     });
 
     res.sendStatus(OK);
-  } catch (e) {
-    console.log("changeInfo Error: " + e);
+  } else {
     res.sendStatus(INTERNAL_SERVER_ERROR);
   }
 }

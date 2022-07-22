@@ -95,7 +95,7 @@ const searchRequests = async (req, res) => {
 }
 
 const searchRequestsWithTags = async (req, res) => {
-    try {
+    if (req.body.tagList) {
         const tagList = req.body.tagList;
         const postTags = await RequestPostTags.findAll({
             where: {name: tagList}
@@ -120,8 +120,7 @@ const searchRequestsWithTags = async (req, res) => {
         })
 
         res.status(OK).json({results: result});
-    } catch (error) {
-      console.log("Error with searching for request posts: " + error);
+    } else {
       res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }

@@ -15,12 +15,12 @@ const verifyToken = async (req, res) => {
 }
 
 const getUser = async (req, res) => {
-   try {
+   if (req.params.userId) {
        const userId = req.params.userId;
        const response = await User.findByPk(userId, {include: ["preferences", "leaderboard"]});
        res.json({user: response});
-   } catch (error) {
-       console.log("Error finding user: " + error);
+   } else {
+       console.log("Error finding user");
        res.sendStatus(INTERNAL_SERVER_ERROR);
    }
 };
