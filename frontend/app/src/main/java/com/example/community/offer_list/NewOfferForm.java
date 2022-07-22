@@ -19,7 +19,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.community.R;
 import com.example.community.classes.GlobalUtil;
 import com.example.community.classes.Tags;
-import com.example.community.classes.Util;
+import com.example.community.classes.DateImgUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -81,6 +81,7 @@ public class NewOfferForm extends AppCompatActivity {
                         Log.e(TAG, "Selecting picture cancelled");
                     }
                     break;
+                default: Log.e(TAG, "Invalid request code");
             }
         } catch (Exception e) {
             Log.e(TAG, "Exception in onActivityResult : " + e.getMessage());
@@ -101,7 +102,7 @@ public class NewOfferForm extends AppCompatActivity {
             postBody.put("status", "ACTIVE");
             postBody.put("tagList", this.tags.getJSONArr());
             Date selectedDate = new Date(this.bestBefore.getDate());
-            String dateString = Util.DateToString(selectedDate);
+            String dateString = DateImgUtil.DateToString(selectedDate);
             postBody.put("bestBeforeDate", dateString);
 
         } catch (JSONException e) {

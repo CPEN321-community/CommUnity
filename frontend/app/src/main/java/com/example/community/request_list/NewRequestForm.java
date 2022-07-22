@@ -35,8 +35,6 @@ public class NewRequestForm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_request_form);
         this.itemName = this.findViewById(R.id.request_name_input);
-        int quantity_input = R.id.quantity_input;
-        EditText itemQuantity = this.findViewById(quantity_input);
         this.desc = this.findViewById(R.id.description_input);
         Button createPostButton = this.findViewById(R.id.create_request_button);
         createPostButton.setOnClickListener(v -> {
