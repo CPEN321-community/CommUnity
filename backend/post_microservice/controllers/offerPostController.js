@@ -162,7 +162,7 @@ const createOffer = async (req, res) => {
 }
 
 const removeOfferTags = async (req, res) => {
-    try {
+    if(req.body.tagList) {
         const currentTags = await OfferPostTags.findAll({where: {postId: req.body.offerId}});
         const updatedTags = req.body.tagList;
 
@@ -177,14 +177,14 @@ const removeOfferTags = async (req, res) => {
             }
         }
         res.sendStatus(OK);
-    } catch (error) {
+    } else {
         console.log("Error deleting offer tags: " + error);
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
   
 const addOfferTags = async (req, res) => {
-    try {
+    if(req.body.tagList) {
         const currentTags = await OfferPostTags.findAll({where: {postId: req.body.offerId}});
         const updatedTags = req.body.tagList;
         const currentTagsList = currentTags.map(tag => tag.dataValues.name);
@@ -198,14 +198,14 @@ const addOfferTags = async (req, res) => {
             }
         });
         res.sendStatus(OK);
-    } catch (error) {
+    } else {
         console.log("Error with adding new offer tags: " + error);
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
 const updateOffer = async (req, res) => {
-    try {
+    if(req.body.offerId) {
         const updateOffer = OfferPost.findOne({where: {offerId: req.body.offerId}});
         const offerAlreadyExists = updateOffer != null;
         if(offerAlreadyExists){
@@ -226,14 +226,14 @@ const updateOffer = async (req, res) => {
         }else{
             res.sendStatus(OK);
         }
-    } catch (error) {
+    } else {
         console.log("Error updating post: " + error);
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
 const deleteOffer = async (req, res) => {
-    try {
+    if(req.body.offerId) {
         await OfferPostTags.destroy({
             where: {
                 postId: req.body.offerId
@@ -246,7 +246,7 @@ const deleteOffer = async (req, res) => {
         });
         await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/offer/${req.body.offerId}`);
         res.sendStatus(OK);
-    } catch (error) {
+    } else {
         console.log("Error deleting post: " + error);
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }

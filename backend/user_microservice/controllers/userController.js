@@ -36,7 +36,7 @@ const upsertUserPreference = async (req, res) => {
         });
         await preference.setUser(user);
         res.json(preference);
-    } catch (error) {
+    } else {
         console.log("Error updating user preferences: " + error);
         res.sendStatus(INTERNAL_SERVER_ERROR);        
     }
@@ -44,13 +44,13 @@ const upsertUserPreference = async (req, res) => {
 
 const deleteUserPreference = async (req, res) => {
     console.log("Delete user pref");
-    try {
-        const {preferenceId} = req.params;
+    if(req.params.preferenceId) {
+        const preferenceId = req.params.preferenceId;
         const deleted = await Preference.destroy({
             where: {id: preferenceId},
         });
         res.json({deleted});
-    } catch (error) {
+    } else {
         console.log("Error deleting user preferences: " + error);
         res.sendStatus(INTERNAL_SERVER_ERROR);        
     }
@@ -81,7 +81,7 @@ const updateUser = async (req, res) => {
 }
 
 const createUser = async (req, res) => {
-    try {
+    if(req.body.token) {
         const response = await User.create({
             token: req.body.token,
             firstName: req.body.firstName,
@@ -99,7 +99,7 @@ const createUser = async (req, res) => {
         }
         );
         res.status(CREATED).json(response)
-    } catch (error) {
+    } else {
         console.log("Error upserting user: " + error);
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }

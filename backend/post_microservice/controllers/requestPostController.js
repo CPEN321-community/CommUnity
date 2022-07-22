@@ -158,7 +158,7 @@ const createRequest = async (req, res) => {
 }
 
 const updateRequest = async (req, res) => {
-    try {
+    if(req.body.requestId) {
         const updateRequest = RequestPost.findOne({
             where: {requestId: req.body.requestId}
         });
@@ -178,7 +178,7 @@ const updateRequest = async (req, res) => {
         }else{
             res.status(NOT_FOUND).json("You cannot update a post that does not exist");
         }
-    } catch (error) {
+    } else {
       console.log("Error updating post: " + error);
       res.sendStatus(INTERNAL_SERVER_ERROR);
     }
@@ -186,7 +186,7 @@ const updateRequest = async (req, res) => {
 }
 
 const removeRequestTags = async (req, res) => {
-    try {
+    if(req.body.requestId) {
         const currentTags = await RequestPostTags.findAll({
             where: {postId: req.body.requestId}
         });
@@ -203,14 +203,14 @@ const removeRequestTags = async (req, res) => {
             }
         }
         res.sendStatus(OK);
-    } catch (error) {
+    } else {
         console.log("Error deleting offer tags: " + error);
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
 const addRequestTags = async (req, res) => {
-    try {
+    if(req.body.requestId) {
         const currentTags = await RequestPostTags.findAll({where: {postId: req.body.requestId}});
 
         const updatedTags = req.body.tagList;
@@ -225,19 +225,19 @@ const addRequestTags = async (req, res) => {
             }
         });
         res.sendStatus(OK);
-    } catch (error) {
+    } else {
         console.log("Error with adding new offer tags: " + error);
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
 const deleteRequest = async (req, res) => {
-    try {
+    if(req.body.requestId) {
         await RequestPostTags.destroy({where: {postId: req.body.requestId}});
         await RequestPost.destroy({where: {requestId: req.body.requestId}});
         await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/request/${req.body.requestId}`);
         res.sendStatus(OK);
-    } catch (error) {
+    } else {
         console.log("Error deleting post: " + error);
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }
