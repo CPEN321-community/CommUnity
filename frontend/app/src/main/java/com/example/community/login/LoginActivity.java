@@ -3,6 +3,7 @@ package com.example.community.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -30,6 +31,9 @@ import com.google.android.gms.tasks.Task;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 1;
     private static final String TAG = "LOGIN_ACTIVITY";
@@ -38,8 +42,9 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        GlobalUtil.setAppContext(this);
+        GlobalUtil.setAppContext(getApplicationContext());
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -93,22 +98,29 @@ public class LoginActivity extends AppCompatActivity {
 
     private void finishLogin(GoogleSignInAccount account) {
         GlobalUtil.setAccount(account);
+        GlobalUtil.setHeaderToken(account.getIdToken());
         GlobalUtil.FetchUser();
         Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(mainActivityIntent);
         finish();
     }
 
+    private void handleLoginError() {
+        // TODO Pretty-ify toast
+        Toast errorToast = Toast.makeText(this, "Failed to create user", Toast.LENGTH_SHORT);
+        errorToast.show();
+    }
+
     private void updateUI(GoogleSignInAccount account) {
         if (account != null) {
-            userDoesExist(account.getId(), new LoginCallback() {
+            userDoesExist(account, new LoginCallback() {
                 public void onSuccess(boolean exists) {
                     Log.d(TAG, "onSuccess: " + exists);
                     if (!exists) {
                         createUser(account, new LoginCallback() {
                             @Override
                             public void onError(VolleyError error) {
-                                // TODO handle create user error
+                                handleLoginError();
                             }
 
                             @Override
@@ -123,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 @Override
                 public void onError(VolleyError error) {
-                    // TODO handle userDoesExist error
+                    handleLoginError();
                 }
             });
 
@@ -155,12 +167,20 @@ public class LoginActivity extends AppCompatActivity {
                     volleyCallBack.onError();
                     // TODO: Fail sign in
                 }
-        );
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("token", account.getIdToken());
+                return headers;
+            }
+        };
         queue.add(request);
 
     }
 
-    private void userDoesExist(String uid, VolleyCallBack callback) {
+    private void userDoesExist(GoogleSignInAccount account, VolleyCallBack callback) {
+        String uid = account.getId();
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = GlobalUtil.USER_URL + "/user" + "/" + uid;
         JsonObjectRequest sr = new JsonObjectRequest(Request.Method.GET, url,
@@ -172,7 +192,14 @@ public class LoginActivity extends AppCompatActivity {
                 error -> {
                     Log.e(TAG, "userDoesExist: " + error);
                     callback.onError(error);
-                });
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("token", account.getIdToken());
+                return headers;
+            }
+        };
         queue.add(sr);
     }
 

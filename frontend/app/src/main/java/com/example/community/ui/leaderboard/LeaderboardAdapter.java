@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.community.R;
 import com.example.community.classes.UserWithScore;
-import com.example.community.classes.Util;
+import com.example.community.classes.DateImgUtil;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -57,9 +57,9 @@ public class LeaderboardAdapter extends BaseAdapter {
 
         ImageView avatar = (ImageView) newView.findViewById(R.id.chat_avatar);
         if (!Objects.equals(user.profilePicture, "")) {
-            Util.setImageWhenLoaded(context, user.profilePicture, avatar);
+            DateImgUtil.setImageWhenLoaded(context, user.profilePicture, avatar);
         } else {
-            avatar.setImageDrawable(Util.GetDefaultAvatar(context));
+            avatar.setImageDrawable(DateImgUtil.GetDefaultAvatar(context));
         }
         return newView;
     }

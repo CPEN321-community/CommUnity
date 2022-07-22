@@ -95,10 +95,7 @@ public class Chat implements Serializable {
             e.printStackTrace();
         }
 
-        Log.d(TAG, "createRoom: Tryna start some shut");
-        Log.d(TAG, "createRoom: " + GlobalUtil.getSocket());
         GlobalUtil.getSocket().emit("createRoom", createRoomMessage);
-
     }
 
 }

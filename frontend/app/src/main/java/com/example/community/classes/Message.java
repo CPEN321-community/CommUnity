@@ -20,7 +20,7 @@ public class Message implements Serializable {
             this.postId = postId;
             this.parentChat = parentChat;
             String createdAtString = messageJSON.getString("createdAt");
-            this.createdAt = new SimpleDateFormat(Util.dateFormatString).parse(createdAtString);
+            this.createdAt = new SimpleDateFormat(DateImgUtil.dateFormatString).parse(createdAtString);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -34,7 +34,7 @@ public class Message implements Serializable {
             this.postId = messageJSON.getString("postId");
             this.parentChat = Chat.getChat(this.postId);
             String createdAtString = messageJSON.getString("createdAt");
-            this.createdAt = new SimpleDateFormat(Util.dateFormatString).parse(createdAtString);
+            this.createdAt = new SimpleDateFormat(DateImgUtil.dateFormatString).parse(createdAtString);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -22,6 +22,9 @@ import com.example.community.classes.Tags;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class NewRequestForm extends AppCompatActivity {
 
     private static final String TAG = "NEW_REQUEST_FORM";
@@ -35,8 +38,6 @@ public class NewRequestForm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_request_form);
         this.itemName = this.findViewById(R.id.request_name_input);
-        String quantity_input = R.id.quantity_input
-        EditText itemQuantity = this.findViewById(quantity_input);
         this.desc = this.findViewById(R.id.description_input);
         Button createPostButton = this.findViewById(R.id.create_request_button);
         createPostButton.setOnClickListener(v -> {
@@ -56,7 +57,7 @@ public class NewRequestForm extends AppCompatActivity {
         String url = GlobalUtil.POST_URL + "/communitypost/requests";
         JSONObject postBody = new JSONObject();
         try {
-            postBody.put("userId", Global.getAccount().getId());
+            postBody.put("userId", GlobalUtil.getAccount().getId());
             postBody.put("title", this.itemName.getText().toString());
             postBody.put("description", this.desc.getText().toString());
             postBody.put("status", "ACTIVE");
@@ -80,7 +81,14 @@ public class NewRequestForm extends AppCompatActivity {
                 },
                 error -> {
                     Log.e(TAG, "fetchLeaderboard: " + error);
-                });
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("token", GlobalUtil.getHeaderToken());
+                return headers;
+            }
+        };
         queue.add(request);
     }
 }

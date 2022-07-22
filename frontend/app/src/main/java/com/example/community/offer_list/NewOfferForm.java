@@ -19,12 +19,14 @@ import com.android.volley.toolbox.Volley;
 import com.example.community.R;
 import com.example.community.classes.GlobalUtil;
 import com.example.community.classes.Tags;
-import com.example.community.classes.Util;
+import com.example.community.classes.DateImgUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class NewOfferForm extends AppCompatActivity {
 
@@ -39,16 +41,19 @@ public class NewOfferForm extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Button uploadPhotoButton;
+        Button createPostButton;
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_offer_form);
         this.itemName = this.findViewById(R.id.offer_name_input);
         this.itemQuantity = this.findViewById(R.id.quantity_input);
         this.bestBefore = this.findViewById(R.id.best_before_input);
-        Button uploadPhotoButton = this.findViewById(R.id.upload_button);
+        uploadPhotoButton = this.findViewById(R.id.upload_button);
         this.pickup = this.findViewById(R.id.pickup_location_input);
         this.desc = this.findViewById(R.id.description_input);
-        Button createPostButton = this.findViewById(R.id.create_offer_button);
-        this.createPostButton.setOnClickListener(v -> {
+        createPostButton = this.findViewById(R.id.create_offer_button);
+        createPostButton.setOnClickListener(v -> {
             this.createOfferPost();
         });
         TextView fruit = findViewById(R.id.fruit);
@@ -58,7 +63,7 @@ public class NewOfferForm extends AppCompatActivity {
         Tags tags = new Tags(fruit, vegetable, nut);
         this.tags = tags;
 
-        this.uploadPhotoButton.setOnClickListener(v -> {
+        uploadPhotoButton.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -69,18 +74,21 @@ public class NewOfferForm extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {
-            if (resultCode == Activity.RESULT_OK) {
-                //data gives you the image uri. Try to convert that to bitmap
-                break;
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-                 Log.e(TAG, "Selecting picture cancelled");
+            switch (requestCode) {
+                case REQUEST_CODE:
+                    if (resultCode == Activity.RESULT_OK) {
+                        // data gives you the image uri. Try to convert that to bitmap
+                        break;
+                    } else if (resultCode == Activity.RESULT_CANCELED) {
+                        Log.e(TAG, "Selecting picture cancelled");
+                    }
+                    break;
+                default: Log.e(TAG, "Invalid request code");
             }
-            break;
         } catch (Exception e) {
             Log.e(TAG, "Exception in onActivityResult : " + e.getMessage());
         }
     }
-
 
     private void createOfferPost() {
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -96,14 +104,13 @@ public class NewOfferForm extends AppCompatActivity {
             postBody.put("status", "ACTIVE");
             postBody.put("tagList", this.tags.getJSONArr());
             Date selectedDate = new Date(this.bestBefore.getDate());
-            String dateString = Util.DateToString(selectedDate);
+            String dateString = DateImgUtil.DateToString(selectedDate);
             postBody.put("bestBeforeDate", dateString);
 
         } catch (JSONException e) {
             Log.e(TAG, "createPost: " + e);
             e.printStackTrace();
         }
-
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
                 url,
@@ -115,7 +122,14 @@ public class NewOfferForm extends AppCompatActivity {
                 },
                 error -> {
                     Log.e(TAG, "fetchLeaderboard: " + error);
-                });
+                })  {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("token", GlobalUtil.getHeaderToken());
+                return headers;
+            }
+        };
         queue.add(request);
     }
 

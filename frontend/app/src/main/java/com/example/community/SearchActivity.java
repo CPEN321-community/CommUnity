@@ -33,6 +33,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SearchActivity extends AppCompatActivity {
     private static final String TAG = "SEARCH_ACTIVITY";
@@ -66,7 +68,6 @@ public class SearchActivity extends AppCompatActivity {
         ImageButton searchButton = findViewById(R.id.submit_search_button);
         Switch reqOfferSwitch = findViewById(R.id.req_or_offer_switch);
         reqOfferSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            this.isChecked = isChecked;
             if (isChecked) {
                 this.reqPostResultList.setVisibility(View.INVISIBLE);
                 this.offerPostResultList.setVisibility(View.VISIBLE);
@@ -134,7 +135,14 @@ public class SearchActivity extends AppCompatActivity {
                 },
                 error -> {
                     Log.e(TAG, "getChats: " + error);
-                });
+                })  {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("token", GlobalUtil.getHeaderToken());
+                return headers;
+            }
+        };
         queue.add(request);
     }
 
@@ -166,7 +174,14 @@ public class SearchActivity extends AppCompatActivity {
                 },
                 error -> {
                     Log.e(TAG, "getChats: " + error);
-                });
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("token", GlobalUtil.getHeaderToken());
+                return headers;
+            }
+        };
         queue.add(request);
     }
 
@@ -228,7 +243,14 @@ public class SearchActivity extends AppCompatActivity {
                 },
                 error -> {
                     Log.e(TAG, "tagSearch: " + error);
-                });
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("token", GlobalUtil.getHeaderToken());
+                return headers;
+            }
+        };
         queue.add(request);
     }
 
@@ -275,7 +297,14 @@ public class SearchActivity extends AppCompatActivity {
                 },
                 error -> {
                     Log.e(TAG, "getChats: " + error);
-                });
+                })  {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("token", GlobalUtil.getHeaderToken());
+                return headers;
+            }
+        };
         queue.add(request);
     }
 

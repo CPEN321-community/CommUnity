@@ -43,7 +43,7 @@ public class ReqPostAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        View newView = view
+        View newView = view;
         newView = inflater.inflate(R.layout.fragment_req_post_individual, null);
         TextView itemName = (TextView) newView.findViewById(R.id.req_item_name);
         TextView postDate = (TextView) newView.findViewById(R.id.req_post_date);
