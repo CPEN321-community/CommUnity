@@ -81,6 +81,7 @@ public class NewOfferForm extends AppCompatActivity {
                         Log.e(TAG, "Selecting picture cancelled");
                     }
                     break;
+                default: Log.e(TAG, "Invalid request code");
             }
         } catch (Exception e) {
             Log.e(TAG, "Exception in onActivityResult : " + e.getMessage());

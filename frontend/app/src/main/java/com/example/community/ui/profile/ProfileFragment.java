@@ -50,7 +50,6 @@ public class ProfileFragment extends Fragment {
         LiveData<Stats> stats = profileViewModel.getStats();
         LiveData<UserProfile> profile = profileViewModel.getProfile();
         profile.observe(getViewLifecycleOwner(), (newProfile) -> {
-            UserProfile userProfile = newProfile;
             String profileImageURL = newProfile.profilePicture;
             Util.setImageWhenLoaded(requireContext(), profileImageURL, avatar);
         });
