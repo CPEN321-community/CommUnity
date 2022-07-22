@@ -72,7 +72,10 @@ const getChats = async (req, res) => {
 };
 
 const changeUserInfo = async (req, res) => {
-  const { userId, firstName, lastName, profilePicture } = req.body;
+  const userId = req.body.userId;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+  const profilePicture = req.body.profilePicture;
   if (userId && firstName && lastName && profilePicture) {
     await User.upsert({
       userId,
@@ -88,20 +91,20 @@ const changeUserInfo = async (req, res) => {
 }
 
 const getAssociatedRooms = async (userId) => {
-  try {
+  if (userId) {
     const user = await Room.findAll({ where: { userId } });
     if (user) {
       return user.map(room => room.postId); 
     } else {
       console.log('no rooms were found for userId: ' + userId);
     }
-  } catch (e) {
+  } else {
     console.log('getAssociatedRooms Error: ' + e);
   }
 }
 
 const createRoom = async (postId, isOffer, senderData) => {
-  try {
+  if (post.data) {
     let typeString = isOffer ? "offers" : "requests";
     let post = await axios.get(`${process.env.POST_URL}/communitypost/${typeString}/${postId}`);
     let postData = post.data;
@@ -154,13 +157,13 @@ const createRoom = async (postId, isOffer, senderData) => {
     });
 
     return room1[1] && room2[1];
-  } catch (e) {
+  } else {
     console.log('createRoom Error ' + e);
   }
 };
 
 const sendMessage = async (message, userId, postId) => {
-  try {
+  if(message && userId && postId){
     const msg = await Message.create({
       postId,
       userId,
@@ -180,7 +183,7 @@ const sendMessage = async (message, userId, postId) => {
         });
     }
     return msg.dataValues;
-  } catch (e) {
+  } else {
     console.log('sendMessage Error ' + e);
   }
 }

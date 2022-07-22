@@ -26,8 +26,8 @@ const getUser = async (req, res) => {
 };
 
 const upsertUserPreference = async (req, res) => {
-    try {
-        const {userId} = req.body;
+    if(req.body.userId) {
+        const userId = req.body.userId;
         const user = await User.findByPk(userId);
         const [preference] = await Preference.upsert({
             userId,
@@ -57,7 +57,7 @@ const deleteUserPreference = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-    try {
+    if(req.body.userId) {
         const response = await User.update({
             userId: req.body.userId,
             firstName: req.body.firstName,
@@ -74,7 +74,7 @@ const updateUser = async (req, res) => {
         });
 
         res.json(response);
-    } catch (error) {
+    } else {
         console.log("Error upserting user: " + error);
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }

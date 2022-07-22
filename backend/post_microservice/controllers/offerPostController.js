@@ -88,7 +88,7 @@ const searchOffers = async (req, res) => {
 }
 
 const searchOffersWithTags = async (req, res) => {
-    try {
+    if(req.body.tagList) {
         const tagList = req.body.tagList;
         console.log("hello world!");
         console.log(tagList);
@@ -116,14 +116,14 @@ const searchOffersWithTags = async (req, res) => {
         console.log(result);
 
         res.status(OK).json({results: result});
-    } catch (error) {
+    } else {
       console.log("Error with searching for offer posts: " + error);
       res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
 const createOffer = async (req, res) => {
-    try {
+    if(req.body.tagList) {
         const createdOffer = await OfferPost.create({
             userId: req.body.userId,
             title: req.body.title,
@@ -155,7 +155,7 @@ const createOffer = async (req, res) => {
         await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
         res.sendStatus(OK);
 
-    } catch (error) {
+    } else {
         console.log("Error creating a new post: " + error);
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }

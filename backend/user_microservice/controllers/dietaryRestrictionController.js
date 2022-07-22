@@ -18,7 +18,8 @@ const getUserDietaryRestrictions = async (req, res) => {
 };
 
 const createDietaryRestriction = async (req, res) => {
-  const {userId, name} = req.body;
+  const userId = req.body.userId;
+  const name = req.body.name;
   if (userId && name) {
     console.log("userId", userId);
     let createdRestriction = await DietaryRestriction.create({
@@ -28,24 +29,22 @@ const createDietaryRestriction = async (req, res) => {
     console.log(createdRestriction);
 
     res.json(createdRestriction.dataValues);
-  }
-  else {
+  } else {
     res.sendStatus(INTERNAL_SERVER_ERROR);
   }
 }
 
 
 const deleteDietaryRestriction = async (req, res) => {
-  try {
-    const {id} = req.body;
+  if(req.body.id) {
+    const id = req.body.id;
     console.log(id);
     let deleted = await DietaryRestriction.destroy({
       where: {id}
     });
 
     res.json({deleted});
-  }
-  catch(e) {
+  }else{
     console.error(e);
     res.sendStatus(INTERNAL_SERVER_ERROR);
   }

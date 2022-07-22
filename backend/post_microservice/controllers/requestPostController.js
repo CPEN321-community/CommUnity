@@ -126,7 +126,7 @@ const searchRequestsWithTags = async (req, res) => {
 }
 
 const createRequest = async (req, res) => {
-    try {
+    if(req.body.tagList) {
         const createdRequest = await RequestPost.create({
             userId: req.body.userId,
             title: req.body.title,
@@ -151,7 +151,7 @@ const createRequest = async (req, res) => {
         };
         await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
         res.sendStatus(OK);
-    } catch (error) {
+    } else {
       console.log("Error creating a new post: " + error);
       res.sendStatus(INTERNAL_SERVER_ERROR);
     }
