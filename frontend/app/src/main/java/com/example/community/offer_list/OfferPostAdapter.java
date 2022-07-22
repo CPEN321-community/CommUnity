@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.community.R;
 import com.example.community.classes.OfferPostObj;
-import com.example.community.classes.Util;
+import com.example.community.classes.DateImgUtil;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -65,9 +65,9 @@ public class OfferPostAdapter extends BaseAdapter {
 
         ImageView itemImage = (ImageView) newView.findViewById(R.id.offer_image);
         if (!Objects.equals(post.image, "")) {
-            Util.setImageWhenLoaded(context, post.image, itemImage);
+            DateImgUtil.setImageWhenLoaded(context, post.image, itemImage);
         } else {
-            itemImage.setImageDrawable(Util.GetDefaultAvatar(context));
+            itemImage.setImageDrawable(DateImgUtil.GetDefaultAvatar(context));
         }
         return newView;
     }

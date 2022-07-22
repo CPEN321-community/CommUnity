@@ -1,0 +1,122 @@
+[
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/fragment_leaderboard_user.xml",
+        "source": "com.example.community.app-main-33:/layout/fragment_leaderboard_user.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/fragment_offer_post_individual.xml",
+        "source": "com.example.community.app-main-33:/layout/fragment_offer_post_individual.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/activity_offer_posts.xml",
+        "source": "com.example.community.app-main-33:/layout/activity_offer_posts.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/activity_chat.xml",
+        "source": "com.example.community.app-main-33:/layout/activity_chat.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/fragment_profile.xml",
+        "source": "com.example.community.app-main-33:/layout/fragment_profile.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/fragment_tags.xml",
+        "source": "com.example.community.app-main-33:/layout/fragment_tags.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/fragment_my_message_bubble.xml",
+        "source": "com.example.community.app-main-33:/layout/fragment_my_message_bubble.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/activity_main.xml",
+        "source": "com.example.community.app-main-33:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/fragment_offer_home.xml",
+        "source": "com.example.community.app-main-33:/layout/fragment_offer_home.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/activity_new_offer_form.xml",
+        "source": "com.example.community.app-main-33:/layout/activity_new_offer_form.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/activity_expanded_req_post.xml",
+        "source": "com.example.community.app-main-33:/layout/activity_expanded_req_post.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/activity_edit_restrictions.xml",
+        "source": "com.example.community.app-main-33:/layout/activity_edit_restrictions.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/activity_new_request_form.xml",
+        "source": "com.example.community.app-main-33:/layout/activity_new_request_form.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/fragment_message_list.xml",
+        "source": "com.example.community.app-main-33:/layout/fragment_message_list.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/fragment_leaderboard.xml",
+        "source": "com.example.community.app-main-33:/layout/fragment_leaderboard.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/fragment_chat_item.xml",
+        "source": "com.example.community.app-main-33:/layout/fragment_chat_item.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/activity_search.xml",
+        "source": "com.example.community.app-main-33:/layout/activity_search.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/fragment_dietary_restriction.xml",
+        "source": "com.example.community.app-main-33:/layout/fragment_dietary_restriction.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/fragment_req_post_individual.xml",
+        "source": "com.example.community.app-main-33:/layout/fragment_req_post_individual.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/fragment_other_message_bubble.xml",
+        "source": "com.example.community.app-main-33:/layout/fragment_other_message_bubble.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/activity_login.xml",
+        "source": "com.example.community.app-main-33:/layout/activity_login.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/fragment_login.xml",
+        "source": "com.example.community.app-main-33:/layout/fragment_login.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/content_message_list.xml",
+        "source": "com.example.community.app-main-33:/layout/content_message_list.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/content_scrolling.xml",
+        "source": "com.example.community.app-main-33:/layout/content_scrolling.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/fragment_home.xml",
+        "source": "com.example.community.app-main-33:/layout/fragment_home.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/fragment_offer_post.xml",
+        "source": "com.example.community.app-main-33:/layout/fragment_offer_post.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/content_login.xml",
+        "source": "com.example.community.app-main-33:/layout/content_login.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/fragment_req_post.xml",
+        "source": "com.example.community.app-main-33:/layout/fragment_req_post.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/activity_message_list.xml",
+        "source": "com.example.community.app-main-33:/layout/activity_message_list.xml"
+    },
+    {
+        "merged": "com.example.community.app-mergeDebugResources-30:/layout/activity_expanded_offer_post.xml",
+        "source": "com.example.community.app-main-33:/layout/activity_expanded_offer_post.xml"
+    }
+]
