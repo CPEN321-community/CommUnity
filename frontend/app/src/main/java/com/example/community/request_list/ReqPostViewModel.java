@@ -19,6 +19,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ReqPostViewModel extends AndroidViewModel {
     private static final String TAG = "REQ_POST_MODEL";
@@ -61,7 +63,14 @@ public class ReqPostViewModel extends AndroidViewModel {
                 error -> {
                     Log.e(TAG, "fetchRequestPostsError: " + error);
 //                    callback.onError(error);
-                });
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("token", GlobalUtil.getHeaderToken());
+                return headers;
+            }
+        };
         queue.add(request);
     }
 }

@@ -1,4 +1,5 @@
 package com.example.community;
+
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,9 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CustomFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -49,7 +53,14 @@ public class CustomFirebaseMessagingService extends FirebaseMessagingService {
                 null,
                 error -> {
                     Log.e(TAG, "sendTokenToDatabase: " + error);
-                });
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("token", GlobalUtil.getHeaderToken());
+                return headers;
+            }
+        };
         queue.add(request);
     }
 }
