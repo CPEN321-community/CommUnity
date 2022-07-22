@@ -20,7 +20,7 @@ app.use(async (req, res, next) => {
     next();
   } else {
     const token = req.headers['token'];
-    await axios.post(`${process.env.USER_URL}/token/verify${token}`);
+    await axios.post(`${process.env.USER_URL}/token/verify`, {token});
     if (user) {
       next();
     } else {
