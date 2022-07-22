@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.community.R;
 import com.example.community.classes.GlobalUtil;
 import com.example.community.classes.OfferPostObj;
-import com.example.community.classes.Util;
+import com.example.community.classes.DateImgUtil;
 import com.example.community.ui.chat.ChatActivity;
 
 import java.util.Objects;
@@ -53,9 +53,9 @@ public class ExpandedOfferPost extends AppCompatActivity {
 
         ImageView itemImage = (ImageView) this.findViewById(R.id.offer_item_image_exp);
         if (!Objects.equals(post.image, "")) {
-            Util.setImageWhenLoaded(this, post.image, itemImage);
+            DateImgUtil.setImageWhenLoaded(this, post.image, itemImage);
         } else {
-            itemImage.setImageDrawable(Util.GetDefaultAvatar(this));
+            itemImage.setImageDrawable(DateImgUtil.GetDefaultAvatar(this));
         }
 
 

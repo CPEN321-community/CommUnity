@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         int nav_view = R.id.nav_view;
-        BottomNavigationView navView = findViewById(nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {

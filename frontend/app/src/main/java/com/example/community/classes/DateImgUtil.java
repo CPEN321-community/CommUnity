@@ -18,11 +18,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Utils {
+public class DateImgUtil {
 
     public static final String dateFormatString = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
 
-    private static final String TAG = "Util";
+    private static final String TAG = "DateImgUtil";
 
     public static void setImageWhenLoaded(Context context, String url, ImageView imageView) {
         Thread thread = new Thread(() -> {
