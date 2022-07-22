@@ -18,7 +18,7 @@ import com.example.community.classes.Chat;
 import com.example.community.classes.ChatMessageHandlerUtil;
 import com.example.community.classes.GlobalUtil;
 import com.example.community.classes.Message;
-import com.example.community.classes.Util;
+import com.example.community.classes.DateImgUtil;
 import com.example.community.exceptions.NoMessagesException;
 import com.example.community.ui.chat.message.MessageActivity;
 
@@ -79,7 +79,7 @@ public class ChatAdapter extends BaseAdapter {
             chatBubble.setBackgroundColor(ContextCompat.getColor(context, R.color.transparent));
             chatPreview.setText("No messages yet!");
         }
-        Util.setImageWhenLoaded(context, chat.other.profilePicture, avatar);
+        DateImgUtil.setImageWhenLoaded(context, chat.other.profilePicture, avatar);
         newView.setOnClickListener(v -> {
             Intent messageIntent = new Intent(context, MessageActivity.class);
             messageIntent.putExtra("chat", chat);

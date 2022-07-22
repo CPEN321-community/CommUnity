@@ -20,7 +20,7 @@ import com.example.community.EditRestrictionsActivity;
 import com.example.community.classes.DietaryRestriction;
 import com.example.community.classes.Stats;
 import com.example.community.classes.UserProfile;
-import com.example.community.classes.Util;
+import com.example.community.classes.DateImgUtil;
 import com.example.community.databinding.FragmentProfileBinding;
 
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class ProfileFragment extends Fragment {
         LiveData<UserProfile> profile = profileViewModel.getProfile();
         profile.observe(getViewLifecycleOwner(), (newProfile) -> {
             String profileImageURL = newProfile.profilePicture;
-            Util.setImageWhenLoaded(requireContext(), profileImageURL, avatar);
+            DateImgUtil.setImageWhenLoaded(requireContext(), profileImageURL, avatar);
         });
         ListView restrictionList = binding.dietaryRestrictionsList;
         restrictions.observe(getViewLifecycleOwner(), newRestrictons -> {
