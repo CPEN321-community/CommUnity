@@ -22,10 +22,12 @@ public class MessageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ActivityMessageListBinding binding;
+
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         this.chat = (Chat) intent.getSerializableExtra("chat");
-        ActivityMessageListBinding binding = ActivityMessageListBinding.inflate(getLayoutInflater());
+        binding = ActivityMessageListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolbar);

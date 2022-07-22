@@ -39,16 +39,19 @@ public class NewOfferForm extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Button uploadPhotoButton;
+        Button createPostButton;
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_offer_form);
         this.itemName = this.findViewById(R.id.offer_name_input);
         this.itemQuantity = this.findViewById(R.id.quantity_input);
         this.bestBefore = this.findViewById(R.id.best_before_input);
-        Button uploadPhotoButton = this.findViewById(R.id.upload_button);
+        uploadPhotoButton = this.findViewById(R.id.upload_button);
         this.pickup = this.findViewById(R.id.pickup_location_input);
         this.desc = this.findViewById(R.id.description_input);
-        Button createPostButton = this.findViewById(R.id.create_offer_button);
-        this.createPostButton.setOnClickListener(v -> {
+        createPostButton = this.findViewById(R.id.create_offer_button);
+        createPostButton.setOnClickListener(v -> {
             this.createOfferPost();
         });
         TextView fruit = findViewById(R.id.fruit);
@@ -58,7 +61,7 @@ public class NewOfferForm extends AppCompatActivity {
         Tags tags = new Tags(fruit, vegetable, nut);
         this.tags = tags;
 
-        this.uploadPhotoButton.setOnClickListener(v -> {
+        uploadPhotoButton.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -69,18 +72,20 @@ public class NewOfferForm extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {
-            if (resultCode == Activity.RESULT_OK) {
-                //data gives you the image uri. Try to convert that to bitmap
-                break;
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-                 Log.e(TAG, "Selecting picture cancelled");
+            switch (requestCode) {
+                case REQUEST_CODE:
+                    if (resultCode == Activity.RESULT_OK) {
+                        // data gives you the image uri. Try to convert that to bitmap
+                        break;
+                    } else if (resultCode == Activity.RESULT_CANCELED) {
+                        Log.e(TAG, "Selecting picture cancelled");
+                    }
+                    break;
             }
-            break;
         } catch (Exception e) {
             Log.e(TAG, "Exception in onActivityResult : " + e.getMessage());
         }
     }
-
 
     private void createOfferPost() {
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -103,7 +108,6 @@ public class NewOfferForm extends AppCompatActivity {
             Log.e(TAG, "createPost: " + e);
             e.printStackTrace();
         }
-
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
                 url,

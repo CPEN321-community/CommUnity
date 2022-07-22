@@ -4,25 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../../../layout/custom_preview.xml" value="0.22" />
-<<<<<<< HEAD
-        <entry key="..\:/Users/cxson/OneDrive/Desktop/Documents/CommUnity/frontend/M1_claire/app/src/main/res/layout/activity_chat.xml" value="0.22826086956521738" />
-        <entry key="..\:/Users/cxson/OneDrive/Desktop/Documents/CommUnity/frontend/M1_claire/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
-        <entry key="..\:/Users/cxson/OneDrive/Desktop/Documents/CommUnity/frontend/M1_claire/app/src/main/res/layout/activity_new_offer_form.xml" value="0.14895833333333333" />
-        <entry key="..\:/Users/cxson/OneDrive/Desktop/Documents/CommUnity/frontend/M1_claire/app/src/main/res/layout/activity_new_request_form.xml" value="0.16302083333333334" />
-        <entry key="..\:/Users/cxson/OneDrive/Desktop/Documents/CommUnity/frontend/M1_claire/app/src/main/res/layout/activity_new_request_post_form.xml" value="0.264" />
-        <entry key="..\:/Users/cxson/OneDrive/Desktop/Documents/CommUnity/frontend/M1_claire/app/src/main/res/layout/activity_offer_posts.xml" value="0.16302083333333334" />
-        <entry key="..\:/Users/cxson/OneDrive/Desktop/Documents/CommUnity/frontend/M1_claire/app/src/main/res/layout/activity_request_posts.xml" value="0.22826086956521738" />
-        <entry key="..\:/Users/cxson/OneDrive/Desktop/Documents/CommUnity/frontend/M1_claire/app/src/main/res/layout/activity_search.xml" value="0.22826086956521738" />
-        <entry key="..\:/Users/cxson/OneDrive/Desktop/Documents/CommUnity/frontend/M1_claire/app/src/main/res/layout/fragment_chat_item.xml" value="0.22826086956521738" />
-        <entry key="..\:/Users/cxson/OneDrive/Desktop/Documents/CommUnity/frontend/M1_claire/app/src/main/res/layout/fragment_first.xml" value="0.22826086956521738" />
-        <entry key="..\:/Users/cxson/OneDrive/Desktop/Documents/CommUnity/frontend/M1_claire/app/src/main/res/layout/fragment_home.xml" value="0.22826086956521738" />
-        <entry key="..\:/Users/cxson/OneDrive/Desktop/Documents/CommUnity/frontend/M1_claire/app/src/main/res/layout/fragment_leaderboard.xml" value="0.22826086956521738" />
-        <entry key="..\:/Users/cxson/OneDrive/Desktop/Documents/CommUnity/frontend/M1_claire/app/src/main/res/layout/fragment_leaderboard_user.xml" value="0.22826086956521738" />
-        <entry key="..\:/Users/cxson/OneDrive/Desktop/Documents/CommUnity/frontend/M1_claire/app/src/main/res/layout/fragment_notifications.xml" value="0.22826086956521738" />
-        <entry key="..\:/Users/cxson/OneDrive/Desktop/Documents/CommUnity/frontend/M1_claire/app/src/main/res/layout/fragment_req_post.xml" value="0.16197916666666667" />
-=======
         <entry key="app/src/main/res/drawable/default_avatar.xml" value="0.103" />
->>>>>>> 474b9e33c3d1e017053c9bd94893e95248709666
         <entry key="app/src/main/res/drawable/ic_baseline_leaderboard_24.xml" value="0.1585" />
         <entry key="app/src/main/res/drawable/ic_chat.xml" value="0.1595" />
         <entry key="app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.1585" />

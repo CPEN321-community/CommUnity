@@ -36,14 +36,6 @@ public class ChatActivity extends AppCompatActivity {
     private static final String TAG = "CHAT_ACTIVITY";
     private MutableLiveData<ArrayList<Chat>> mChatList;
     private Socket mSocket;
-    try {
-        mSocket = IO.socket(GlobalUtil.CHAT_URL);
-        Log.d(TAG, "instance initializer: Socket Initted");
-    } catch (URISyntaxException e) {
-        Log.e(TAG, "instance initializer: " + e);
-        e.printStackTrace();
-    }
-
 
     @Override
     public void onDestroy() {
@@ -62,12 +54,22 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        try {
+            mSocket = IO.socket(GlobalUtil.CHAT_URL);
+            Log.d(TAG, "instance initializer: Socket Initted");
+        } catch (URISyntaxException e) {
+            Log.e(TAG, "instance initializer: " + e);
+            e.printStackTrace();
+        }
+
+        ActivityChatBinding binding;
+
         super.onCreate(savedInstanceState);
         mSocket.connect();
         GlobalUtil.setSocket(mSocket);
 
         this.mChatList = new MutableLiveData<>();
-        ActivityChatBinding binding = ActivityChatBinding.inflate(getLayoutInflater());
+        binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         Toolbar toolbar = binding.toolbar;
@@ -81,9 +83,10 @@ public class ChatActivity extends AppCompatActivity {
         String createRoomId = intent.getStringExtra("createRoomId");
         boolean isOffer = intent.getBooleanExtra("isOffer", true);
         Log.d(TAG, "onCreate: " + createRoomId);
-        if (createRoomId != null) {
-            Chat.createRoom(createRoomId, isOffer);
+        if (createRoomId == null) {
+            Log.d(TAG, "Chat room was not created");
         }
+        Chat.createRoom(createRoomId, isOffer);
 
         mChatList.observe(this, chatsList -> {
             adapter.setChats(chatsList);

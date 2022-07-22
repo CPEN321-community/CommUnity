@@ -1,5 +1,4 @@
 package com.example.community;
-
 import android.util.Log;
 
 import androidx.annotation.NonNull;
