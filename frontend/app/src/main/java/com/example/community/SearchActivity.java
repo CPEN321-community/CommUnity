@@ -66,7 +66,6 @@ public class SearchActivity extends AppCompatActivity {
         ImageButton searchButton = findViewById(R.id.submit_search_button);
         Switch reqOfferSwitch = findViewById(R.id.req_or_offer_switch);
         reqOfferSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            this.isChecked = isChecked;
             if (isChecked) {
                 this.reqPostResultList.setVisibility(View.INVISIBLE);
                 this.offerPostResultList.setVisibility(View.VISIBLE);

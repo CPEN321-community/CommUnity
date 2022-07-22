@@ -82,7 +82,6 @@ public class NewOfferForm extends AppCompatActivity {
                     }
                     break;
             }
-            break;
         } catch (Exception e) {
             Log.e(TAG, "Exception in onActivityResult : " + e.getMessage());
         }

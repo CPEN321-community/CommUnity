@@ -38,7 +38,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AppBarConfiguration appBarConfiguration;
 
         super.onCreate(savedInstanceState);
         GlobalUtil.setAppContext(this);

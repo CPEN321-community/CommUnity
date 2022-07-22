@@ -55,7 +55,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
-            mSocket = IO.socket(Global.CHAT_URL);
+            mSocket = IO.socket(GlobalUtil.CHAT_URL);
             Log.d(TAG, "instance initializer: Socket Initted");
         } catch (URISyntaxException e) {
             Log.e(TAG, "instance initializer: " + e);
@@ -69,7 +69,7 @@ public class ChatActivity extends AppCompatActivity {
         GlobalUtil.setSocket(mSocket);
 
         this.mChatList = new MutableLiveData<>();
-        ActivityChatBinding binding = ActivityChatBinding.inflate(getLayoutInflater());
+        binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         Toolbar toolbar = binding.toolbar;
