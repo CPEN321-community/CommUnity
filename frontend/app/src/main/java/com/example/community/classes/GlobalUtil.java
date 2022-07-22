@@ -12,6 +12,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.socket.client.Socket;
 
 public class GlobalUtil {
@@ -19,6 +22,7 @@ public class GlobalUtil {
     private static GoogleSignInAccount account;
     private static Socket socket;
     private static Context appContext;
+    private static String headerToken;
     public static UserProfile userProfile;
 
     public static final String CHAT_URL = "http://10.0.2.2:3000";
@@ -86,8 +90,23 @@ public class GlobalUtil {
                 },
                 error -> {
                     Log.e(TAG, "fetchLeaderboard: " + error);
-                });
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("token", GlobalUtil.getHeaderToken());
+                return headers;
+            }
+        };
         queue.add(request);
 
+    }
+
+    public static String getHeaderToken() {
+        return headerToken;
+    }
+
+    public static void setHeaderToken(String headerToken) {
+        GlobalUtil.headerToken = headerToken;
     }
 }

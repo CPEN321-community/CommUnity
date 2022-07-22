@@ -19,6 +19,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LeaderboardViewModel extends AndroidViewModel {
 
@@ -62,7 +64,14 @@ public class LeaderboardViewModel extends AndroidViewModel {
                 error -> {
                     Log.e(TAG, "fetchLeaderboard: " + error);
 //                    callback.onError(error);
-                });
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("token", GlobalUtil.getHeaderToken());
+                return headers;
+            }
+        };
         queue.add(request);
     }
 

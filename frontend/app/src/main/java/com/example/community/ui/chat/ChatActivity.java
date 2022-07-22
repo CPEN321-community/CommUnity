@@ -26,6 +26,8 @@ import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -135,7 +137,14 @@ public class ChatActivity extends AppCompatActivity {
                 },
                 error -> {
                     Log.e(TAG, "getChats: " + error);
-                });
+                })   {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("token", GlobalUtil.getHeaderToken());
+                return headers;
+            }
+        };
         queue.add(request);
     }
 }

@@ -19,6 +19,8 @@ import com.example.community.classes.DietaryRestriction;
 import com.example.community.classes.GlobalUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DietaryRestrictionsAdapter extends BaseAdapter {
     private final Context context;
@@ -95,7 +97,14 @@ public class DietaryRestrictionsAdapter extends BaseAdapter {
                 },
                 error -> {
                     Log.e(TAG, "fetchLeaderboard: " + error);
-                });
+                })   {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("token", GlobalUtil.getHeaderToken());
+                return headers;
+            }
+        };
         queue.add(request);
 
     }
