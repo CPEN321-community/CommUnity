@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,8 +14,6 @@ import com.example.community.offer_list.OfferHomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class RequestPosts extends AppCompatActivity {
-    private ImageButton chatReqPostButton;
-    private TextView reqName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

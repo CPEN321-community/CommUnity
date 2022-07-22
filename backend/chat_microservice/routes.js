@@ -1,6 +1,6 @@
 const Router = require('express-promise-router');
 const { getChats, changeUserInfo, deleteRoom } = require('./controllers/chatController');
-const { createUserToken, sendNotifToUser } = require('./controllers/userTokenController');
+const { createUserToken } = require('./controllers/userTokenController');
 
 const router = Router();
 

@@ -18,11 +18,12 @@ public class MessageActivity extends AppCompatActivity {
 
     private static final String TAG = "MESSAGE_ACTIVITY";
     private AppBarConfiguration appBarConfiguration;
-    private ActivityMessageListBinding binding;
     protected Chat chat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ActivityMessageListBinding binding;
+
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         this.chat = (Chat) intent.getSerializableExtra("chat");

@@ -1,9 +1,8 @@
 const { Op } = require("sequelize");
-const sequelize = require('sequelize');
 const { Leaderboard, User } = require("../models");
 
 const getTopNUsers = async (req, res) => {
-   try {
+   if (req.params.N) {
         const N = req.params.N;
         const response = await Leaderboard.findAll({
             order: [["score","DESC"]],
@@ -15,19 +14,19 @@ const getTopNUsers = async (req, res) => {
             const user = await User.findOne({
                 where: { userId: userScore.dataValues.UserUserId }
             })
-
-            return { 
+            const returnObj = { 
                 firstName: user.dataValues.firstName,
                 lastName: user.dataValues.lastName,
                 offerPosts: userScore.dataValues.offerPosts,
                 requestPosts: userScore.dataValues.requestPosts,
                 score: userScore.dataValues.score,
                 profilePicture: user.dataValues.profilePicture
-            }
+            };
+            return returnObj;
         }));
        res.status(200).json(responseWithNames);
-   } catch (error) {
-       console.log("Error getting top N users: " + error);
+   } else {
+       console.log("Error getting top N users");
        res.sendStatus(500);
    }
 };
@@ -55,21 +54,6 @@ const getUserRank = async (req, res) => {
         res.sendStatus(500);
     }
 };
-
-const getUserLeaderboardStats = async (req, res) => {
-    try {
-        const { userId } = req.params;
-        const user = await Leaderboard.findOne({ 
-            where: { userId }
-        });
-
-        res.json(user);
-    }
-    catch (e) {
-        console.error(e);
-        res.sendStatus(500);
-    }
-}
 
 const upsertUserMethod = async ({ userId, offerPosts, requestPosts }) => {
     try {
@@ -117,5 +101,4 @@ module.exports = {
     getUserRank,
     upsertUserMethod,
     upsertUserRank,
-    getUserLeaderboardStats,
 }; 

@@ -48,9 +48,9 @@ public class Chat implements Serializable {
         JSONObject sendMessage = new JSONObject();
         try {
             sendMessage.put("postId", roomId);
-            sendMessage.put("userId", Global.getAccount().getId());
+            sendMessage.put("userId", GlobalUtil.getAccount().getId());
             sendMessage.put("message", message);
-            Global.getSocket().emit("sendMessage", sendMessage);
+            GlobalUtil.getSocket().emit("sendMessage", sendMessage);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -60,21 +60,21 @@ public class Chat implements Serializable {
         Log.d(TAG, "joinRooms: Start");
         JSONObject joinRoomsMessage = new JSONObject();
         try {
-            joinRoomsMessage.put("userId", Global.getAccount().getId());
-            Global.getSocket().emit("joinRooms", joinRoomsMessage);
+            joinRoomsMessage.put("userId", GlobalUtil.getAccount().getId());
+            GlobalUtil.getSocket().emit("joinRooms", joinRoomsMessage);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
     public static synchronized void listenForMessages() {
-        Global.getSocket().on("sendMessage", args -> {
+        GlobalUtil.getSocket().on("sendMessage", args -> {
             JSONObject data = (JSONObject) args[0];
             Message message = new Message(data);
             String postId = message.postId;
             Log.d(TAG, "listenForMessages: " + message.postId);
-            if (!ChatMessageHandler.getChatMap().containsKey(postId)) return;
-            ChatMessageHandler.AddMessage(postId, message);
+            if (!ChatMessageHandlerUtil.getChatMap().containsKey(postId)) return;
+            ChatMessageHandlerUtil.AddMessage(postId, message);
             Log.d(TAG, "listenForMessages: Recieved Message: " + message.messageText);
         });
     }
@@ -83,10 +83,10 @@ public class Chat implements Serializable {
         JSONObject createRoomMessage = new JSONObject();
         JSONObject senderData = new JSONObject();
         try {
-            senderData.put("senderId", Global.getAccount().getId());
-            senderData.put("senderFirstName", Global.userProfile.firstName);
-            senderData.put("senderLastName", Global.userProfile.lastName);
-            senderData.put("senderProfilePicture", Global.userProfile.profilePicture);
+            senderData.put("senderId", GlobalUtil.getAccount().getId());
+            senderData.put("senderFirstName", GlobalUtil.userProfile.firstName);
+            senderData.put("senderLastName", GlobalUtil.userProfile.lastName);
+            senderData.put("senderProfilePicture", GlobalUtil.userProfile.profilePicture);
             createRoomMessage.put("postId", roomId);
             createRoomMessage.put("senderData", senderData);
             createRoomMessage.put("isOffer", isOffer);
@@ -95,8 +95,7 @@ public class Chat implements Serializable {
             e.printStackTrace();
         }
 
-        Global.getSocket().emit("createRoom", createRoomMessage);
-
+        GlobalUtil.getSocket().emit("createRoom", createRoomMessage);
     }
 
 }

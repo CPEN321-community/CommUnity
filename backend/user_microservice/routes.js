@@ -1,6 +1,6 @@
 const Router = require('express-promise-router');
-const { getTopNUsers, getUserRank, upsertUserRank, getUserLeaderboardStats } = require('./controllers/leaderboardController');
-const { getUser, upsertUserPreference, createUser, updateUser, deleteUserPreference } = require('./controllers/userController');
+const { getTopNUsers, getUserRank, upsertUserRank } = require('./controllers/leaderboardController');
+const { getUser, upsertUserPreference, createUser, updateUser, deleteUserPreference, verifyToken } = require('./controllers/userController');
 
 const router = Router();
 
@@ -15,5 +15,8 @@ router.delete('/user/preference/:preferenceId', deleteUserPreference);
 router.get('/rank/top/:N', getTopNUsers);
 router.get('/rank/:userId', getUserRank);
 router.put('/rank', upsertUserRank);
+
+// token (used by other microservices)
+router.post('/token/verify', verifyToken);
 
 module.exports = router;

@@ -15,10 +15,10 @@ import androidx.core.content.ContextCompat;
 
 import com.example.community.R;
 import com.example.community.classes.Chat;
-import com.example.community.classes.ChatMessageHandler;
-import com.example.community.classes.Global;
+import com.example.community.classes.ChatMessageHandlerUtil;
+import com.example.community.classes.GlobalUtil;
 import com.example.community.classes.Message;
-import com.example.community.classes.Utils;
+import com.example.community.classes.Util;
 import com.example.community.exceptions.NoMessagesException;
 import com.example.community.ui.chat.message.MessageActivity;
 
@@ -59,18 +59,19 @@ public class ChatAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflater.inflate(R.layout.fragment_chat_item, null);
+        View newView = view;
+        newView = inflater.inflate(R.layout.fragment_chat_item, null);
         Chat chat = this.chats.get(i);
 
-        TextView chatName = (TextView) view.findViewById(R.id.restriction_name);
-        ImageView avatar = (ImageView) view.findViewById(R.id.chat_avatar);
-        TextView chatPreview = (TextView) view.findViewById(R.id.chat_message_preview);
-        LinearLayout chatBubble = (LinearLayout) view.findViewById(R.id.chat_message_bubble);
+        TextView chatName = (TextView) newView.findViewById(R.id.restriction_name);
+        ImageView avatar = (ImageView) newView.findViewById(R.id.chat_avatar);
+        TextView chatPreview = (TextView) newView.findViewById(R.id.chat_message_preview);
+        LinearLayout chatBubble = (LinearLayout) newView.findViewById(R.id.chat_message_bubble);
         Message previewMessage;
         try {
-            previewMessage = ChatMessageHandler.GetPreview(chat.postId);
+            previewMessage = ChatMessageHandlerUtil.GetPreview(chat.postId);
             chatPreview.setText(previewMessage.messageText);
-            if (!Objects.equals(previewMessage.userId, Global.getAccount().getId())) {
+            if (!Objects.equals(previewMessage.userId, GlobalUtil.getAccount().getId())) {
                 chatBubble.setBackgroundColor(ContextCompat.getColor(context, R.color.black));
                 chatPreview.setTextColor(ContextCompat.getColor(context, R.color.white));
             }
@@ -78,8 +79,8 @@ public class ChatAdapter extends BaseAdapter {
             chatBubble.setBackgroundColor(ContextCompat.getColor(context, R.color.transparent));
             chatPreview.setText("No messages yet!");
         }
-        Utils.setImageWhenLoaded(context, chat.other.profilePicture, avatar);
-        view.setOnClickListener(v -> {
+        Util.setImageWhenLoaded(context, chat.other.profilePicture, avatar);
+        newView.setOnClickListener(v -> {
             Intent messageIntent = new Intent(context, MessageActivity.class);
             messageIntent.putExtra("chat", chat);
             context.startActivity(messageIntent);
@@ -87,7 +88,7 @@ public class ChatAdapter extends BaseAdapter {
         chatName.setText(chat.other.firstName);
 
 
-        return view;
+        return newView;
     }
 
     public void notifySelf() {

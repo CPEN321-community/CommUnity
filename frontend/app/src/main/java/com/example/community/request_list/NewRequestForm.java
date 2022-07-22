@@ -16,7 +16,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.community.R;
-import com.example.community.classes.Global;
+import com.example.community.classes.GlobalUtil;
 import com.example.community.classes.Tags;
 
 import org.json.JSONException;
@@ -35,7 +35,8 @@ public class NewRequestForm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_request_form);
         this.itemName = this.findViewById(R.id.request_name_input);
-        EditText itemQuantity = this.findViewById(R.id.quantity_input);
+        int quantity_input = R.id.quantity_input;
+        EditText itemQuantity = this.findViewById(quantity_input);
         this.desc = this.findViewById(R.id.description_input);
         Button createPostButton = this.findViewById(R.id.create_request_button);
         createPostButton.setOnClickListener(v -> {
@@ -52,10 +53,10 @@ public class NewRequestForm extends AppCompatActivity {
 
     private void createRequestPost() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Global.POST_URL + "/communitypost/requests";
+        String url = GlobalUtil.POST_URL + "/communitypost/requests";
         JSONObject postBody = new JSONObject();
         try {
-            postBody.put("userId", Global.getAccount().getId());
+            postBody.put("userId", GlobalUtil.getAccount().getId());
             postBody.put("title", this.itemName.getText().toString());
             postBody.put("description", this.desc.getText().toString());
             postBody.put("status", "ACTIVE");

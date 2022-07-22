@@ -16,7 +16,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.community.R;
 import com.example.community.classes.DietaryRestriction;
-import com.example.community.classes.Global;
+import com.example.community.classes.GlobalUtil;
 
 import java.util.ArrayList;
 
@@ -67,9 +67,10 @@ public class DietaryRestrictionsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflater.inflate(R.layout.fragment_dietary_restriction, null);
-        TextView name = (TextView) view.findViewById(R.id.restriction_name);
-        ImageButton removeButton = view.findViewById(R.id.remove_restriction_button);
+        View newView = view;
+        newView = inflater.inflate(R.layout.fragment_dietary_restriction, null);
+        TextView name = (TextView) newView.findViewById(R.id.restriction_name);
+        ImageButton removeButton = newView.findViewById(R.id.remove_restriction_button);
         DietaryRestriction restriction = this.restrictions.get(i);
         removeButton.setOnClickListener(v -> {
             removePreference(restriction, i);
@@ -78,12 +79,12 @@ public class DietaryRestrictionsAdapter extends BaseAdapter {
 
         name.setText(restriction.name);
 
-        return view;
+        return newView;
     }
 
     private void removePreference(DietaryRestriction pref, int index) {
         RequestQueue queue = Volley.newRequestQueue(this.context);
-        String url = Global.USER_URL + "/user/preference/" + pref.getId();
+        String url = GlobalUtil.USER_URL + "/user/preference/" + pref.getId();
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE,
                 url,

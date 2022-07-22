@@ -13,7 +13,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.community.classes.DietaryRestriction;
-import com.example.community.classes.Global;
+import com.example.community.classes.GlobalUtil;
 import com.example.community.classes.Preference;
 import com.example.community.classes.Stats;
 import com.example.community.classes.UserProfile;
@@ -85,7 +85,7 @@ public class ProfileViewModel extends AndroidViewModel {
 
     public void fetchUser() {
         RequestQueue queue = Volley.newRequestQueue(this.application);
-        String url = Global.USER_URL + "/user/" + Global.getAccount().getId();
+        String url = GlobalUtil.USER_URL + "/user/" + GlobalUtil.getAccount().getId();
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 url,

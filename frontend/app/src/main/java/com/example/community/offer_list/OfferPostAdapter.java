@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.community.R;
 import com.example.community.classes.OfferPostObj;
-import com.example.community.classes.Utils;
+import com.example.community.classes.Util;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -44,15 +44,16 @@ public class OfferPostAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflater.inflate(R.layout.fragment_offer_post_individual, null);
-        TextView itemName = (TextView) view.findViewById(R.id.offer_item_name);
-        TextView itemQuantity = (TextView) view.findViewById(R.id.offer_quantity);
-        TextView pickupLocation = (TextView) view.findViewById(R.id.offer_pickup_loc);
+        View newView = view;
+        newView = inflater.inflate(R.layout.fragment_offer_post_individual, null);
+        TextView itemName = (TextView) newView.findViewById(R.id.offer_item_name);
+        TextView itemQuantity = (TextView) newView.findViewById(R.id.offer_quantity);
+        TextView pickupLocation = (TextView) newView.findViewById(R.id.offer_pickup_loc);
 
         OfferPostObj post = this.offerPosts.get(i);
 
         itemName.setText(post.itemName);
-        view.setOnClickListener(view_name -> {
+        newView.setOnClickListener(view_name -> {
             Intent expOffersIntent = new Intent(this.context, ExpandedOfferPost.class);
             expOffersIntent.putExtra("currOffer", post);
             this.context.startActivity(expOffersIntent);
@@ -62,12 +63,12 @@ public class OfferPostAdapter extends BaseAdapter {
         pickupLocation.setText(post.pickupAddr);
         itemQuantity.setText(String.valueOf(post.quantityKg));
 
-        ImageView itemImage = (ImageView) view.findViewById(R.id.offer_image);
+        ImageView itemImage = (ImageView) newView.findViewById(R.id.offer_image);
         if (!Objects.equals(post.image, "")) {
-            Utils.setImageWhenLoaded(context, post.image, itemImage);
+            Util.setImageWhenLoaded(context, post.image, itemImage);
         } else {
-            itemImage.setImageDrawable(Utils.GetDefaultAvatar(context));
+            itemImage.setImageDrawable(Util.GetDefaultAvatar(context));
         }
-        return view;
+        return newView;
     }
 }

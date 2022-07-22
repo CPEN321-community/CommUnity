@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.community.R;
-import com.example.community.classes.Global;
+import com.example.community.classes.GlobalUtil;
 import com.example.community.classes.ReqPostObj;
 import com.example.community.ui.chat.ChatActivity;
 
@@ -27,7 +27,7 @@ public class ExpandedReqPost extends AppCompatActivity {
         Intent expReqIntent = getIntent();
         ReqPostObj post = (ReqPostObj) expReqIntent.getSerializableExtra("currReq");
 
-        if (post.userId.equals(Global.getAccount().getId())) {
+        if (post.userId.equals(GlobalUtil.getAccount().getId())) {
             acceptButton.setVisibility(View.GONE);
         } else {
 //            acceptButton.setVisibility(View.GONE);

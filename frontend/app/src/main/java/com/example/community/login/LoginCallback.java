@@ -7,21 +7,21 @@ public class LoginCallback implements VolleyCallBack {
 
     @Override
     public void onError(VolleyError error) {
-
+        //do something
     }
 
     @Override
     public void onSuccess(boolean b) {
-
+        //do something
     }
 
     @Override
     public void onSuccess() {
-
+        //do something
     }
 
     @Override
     public void onError() {
-
+        //do something
     }
 }

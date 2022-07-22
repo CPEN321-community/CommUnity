@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.community.classes.Chat;
-import com.example.community.classes.ChatMessageHandler;
+import com.example.community.classes.ChatMessageHandlerUtil;
 import com.example.community.databinding.FragmentMessageListBinding;
 
 public class MessageFragment extends Fragment {
@@ -31,10 +31,10 @@ public class MessageFragment extends Fragment {
         MessageActivity parent = (MessageActivity) requireActivity();
         String postId = parent.chat.postId;
         MessageAdapter adapter = new MessageAdapter(requireContext(),
-                ChatMessageHandler.getChatMap().get(postId));
+                ChatMessageHandlerUtil.getChatMap().get(postId));
         Log.d(TAG, "AddAdapter: " + adapter);
-        ChatMessageHandler.AddAdapter(postId, adapter);
-        messageList.setAdapter(ChatMessageHandler.GetAdapterHashMap().get(postId));
+        ChatMessageHandlerUtil.AddAdapter(postId, adapter);
+        messageList.setAdapter(ChatMessageHandlerUtil.GetAdapterHashMap().get(postId));
         EditText editText = binding.messageTextInput;
         binding.messageSendButton.setOnClickListener(v -> {
             String message = editText.getText().toString();
