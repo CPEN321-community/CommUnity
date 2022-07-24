@@ -32,4 +32,3 @@ Community consists of an Android frontend (Java), Node.js backend, and MySql dat
  - [Joshua Park (45091048)](https://github.com/joshparksj)
  - [Claire Song (88219662)](https://github.com/cxsong1)
  - [Trevor Flanigan (22151880)](https://github.com/trevorflanigan)
-
