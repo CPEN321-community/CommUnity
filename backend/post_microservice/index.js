@@ -4,20 +4,26 @@ const axios = require('axios');
 const db = require('./models');
 const dotenv = require("dotenv")
 const s2sToken = require('./config/config')["s2sToken"];
+const {OAuth2Client} = require('google-auth-library');
 
-const OK = 200;
-const CREATED = 201
-const INTERNAL_SERVER_ERROR = 500;
-const UNAUTHORIZED = 401;
-const NOT_FOUND = 404;
+const {UNAUTHORIZED} = require('./httpCodes');
 
 dotenv.config({path: "../ports.env"});
 dotenv.config();
+const client = new OAuth2Client(process.env.CLIENT_ID);
+async function verify(token) {
+  const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: [process.env.CLIENT_ID],
+  });
+  const payload = ticket.getPayload();
+  const userid = payload['sub'];
+  return userid;
+}
 
 const app = express();
 
 app.use(express.json());
-app.use(routes);
 
 axios.defaults.headers = { s2sToken }
 app.use(async (req, res, next) => {
@@ -25,14 +31,19 @@ app.use(async (req, res, next) => {
     next();
   } else {
     const token = req.headers['token'];
-    await axios.post(`${process.env.USER_URL}/token/verify`, {token});
-    if (user) {
+    try {
+      const userId = await verify(token);
+      req.headers.userId = userId;
       next();
-    } else {
+    }
+    catch (e) {
+      console.log(e);
       res.status(UNAUTHORIZED).send("Unsuccessfull");
     }
   }
 });
+app.use(routes);
+
 
 // app.use(express.urlencoded({ extended: true }));
 
@@ -42,5 +53,3 @@ const PORT = process.env.PORT || 8081;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
-
-module.exports = { OK, CREATED, INTERNAL_SERVER_ERROR , UNAUTHORIZED, NOT_FOUND};

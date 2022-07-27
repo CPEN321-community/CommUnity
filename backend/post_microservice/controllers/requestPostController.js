@@ -1,7 +1,7 @@
 const { Op } = require("sequelize");
 const axios = require("axios").default;
 const { RequestPost, RequestPostTags } = require("../models");
-const { OK, INTERNAL_SERVER_ERROR, NOT_FOUND } = require("../index.js");
+const { OK, INTERNAL_SERVER_ERROR, NOT_FOUND } = require("../httpCodes");
 
 const getRequest = async (req, res) => {
     console.log("Get request endpoint hit");

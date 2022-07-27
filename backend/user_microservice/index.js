@@ -2,25 +2,35 @@ const express = require('express');
 const routes = require('./routes');
 const db = require('./models');
 const dotenv = require("dotenv")
-
-const OK = 200;
-const CREATED = 201
-const INTERNAL_SERVER_ERROR = 500;
-const UNAUTHORIZED = 401
-const NOT_FOUND = 400
+const {OAuth2Client} = require('google-auth-library');
+const {UNAUTHORIZED} = require('./httpCodes');
 
 dotenv.config({path: "../ports.env"});
 dotenv.config();
+
+const client = new OAuth2Client(process.env.CLIENT_ID);
+
+async function verify(token) {
+  const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: [process.env.CLIENT_ID],
+  });
+  const payload = ticket.getPayload();
+  const userid = payload['sub'];
+  return userid;
+}
 
 const app = express();
 
 app.use(express.json());
 app.use(async (req, res, next) => {
   let token = req.headers['token'];
-  let user = await User.findOne({ where: {token} });
-  if (user) {
+  try {
+    let userId = await verify(token)
+    req.headers.userId = userId;
     next();
-  } else {
+  }
+  catch (e) {
     res.status(UNAUTHORIZED).send("Unsuccessfull");
   }
 });
@@ -33,5 +43,3 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
-
-module.exports = { OK, CREATED, INTERNAL_SERVER_ERROR, UNAUTHORIZED, NOT_FOUND};
