@@ -11,6 +11,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
@@ -19,6 +20,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.community.MainActivity;
 import com.example.community.R;
 import com.example.community.VolleyCallBack;
+import com.example.community.classes.CustomJSONObjectRequest;
 import com.example.community.classes.GlobalUtil;
 import com.example.community.databinding.ActivityLoginBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -46,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         GlobalUtil.setAppContext(getApplicationContext());
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
@@ -75,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
+            Log.d(TAG, "onActivityResult: hello world");
             // The Task returned from this call is always completed, no need to attach
             // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -113,6 +117,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUI(GoogleSignInAccount account) {
         if (account != null) {
+            GlobalUtil.setAccount(account);
+            GlobalUtil.setHeaderToken(account.getIdToken());
+            GlobalUtil.FetchUser();
             userDoesExist(account, new LoginCallback() {
                 public void onSuccess(boolean exists) {
                     Log.d(TAG, "onSuccess: " + exists);
@@ -157,7 +164,7 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, data,
+        CustomJSONObjectRequest request = new CustomJSONObjectRequest(Request.Method.POST, url, data,
                 response -> {
                     Log.d(TAG, "createUser: " + response);
                     volleyCallBack.onSuccess();
@@ -167,14 +174,7 @@ public class LoginActivity extends AppCompatActivity {
                     volleyCallBack.onError();
                     // TODO: Fail sign in
                 }
-        ) {
-            @Override
-            public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("token", account.getIdToken());
-                return headers;
-            }
-        };
+        );
         queue.add(request);
 
     }

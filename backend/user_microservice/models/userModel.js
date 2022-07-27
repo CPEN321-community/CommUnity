@@ -6,11 +6,6 @@ const UserObject = (sequelize, DataTypes) => {
             allowNull: false,
             primaryKey: true
         },
-        token: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            primaryKey: true
-        },
         firstName: {
             type: DataTypes.STRING,
             defaultValue: "",

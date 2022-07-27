@@ -47,7 +47,7 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.user, config.password, {
     host: config.host,
     port: 3306,
-    logging: console.log,
+    logging: false,
     maxConcurrentQueries: 100,
     dialect: 'mysql',
    dialectOptions: env === "development" ? 

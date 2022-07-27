@@ -8,6 +8,7 @@ const socketHandler = require('./socket/socketHandler');
 const db = require('./models');
 const dotenv = require("dotenv");
 const s2sToken = require('./config/config')["s2sToken"];
+const {OAuth2Client} = require('google-auth-library');
 
 const OK = 200;
 const CREATED = 201
@@ -15,6 +16,17 @@ const INTERNAL_SERVER_ERROR = 500;
 
 dotenv.config({path: "../ports.env"});
 dotenv.config();
+
+const client = new OAuth2Client(process.env.CLIENT_ID);
+async function verify(token) {
+  const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: [process.env.CLIENT_ID],
+  });
+  const payload = ticket.getPayload();
+  const userid = payload['sub'];
+  return userid;
+}
 
 const app = express();
 const server = http.Server(app);
@@ -28,10 +40,13 @@ app.use(async (req, res, next) => {
     next();
   } else {
     const token = req.headers['token'];
-    await axios.post(`${process.env.USER_URL}/token/verify`, {token});
-    if (user) {
+    try {
+      const userId = await verify(token);
+      req.headers.userId = userId;
       next();
-    } else {
+    }
+    catch (e) {
+      console.log(e);
       res.status(UNAUTHORIZED).send("Unsuccessfull");
     }
   }
