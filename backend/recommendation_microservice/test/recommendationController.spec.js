@@ -30,11 +30,11 @@ describe("Recommendation Controller", () => {
 
 
 
-describe("Some test", () => {
-  it("triggers GET /user", () => {
-    const userObj = { id: '123' }
-    const result = axios.put('https://aws.my_backend.com', userObj);
-    const updatedObj = { name: 'bob', lastName: 'smith' }
-    expect(result.body).toEqual(updatedObj);
-  });
-});
+// describe("Some test", () => {
+//   it("triggers GET /user", () => {
+//     const userObj = { id: '123' }
+//     const result = axios.put('https://aws.my_backend.com', userObj);
+//     const updatedObj = { name: 'bob', lastName: 'smith' }
+//     expect(result.body).toEqual(updatedObj);
+//   });
+// });
