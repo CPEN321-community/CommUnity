@@ -1,5 +1,5 @@
 const { DietaryRestriction } = require("../models");
-const { INTERNAL_SERVER_ERROR } = require('../index');
+const { INTERNAL_SERVER_ERROR } = require('../httpCodes');
 
 const getUserDietaryRestrictions = async (req, res) => {
   if (req.params.id) {

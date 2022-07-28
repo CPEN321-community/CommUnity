@@ -27,7 +27,7 @@ public class ExpandedReqPost extends AppCompatActivity {
         Intent expReqIntent = getIntent();
         ReqPostObj post = (ReqPostObj) expReqIntent.getSerializableExtra("currReq");
 
-        if (post.userId.equals(GlobalUtil.getAccount().getId())) {
+        if (post.userId.equals(GlobalUtil.getId())) {
             acceptButton.setVisibility(View.GONE);
         } else {
 //            acceptButton.setVisibility(View.GONE);

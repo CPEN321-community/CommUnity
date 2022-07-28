@@ -83,7 +83,8 @@ public class NewOfferForm extends AppCompatActivity {
                         Log.e(TAG, "Selecting picture cancelled");
                     }
                     break;
-                default: Log.e(TAG, "Invalid request code");
+                default:
+                    Log.e(TAG, "Invalid request code");
             }
         } catch (Exception e) {
             Log.e(TAG, "Exception in onActivityResult : " + e.getMessage());
@@ -95,7 +96,7 @@ public class NewOfferForm extends AppCompatActivity {
         String url = GlobalUtil.POST_URL + "/communitypost/offers";
         JSONObject postBody = new JSONObject();
         try {
-            postBody.put("userId", GlobalUtil.getAccount().getId());
+            postBody.put("userId", GlobalUtil.getId());
             postBody.put("title", this.itemName.getText().toString());
             postBody.put("description", this.desc.getText().toString());
             postBody.put("quantity", Integer.parseInt(this.itemQuantity.getText().toString()));
@@ -122,7 +123,7 @@ public class NewOfferForm extends AppCompatActivity {
                 },
                 error -> {
                     Log.e(TAG, "fetchLeaderboard: " + error);
-                })  {
+                }) {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();

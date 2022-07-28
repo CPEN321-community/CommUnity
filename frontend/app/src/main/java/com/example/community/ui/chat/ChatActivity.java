@@ -43,7 +43,7 @@ public class ChatActivity extends AppCompatActivity {
     public void onDestroy() {
         JSONObject userId = new JSONObject();
         try {
-            userId.put("userId", GlobalUtil.getAccount().getId());
+            userId.put("userId", GlobalUtil.getId());
             this.mSocket.emit("leave-all", userId);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -96,7 +96,7 @@ public class ChatActivity extends AppCompatActivity {
 
         Chat.joinRooms();
         Chat.listenForMessages();
-        getChats(GlobalUtil.getAccount().getId());
+        getChats(GlobalUtil.getId());
         // if (createRoomId != null) {
 //            TODO: join room automatically
 //            Intent messageIntent = new Intent(this, MessageActivity.class);
@@ -137,7 +137,7 @@ public class ChatActivity extends AppCompatActivity {
                 },
                 error -> {
                     Log.e(TAG, "getChats: " + error);
-                })   {
+                }) {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();

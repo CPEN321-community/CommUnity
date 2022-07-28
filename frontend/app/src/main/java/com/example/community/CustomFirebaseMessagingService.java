@@ -42,7 +42,7 @@ public class CustomFirebaseMessagingService extends FirebaseMessagingService {
         String url = GlobalUtil.CHAT_URL + "/token";
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("userId", GlobalUtil.getAccount().getId());
+            jsonBody.put("userId", GlobalUtil.getId());
             jsonBody.put("token", token);
         } catch (JSONException e) {
             e.printStackTrace();

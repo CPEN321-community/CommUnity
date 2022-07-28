@@ -12,6 +12,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.community.classes.GlobalUtil;
 import com.example.community.databinding.ActivityMainBinding;
 import com.example.community.ui.chat.ChatActivity;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        GlobalUtil.setAppContext(getApplicationContext());
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.

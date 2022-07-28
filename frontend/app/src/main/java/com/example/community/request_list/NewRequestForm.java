@@ -57,7 +57,7 @@ public class NewRequestForm extends AppCompatActivity {
         String url = GlobalUtil.POST_URL + "/communitypost/requests";
         JSONObject postBody = new JSONObject();
         try {
-            postBody.put("userId", GlobalUtil.getAccount().getId());
+            postBody.put("userId", GlobalUtil.getId());
             postBody.put("title", this.itemName.getText().toString());
             postBody.put("description", this.desc.getText().toString());
             postBody.put("status", "ACTIVE");

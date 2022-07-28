@@ -13,6 +13,7 @@
         <entry key="app/src/main/res/layout-w1240dp/content_scrolling.xml" value="0.1" />
         <entry key="app/src/main/res/layout-w936dp/content_scrolling.xml" value="0.12013888888888889" />
         <entry key="app/src/main/res/layout/activity_chat.xml" value="0.16018518518518518" />
+        <entry key="app/src/main/res/layout/activity_edit_restrictions.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.14764492753623187" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.16894630192502533" />
         <entry key="app/src/main/res/layout/activity_message.xml" value="0.33" />
@@ -27,11 +28,13 @@
         <entry key="app/src/main/res/layout/fragment_leaderboard.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_leaderboard_user.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_leaderboard_user_list.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_message.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_message_bubble.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_message_list.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_my_message_bubble.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_other_message_bubble.xml" value="0.67" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.24362640380859377" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_second2.xml" value="0.14764492753623187" />
         <entry key="app/src/main/res/layout/sample_leaderboard_user.xml" value="0.18" />

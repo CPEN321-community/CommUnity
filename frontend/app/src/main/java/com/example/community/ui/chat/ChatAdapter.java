@@ -71,7 +71,7 @@ public class ChatAdapter extends BaseAdapter {
         try {
             previewMessage = ChatMessageHandlerUtil.GetPreview(chat.postId);
             chatPreview.setText(previewMessage.messageText);
-            if (!Objects.equals(previewMessage.userId, GlobalUtil.getAccount().getId())) {
+            if (!Objects.equals(previewMessage.userId, GlobalUtil.getId())) {
                 chatBubble.setBackgroundColor(ContextCompat.getColor(context, R.color.black));
                 chatPreview.setTextColor(ContextCompat.getColor(context, R.color.white));
             }

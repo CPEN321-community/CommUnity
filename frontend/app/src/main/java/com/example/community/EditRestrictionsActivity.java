@@ -2,6 +2,8 @@ package com.example.community;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,14 +28,32 @@ public class EditRestrictionsActivity extends AppCompatActivity {
 
     private static final String TAG = "EDIT_RESTRICTIONS_ACTIVITY";
     private EditText textField;
+    private Button submitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_restrictions);
         this.textField = findViewById(R.id.restriction_input);
-        Button submitButton = findViewById(R.id.submit_restriction_button);
+        submitButton = findViewById(R.id.add_dietary_restriction_button);
+        submitButton.setEnabled(false);
+        this.textField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String text = s.toString();
+                boolean enabled = text.trim().length() > 0;
+                submitButton.setEnabled(enabled);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
         submitButton.setOnClickListener(v -> {
+            submitButton.setEnabled(false);
             CreatePreference();
         });
     }
@@ -43,7 +63,7 @@ public class EditRestrictionsActivity extends AppCompatActivity {
         String url = GlobalUtil.USER_URL + "/user/preference";
         JSONObject postBody = new JSONObject();
         try {
-            postBody.put("userId", GlobalUtil.getAccount().getId());
+            postBody.put("userId", GlobalUtil.getId());
             postBody.put("value", this.textField.getText().toString());
             postBody.put("type", "DIETARY");
         } catch (JSONException e) {
@@ -56,6 +76,7 @@ public class EditRestrictionsActivity extends AppCompatActivity {
                 postBody,
                 (JSONObject response) -> {
                     Log.d(TAG, "createPost: " + response);
+                    textField.setText("");
                     Toast toast = Toast.makeText(this, "Successfully added dietary restriction!", Toast.LENGTH_LONG);
                     View toastView = toast.getView();
                     toastView.setBackgroundColor(Color.parseColor("#00ff00"));
@@ -63,6 +84,11 @@ public class EditRestrictionsActivity extends AppCompatActivity {
                     finish();
                 },
                 error -> {
+                    submitButton.setEnabled(true);
+                    Toast toast = Toast.makeText(this, "Failed to add restriction", Toast.LENGTH_LONG);
+                    View toastView = toast.getView();
+                    toastView.setBackgroundColor(Color.parseColor("#ff0000"));
+                    toast.show();
                     Log.e(TAG, "fetchLeaderboard: " + error);
                 }) {
             @Override
