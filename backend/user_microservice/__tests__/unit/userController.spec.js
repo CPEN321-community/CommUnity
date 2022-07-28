@@ -1,6 +1,6 @@
-const {getSuggestedRequests, getSuggestedOffers, deleteSuggestedRequest, deleteSuggestedOffer} = require("../__mocks__/mocks.js");
+const {getSuggestedRequests, getSuggestedOffers, deleteSuggestedRequest, deleteSuggestedOffer} = require("../__mocks__/mocks.js.js");
 
-describe("Test user controller", () => {
+describe("Recommendation Controller", () => {
   it("triggers the mock for getting suggested request posts", () => {
     let result = getSuggestedRequests('peepeepoopoo');
     expect(result).toEqual([{postId: 'post1', score: 100}, { postId: 'post2', score: 50}]);
