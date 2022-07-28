@@ -39,21 +39,31 @@ import org.junit.Rule;
 import org.junit.Test;
 
 public class ManagePreferencesUnitTest {
+
+    @Rule
+    public ActivityScenarioRule<MainActivity> activityRule =
+            new ActivityScenarioRule<>(MainActivity.class);
+
     @Before
     public void before() throws Exception {
+        SetTestUserData();
+        resetRestrictions();
+    }
+
+    @After
+    public void after() throws Exception {
+        resetRestrictions();
+    }
+
+    private void SetTestUserData() {
         GlobalUtil.setIsTest(true);
         GlobalUtil.setId("testuserid");
         GlobalUtil.setGivenName("Community Tester");
         GlobalUtil.setHeaderToken(BuildConfig.S2S_TOKEN);
     }
 
-    @Rule
-    public ActivityScenarioRule<MainActivity> activityRule =
-            new ActivityScenarioRule<>(MainActivity.class);
-
-    @After
-    public void after() throws Exception {
-        activityRule.getScenario().moveToState(Lifecycle.State.CREATED);
+    private void resetRestrictions() {
+        activityRule.getScenario().recreate();
         onView(withId(R.id.navigation_profile)).perform(click());
         Matcher<View> list = withId(R.id.dietary_restrictions_list);
         final int[] count = {0};
@@ -75,13 +85,12 @@ public class ManagePreferencesUnitTest {
             }
         });
         for (int i = 0; i < count[0]; i++) {
-            onData(is(instanceOf(LinearLayout.class)))
-                    .atPosition(i)
+            onData(anything())
+                    .atPosition(0)
                     .onChildView(withId(R.id.remove_restriction_button))
                     .perform(click());
         }
     }
-
 
 
     @Test

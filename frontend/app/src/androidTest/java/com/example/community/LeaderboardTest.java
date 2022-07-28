@@ -5,6 +5,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -12,6 +13,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.anything;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
@@ -73,9 +75,16 @@ public class LeaderboardTest {
         });
         int numItems = count[0];
         assert numItems <= 10;
+
+        // Get my user card if its in the list
         final View[] myLeaderboardUser = {null};
 
-        onData(allOf(withId(R.id.leaderboard_name), withText("Community"))).perform(new ViewAction() {
+        onView(allOf(
+                hasDescendant(
+                        allOf(withText("Community T."), withId(R.id.leaderboard_name))
+                ),
+                withId(R.id.leaderboard_user_card)))
+                .perform(new ViewAction() {
             @Override
             public Matcher<View> getConstraints() {
                 return isAssignableFrom(LinearLayout.class);
