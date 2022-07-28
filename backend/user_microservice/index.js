@@ -4,6 +4,7 @@ const db = require('./models');
 const dotenv = require("dotenv")
 const {OAuth2Client} = require('google-auth-library');
 const {UNAUTHORIZED} = require('./httpCodes');
+const s2sToken = require("./config/config")["s2sToken"];
 
 dotenv.config({path: "../ports.env"});
 dotenv.config();
@@ -25,6 +26,9 @@ const app = express();
 app.use(express.json());
 app.use(async (req, res, next) => {
   let token = req.headers['token'];
+  if (s2sToken && s2sToken === token) {
+    next();
+  }
   try {
     let userId = await verify(token)
     req.headers.userId = userId;
