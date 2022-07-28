@@ -25,21 +25,19 @@ const app = express();
 
 app.use(express.json());
 
-axios.defaults.headers = { s2sToken }
+axios.defaults.headers = { token: s2sToken }
 app.use(async (req, res, next) => {
-  if (req.headers["s2sToken"] && req.headers["s2sToken"] == s2sToken) {
+  let token = req.headers['token'];
+  if (s2sToken && s2sToken === token) {
     next();
-  } else {
-    const token = req.headers['token'];
-    try {
-      const userId = await verify(token);
-      req.headers.userId = userId;
-      next();
-    }
-    catch (e) {
-      console.log(e);
-      res.status(UNAUTHORIZED).send("Unsuccessfull");
-    }
+  }
+  try {
+    let userId = await verify(token)
+    req.headers.userId = userId;
+    next();
+  }
+  catch (e) {
+    res.status(UNAUTHORIZED).send("Unsuccessfull");
   }
 });
 app.use(routes);
