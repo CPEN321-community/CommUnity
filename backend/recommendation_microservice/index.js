@@ -4,7 +4,7 @@ const routes = require('./routes');
 const Singleton = require('./singleton');
 const model = (new Singleton()).getInstance();
 const dotenv = require("dotenv");
-const s2sToken = require('./config/config')["s2sToken"];
+const s2sToken = require('./config')["s2sToken"];
 
 dotenv.config({path: "../ports.env"});
 dotenv.config();

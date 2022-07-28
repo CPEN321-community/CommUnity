@@ -3,7 +3,7 @@ const routes = require('./routes');
 const axios = require('axios');
 const db = require('./models');
 const dotenv = require("dotenv")
-const s2sToken = require('./config/config')["s2sToken"];
+const s2sToken = require('./config')["s2sToken"];
 const {OAuth2Client} = require('google-auth-library');
 
 const {UNAUTHORIZED} = require('./httpCodes');
