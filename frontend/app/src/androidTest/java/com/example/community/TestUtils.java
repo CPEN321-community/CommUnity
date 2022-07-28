@@ -6,6 +6,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.test.espresso.UiController;
@@ -17,7 +18,9 @@ import com.android.volley.toolbox.Volley;
 import com.example.community.classes.CustomJSONObjectRequest;
 import com.example.community.classes.GlobalUtil;
 
+import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -69,5 +72,20 @@ public class TestUtils {
             }
         };
     }
+
+    public static Matcher<View> withListOfAtMost(final int size) {
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public boolean matchesSafely(final View view) {
+                return ((ListView) view).getCount() <= size;
+            }
+
+            @Override
+            public void describeTo(final Description description) {
+                description.appendText("ListView should have " + size + " items");
+            }
+        };
+    }
+
 
 }

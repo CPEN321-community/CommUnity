@@ -63,7 +63,7 @@ public class ChatAdapter extends BaseAdapter {
         newView = inflater.inflate(R.layout.fragment_chat_item, null);
         Chat chat = this.chats.get(i);
 
-        TextView chatName = (TextView) newView.findViewById(R.id.restriction_name);
+        TextView chatName = (TextView) newView.findViewById(R.id.leaderboard_name);
         ImageView avatar = (ImageView) newView.findViewById(R.id.chat_avatar);
         TextView chatPreview = (TextView) newView.findViewById(R.id.chat_message_preview);
         LinearLayout chatBubble = (LinearLayout) newView.findViewById(R.id.chat_message_bubble);

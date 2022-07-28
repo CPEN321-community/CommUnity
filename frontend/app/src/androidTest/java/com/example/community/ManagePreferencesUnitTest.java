@@ -1,6 +1,7 @@
 package com.example.community;
 
 import static androidx.test.espresso.Espresso.closeSoftKeyboard;
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -8,23 +9,32 @@ import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.action.ViewActions.typeTextIntoFocusedView;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.anything;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 
-import android.os.SystemClock;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 
+import androidx.lifecycle.Lifecycle;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.example.community.classes.GlobalUtil;
 
 import org.hamcrest.Matcher;
+import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -40,6 +50,39 @@ public class ManagePreferencesUnitTest {
     @Rule
     public ActivityScenarioRule<MainActivity> activityRule =
             new ActivityScenarioRule<>(MainActivity.class);
+
+    @After
+    public void after() throws Exception {
+        activityRule.getScenario().moveToState(Lifecycle.State.CREATED);
+        onView(withId(R.id.navigation_profile)).perform(click());
+        Matcher<View> list = withId(R.id.dietary_restrictions_list);
+        final int[] count = {0};
+        onView(list).perform(new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(ListView.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Getting number of Leaderboard users";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                ListView lv = (ListView) view;
+                count[0] = lv.getChildCount();
+            }
+        });
+        for (int i = 0; i < count[0]; i++) {
+            onData(is(instanceOf(LinearLayout.class)))
+                    .atPosition(i)
+                    .onChildView(withId(R.id.remove_restriction_button))
+                    .perform(click());
+        }
+    }
+
+
 
     @Test
     public void AddAndRemoveRestriction() {
@@ -68,7 +111,5 @@ public class ManagePreferencesUnitTest {
         onView(withId(R.id.remove_restriction_button)).check(matches(isDisplayed()));
         onView(withId(R.id.remove_restriction_button)).perform(click());
         onView(restrictionName).check(doesNotExist());
-
-
     }
 }

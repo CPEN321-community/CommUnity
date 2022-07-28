@@ -46,7 +46,7 @@ public class LeaderboardAdapter extends BaseAdapter {
         View newView = view;
         newView = inflater.inflate(R.layout.fragment_leaderboard_user, null);
         TextView number = (TextView) newView.findViewById(R.id.item_number);
-        TextView name = (TextView) newView.findViewById(R.id.restriction_name);
+        TextView name = (TextView) newView.findViewById(R.id.leaderboard_name);
         TextView score = (TextView) newView.findViewById(R.id.leaderboard_score);
         UserWithScore user = this.users.get(i);
 

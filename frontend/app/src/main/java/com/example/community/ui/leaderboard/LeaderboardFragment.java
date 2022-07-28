@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.community.databinding.FragmentLeaderboardBinding;
+import com.example.community.databinding.FragmentLeaderboardUserBinding;
 
 public class LeaderboardFragment extends Fragment {
 
@@ -23,6 +25,9 @@ public class LeaderboardFragment extends Fragment {
                 new ViewModelProvider(this).get(LeaderboardViewModel.class);
 
         binding = FragmentLeaderboardBinding.inflate(inflater, container, false);
+        FragmentLeaderboardUserBinding myScoreBinding = binding.myScore;
+        LinearLayout myScore = myScoreBinding.getRoot();
+        myScore.setVisibility(View.GONE);
         View root = binding.getRoot();
         Button refreshButton = binding.buttonRefreshLeaderboard;
         refreshButton.setOnClickListener(view -> {

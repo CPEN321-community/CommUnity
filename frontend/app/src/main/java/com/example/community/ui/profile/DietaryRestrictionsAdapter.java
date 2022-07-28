@@ -97,7 +97,7 @@ public class DietaryRestrictionsAdapter extends BaseAdapter {
                 },
                 error -> {
                     Log.e(TAG, "fetchLeaderboard: " + error);
-                })   {
+                }) {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
