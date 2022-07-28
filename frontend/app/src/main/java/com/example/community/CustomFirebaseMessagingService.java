@@ -9,6 +9,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.community.classes.GlobalUtil;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.messaging.FirebaseMessagingService;
 
 import org.json.JSONException;
@@ -38,11 +39,15 @@ public class CustomFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     public static void sendTokenToDatabase(String token) {
+        GoogleSignInAccount account = GlobalUtil.getAccount();
+        if (account == null) {
+            return;
+        }
         RequestQueue queue = Volley.newRequestQueue(GlobalUtil.getAppContext());
         String url = GlobalUtil.CHAT_URL + "/token";
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("userId", GlobalUtil.getAccount().getId());
+            jsonBody.put("userId", GlobalUtil.getId());
             jsonBody.put("token", token);
         } catch (JSONException e) {
             e.printStackTrace();

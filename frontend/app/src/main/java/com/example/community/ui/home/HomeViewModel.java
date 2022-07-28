@@ -12,7 +12,7 @@ public class HomeViewModel extends ViewModel {
 
     public HomeViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("Hello, " + GlobalUtil.getAccount().getGivenName());
+        mText.setValue("Hello, " + GlobalUtil.getGivenName());
     }
 
     public LiveData<String> getText() {

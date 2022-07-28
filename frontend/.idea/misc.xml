@@ -27,6 +27,7 @@
         <entry key="app/src/main/res/layout/fragment_leaderboard.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_leaderboard_user.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_leaderboard_user_list.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_message.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_message_bubble.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_message_list.xml" value="0.25" />

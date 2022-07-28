@@ -3,7 +3,9 @@ plugins {
     id 'com.google.gms.google-services'
 
 }
-
+def secretsFile = rootProject.file("s2stoken.properties")
+def secretsProperties = new Properties()
+secretsProperties.load(new FileInputStream(secretsFile))
 
 android {
     compileSdk 32
@@ -14,7 +16,7 @@ android {
         targetSdk 32
         versionCode 1
         versionName "1.0"
-        buildConfigField("String", "USER_BASE", "\"https://localhost:3031\"")
+        buildConfigField("String", "S2S_TOKEN", secretsProperties['S2S_TOKEN'])
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -49,6 +51,8 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.test:core:1.4.0'
+    implementation 'androidx.test.uiautomator:uiautomator:2.2.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'

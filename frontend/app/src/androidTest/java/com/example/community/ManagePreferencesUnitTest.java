@@ -1,25 +1,27 @@
 package com.example.community;
 
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.isNotChecked;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
-
-import android.view.View;
-
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.uiautomator.UiDevice;
 
-import com.example.community.ui.profile.ProfileFragment;
+import com.example.community.classes.GlobalUtil;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
-import org.hamcrest.Matcher;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 public class ManagePreferencesUnitTest {
+
+    private UiDevice mUiDevice;
+
+    @Before
+    public void before() throws Exception {
+        GlobalUtil.setIsTest(true);
+        GlobalUtil.setId("testuserid");
+        GlobalUtil.setGivenName("Community Tester");
+        GlobalUtil.setHeaderToken(BuildConfig.s2sToken);
+    }
 
     @Rule
     public ActivityScenarioRule<MainActivity> activityRule =
@@ -27,6 +29,10 @@ public class ManagePreferencesUnitTest {
 
     @Test
     public void SwitchPressChangesText() {
+
+//        onView(withText("Choose an account"))
+//                .inRoot(withDecorView(not(is(getActivity().getWindow().getDecorView()))))
+//                .check(matches(isDisplayed()));
 //        onView(withText("Profile")).perform(click());
 
     }

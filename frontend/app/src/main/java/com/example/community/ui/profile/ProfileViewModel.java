@@ -87,7 +87,7 @@ public class ProfileViewModel extends AndroidViewModel {
 
     public void fetchUser() {
         RequestQueue queue = Volley.newRequestQueue(this.application);
-        String url = GlobalUtil.USER_URL + "/user/" + GlobalUtil.getAccount().getId();
+        String url = GlobalUtil.USER_URL + "/user/" + GlobalUtil.getId();
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 url,
@@ -114,7 +114,7 @@ public class ProfileViewModel extends AndroidViewModel {
                 },
                 error -> {
                     Log.e(TAG, "fetchLeaderboard: " + error);
-                })  {
+                }) {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();

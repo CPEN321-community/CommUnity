@@ -32,7 +32,7 @@ public class ExpandedOfferPost extends AppCompatActivity {
         Button acceptButton = this.findViewById(R.id.accept_offer_button);
         Intent expOfferIntent = getIntent();
         OfferPostObj post = (OfferPostObj) expOfferIntent.getSerializableExtra("currOffer");
-        if (post.userId.equals(GlobalUtil.getAccount().getId())) {
+        if (post.userId.equals(GlobalUtil.getId())) {
             acceptButton.setVisibility(View.GONE);
         } else {
             acceptButton.setOnClickListener(v -> {

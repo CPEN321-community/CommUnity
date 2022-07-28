@@ -43,7 +43,7 @@ public class EditRestrictionsActivity extends AppCompatActivity {
         String url = GlobalUtil.USER_URL + "/user/preference";
         JSONObject postBody = new JSONObject();
         try {
-            postBody.put("userId", GlobalUtil.getAccount().getId());
+            postBody.put("userId", GlobalUtil.getId());
             postBody.put("value", this.textField.getText().toString());
             postBody.put("type", "DIETARY");
         } catch (JSONException e) {

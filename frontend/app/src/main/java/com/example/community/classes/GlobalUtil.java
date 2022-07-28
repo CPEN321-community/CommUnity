@@ -18,11 +18,14 @@ import java.util.Map;
 import io.socket.client.Socket;
 
 public class GlobalUtil {
+    private static boolean IS_TEST = false;
     private static final String TAG = "GLOBAL_CLASS";
     private static GoogleSignInAccount account;
     private static Socket socket;
     private static Context appContext;
     private static String headerToken;
+    private static String givenName;
+    private static String id;
     public static UserProfile userProfile;
 
     public static final String CHAT_URL = "http://10.0.2.2:3000";
@@ -35,6 +38,8 @@ public class GlobalUtil {
 
     public static void cleanup() {
         account = null;
+        givenName = null;
+        id = null;
         if (socket != null) {
             socket.close();
             socket = null;
@@ -48,6 +53,8 @@ public class GlobalUtil {
 
     public static void setAccount(GoogleSignInAccount account) {
         GlobalUtil.account = account;
+        setId(account.getId());
+        setGivenName(account.getGivenName());
     }
 
     public static Socket getSocket() {
@@ -73,7 +80,7 @@ public class GlobalUtil {
         }
 
         RequestQueue queue = Volley.newRequestQueue(appContext);
-        String url = GlobalUtil.USER_URL + "/user/" + GlobalUtil.getAccount().getId();
+        String url = GlobalUtil.USER_URL + "/user/" + GlobalUtil.getId();
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 url,
@@ -108,5 +115,29 @@ public class GlobalUtil {
 
     public static void setHeaderToken(String headerToken) {
         GlobalUtil.headerToken = headerToken;
+    }
+
+    public static boolean getIsTest() {
+        return IS_TEST;
+    }
+
+    public static void setIsTest(boolean isTest) {
+        IS_TEST = isTest;
+    }
+
+    public static String getGivenName() {
+        return givenName;
+    }
+
+    public static void setGivenName(String givenName) {
+        GlobalUtil.givenName = givenName;
+    }
+
+    public static String getId() {
+        return id;
+    }
+
+    public static void setId(String id) {
+        GlobalUtil.id = id;
     }
 }
