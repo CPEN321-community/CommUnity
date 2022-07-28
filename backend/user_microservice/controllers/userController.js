@@ -36,20 +36,22 @@ const getUser = async (req, res) => {
 };
 
 const upsertUserPreference = async (req, res) => {
-  if (req.body.userId) {
-    const userId = req.body.userId;
+    console.log("Upserting user preference");
+    const userId = req.headers.userId;
+    console.log(userId);
     const user = await User.findByPk(userId);
+    if (!user) {
+      console.error("User not found");
+      res.status(NOT_FOUND).json({error: "User not found!"});
+      return;
+    }
     const [preference] = await Preference.upsert({
       userId,
       type: req.body.type,
       value: req.body.value,
     });
     await preference.setUser(user);
-    res.json(preference);
-  } else {
-    console.log("Error updating user preferences: " + error);
-    res.sendStatus(INTERNAL_SERVER_ERROR);
-  }
+    res.status(CREATED).json(preference);
 };
 
 const deleteUserPreference = async (req, res) => {

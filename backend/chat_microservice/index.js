@@ -36,17 +36,18 @@ io.on('connection', (socket) => socketHandler(socket, io));
 
 axios.defaults.headers = { token: s2sToken };
 app.use(async (req, res, next) => {
-  let token = req.headers['token'];
+  let token = req.headers["token"];
   if (s2sToken && s2sToken === token) {
+    req.headers.userId = "testuserid";
     next();
-  }
-  try {
-    let userId = await verify(token)
-    req.headers.userId = userId;
-    next();
-  }
-  catch (e) {
-    res.status(UNAUTHORIZED).send("Unsuccessfull");
+  } else {
+    try {
+      let userId = await verify(token);
+      req.headers.userId = userId;
+      next();
+    } catch (e) {
+      res.status(UNAUTHORIZED).send("Unsuccessfull");
+    }
   }
 });
 
