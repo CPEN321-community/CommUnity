@@ -7,7 +7,7 @@ const routes = require('./routes');
 const socketHandler = require('./socket/socketHandler');
 const db = require('./models');
 const dotenv = require("dotenv");
-const s2sToken = require('./config')["s2sToken"];
+const s2sToken = require('./config/config.json')["s2sToken"];
 const {OAuth2Client} = require('google-auth-library');
 
 const OK = 200;
