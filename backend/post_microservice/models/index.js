@@ -25,11 +25,16 @@ if (config.use_env_variable) {
     logging: false,
     maxConcurrentQueries: 100,
     dialect: 'mysql',
-    dialectOptions: env === "development" ? 
-    undefined
-: {
-      ssl:'Amazon RDS'
-  },
+    dialectOptions: env === "production" ? 
+    {
+      ssl: 'Amazon RDS'
+    }
+  : {
+      ssl: { 
+        require: true,
+        rejectUnauthorized: false 
+      }
+    },
     pool: { maxConnections: 5, maxIdleTime: 30},
     language: 'en'
   });

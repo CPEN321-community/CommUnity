@@ -46,9 +46,14 @@ app.use(routes);
 
 // app.use(express.urlencoded({ extended: true }));
 
-db.sequelize.sync().then((req) => {}).catch(e => console.log(e));
+if (process.env.NODE_ENV != "test") {
+  db.sequelize.sync();
 
-const PORT = process.env.PORT || 8081;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-});
+  const PORT = process.env.PORT || 8081;
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}.`);
+  });
+}
+
+
+module.exports = app;

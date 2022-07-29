@@ -1,23 +1,23 @@
 {
   "development": {
-    "user": "admin",
-    "password": "123",
-    "host": "some_host",
-    "database": "post",
+    "user": "root",
+    "password": "P@ssw0rd",
+    "host": "127.0.0.1",
+    "database": "sql_post",
     "port": "3306"
   },
   "test": {
-    "user": "admin",
-    "password": "123",
-    "host": "some_host",
-    "database": "post",
+    "user": "root",
+    "password": "P@ssw0rd",
+    "host": "127.0.0.1",
+    "database": "sql_post",
     "port": "3306"
   },
   "production": {
-    "user": "admin",
-    "password": "123",
-    "host": "some_host",
-    "database": "post",
+    "user": "root",
+    "password": "P@ssw0rd",
+    "host": "127.0.0.1",
+    "database": "sql_post",
     "port": "3306"
   },
   "s2sToken": "cpen321_s2stoken"

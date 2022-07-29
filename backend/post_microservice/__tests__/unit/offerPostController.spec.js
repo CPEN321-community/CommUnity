@@ -1,7 +1,10 @@
-const { expect } = require('@jest/globals');
-const { getOffer } = require("../../controllers/offerPostController.js");
-const httpMocks = require('node-mocks-http');
-const db = require('../../models/index.js');
+
+const { OfferPost, OfferPostTags } = require("../../models");
+const supertest = require("supertest");
+const app = require("../../index");
+const { afterAll, beforeAll } = require("@jest/globals");
+const s2sToken = require('./../../../config_post.json')["s2sToken"];
+const { OK, CREATED, INTERNAL_SERVER_ERROR, UNAUTHORIZED, NOT_FOUND } = require("../../httpCodes");
 
 const offerPost = {
   userId: "user1",
@@ -16,24 +19,43 @@ const offerPost = {
   offerTags: ["beep", "boop"]
 };
 
-jest.mock("../../models/offerPostModel");
+describe("GET communitypost/offers/:offerID", () => {
+    let request = null;
+    beforeAll(async () => {
+      request = supertest(app);
+    })
+    
+  test("Pass", async () => {
+    OfferPost.findOne = jest.fn().mockReturnValueOnce(offerPost);
+    const response = await request.get("/communitypost/offers/offer1").set('token', s2sToken);
+    expect(JSON.parse(response.text)).toEqual(offerPost);
+    expect(response.statusCode).toEqual(OK);
+  });
 
-beforeAll(async () => {
-  await db.sync();
+  test("request post not found", async () => {
+    OfferPost.findOne = jest.fn().mockReturnValueOnce(null);
+    const response = await request.get("/communitypost/offers/offer2").set('token', s2sToken);
+    expect(response.statusCode).toEqual(NOT_FOUND);
+  });
 });
 
-afterAll(async () => {
-  await db.close();
-});
+describe("GET communitypost/offers/:offerID", () => {
+  let request = null;
+  beforeAll(async () => {
+    request = supertest(app);
+  })
+    
+  test("Pass", async () => {
+    OfferPost.findOne = jest.fn().mockReturnValueOnce(offerPost);
+    const response = await request.get("/communitypost/offers/offer1").set('token', s2sToken);
+    expect(JSON.parse(response.text)).toEqual(offerPost);
+    expect(response.statusCode).toEqual(OK);
+  });
 
-describe("Offer Post Controller", () => {
-  it("gets an offer post that corresponds with offerId", async () => {
-    const req = httpMocks.createRequest({ params: { offerId } });
-    const res = httpMocks.createResponse({ locals: "marijuana" });
-
-    return getOffer(req, res).then((response) => {
-      expect(response).toEqual("marijuana");
-    });
+  test("request post not found", async () => {
+    OfferPost.findOne = jest.fn().mockReturnValueOnce(null);
+    const response = await request.get("/communitypost/offers/offer2").set('token', s2sToken);
+    expect(response.statusCode).toEqual(NOT_FOUND);
   });
 });
 

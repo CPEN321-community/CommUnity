@@ -1,14 +1,18 @@
 const { Op } = require("sequelize");
 const { OfferPost, OfferPostTags } = require("../models");
 const axios = require("axios");
-const { INTERNAL_SERVER_ERROR, OK } = require('../httpCodes');
+const { INTERNAL_SERVER_ERROR, OK, NOT_FOUND } = require('../httpCodes');
 
 const getOffer = async (req, res) => {
     if(req.params.offerId) {
         const response = await OfferPost.findOne({where: {offerId: req.params.offerId}});
-        res.status(OK).json(response);
+        if (response) {
+            res.status(OK).json(response);
+        } else {
+            res.sendStatus(NOT_FOUND);
+        }
     } else {
-        res.status(INTERNAL_SERVER_ERROR);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
@@ -150,7 +154,6 @@ const createOffer = async (req, res) => {
             offerPosts: 1,
             requestPosts: 0,
         };
-        console.log(updateUserBody);
 
         await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
         res.sendStatus(OK);

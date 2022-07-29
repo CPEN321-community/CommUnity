@@ -4,12 +4,15 @@ const { RequestPost, RequestPostTags } = require("../models");
 const { OK, INTERNAL_SERVER_ERROR, NOT_FOUND } = require("../httpCodes");
 
 const getRequest = async (req, res) => {
-    console.log("Get request endpoint hit");
    if(req.params.requestId){
-       const response = await RequestPost.findOne({where: {requestId}});
-       res.json(response);
+       const response = await RequestPost.findOne({where: {requestId: req.params.requestId}});
+       if (response) {
+           res.json(response);
+       } else {
+           res.sendStatus(NOT_FOUND);
+       }
    } else {
-       res.status(INTERNAL_SERVER_ERROR);
+       res.sendStatus(INTERNAL_SERVER_ERROR);
    }
 }
 
@@ -18,8 +21,7 @@ const getAllRequests = async (req, res) => {
     if (response) {
         res.status(OK).json(response);
     } else {
-        console.log("Error getting all of the offer posts: " + error);
-        res.status(INTERNAL_SERVER_ERROR);
+        res.sendStatus(NOT_FOUND);
     }
 }
 
