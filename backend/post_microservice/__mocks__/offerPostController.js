@@ -1,18 +1,9 @@
-const test = require('ava');
-const sinon = require('sinon');
+const axios = require('axios');
 
-const mockRequest = (sessionData) => ({
-  session: { data: sessionData }
-});
+class OfferPost {
+  static all() {
+    return axios.get('communitypost/offers/:offerId').then(resp => resp.data);
+  }
+}
 
-const mockResponse = () => {
-  const res = {};
-  res.status = sinon.stub().returns(res);
-  res.json = sinon.stub().returns(res);
-  return res;
-};
-
-module.exports = {
-    mockRequest,
-    mockResponse
-};
+module.exports = {OfferPost}
