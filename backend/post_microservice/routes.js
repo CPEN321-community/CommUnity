@@ -21,7 +21,7 @@ router.delete('/communitypost/requests/:requestId', deleteRequest);
 // Offers
 router.get('/communitypost/offers/:offerId', getOffer);
 router.get('/communitypost/offers', getAllOffers);
-router.get('/communitpost/offers/users/:userId', getAllUserOffers);
+router.get('/communitypost/offers/users/:userId', getAllUserOffers);
 router.get('/communitypost/offers/search/:title', searchOffers);
 router.put('/communitypost/offerTags', searchOffersWithTags);
 router.post('/communitypost/offers', createOffer);
