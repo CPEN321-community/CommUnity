@@ -23,18 +23,23 @@ public class GlobalUtil {
     private static Socket socket;
     private static Context appContext;
     private static String headerToken;
+    private static String id;
+    private static String givenName;
+    private static boolean IS_TEST;
     public static UserProfile userProfile;
 
-    public static final String CHAT_URL = "http://10.0.2.2:3000";
-    public static final String USER_URL = "http://10.0.2.2:8080";
-    public static final String POST_URL = "http://10.0.2.2:8081";
-//    public static final String CHAT_URL = "http://ec2-35-183-28-141.ca-central-1.compute.amazonaws.com:3000";
-//    public static final String USER_URL = "http://ec2-3-96-168-213.ca-central-1.compute.amazonaws.com:3000";
-//    public static final String POST_URL = "http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000";
+//    public static final String CHAT_URL = "http://10.0.2.2:3000";
+//    public static final String USER_URL = "http://10.0.2.2:8080";
+//    public static final String POST_URL = "http://10.0.2.2:8081";
+    public static final String CHAT_URL = "http://ec2-35-183-28-141.ca-central-1.compute.amazonaws.com:3000";
+    public static final String USER_URL = "http://ec2-3-96-168-213.ca-central-1.compute.amazonaws.com:3000";
+    public static final String POST_URL = "http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000";
 
 
     public static void cleanup() {
         account = null;
+        id = null;
+        givenName = null;
         if (socket != null) {
             socket.close();
             socket = null;
@@ -48,6 +53,8 @@ public class GlobalUtil {
 
     public static void setAccount(GoogleSignInAccount account) {
         GlobalUtil.account = account;
+        setId(account.getId());
+        setGivenName(account.getDisplayName());
     }
 
     public static Socket getSocket() {
@@ -73,7 +80,7 @@ public class GlobalUtil {
         }
 
         RequestQueue queue = Volley.newRequestQueue(appContext);
-        String url = GlobalUtil.USER_URL + "/user/" + GlobalUtil.getAccount().getId();
+        String url = GlobalUtil.USER_URL + "/user/" + GlobalUtil.getId();
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 url,
@@ -108,5 +115,29 @@ public class GlobalUtil {
 
     public static void setHeaderToken(String headerToken) {
         GlobalUtil.headerToken = headerToken;
+    }
+
+    public static String getId() {
+        return id;
+    }
+
+    public static void setId(String id) {
+        GlobalUtil.id = id;
+    }
+
+    public static String getGivenName() {
+        return givenName;
+    }
+
+    public static void setGivenName(String givenName) {
+        GlobalUtil.givenName = givenName;
+    }
+
+    public static boolean IsTest() {
+        return IS_TEST;
+    }
+
+    public static void setIsTest(boolean isTest) {
+        IS_TEST = isTest;
     }
 }

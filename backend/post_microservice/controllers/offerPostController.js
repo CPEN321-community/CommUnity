@@ -1,7 +1,7 @@
 const { Op } = require("sequelize");
 const { OfferPost, OfferPostTags } = require("../models");
 const axios = require("axios");
-const { INTERNAL_SERVER_ERROR, OK } = require('../index');
+const { INTERNAL_SERVER_ERROR, OK } = require('../httpCodes');
 
 const getOffer = async (req, res) => {
     if(req.params.offerId) {

@@ -33,12 +33,6 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        ImageButton searchButton = binding.searchButton;
-        searchButton.setOnClickListener(v -> {
-            Intent searchIntent = new Intent(requireActivity(), SearchActivity.class);
-            startActivity(searchIntent);
-        });
-
         FloatingActionButton addNewReqButton = binding.addReqPostButton;
         addNewReqButton.setOnClickListener(view -> {
             Intent addReqIntent = new Intent(requireActivity(), NewRequestForm.class);

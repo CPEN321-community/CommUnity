@@ -62,7 +62,7 @@ public class MessageAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         Message message = this.messages.get(i);
-        if (Objects.equals(message.userId, GlobalUtil.getAccount().getId())) {
+        if (Objects.equals(message.userId, GlobalUtil.getId())) {
             return renderMyMessage(message);
         } else {
             return renderOtherMessage(message);

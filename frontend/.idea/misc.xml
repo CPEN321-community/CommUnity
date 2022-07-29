@@ -4,6 +4,22 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../../../layout/custom_preview.xml" value="0.22" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/drawable/ic_chat.xml" value="0.1485" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/drawable/ic_search.xml" value="0.1" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/drawable/login_gradient.xml" value="0.1735" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/ab_custom.xml" value="0.18697916666666667" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/activity_login.xml" value="0.13269927536231885" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/activity_main.xml" value="0.18795289855072464" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/content_login.xml" value="0.13269927536231885" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/fragment_home.xml" value="0.18795289855072464" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/fragment_leaderboard.xml" value="0.19635416666666666" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/fragment_leaderboard_user.xml" value="0.19635416666666666" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/fragment_login.xml" value="0.25" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/fragment_profile.xml" value="0.18795289855072464" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/menu/ab_custom.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/menu/bottom_nav_menu.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/menu/chat_menu.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/menu/menu_chat.xml" value="0.18802083333333333" />
         <entry key="app/src/main/res/drawable/default_avatar.xml" value="0.103" />
         <entry key="app/src/main/res/drawable/ic_baseline_leaderboard_24.xml" value="0.1585" />
         <entry key="app/src/main/res/drawable/ic_chat.xml" value="0.1595" />
@@ -13,6 +29,7 @@
         <entry key="app/src/main/res/layout-w1240dp/content_scrolling.xml" value="0.1" />
         <entry key="app/src/main/res/layout-w936dp/content_scrolling.xml" value="0.12013888888888889" />
         <entry key="app/src/main/res/layout/activity_chat.xml" value="0.16018518518518518" />
+        <entry key="app/src/main/res/layout/activity_edit_restrictions.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.14764492753623187" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.16894630192502533" />
         <entry key="app/src/main/res/layout/activity_message.xml" value="0.33" />
@@ -21,17 +38,20 @@
         <entry key="app/src/main/res/layout/content_scrolling.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_chat_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_dietary_restriction.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.14764492753623187" />
         <entry key="app/src/main/res/layout/fragment_first2.xml" value="0.16018518518518518" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_leaderboard.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_leaderboard_user.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_leaderboard_user_list.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_message.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_message_bubble.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_message_list.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_my_message_bubble.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_other_message_bubble.xml" value="0.67" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.24362640380859377" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_second2.xml" value="0.14764492753623187" />
         <entry key="app/src/main/res/layout/sample_leaderboard_user.xml" value="0.18" />

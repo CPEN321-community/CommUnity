@@ -3,7 +3,7 @@ const { User, Message, Room } = require('../models');
 const { sendNotifToUser } = require('./userTokenController');
 const Singleton = require('../singleton');
 const axios = require("axios");
-const { OK, INTERNAL_SERVER_ERROR } = require("../index.js");
+const { OK, INTERNAL_SERVER_ERROR } = require("../httpCodes");
 
 const deleteRoom = async (req, res) => {
   if (req.params.postId) {

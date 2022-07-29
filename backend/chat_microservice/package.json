@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
   "dependencies": {
     "@babel/eslint-parser": "^7.18.9",
     "@typescript-eslint/eslint-plugin": "^5.30.7",

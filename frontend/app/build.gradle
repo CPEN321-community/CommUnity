@@ -4,6 +4,10 @@ plugins {
 
 }
 
+def secretsFile = rootProject.file("s2stoken.properties")
+def secretProperties = new Properties()
+secretProperties.load(new FileInputStream(secretsFile))
+
 
 android {
     compileSdk 32
@@ -14,8 +18,7 @@ android {
         targetSdk 32
         versionCode 1
         versionName "1.0"
-        buildConfigField("String", "USER_BASE", "\"https://localhost:3031\"")
-
+        buildConfigField("String", "S2S_TOKEN", secretProperties["S2S_TOKEN"])
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

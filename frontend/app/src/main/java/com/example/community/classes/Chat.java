@@ -48,7 +48,7 @@ public class Chat implements Serializable {
         JSONObject sendMessage = new JSONObject();
         try {
             sendMessage.put("postId", roomId);
-            sendMessage.put("userId", GlobalUtil.getAccount().getId());
+            sendMessage.put("userId", GlobalUtil.getId());
             sendMessage.put("message", message);
             GlobalUtil.getSocket().emit("sendMessage", sendMessage);
         } catch (JSONException e) {
@@ -60,7 +60,7 @@ public class Chat implements Serializable {
         Log.d(TAG, "joinRooms: Start");
         JSONObject joinRoomsMessage = new JSONObject();
         try {
-            joinRoomsMessage.put("userId", GlobalUtil.getAccount().getId());
+            joinRoomsMessage.put("userId", GlobalUtil.getId());
             GlobalUtil.getSocket().emit("joinRooms", joinRoomsMessage);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -83,7 +83,7 @@ public class Chat implements Serializable {
         JSONObject createRoomMessage = new JSONObject();
         JSONObject senderData = new JSONObject();
         try {
-            senderData.put("senderId", GlobalUtil.getAccount().getId());
+            senderData.put("senderId", GlobalUtil.getId());
             senderData.put("senderFirstName", GlobalUtil.userProfile.firstName);
             senderData.put("senderLastName", GlobalUtil.userProfile.lastName);
             senderData.put("senderProfilePicture", GlobalUtil.userProfile.profilePicture);

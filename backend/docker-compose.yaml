@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  chat:
+    build: ./chat_microservice
+    environment:
+      - HOST=host.docker.internal
+    ports:
+      - "3000:3000"
+  post:
+    build: ./post_microservice
+    ports:
+      - "8081:8081"
+    environment:
+      - HOST=host.docker.internal
+  user:
+    build: ./user_microservice
+    ports:
+      - "8080:8080"
+    environment:
+      - HOST=host.docker.internal
+  # recommendation:
+  #   build: ./recommendation_microservice
+  #   ports:
+  #     - "8083:8083"
+  #   environment:
+  #     - HOST=host.docker.internal
