@@ -156,7 +156,7 @@ const createOffer = async (req, res) => {
         res.sendStatus(OK);
 
     } else {
-        console.log("Error creating a new post: " + error);
+        // console.log("Error creating a new post: " + error);
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
