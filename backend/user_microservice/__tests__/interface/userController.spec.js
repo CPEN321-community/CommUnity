@@ -1,4 +1,6 @@
-const {getSuggestedRequests, getSuggestedOffers, deleteSuggestedRequest, deleteSuggestedOffer} = require("../__mocks__/mocks.js");
+const { getSuggestedRequests, getSuggestedOffers, deleteSuggestedRequest, deleteSuggestedOffer } = require("../../__mocks__/userController.js");
+
+jest.mock("../../controllers/userController.js")
 
 describe("Recommendation Controller", () => {
   it("triggers the mock for getting suggested request posts", () => {
@@ -25,16 +27,3 @@ describe("Recommendation Controller", () => {
     expect(result).toBe(true);
   });
 });
-
-
-
-
-
-// describe("Some test", () => {
-//   it("triggers GET /user", () => {
-//     const userObj = { id: '123' }
-//     const result = axios.put('https://aws.my_backend.com', userObj);
-//     const updatedObj = { name: 'bob', lastName: 'smith' }
-//     expect(result.body).toEqual(updatedObj);
-//   });
-// });
