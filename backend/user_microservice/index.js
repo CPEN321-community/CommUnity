@@ -4,7 +4,7 @@ const db = require("./models");
 const dotenv = require("dotenv");
 const { OAuth2Client } = require("google-auth-library");
 const { UNAUTHORIZED } = require("./httpCodes");
-const s2sToken = require("./config/config")["s2sToken"];
+const s2sToken = require("./../config_user.json")["s2sToken"];
 
 dotenv.config({ path: "../ports.env" });
 dotenv.config();

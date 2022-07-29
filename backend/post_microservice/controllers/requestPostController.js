@@ -1,15 +1,18 @@
 const { Op } = require("sequelize");
 const axios = require("axios").default;
 const { RequestPost, RequestPostTags } = require("../models");
-const { OK, INTERNAL_SERVER_ERROR, NOT_FOUND } = require("../httpCodes");
+const { OK, INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST } = require("../httpCodes");
 
 const getRequest = async (req, res) => {
-    console.log("Get request endpoint hit");
    if(req.params.requestId){
-       const response = await RequestPost.findOne({where: {requestId}});
-       res.json(response);
+       const response = await RequestPost.findOne({where: {requestId: req.params.requestId}});
+       if (response) {
+           res.json(response);
+       } else {
+           res.sendStatus(NOT_FOUND);
+       }
    } else {
-       res.status(INTERNAL_SERVER_ERROR);
+       res.sendStatus(INTERNAL_SERVER_ERROR);
    }
 }
 
@@ -18,18 +21,19 @@ const getAllRequests = async (req, res) => {
     if (response) {
         res.status(OK).json(response);
     } else {
-        console.log("Error getting all of the offer posts: " + error);
-        res.status(INTERNAL_SERVER_ERROR);
+        res.sendStatus(NOT_FOUND);
     }
 }
 
 const getAllUserRequests = async (req, res) => {
-    console.log("get user endpoint hit");
-    try{
+    if (req.params.userId) {
         const response = await RequestPost.findAll({where: {userId: req.params.userId}});
-        res.status(OK).json(response);
-    } catch(error) {
-        console.log("Error in retrieving request posts made by user " + error);
+        if (response) {
+            res.status(OK).json(response);
+        } else {
+            res.sendStatus(NOT_FOUND)
+        }
+    } else {
         res.status(INTERNAL_SERVER_ERROR);
     }
 }
@@ -50,7 +54,6 @@ const searchRequests = async (req, res) => {
             }
         });
 
-        console.log(similarPosts);
         if (similarPosts != null){
             for (let i = 0; i < similarPosts.length; i = i + 1){
                 response.push({
@@ -68,7 +71,7 @@ const searchRequests = async (req, res) => {
             if (res.length) {
                 const resolved = await Promise.all(res.map(async r => {
                     const item = await RequestPost.findOne({ where: { requestId: r.postId }});
-                    const { userId, offerId, title, description, quantity, pickUpLocation, image, status, bestBeforeDate } = item.dataValues;
+                    const { userId, offerId, title, description, quantity, pickUpLocation, image, status, bestBeforeDate, requestTags } = item.dataValues;
                     return {
                         userId,
                         offerId,
@@ -78,7 +81,8 @@ const searchRequests = async (req, res) => {
                         pickUpLocation,
                         image,
                         status,
-                        bestBeforeDate
+                        bestBeforeDate,
+                        requestTags
                     };
                 }));
 
@@ -110,7 +114,7 @@ const searchRequestsWithTags = async (req, res) => {
                 uniquePostIds.push(postTags[i].dataValues.postId);
             }
         }
-        
+
         const postList = await RequestPost.findAll({
             where: {requestId: uniquePostIds}
         });
@@ -121,7 +125,7 @@ const searchRequestsWithTags = async (req, res) => {
 
         res.status(OK).json({results: result});
     } else {
-      res.sendStatus(INTERNAL_SERVER_ERROR);
+      res.sendStatus(BAD_REQUEST);
     }
 }
 

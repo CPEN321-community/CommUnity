@@ -3,7 +3,7 @@ const routes = require('./routes');
 const axios = require('axios');
 const db = require('./models');
 const dotenv = require("dotenv")
-const s2sToken = require('./config/config.json')["s2sToken"];
+const s2sToken = require('./../config_post.json')["s2sToken"];
 const {OAuth2Client} = require('google-auth-library');
 
 const {UNAUTHORIZED} = require('./httpCodes');
@@ -46,9 +46,14 @@ app.use(routes);
 
 // app.use(express.urlencoded({ extended: true }));
 
-db.sequelize.sync().then((req) => {}).catch(e => console.log(e));
+if (process.env.NODE_ENV != "test") {
+  db.sequelize.sync();
 
-const PORT = process.env.PORT || 8081;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-});
+  const PORT = process.env.PORT || 8081;
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}.`);
+  });
+}
+
+
+module.exports = app;

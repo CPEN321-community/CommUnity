@@ -1,30 +1,38 @@
 const { Op } = require("sequelize");
 const { OfferPost, OfferPostTags } = require("../models");
 const axios = require("axios");
-const { INTERNAL_SERVER_ERROR, OK } = require('../httpCodes');
+const { INTERNAL_SERVER_ERROR, OK, NOT_FOUND, BAD_REQUEST } = require('../httpCodes');
 
 const getOffer = async (req, res) => {
     if(req.params.offerId) {
-        const response = await OfferPost.findOne({where: {offerId}});
-        res.json(response);
+        const response = await OfferPost.findOne({where: {offerId: req.params.offerId}});
+        if (response) {
+            res.status(OK).json(response);
+        } else {
+            res.sendStatus(NOT_FOUND);
+        }
     } else {
-        res.status(INTERNAL_SERVER_ERROR);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
 const getAllOffers = async (req, res) => {
     const response = await OfferPost.findAll();
     if (response) {
-        res.json(response);
+        res.status(OK).json(response);
     } else {
-        console.log("Error getting all of the offer posts: " + error);
+        res.sendStatus(NOT_FOUND);
     }
 }
 
 const getAllUserOffers = async (req, res) => {
     if (req.params.userId) {
         const response = await OfferPost.findAll({where: {userId: req.params.userId}});
-        res.json(response);
+        if (response) {
+            res.status(OK).json(response);
+        } else {
+            res.sendStatus(NOT_FOUND);
+        }
     } else {
         console.log("Error in retrieving offer posts made by user");
     }
@@ -52,7 +60,8 @@ const searchOffers = async (req, res) => {
                     pickUpLocation: similarPosts[i].dataValues.pickUpLocation,
                     image: similarPosts[i].dataValues.image,
                     status: similarPosts[i].dataValues.status,
-                    bestBeforeDate: similarPosts[i].dataValues.bestBeforeDate
+                    bestBeforeDate: similarPosts[i].dataValues.bestBeforeDate,
+                    offerTags: similarPosts[i].dataValues.offerTags,
                 });
             }
         } else {
@@ -60,7 +69,7 @@ const searchOffers = async (req, res) => {
             if (res.length) {
                 const resolved = await Promise.all(res.map(async r => {
                     const item = await OfferPost.findOne({ where: { offerId: r.postId }});
-                    const { userId, offerId, title, description, quantity, pickUpLocation, image, status, bestBeforeDate } = item.dataValues;
+                    const { userId, offerId, title, description, quantity, pickUpLocation, image, status, bestBeforeDate, offerTags } = item.dataValues;
                     const returnObj = {
                         userId,
                         offerId,
@@ -70,7 +79,8 @@ const searchOffers = async (req, res) => {
                         pickUpLocation,
                         image,
                         status,
-                        bestBeforeDate
+                        bestBeforeDate,
+                        offerTags
                     };
                     return returnObj;
                 }));
@@ -90,8 +100,6 @@ const searchOffers = async (req, res) => {
 const searchOffersWithTags = async (req, res) => {
     if(req.body.tagList) {
         const tagList = req.body.tagList;
-        console.log("hello world!");
-        console.log(tagList);
         const postTags = await OfferPostTags.findAll({
             where: {name: tagList}
         });
@@ -113,12 +121,10 @@ const searchOffersWithTags = async (req, res) => {
         const result = postList.map(post => {
             return post.dataValues;
         })
-        console.log(result);
 
         res.status(OK).json({results: result});
     } else {
-      console.log("Error with searching for offer posts: " + error);
-      res.sendStatus(INTERNAL_SERVER_ERROR);
+      res.sendStatus(BAD_REQUEST);
     }
 }
 
@@ -150,13 +156,12 @@ const createOffer = async (req, res) => {
             offerPosts: 1,
             requestPosts: 0,
         };
-        console.log(updateUserBody);
 
         await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
         res.sendStatus(OK);
 
     } else {
-        // console.log("Error creating a new post: " + error);
+        console.log("Error creating a new post: " + error);
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
