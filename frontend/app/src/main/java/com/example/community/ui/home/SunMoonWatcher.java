@@ -35,10 +35,12 @@ public class SunMoonWatcher {
         this.imageView = binding.sunOrMoon;
         this.rW = screenWidth / 2;
         this.rH = screenHeight / 3;
-        this.timer = new CountDownTimer(Long.MAX_VALUE, 1) {
+        this.timer = new CountDownTimer(Long.MAX_VALUE, 1000) {
             @Override
             public void onTick(long l) {
+
                 Tick();
+
             }
 
             @Override
