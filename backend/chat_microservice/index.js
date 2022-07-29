@@ -7,7 +7,7 @@ const routes = require('./routes');
 const socketHandler = require('./socket/socketHandler');
 const db = require('./models');
 const dotenv = require("dotenv");
-const s2sToken = require('./config/config')["s2sToken"];
+const s2sToken = require('./config')["s2sToken"];
 const {OAuth2Client} = require('google-auth-library');
 
 const OK = 200;
@@ -34,21 +34,19 @@ const io = socket(server);
 
 io.on('connection', (socket) => socketHandler(socket, io));
 
-axios.defaults.headers = { s2sToken }
+axios.defaults.headers = { token: s2sToken };
 app.use(async (req, res, next) => {
-  if (req.headers["s2sToken"] && req.headers["s2sToken"] == s2sToken) {
+  let token = req.headers['token'];
+  if (s2sToken && s2sToken === token) {
     next();
-  } else {
-    const token = req.headers['token'];
-    try {
-      const userId = await verify(token);
-      req.headers.userId = userId;
-      next();
-    }
-    catch (e) {
-      console.log(e);
-      res.status(UNAUTHORIZED).send("Unsuccessfull");
-    }
+  }
+  try {
+    let userId = await verify(token)
+    req.headers.userId = userId;
+    next();
+  }
+  catch (e) {
+    res.status(UNAUTHORIZED).send("Unsuccessfull");
   }
 });
 
