@@ -29,7 +29,7 @@ public class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         LoginActivity parent = (LoginActivity) getActivity();
 
-        binding.signInButton.setOnClickListener(v -> {
+        binding.authInclude.signInButton.setOnClickListener(v -> {
             parent.signIn();
         });
     }

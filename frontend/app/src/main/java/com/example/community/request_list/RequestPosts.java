@@ -31,14 +31,6 @@ public class RequestPosts extends AppCompatActivity {
         });
 
         //Button to move to list of offers
-        Button viewOffersButton = findViewById(R.id.viewOffersButton);
-        viewOffersButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent viewOffersIntent = new Intent(RequestPosts.this, OfferHomeFragment.class);
-                startActivity(viewOffersIntent);
-            }
-        });
 
         // Add button for new request posts
         FloatingActionButton addReqPostButton = findViewById(R.id.addReqPostButton);

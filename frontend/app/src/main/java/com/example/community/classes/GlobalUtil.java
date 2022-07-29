@@ -18,7 +18,14 @@ import java.util.Map;
 import io.socket.client.Socket;
 
 public class GlobalUtil {
+    public static final String CHAT_URL = "http://10.0.2.2:3000";
+    public static final String USER_URL = "http://10.0.2.2:8080";
+    public static final String POST_URL = "http://10.0.2.2:8081";
+//    public static final String CHAT_URL = "http://ec2-3-96-132-62.ca-central-1.compute.amazonaws.com:3000";
+//    public static final String USER_URL = "http://ec2-3-98-122-163.ca-central-1.compute.amazonaws.com:3000";
+//    public static final String POST_URL = "http://ec2-3-99-226-175.ca-central-1.compute.amazonaws.com:3000";
     private static final String TAG = "GLOBAL_CLASS";
+    public static UserProfile userProfile;
     private static GoogleSignInAccount account;
     private static Socket socket;
     private static Context appContext;
@@ -26,15 +33,6 @@ public class GlobalUtil {
     private static String id;
     private static String givenName;
     private static boolean IS_TEST;
-    public static UserProfile userProfile;
-
-//    public static final String CHAT_URL = "http://10.0.2.2:3000";
-//    public static final String USER_URL = "http://10.0.2.2:8080";
-//    public static final String POST_URL = "http://10.0.2.2:8081";
-    public static final String CHAT_URL = "http://ec2-35-183-28-141.ca-central-1.compute.amazonaws.com:3000";
-    public static final String USER_URL = "http://ec2-3-96-168-213.ca-central-1.compute.amazonaws.com:3000";
-    public static final String POST_URL = "http://ec2-35-183-145-212.ca-central-1.compute.amazonaws.com:3000";
-
 
     public static void cleanup() {
         account = null;

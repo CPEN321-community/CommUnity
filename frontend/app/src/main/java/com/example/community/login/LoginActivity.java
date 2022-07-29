@@ -1,6 +1,7 @@
 package com.example.community.login;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -11,7 +12,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
@@ -27,7 +27,6 @@ import com.example.community.databinding.ActivityLoginBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
@@ -40,8 +39,8 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 1;
     private static final String TAG = "LOGIN_ACTIVITY";
+    final String PREFS_NAME = "firstLogin";
     private GoogleSignInClient mGoogleSignInClient;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +95,16 @@ public class LoginActivity extends AppCompatActivity {
         GlobalUtil.setAccount(account);
         GlobalUtil.setHeaderToken(account.getIdToken());
         GlobalUtil.FetchUser();
-        Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(mainActivityIntent);
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        Intent nextIntent;
+
+        if (settings.getBoolean("firstTime", true)) {
+            //TODO take to intro screen
+            nextIntent = new Intent(LoginActivity.this, MainActivity.class);
+        } else {
+            nextIntent = new Intent(LoginActivity.this, MainActivity.class);
+        }
+        startActivity(nextIntent);
         finish();
     }
 
