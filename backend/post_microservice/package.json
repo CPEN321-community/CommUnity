@@ -27,8 +27,12 @@
     "socket.io": "^4.5.1"
   },
   "scripts": {
+    "test": "jest",
     "start": "nodemon index.js"
   },
   "author": "community",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^28.1.3"
+  }
 }
