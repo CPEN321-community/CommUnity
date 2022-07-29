@@ -1,7 +1,7 @@
 const {User, UserToken} = require("../models");
 const admin = require('firebase-admin/app');
 const {getMessaging} = require("firebase-admin/messaging");
-var serviceAccount = require("../firebase_service_key.json");
+var serviceAccount = require("../../firebase_service_key.json");
 const { OK, CREATED, INTERNAL_SERVER_ERROR } = require("../httpCodes");
 
 admin.initializeApp({
