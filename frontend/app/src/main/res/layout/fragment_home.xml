@@ -21,21 +21,19 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
-        android:id="@+id/text_home"
-        android:layout_width="match_parent"
+    <include
+        android:id="@+id/post_tabs"
+        layout="@layout/offer_request_tab"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="260dp"
+        android:layout_marginEnd="16dp"
+        android:foregroundGravity="bottom"
+        app:layout_constraintBottom_toTopOf="@+id/addReqPostButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.044" />
+        app:layout_constraintTop_toTopOf="@+id/sun_moon_bg" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addReqPostButton"
@@ -53,18 +51,5 @@
         app:layout_constraintVertical_bias="0.882"
         app:srcCompat="@drawable/add"
         tools:ignore="ImageContrastCheck" />
-
-    <include
-        android:id="@+id/post_tabs"
-        layout="@layout/offer_request_tab"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="36dp"
-        app:layout_constraintBottom_toTopOf="@+id/addReqPostButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
