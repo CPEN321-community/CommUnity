@@ -2,27 +2,30 @@ package com.example.community.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.community.SearchActivity;
 import com.example.community.databinding.FragmentHomeBinding;
-import com.example.community.offer_list.OfferPosts;
+import com.example.community.databinding.TimeSunMoonElementBinding;
 import com.example.community.request_list.NewRequestForm;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class HomeFragment extends Fragment {
 
     private static final String TAG = "HOME_FRAGMENT";
+    private static final String[] tabNames = {"Offers", "Requests"};
     private FragmentHomeBinding binding;
-
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -39,12 +42,30 @@ public class HomeFragment extends Fragment {
             startActivity(addReqIntent);
         });
 
-        binding.viewOffersButton.setOnClickListener(view -> {
-            Log.d("OfferButtonClick", "Offer button clicked");
-            Intent viewOffersIntent = new Intent(requireContext(), OfferPosts.class);
-            startActivity(viewOffersIntent);
-        });
         return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Setup Offer/Request Post lists
+        final PostTabAdapter adapter = new PostTabAdapter(this.getParentFragmentManager(), getLifecycle());
+        ViewPager2 tabViewPager = binding.postTabs.tabViewPager;
+        TabLayout tabLayout = binding.postTabs.tabLayout;
+
+        tabViewPager.setAdapter(adapter);
+        new TabLayoutMediator(tabLayout, tabViewPager,
+                (tab, position) -> tab.setText(tabNames[position])
+        ).attach();
+
+        // Setup Sun/Moon Watcher
+        TimeSunMoonElementBinding sunMoonElementBinding = binding.sunMoonBg;
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width = displayMetrics.widthPixels;
+        int height = displayMetrics.heightPixels;
+        new SunMoonWatcher(sunMoonElementBinding, width, height);
     }
 
     @Override
