@@ -22,6 +22,7 @@ import com.example.community.R;
 import com.example.community.VolleyCallBack;
 import com.example.community.classes.CustomJSONObjectRequest;
 import com.example.community.classes.GlobalUtil;
+import com.example.community.classes.LoginManager;
 import com.example.community.databinding.ActivityLoginBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -44,23 +45,17 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+//      Set app context so Volley Utils can reference some context.
         GlobalUtil.setAppContext(getApplicationContext());
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        mGoogleSignInClient = LoginManager.GetGoogleClient(this);
+        GoogleSignInAccount account = LoginManager.GetLastSignedInAccount(this);
         updateUI(account);
 
         ActivityLoginBinding binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolbar);
-
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_login);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
@@ -78,9 +73,6 @@ public class LoginActivity extends AppCompatActivity {
 
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            Log.d(TAG, "onActivityResult: hello world");
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
@@ -120,6 +112,7 @@ public class LoginActivity extends AppCompatActivity {
             GlobalUtil.setAccount(account);
             GlobalUtil.setHeaderToken(account.getIdToken());
             GlobalUtil.FetchUser();
+//          If User doesn't exist, create it in the Database
             userDoesExist(account, new LoginCallback() {
                 public void onSuccess(boolean exists) {
                     Log.d(TAG, "onSuccess: " + exists);
@@ -172,7 +165,6 @@ public class LoginActivity extends AppCompatActivity {
                 error -> {
                     Log.e(TAG, "createUser: " + error);
                     volleyCallBack.onError();
-                    // TODO: Fail sign in
                 }
         );
         queue.add(request);

@@ -52,4 +52,5 @@
     <string name="my_profile_title">My Profile</string>
     <string name="searching_for">Searching For:</string>
     <string name="request_sample">Request</string>
+    <string name="login_button">Login to CommUNITY</string>
 </resources>

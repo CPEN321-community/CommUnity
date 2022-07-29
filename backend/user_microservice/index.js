@@ -9,6 +9,7 @@ const s2sToken = require("./config/config")["s2sToken"];
 dotenv.config({ path: "../ports.env" });
 dotenv.config();
 
+
 const client = new OAuth2Client(process.env.CLIENT_ID);
 
 async function verify(token) {
@@ -35,6 +36,7 @@ app.use(async (req, res, next) => {
       req.headers.userId = userId;
       next();
     } catch (e) {
+      console.error(e);
       res.status(UNAUTHORIZED).send("Unsuccessfull");
     }
   }
