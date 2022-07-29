@@ -5,8 +5,8 @@ const { INTERNAL_SERVER_ERROR, OK } = require('../httpCodes');
 
 const getOffer = async (req, res) => {
     if(req.params.offerId) {
-        const response = await OfferPost.findOne({where: {offerId}});
-        res.json(response);
+        const response = await OfferPost.findOne({where: {offerId: req.params.offerId}});
+        res.status(OK).json(response);
     } else {
         res.status(INTERNAL_SERVER_ERROR);
     }
@@ -15,7 +15,7 @@ const getOffer = async (req, res) => {
 const getAllOffers = async (req, res) => {
     const response = await OfferPost.findAll();
     if (response) {
-        res.json(response);
+        res.status(OK).json(response);
     } else {
         console.log("Error getting all of the offer posts: " + error);
     }

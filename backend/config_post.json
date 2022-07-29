@@ -1,0 +1,24 @@
+{
+  "development": {
+    "user": "admin",
+    "password": "123",
+    "host": "some_host",
+    "database": "post",
+    "port": "3306"
+  },
+  "test": {
+    "user": "admin",
+    "password": "123",
+    "host": "some_host",
+    "database": "post",
+    "port": "3306"
+  },
+  "production": {
+    "user": "admin",
+    "password": "123",
+    "host": "some_host",
+    "database": "post",
+    "port": "3306"
+  },
+  "s2sToken": "cpen321_s2stoken"
+}
