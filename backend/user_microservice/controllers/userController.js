@@ -6,6 +6,7 @@ const {
   INTERNAL_SERVER_ERROR,
   UNAUTHORIZED,
   NOT_FOUND,
+  BAD_REQUEST
 } = require("../httpCodes");
 
 const verifyToken = async (req, res) => {
@@ -23,11 +24,11 @@ const verifyToken = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
-  if (req.params.userId) {
-    const userId = req.params.userId;
-    const response = await User.findByPk(userId, {
-      include: ["preferences", "leaderboard"],
-    });
+  const userId = req.params.userId;
+  const response = await User.findByPk(userId, {
+    include: ["preferences", "leaderboard"],
+  });
+  if (response) {
     res.json({ user: response });
   } else {
     console.log("Error finding user");
@@ -36,9 +37,7 @@ const getUser = async (req, res) => {
 };
 
 const upsertUserPreference = async (req, res) => {
-    console.log("Upserting user preference");
     const userId = req.headers.userId;
-    console.log(userId);
     const user = await User.findByPk(userId);
     if (!user) {
       console.error("User not found");
@@ -69,16 +68,21 @@ const deleteUserPreference = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  if (req.body.userId) {
-    const response = await User.update(
+  const hasAllFields = req.headers.userId && req.body.firstName && req.body.lastName && req.body.email && req.body.profilePicture;
+  const validEmail = req.body.email.includes("@") && req.body.email.includes(".com");
+  const validProfilePic = req.body.profilePicture.includes(".com");
+  if (hasAllFields && validEmail && validProfilePic) {
+    const response = await User.create(
       {
-        userId: req.body.userId,
+        userId: req.headers.userId,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
         profilePicture: req.body.profilePicture,
       },
-      { where: { userId: req.body.userId } }
+      {
+        where: { userId: req.body.userId }
+      }
     );
 
     await axios.post(`${process.env.CHAT_URL}/chat/changeUserInfo`, {
@@ -88,15 +92,17 @@ const updateUser = async (req, res) => {
       profilePicture: req.body.profilePicture,
     });
 
-    res.json(response);
+    res.status(OK).json(response);
   } else {
-    console.log("Error upserting user: " + error);
-    res.sendStatus(INTERNAL_SERVER_ERROR);
+    res.sendStatus(BAD_REQUEST);
   }
-};
+}
 
 const createUser = async (req, res) => {
-  try {
+  const hasAllFields = req.headers.userId && req.body.firstName && req.body.lastName && req.body.email && req.body.profilePicture;
+  const validEmail = req.body.email.includes("@") && req.body.email.includes(".com");
+  const validProfilePic = req.body.profilePicture.includes(".com");
+  if (hasAllFields && validEmail && validProfilePic) {
     const response = await User.create(
       {
         userId: req.headers.userId,
@@ -115,9 +121,8 @@ const createUser = async (req, res) => {
       }
     );
     res.status(CREATED).json(response);
-  } catch (error) {
-    console.log("Error creating user: " + error);
-    res.sendStatus(INTERNAL_SERVER_ERROR);
+  } else {
+    res.sendStatus(BAD_REQUEST);
   }
 };
 

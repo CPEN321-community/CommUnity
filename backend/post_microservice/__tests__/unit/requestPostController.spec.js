@@ -132,7 +132,7 @@ describe("GET communitypost/requests/search/:title", () => {
     });
 });
 
-describe("GET communitypost/requestTags", () => {
+describe("PUT communitypost/requestTags", () => {
     let request = null;
     beforeAll(async () => {
         request = supertest(app);
@@ -169,46 +169,3 @@ describe("GET communitypost/requestTags", () => {
     });
 });
 
-
-// const { jest } = require("@jest/globals");
-
-// const requestPost = {
-//     userId: "user1",
-//     offerId: "123",
-//     title: "title1",
-//     description: "des1",
-//     quantity: 1,
-//     pickUpLocation: "location1",
-//     image: "img1",
-//     status: "active",
-//     bestBeforeDate: "date1",
-//     offerTags: ["beep", "boop"]
-// };
-
-// module.exports = {
-//     defaults: {
-//         header: jest.fn(),
-//     },
-//     get: jest.fn((url) => {
-//         if (url === `${process.env.RECOMMENDATION_URL}/request/noSimilarPosts`) {
-//             return Promise.resolve({
-//                 data: [requestPost]
-//             });
-//         }
-//     }),
-//     post: jest.fn((url) => {
-//         if (url === '/something') {
-//             return Promise.resolve({
-//                 data: 'data'
-//             });
-//         }
-//         if (url === '/something2') {
-//             return Promise.resolve({
-//                 data: 'data2'
-//             });
-//         }
-//     }),
-//     create: jest.fn(function () {
-//         return this;
-//     })
-// };
