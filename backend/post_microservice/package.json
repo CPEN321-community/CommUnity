@@ -29,7 +29,7 @@
     "sequelize": "^6.21.2",
     "sequelize-cli": "^6.4.1",
     "socket.io": "^4.5.1",
-    "supertest": "^6.2.4"
+    "supertest": "^6.2.4",
   },
   "scripts": {
     "start": "nodemon index.js",
