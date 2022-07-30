@@ -21,6 +21,6 @@ jobs:
 
     steps:
       - name: Run post microservice unit test
-        run: ls | cd backend | ls | cd post_microservice | npm i | npm test
+        run: pwd | dir | cd backend | ls | cd post_microservice | npm i | npm test
       - name: Run user microservice unit test
-        run: ls | cd backend | ls | cd user_microservice | npm i | npm test
+        run: pwd | dir | cd backend | ls | cd user_microservice | npm i | npm test
