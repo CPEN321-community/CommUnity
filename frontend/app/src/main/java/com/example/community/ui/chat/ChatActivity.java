@@ -38,6 +38,8 @@ public class ChatActivity extends AppCompatActivity {
     private static final String TAG = "CHAT_ACTIVITY";
     private MutableLiveData<ArrayList<Chat>> mChatList;
     private Socket mSocket;
+    ChatAdapter adapter;
+
 
     @Override
     public void onDestroy() {
@@ -76,9 +78,9 @@ public class ChatActivity extends AppCompatActivity {
 
         Toolbar toolbar = binding.toolbar;
         setSupportActionBar(toolbar);
+        adapter = new ChatAdapter(this);
         toolbar.setTitle("Chats");
         ListView chatListView = findViewById(R.id.chat_list);
-        ChatAdapter adapter = new ChatAdapter(this);
         ChatMessageHandlerUtil.setChatAdapter(adapter);
         chatListView.setAdapter(adapter);
         Intent intent = getIntent();
@@ -87,8 +89,9 @@ public class ChatActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: " + createRoomId);
         if (createRoomId == null) {
             Log.d(TAG, "Chat room was not created");
+        } else {
+            Chat.createRoom(createRoomId, isOffer);
         }
-        Chat.createRoom(createRoomId, isOffer);
 
         mChatList.observe(this, chatsList -> {
             adapter.setChats(chatsList);
@@ -146,5 +149,9 @@ public class ChatActivity extends AppCompatActivity {
             }
         };
         queue.add(request);
+    }
+
+    public ChatAdapter getAdapter() {
+        return adapter;
     }
 }

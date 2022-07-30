@@ -42,7 +42,7 @@ public class ChatMessageHandlerUtil {
     public static Message GetPreview(String roomId) throws NoMessagesException {
         try {
             if (!adapterHashMap.containsKey(roomId)) {
-                ArrayList<Message> messages = chatMap.get(roomId);
+                ArrayList<Message> messages = chatMap.getOrDefault(roomId, new ArrayList<>());
                 return messages.get(messages.size() - 1);
             } else {
                 return adapterHashMap.get(roomId).getLastMessage();

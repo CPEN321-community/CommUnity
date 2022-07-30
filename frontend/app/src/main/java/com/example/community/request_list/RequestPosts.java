@@ -3,14 +3,12 @@ package com.example.community.request_list;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.community.R;
 import com.example.community.SearchActivity;
-import com.example.community.offer_list.OfferHomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class RequestPosts extends AppCompatActivity {
@@ -33,8 +31,8 @@ public class RequestPosts extends AppCompatActivity {
         //Button to move to list of offers
 
         // Add button for new request posts
-        FloatingActionButton addReqPostButton = findViewById(R.id.addReqPostButton);
-        addReqPostButton.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton addPostButton = findViewById(R.id.addPostButton);
+        addPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent addReqIntent = new Intent(RequestPosts.this, NewRequestForm.class);

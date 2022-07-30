@@ -60,12 +60,12 @@ public class HomeFragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
                 if (position == 0) {
-                    binding.addReqPostButton.setOnClickListener(view -> {
+                    binding.addPostButton.setOnClickListener(view -> {
                         Intent addReqIntent = new Intent(requireActivity(), NewOfferForm.class);
                         startActivity(addReqIntent);
                     });
                 } else {
-                    binding.addReqPostButton.setOnClickListener(view -> {
+                    binding.addPostButton.setOnClickListener(view -> {
                         Intent addReqIntent = new Intent(requireActivity(), NewRequestForm.class);
                         startActivity(addReqIntent);
                     });

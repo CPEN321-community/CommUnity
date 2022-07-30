@@ -18,7 +18,7 @@ import java.util.Map;
 import io.socket.client.Socket;
 
 public class GlobalUtil {
-    public static final String CHAT_URL = "http://10.0.2.2:3000";
+        public static final String CHAT_URL = "http://10.0.2.2:3000";
     public static final String USER_URL = "http://10.0.2.2:8080";
     public static final String POST_URL = "http://10.0.2.2:8081";
 //    public static final String CHAT_URL = "http://ec2-3-96-132-62.ca-central-1.compute.amazonaws.com:3000";

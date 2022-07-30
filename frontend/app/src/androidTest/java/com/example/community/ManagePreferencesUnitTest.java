@@ -15,6 +15,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
+import static com.example.community.TestUtils.SetTestUserData;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -55,12 +56,6 @@ public class ManagePreferencesUnitTest {
         resetRestrictions();
     }
 
-    private void SetTestUserData() {
-        GlobalUtil.setIsTest(true);
-        GlobalUtil.setId("testuserid");
-        GlobalUtil.setGivenName("Community Tester");
-        GlobalUtil.setHeaderToken(BuildConfig.S2S_TOKEN);
-    }
 
     private void resetRestrictions() {
         activityRule.getScenario().recreate();

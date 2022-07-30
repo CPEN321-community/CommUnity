@@ -30,13 +30,13 @@
         android:layout_marginTop="260dp"
         android:layout_marginEnd="16dp"
         android:foregroundGravity="bottom"
-        app:layout_constraintBottom_toTopOf="@+id/addReqPostButton"
+        app:layout_constraintBottom_toTopOf="@+id/addPostButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/sun_moon_bg" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addReqPostButton"
+        android:id="@+id/addPostButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

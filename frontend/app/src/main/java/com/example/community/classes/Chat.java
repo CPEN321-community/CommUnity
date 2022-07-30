@@ -18,6 +18,12 @@ public class Chat implements Serializable {
     public String postId;
     public ArrayList<Message> messages;
 
+    public Chat (ChatUser me, ChatUser other, ArrayList<Message> messages, String postId) {
+        this.me = me;
+        this.other = other;
+        this.messages = messages;
+        this.postId = postId;
+    }
     public Chat(JSONObject chatJson) {
         this.messages = new ArrayList<>();
         try {
