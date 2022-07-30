@@ -24,10 +24,21 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      - uses: actions/checkout@v3
+      - name: install deps (post)
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: ./backend/post_microservice/package-lock.json
       - name: Run post microservice unit test
         working-directory: ./backend/post_microservice
-        run: npm i | npm install -g jest | npm test
+        run: npm i | npm test
+      - name: install deps (user)
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: ./backend/user_microservice/package-lock.json
       - name: Run user microservice unit test
         working-directory: ./backend/user_microservice
-        run: npm i | npm install -g jest | npm test
+        run: npm i | npm test
