@@ -20,5 +20,5 @@
       "database": "sql_post",
       "port": "3306"
     },
-    "s2sToken": "cpen321_community_s2stoken"
+    "s2sToken": "cpen321_s2stoken"
   }

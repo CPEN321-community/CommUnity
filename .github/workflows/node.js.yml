@@ -5,9 +5,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main", "test/post_backend" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main", "test/post_backend" ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -16,7 +16,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./backend/recommendation_microservice
+        working-directory: ./backend
 
     strategy:
       matrix:
@@ -24,12 +24,20 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        cache-dependency-path: ./backend/recommendation_microservice/package-lock.json
-    - run: npm i jest
-    - run: npm test
+      - uses: actions/checkout@v3
+      - name: Run post microservice unit test
+        uses: actions/setup-node@v3
+        working-directory: ./backend/post_microservice
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: ./backend/post_microservice/package-lock.json
+        run: npm test
+      - name: Run user microservice unit test
+        uses: actions/setup-node@v3
+        working-directory: ./backend/user_microservice
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: ./backend/post_microservice/package-lock.json
+        run: npm test
