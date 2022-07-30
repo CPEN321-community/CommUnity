@@ -5,9 +5,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main", "test/post_backend" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main", "test/post_backend" ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -30,6 +30,13 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        cache-dependency-path: ./backend/recommendation_microservice/package-lock.json
-    - run: npm i jest
-    - run: npm test
+        cache-dependency-path: ./backend/user_microservice/package-lock.json
+    - run: npm i jest -g | npm test
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: ./backend/post_microservice/package-lock.json
+    - run: npm i jest -g | npm test

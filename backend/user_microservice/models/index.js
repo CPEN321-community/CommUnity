@@ -38,8 +38,6 @@ function applyRelationships(sequelize) {
   });
 }
 
-console.log(config);
-
 let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
@@ -50,15 +48,20 @@ if (config.use_env_variable) {
     logging: false,
     maxConcurrentQueries: 100,
     dialect: 'mysql',
-   dialectOptions: env === "development" ? 
-   undefined
-: {
-        ssl:'Amazon RDS'
+    dialectOptions: env === "production" ? 
+    {
+      ssl: 'Amazon RDS'
+    }
+  : {
+      ssl: { 
+        require: true,
+        rejectUnauthorized: false 
+      }
     },
     pool: { maxConnections: 5, maxIdleTime: 30},
     language: 'en'
   });
-}
+};
 
 const leaderboardModel = require('./leaderboardModel.js')(sequelize, Sequelize.DataTypes);
 db[leaderboardModel.name] = leaderboardModel;

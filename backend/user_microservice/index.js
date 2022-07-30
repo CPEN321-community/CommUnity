@@ -43,12 +43,14 @@ app.use(async (req, res, next) => {
 });
 app.use(routes);
 
-db.sequelize
-  .sync()
-  .then((req) => {})
-  .catch((e) => console.log(e));
 
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-});
+if (process.env.NODE_ENV != "test") {
+  db.sequelize.sync();
+
+  const PORT = process.env.PORT || 8080;
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}.`);
+  });
+}
+
+module.exports = app;
