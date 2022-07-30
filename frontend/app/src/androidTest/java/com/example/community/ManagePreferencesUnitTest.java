@@ -18,9 +18,11 @@ import static com.example.community.TestUtils.SetTestUserData;
 import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.CoreMatchers.not;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
+import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -33,6 +35,7 @@ import org.junit.Test;
 
 public class ManagePreferencesUnitTest {
 
+    private static final String TAG = "MANAGE_PREF_TEST";
     @Rule
     public ActivityScenarioRule<MainActivity> activityRule =
             new ActivityScenarioRule<>(MainActivity.class);
@@ -72,10 +75,15 @@ public class ManagePreferencesUnitTest {
             }
         });
         for (int i = 0; i < count[0]; i++) {
-            onData(anything())
-                    .atPosition(0)
-                    .onChildView(withId(R.id.remove_restriction_button))
-                    .perform(click());
+            try {
+                onData(anything())
+                        .atPosition(0)
+                        .onChildView(withId(R.id.remove_restriction_button))
+                        .perform(click());
+            }
+            catch (NoMatchingViewException e) {
+                Log.e(TAG, "resetRestrictions: " + e );
+            }
         }
     }
 
@@ -101,12 +109,13 @@ public class ManagePreferencesUnitTest {
         closeSoftKeyboard();
         onView(submitButton).perform(click());
 //      Activity Finishes
-        TestUtils.waitFor(1000);
         Matcher<View> restrictionName = withId(R.id.restriction_name);
+        Matcher<View> restrictionButton = withId(R.id.remove_restriction_button);
         onView(restrictionName).check(matches(isDisplayed()));
         onView(restrictionName).check(matches(withText("Vegan")));
-        onView(withId(R.id.remove_restriction_button)).check(matches(isDisplayed()));
-        onView(withId(R.id.remove_restriction_button)).perform(click());
+        onView(restrictionButton).check(matches(isDisplayed()));
+        onView(restrictionButton).perform(click());
         onView(restrictionName).check(doesNotExist());
+
     }
 }

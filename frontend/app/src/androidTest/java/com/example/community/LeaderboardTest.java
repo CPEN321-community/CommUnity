@@ -21,6 +21,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.example.community.classes.GlobalUtil;
 import com.example.community.classes.UserWithScore;
@@ -57,11 +58,18 @@ public class LeaderboardTest {
                 UserWithScore user = new UserWithScore("TestUser", i + "", "", 1000, 1000, 10000);
                 users.add(user);
             }
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             viewModel.setData(users);
         });
-            DoLeaderboardTest();
-            onView(withId(R.id.button_refresh_leaderboard)).perform(click());
-            DoLeaderboardTest();
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+        DoLeaderboardTest();
+        onView(withId(R.id.button_refresh_leaderboard)).perform(click());
+        DoLeaderboardTest();
     }
 
     public void DoLeaderboardTest() {
@@ -92,29 +100,29 @@ public class LeaderboardTest {
         // Get my user card if its in the list
         final View[] myLeaderboardUser = {null};
         try {
+            InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+            onView(allOf(
+                    hasDescendant(
+                            allOf(withText("Community T."), withId(R.id.leaderboard_name))
+                    ),
+                    withId(R.id.leaderboard_user_card)))
+                    .perform(new ViewAction() {
+                        @Override
+                        public Matcher<View> getConstraints() {
+                            return isAssignableFrom(LinearLayout.class);
+                        }
 
-        onView(allOf(
-                hasDescendant(
-                        allOf(withText("Community T."), withId(R.id.leaderboard_name))
-                ),
-                withId(R.id.leaderboard_user_card)))
-                .perform(new ViewAction() {
-                    @Override
-                    public Matcher<View> getConstraints() {
-                        return isAssignableFrom(LinearLayout.class);
-                    }
+                        @Override
+                        public String getDescription() {
+                            return "Finding Test User in list";
+                        }
 
-                    @Override
-                    public String getDescription() {
-                        return "Finding Test User in list";
-                    }
-
-                    @Override
-                    public void perform(UiController uiController, View view) {
-                        LinearLayout ll = (LinearLayout) view;
-                        myLeaderboardUser[0] = ll;
-                    }
-                });
+                        @Override
+                        public void perform(UiController uiController, View view) {
+                            LinearLayout ll = (LinearLayout) view;
+                            myLeaderboardUser[0] = ll;
+                        }
+                    });
             onView(withId(R.id.my_score)).check(matches(not(isDisplayed())));
         } catch (NoMatchingViewException e) {
             // I am not in the top 10, so my score should be shown at the bottom
