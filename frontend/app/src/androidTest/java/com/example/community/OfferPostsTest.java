@@ -95,7 +95,7 @@ public class OfferPostsTest {
 
     //Currently have not implemented the edit post feature yet so certain lines are commented out
     @Test
-    private void editOfferPost(){
+    public void editOfferPost(){
         activityRule.getScenario().recreate();
         onView(withId(R.id.navigation_home)).perform(click());
         Matcher<View> list = withId(R.id.offer_post_list);

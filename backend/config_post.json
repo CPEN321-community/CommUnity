@@ -1,24 +1,24 @@
 {
   "development": {
     "user": "root",
-    "password": "P@ssw0rd",
+    "password": "",
+    "database": "post_data",
     "host": "127.0.0.1",
-    "database": "sql_post",
-    "port": "3306"
+    "dialect": "mysql"
   },
   "test": {
-    "user": "root",
-    "password": "P@ssw0rd",
+    "username": "root",
+    "password": "D4V1nk1L30",
+    "database": "post_data",
     "host": "127.0.0.1",
-    "database": "sql_post",
-    "port": "3306"
+    "dialect": "mysql"
   },
   "production": {
-    "user": "root",
-    "password": "P@ssw0rd",
+    "username": "root",
+    "password": "D4V1nk1L30",
+    "database": "post_data",
     "host": "127.0.0.1",
-    "database": "sql_post",
-    "port": "3306"
+    "dialect": "mysql"
   },
   "s2sToken": "cpen321_community_s2stoken"
 }

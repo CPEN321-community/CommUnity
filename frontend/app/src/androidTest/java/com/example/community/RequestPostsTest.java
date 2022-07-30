@@ -73,7 +73,7 @@ public class RequestPostsTest {
 
     //Currently have not implemented the edit post feature yet so certain lines are commented out
     @Test
-    private void editReqPost(){
+    public void editReqPost(){
         activityRule.getScenario().recreate();
         onView(withId(R.id.navigation_home)).perform(click());
         Matcher<View> list = withId(R.id.req_post_list);
