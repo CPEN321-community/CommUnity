@@ -47,12 +47,13 @@ public class RequestPostsTest {
     private void addReqPost() {
         activityRule.getScenario().recreate();
         onView(withId(R.id.navigation_home)).perform(click());
-        onView(withId(R.id.addOfferPostButton)).perform(click());
+        onView(withId(R.id.viewReqsButton)).perform(click());
+        onView(withId(R.id.addReqPostButton)).perform(click());
 
         Matcher<View> itemNameField = withId(R.id.request_name_input);
         onView(itemNameField).perform(typeTextIntoFocusedView(""));
 
-        Matcher<View> submitButton = withId(R.id.create_offer_button);
+        Matcher<View> submitButton = withId(R.id.create_request_button);
         //Required input not filled
         onView(submitButton).check(matches(not(isEnabled())));
 
@@ -68,7 +69,28 @@ public class RequestPostsTest {
         Matcher<View> descriptionField = withId(R.id.description_input);
         onView(descriptionField).perform(typeTextIntoFocusedView("Would like some oranges for juice"));
         onView(submitButton).check(matches(isEnabled()));
-
     }
 
+    //Currently have not implemented the edit post feature yet so certain lines are commented out
+    @Test
+    private void editReqPost(){
+        activityRule.getScenario().recreate();
+        onView(withId(R.id.navigation_home)).perform(click());
+        Matcher<View> list = withId(R.id.req_post_list);
+
+        //TODO: create an edit and delete button associated with each offer you created
+        //onView(withId(R.id.edit_offer_button)).perform(click());
+        //onView(withId(R.id.delete_offer_button)).perform(click());
+
+        //Matcher<View> submitButton = withId(R.id.update_request_button);
+
+        Matcher<View> quantityField = withId(R.id.quantity_input);
+        onView(quantityField).perform(typeTextIntoFocusedView("0"));
+        //Invalid quantity amount
+        //onView(submitButton).check(matches(not(isEnabled())));
+
+        //User properly edits the form
+        onView(quantityField).perform(typeTextIntoFocusedView("1"));
+        //onView(submitButton).check(matches(isEnabled()));
+    }
 }

@@ -28,6 +28,7 @@ import androidx.test.espresso.ViewAction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.example.community.classes.GlobalUtil;
+import com.example.community.classes.OfferPostObj;
 
 import org.hamcrest.Matcher;
 import org.junit.After;
@@ -90,5 +91,28 @@ public class OfferPostsTest {
         onView(descriptionField).perform(typeTextIntoFocusedView("Fresh yummy strawberries"));
         onView(submitButton).check(matches(isEnabled()));
 
+    }
+
+    //Currently have not implemented the edit post feature yet so certain lines are commented out
+    @Test
+    private void editOfferPost(){
+        activityRule.getScenario().recreate();
+        onView(withId(R.id.navigation_home)).perform(click());
+        Matcher<View> list = withId(R.id.offer_post_list);
+
+        //TODO: create an edit and delete button associated with each offer you created
+        //onView(withId(R.id.edit_offer_button)).perform(click());
+        //onView(withId(R.id.delete_offer_button)).perform(click());
+
+        //Matcher<View> submitButton = withId(R.id.update_offer_button);
+
+        Matcher<View> quantityField = withId(R.id.quantity_input);
+        onView(quantityField).perform(typeTextIntoFocusedView("0"));
+        //Invalid quantity amount
+        //onView(submitButton).check(matches(not(isEnabled())));
+
+        //User properly edits the form
+        onView(quantityField).perform(typeTextIntoFocusedView("1"));
+        //onView(submitButton).check(matches(isEnabled()));
     }
 }
