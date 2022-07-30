@@ -25,8 +25,8 @@ jobs:
 
     steps:
       - name: Run post microservice unit test
-        working-directory: ./backend/post_microservice
+        working-directory: backend/post_microservice
         run: npm i | npm ci | npm test
       - name: Run user microservice unit test
-        working-directory: ./backend/user_microservice
+        working-directory: backend/user_microservice
         run: npm i | npm ci | npm test
