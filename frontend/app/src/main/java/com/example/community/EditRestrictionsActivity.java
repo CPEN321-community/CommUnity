@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.community.classes.GlobalUtil;
+import com.example.community.databinding.FragmentDietaryRestrictionBinding;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,10 +31,15 @@ public class EditRestrictionsActivity extends AppCompatActivity {
     private static final String TAG = "EDIT_RESTRICTIONS_ACTIVITY";
     private EditText textField;
     private Button submitButton;
+    private TextView previewText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FragmentDietaryRestrictionBinding binding = FragmentDietaryRestrictionBinding.inflate(getLayoutInflater());
+        this.previewText = binding.restrictionName;
+        binding.removeRestrictionButton.setEnabled(false);
         setContentView(R.layout.activity_edit_restrictions);
         this.textField = findViewById(R.id.restriction_input);
         submitButton = findViewById(R.id.add_dietary_restriction_button);
@@ -46,6 +53,7 @@ public class EditRestrictionsActivity extends AppCompatActivity {
                 String text = s.toString();
                 boolean enabled = text.trim().length() > 0;
                 submitButton.setEnabled(enabled);
+                previewText.setText(text);
             }
 
             @Override

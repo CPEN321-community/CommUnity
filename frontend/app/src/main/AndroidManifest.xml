@@ -21,16 +21,10 @@
             android:name=".EditRestrictionsActivity"
             android:exported="false" />
         <activity
-            android:name=".ExpandedOfferPost"
+            android:name=".offer_list.ExpandedOfferPost"
             android:exported="false" />
         <activity
-            android:name=".ExpandedReqPost"
-            android:exported="false" />
-        <activity
-            android:name=".OfferHomeFragment"
-            android:exported="false" />
-        <activity
-            android:name=".OfferPostFragment"
+            android:name=".request_list.ExpandedReqPost"
             android:exported="false" />
         <activity
             android:name=".offer_list.NewOfferForm"
@@ -46,12 +40,6 @@
             android:exported="false" />
         <activity
             android:name=".request_list.RequestPosts"
-            android:exported="false" />
-        <activity
-            android:name=".request_list.ExpandedReqPost"
-            android:exported="false" />
-        <activity
-            android:name=".offer_list.ExpandedOfferPost"
             android:exported="false" />
         <activity
             android:name=".ui.chat.message.MessageActivity"

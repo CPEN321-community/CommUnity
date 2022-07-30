@@ -11,6 +11,15 @@ public class UserWithScore {
     public int requestPosts;
     public int score;
 
+    public UserWithScore(String firstName, String lastName, String profilePicture, int offerPosts, int requestPosts, int score) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.profilePicture = profilePicture;
+        this.offerPosts = offerPosts;
+        this.requestPosts = requestPosts;
+        this.score = score;
+    }
+
     public UserWithScore(JSONObject json) {
         try {
             this.firstName = json.getString("firstName");

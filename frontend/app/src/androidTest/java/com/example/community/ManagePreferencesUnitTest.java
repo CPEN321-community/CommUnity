@@ -14,24 +14,17 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-
 import static com.example.community.TestUtils.SetTestUserData;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.anything;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import androidx.lifecycle.Lifecycle;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
-
-import com.example.community.classes.GlobalUtil;
 
 import org.hamcrest.Matcher;
 import org.junit.After;
@@ -95,13 +88,20 @@ public class ManagePreferencesUnitTest {
         onView(titleView).check(matches(isDisplayed()));
         Matcher<View> submitButton = withId(R.id.add_dietary_restriction_button);
         Matcher<View> textField = withId(R.id.restriction_input);
+        Matcher<View> previewButton = withId(R.id.remove_restriction_button);
+        Matcher<View> previewText = withId(R.id.restriction_name);
+
         onView(withId(R.id.add_restriction_button)).check(matches(isDisplayed()));
         onView(withId(R.id.add_restriction_button)).perform(click());
         onView(submitButton).check(matches(not(isEnabled())));
         onView(textField).perform(typeText(" "));
+        onView(previewText).check(matches(withText(" ")));
+        onView(previewButton).check(matches(not(isEnabled())));
         onView(submitButton).check(matches(not(isEnabled())));
         onView(textField).perform(clearText());
         onView(textField).perform(typeTextIntoFocusedView("Vegan"));
+        onView(previewText).check(matches(withText("Vegan")));
+        onView(previewButton).check(matches(not(isEnabled())));
         String veganText = TestUtils.getText(textField);
         assert "Vegan".matches(veganText);
         onView(submitButton).check(matches(isEnabled()));

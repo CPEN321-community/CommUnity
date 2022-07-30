@@ -15,13 +15,17 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.community.databinding.FragmentLeaderboardBinding;
 import com.example.community.databinding.FragmentLeaderboardUserBinding;
 
+import java.util.ArrayList;
+
 public class LeaderboardFragment extends Fragment {
 
+    LeaderboardAdapter adapter;
+    LeaderboardViewModel leaderboardViewModel;
     private FragmentLeaderboardBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        LeaderboardViewModel leaderboardViewModel =
+        leaderboardViewModel =
                 new ViewModelProvider(this).get(LeaderboardViewModel.class);
 
         binding = FragmentLeaderboardBinding.inflate(inflater, container, false);
@@ -33,11 +37,10 @@ public class LeaderboardFragment extends Fragment {
         refreshButton.setOnClickListener(view -> {
             leaderboardViewModel.fetchLeaderboard();
         });
+        adapter = new LeaderboardAdapter(requireContext(), new ArrayList<>());
         final ListView listView = binding.leaderboardList;
         leaderboardViewModel.getList().observe(getViewLifecycleOwner(), userList -> {
-            LeaderboardAdapter adapter;
-            adapter = new LeaderboardAdapter(requireContext(),
-                    userList);
+            adapter.setItems(userList);
             listView.setAdapter(adapter);
         });
 
@@ -48,6 +51,10 @@ public class LeaderboardFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    public LeaderboardViewModel getViewModel() {
+        return this.leaderboardViewModel;
     }
 }
 

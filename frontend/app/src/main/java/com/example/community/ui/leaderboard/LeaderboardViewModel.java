@@ -75,4 +75,7 @@ public class LeaderboardViewModel extends AndroidViewModel {
         queue.add(request);
     }
 
+    public void setData(ArrayList<UserWithScore> users) {
+        this.mList.postValue(users);
+    }
 }

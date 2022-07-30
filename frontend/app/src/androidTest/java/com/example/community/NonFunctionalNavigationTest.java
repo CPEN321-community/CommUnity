@@ -10,6 +10,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static androidx.test.runner.lifecycle.Stage.RESUMED;
 import static com.example.community.TestUtils.SetTestUserData;
+import static com.example.community.TestUtils.getActivityInstance;
 import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.CoreMatchers.not;
 
@@ -115,21 +116,6 @@ public class NonFunctionalNavigationTest {
         onView(withId(R.id.add_restriction_button)).perform(click());
         NavigateTo(EditRestrictionsActivity.class);
         assert navigations <= 4;
-    }
-
-    public Activity getActivityInstance() {
-        final Activity[] currentActivity = {null};
-        getInstrumentation().runOnMainSync(new Runnable() {
-            public void run() {
-                Collection resumedActivities =
-                        ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(RESUMED);
-                if (resumedActivities.iterator().hasNext()) {
-                    currentActivity[0] = (Activity) resumedActivities.iterator().next();
-                }
-            }
-        });
-
-        return currentActivity[0];
     }
 
     public void NavigateTo(Class<? extends Activity> c) {
