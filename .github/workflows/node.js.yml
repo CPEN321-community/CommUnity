@@ -14,17 +14,21 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: ./backend/recommendation_microservice
+
     strategy:
       matrix:
         node-version: [12.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      - name: Run post microservice unit test
-        run: cd backend/post_microservice | npm ci | npm i | npm test
-        env:
-          CI: true
-      - name: Run user microservice unit test
-        run: cd backend/user_microservice | npm ci | npm i | npm test
-        env:
-          CI: true
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: ./backend/user_microservice/package-lock.json
+    - run: npm test
