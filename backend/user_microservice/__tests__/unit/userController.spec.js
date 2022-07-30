@@ -114,6 +114,11 @@ describe("PUT /user", () => {
     const response = await request.put("/user").set('token', s2sToken).set('userId', 'user1').send(badPic);
     expect(response.statusCode).toEqual(BAD_REQUEST);
   });
+
+  test("user not found", async () => {
+    const response = await request.put("/user").set('token', s2sToken).set('userId', 'user1').send(badPic);
+    expect(response.statusCode).toEqual(NOT_FOUND);
+  });
 });
 
 describe("GET /user", () => {
