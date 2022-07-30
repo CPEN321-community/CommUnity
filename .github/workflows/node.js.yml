@@ -26,7 +26,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run post microservice unit test
-        uses: actions/setup-node@v3
         working-directory: ./backend/post_microservice
         with:
           node-version: ${{ matrix.node-version }}
@@ -34,7 +33,6 @@ jobs:
           cache-dependency-path: ./backend/post_microservice/package-lock.json
         run: npm test
       - name: Run user microservice unit test
-        uses: actions/setup-node@v3
         working-directory: ./backend/user_microservice
         with:
           node-version: ${{ matrix.node-version }}
