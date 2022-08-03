@@ -73,26 +73,7 @@ describe("POST communitypost/offers", () => {
     OfferPostTags.create = jest.fn();
     axios.put = jest.fn().mockReturnValueOnce([createdOfferWithId]);
     const response = await request.post("/communitypost/offers").set('token', s2sToken).send(createdOffer);
-    expect(response.statusCode).toEqual(OK);
-  });
-  
-  test("Missing a field", async () => {
-    const missingFieldOffer = {
-    offerId: "offer1",
-    userId: "user1",
-    title: "Juice",
-    description: "Juicy",
-    quantity: 2,
-    pickUpLocation: "Juice Bar",
-    image: "juicyPic.com",
-    status: "Active",
-    tagList: []
-    }
-    OfferPost.create = jest.fn().mockReturnValueOnce(missingFieldOffer);
-    OfferPostTags.create = jest.fn();
-    axios.put = jest.fn().mockReturnValueOnce([missingFieldOffer]);
-    const response = await request.post("/communitypost/offers").set('token', s2sToken).send(missingFieldOffer);
-    expect(response.statusCode).toEqual(BAD_REQUEST);
+    expect(response.statusCode).toEqual(CREATED);
   });
 
   test("Missing a field", async () => {
@@ -105,12 +86,52 @@ describe("POST communitypost/offers", () => {
     pickUpLocation: "Juice Bar",
     image: "juicyPic.com",
     status: "Active",
-    tagList: []
+    bestBeforeDate: "04/20/2024"
     }
     OfferPost.create = jest.fn().mockReturnValueOnce(missingFieldOffer);
     OfferPostTags.create = jest.fn();
     axios.put = jest.fn().mockReturnValueOnce([missingFieldOffer]);
     const response = await request.post("/communitypost/offers").set('token', s2sToken).send(missingFieldOffer);
+    expect(response.statusCode).toEqual(BAD_REQUEST);
+  });
+
+  test("Invalid URL for image", async () => {
+    const invalidUrl = {
+    offerId: "offer1",
+    userId: "user1",
+    title: "Juice",
+    description: "Juicy",
+    quantity: 2,
+    pickUpLocation: "Juice Bar",
+    image: "juicyPic",
+    status: "Active",
+    bestBeforeDate: "04/20/2024",
+    tagList: []
+    }
+    OfferPost.create = jest.fn().mockReturnValueOnce(invalidUrl);
+    OfferPostTags.create = jest.fn();
+    axios.put = jest.fn().mockReturnValueOnce([invalidUrl]);
+    const response = await request.post("/communitypost/offers").set('token', s2sToken).send(invalidUrl);
+    expect(response.statusCode).toEqual(BAD_REQUEST);
+  });
+
+  test("bestBeforeDate entry is invalid (wrong format)", async () => {
+    const invalidDate = {
+    offerId: "offer1",
+    userId: "user1",
+    title: "Juice",
+    description: "Juicy",
+    quantity: 2,
+    pickUpLocation: "Juice Bar",
+    image: "juicyPic.com",
+    status: "Active",
+    bestBeforeDate: "04/20/202",
+    tagList: []
+    }
+    OfferPost.create = jest.fn().mockReturnValueOnce(invalidDate);
+    OfferPostTags.create = jest.fn();
+    axios.put = jest.fn().mockReturnValueOnce([invalidDate]);
+    const response = await request.post("/communitypost/offers").set('token', s2sToken).send(invalidDate);
     expect(response.statusCode).toEqual(BAD_REQUEST);
   });
   

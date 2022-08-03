@@ -1,7 +1,7 @@
 const { Op } = require("sequelize");
 const { OfferPost, OfferPostTags } = require("../models");
 const axios = require("axios");
-const { INTERNAL_SERVER_ERROR, OK, NOT_FOUND, BAD_REQUEST } = require('../httpCodes');
+const { INTERNAL_SERVER_ERROR, OK, NOT_FOUND, BAD_REQUEST, CREATED } = require('../httpCodes');
 
 const getOffer = async (req, res) => {
     if(req.params.offerId) {
@@ -130,8 +130,9 @@ const searchOffersWithTags = async (req, res) => {
 
 const createOffer = async (req, res) => {
     const hasAllFields = req.body.userId && req.body.title && req.body.description && req.body.quantity && req.body.pickUpLocation && req.body.image && req.body.status && req.body.bestBeforeDate && req.body.tagList;
+    const validDate = req.body.bestBeforeDate.length == 10;
     const validImage = req.body.image.includes(".com");
-    if(hasAllFields && validImage) {
+    if(hasAllFields && validImage && validDate) {
         const createdOffer = await OfferPost.create({
             userId: req.body.userId,
             title: req.body.title,
@@ -160,7 +161,7 @@ const createOffer = async (req, res) => {
         };
 
         await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
-        res.sendStatus(OK);
+        res.sendStatus(CREATED);
 
     } else {
         res.sendStatus(BAD_REQUEST);
