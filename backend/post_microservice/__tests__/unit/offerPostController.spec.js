@@ -37,21 +37,6 @@ const offerPostDataVals = {
   }
 };
 
-/**
- * describe("POST /user", () => {
-    let request = null;
-    beforeAll(async () => {
-      request = supertest(app);
-    })
-    
-  test("Pass", async () => {
-    User.create = jest.fn().mockReturnValueOnce(userWithId);
-    const response = await request.post("/user").set('token', s2sToken).set('userId', 'user1').send(user);
-    expect(JSON.parse(response.text)).toEqual(userWithId);
-    expect(response.statusCode).toEqual(CREATED);
-  });
- */
-
   const createdOffer = {
     userId: "user2",
     title: "Juice",
@@ -85,8 +70,9 @@ describe("POST communitypost/offers", () => {
 
   test("Pass", async () => {
     OfferPost.create = jest.fn().mockReturnValueOnce(createdOfferWithId);
+    OfferPostTags.create = jest.fn();
+    axios.put = jest.fn().mockReturnValueOnce([offerPost]);
     const response = await request.post("/communitypost/offers").set('token', s2sToken).send(createdOffer);
-    expect(JSON.parse(response.text)).toEqual(createdOfferWithId);
     expect(response.statusCode).toEqual(OK);
   });
   
