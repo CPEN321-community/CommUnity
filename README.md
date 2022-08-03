@@ -1,4 +1,4 @@
--# <div align="center">CommUnity</div>
+# <div align="center">CommUnity</div>
 
 
 <div align="center">Reduce food waste and increase food security amongst students</div>
