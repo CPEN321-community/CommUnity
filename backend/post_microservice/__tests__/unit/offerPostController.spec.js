@@ -16,7 +16,7 @@ const offerPost = {
   description: "des1",
   quantity: 1,
   pickUpLocation: "location1",
-  image: "img1",
+  image: "img1.com",
   status: "active",
   bestBeforeDate: "date1",
   offerTags: ["beep", "boop"]
@@ -30,7 +30,7 @@ const offerPostDataVals = {
       description: "des1",
       quantity: 1,
       pickUpLocation: "location1",
-      image: "img1",
+      image: "img1.com",
       status: "active",
       bestBeforeDate: "date1",
       offerTags: ["beep", "boop"]
@@ -43,7 +43,7 @@ const offerPostDataVals = {
     description: "Juicy",
     quantity: 2,
     pickUpLocation: "Juice Bar",
-    image: "juicyPic",
+    image: "juicyPic.com",
     status: "Active",
     bestBeforeDate: "04/20/2024",
     tagList: ["juice"]
@@ -56,7 +56,7 @@ const offerPostDataVals = {
     description: "Juicy",
     quantity: 2,
     pickUpLocation: "Juice Bar",
-    image: "juicyPic",
+    image: "juicyPic.com",
     status: "Active",
     bestBeforeDate: "04/20/2024",
     tagList: ["juice"]
@@ -68,12 +68,50 @@ describe("POST communitypost/offers", () => {
     request = supertest(app);
   })
 
-  test("Pass", async () => {
+  test("Offer post is successfully created", async () => {
     OfferPost.create = jest.fn().mockReturnValueOnce(createdOfferWithId);
     OfferPostTags.create = jest.fn();
-    axios.put = jest.fn().mockReturnValueOnce([offerPost]);
+    axios.put = jest.fn().mockReturnValueOnce([createdOfferWithId]);
     const response = await request.post("/communitypost/offers").set('token', s2sToken).send(createdOffer);
     expect(response.statusCode).toEqual(OK);
+  });
+  
+  test("Missing a field", async () => {
+    const missingFieldOffer = {
+    offerId: "offer1",
+    userId: "user1",
+    title: "Juice",
+    description: "Juicy",
+    quantity: 2,
+    pickUpLocation: "Juice Bar",
+    image: "juicyPic.com",
+    status: "Active",
+    tagList: []
+    }
+    OfferPost.create = jest.fn().mockReturnValueOnce(missingFieldOffer);
+    OfferPostTags.create = jest.fn();
+    axios.put = jest.fn().mockReturnValueOnce([missingFieldOffer]);
+    const response = await request.post("/communitypost/offers").set('token', s2sToken).send(missingFieldOffer);
+    expect(response.statusCode).toEqual(BAD_REQUEST);
+  });
+
+  test("Missing a field", async () => {
+    const missingFieldOffer = {
+    offerId: "offer1",
+    userId: "user1",
+    title: "Juice",
+    description: "Juicy",
+    quantity: 2,
+    pickUpLocation: "Juice Bar",
+    image: "juicyPic.com",
+    status: "Active",
+    tagList: []
+    }
+    OfferPost.create = jest.fn().mockReturnValueOnce(missingFieldOffer);
+    OfferPostTags.create = jest.fn();
+    axios.put = jest.fn().mockReturnValueOnce([missingFieldOffer]);
+    const response = await request.post("/communitypost/offers").set('token', s2sToken).send(missingFieldOffer);
+    expect(response.statusCode).toEqual(BAD_REQUEST);
   });
   
 });

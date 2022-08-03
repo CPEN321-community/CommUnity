@@ -62,8 +62,7 @@ const searchRequests = async (req, res) => {
                     title: similarPosts[i].dataValues.title,
                     description: similarPosts[i].dataValues.description,
                     currentLocation: similarPosts[i].dataValues.currentLocation,
-                    status: similarPosts[i].dataValues.status,
-                    createdAt: similarPosts[i].dataValues.createdAt,
+                    status: similarPosts[i].dataValues.status
                 });
             }
         } else {
@@ -71,17 +70,14 @@ const searchRequests = async (req, res) => {
             if (res.length) {
                 const resolved = await Promise.all(res.map(async r => {
                     const item = await RequestPost.findOne({ where: { requestId: r.postId }});
-                    const { userId, offerId, title, description, quantity, pickUpLocation, image, status, bestBeforeDate, requestTags } = item.dataValues;
+                    const { userId, requestId, title, description, status, requestTags } = item.dataValues;
                     return {
                         userId,
-                        offerId,
+                        requestId,
                         title,
                         description,
-                        quantity,
-                        pickUpLocation,
-                        image,
+                        currentLocation,
                         status,
-                        bestBeforeDate,
                         requestTags
                     };
                 }));
@@ -135,22 +131,22 @@ const createRequest = async (req, res) => {
             userId: req.body.userId,
             title: req.body.title,
             description: req.body.description,
+            currentLocation: req.body.currentLocation,
             status: req.body.status
           });
 
         let tagList = req.body.tagList;
-        if (tagList) {
+        if (tagList != null) {
             for(let item of tagList) {
                 RequestPostTags.create({
-                    postId: createdRequest.dataValues.requestId,
+                    postId: createdRequest.requestId,
                     name: item
                   });
             }
         }
-        
         const updateUserBody = {
             userId: req.body.userId,
-            offerPosts: 0,
+            offerPosts: 0, //BUG ALERT, what if they already made a bunch of offer posts and this is their first request post?
             requestPosts: 1,
         };
         await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
@@ -160,6 +156,47 @@ const createRequest = async (req, res) => {
       res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
+
+/**
+ * 
+ * const createOffer = async (req, res) => {
+    if(req.body.tagList) {
+        const createdOffer = await OfferPost.create({
+            userId: req.body.userId,
+            title: req.body.title,
+            description: req.body.description,
+            quantity: req.body.quantity,
+            pickUpLocation: req.body.pickUpLocation,
+            image: req.body.image,
+            status: req.body.status,
+            bestBeforeDate: req.body.bestBeforeDate
+        });
+
+        let tagList = req.body.tagList;
+        if(tagList != null){
+            for(let item of tagList) {
+                OfferPostTags.create({
+                    postId: createdOffer.offerId,
+                    name: item
+                });
+            }
+            }
+
+        const updateUserBody = {
+            userId: req.body.userId,
+            offerPosts: 1,
+            requestPosts: 0,
+        };
+
+        await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
+        res.sendStatus(OK);
+
+    } else {
+        console.log("Error creating a new post: " + error);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
+    }} 
+ * 
+ */
 
 const updateRequest = async (req, res) => {
     if(req.body.requestId) {

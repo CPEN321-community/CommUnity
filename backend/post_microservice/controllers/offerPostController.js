@@ -129,7 +129,9 @@ const searchOffersWithTags = async (req, res) => {
 }
 
 const createOffer = async (req, res) => {
-    if(req.body.tagList) {
+    const hasAllFields = req.body.userId && req.body.title && req.body.description && req.body.quantity && req.body.pickUpLocation && req.body.image && req.body.status && req.body.bestBeforeDate && req.body.tagList;
+    const validImage = req.body.image.includes(".com");
+    if(hasAllFields && validImage) {
         const createdOffer = await OfferPost.create({
             userId: req.body.userId,
             title: req.body.title,
@@ -161,8 +163,7 @@ const createOffer = async (req, res) => {
         res.sendStatus(OK);
 
     } else {
-        console.log("Error creating a new post: " + error);
-        res.sendStatus(INTERNAL_SERVER_ERROR);
+        res.sendStatus(BAD_REQUEST);
     }
 }
 
