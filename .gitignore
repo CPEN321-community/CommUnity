@@ -5,3 +5,8 @@ firebase_service_key.json
 backend/post_microservice/config/config.json
 backend/chat_microservice/config/config.json
 backend/user_microservice/config/config.json
+
+backend/post_microservice/coverage
+backend/chat_microservice/coverage
+backend/user_microservice/coverage
+backend/recommendation_microservice/coverage
