@@ -1,6 +1,8 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <!--  Gradient Bg for Log In/Out Button -->
-    <corners android:radius="10dip" />
+    <corners android:radius="10dip"
+        android:bottomRightRadius="0dp"
+        android:bottomLeftRadius="0dp"/>
     <solid android:color="@color/white"/>
 </shape>

@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -12,6 +13,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.community.VolleyCallBack;
 import com.example.community.classes.GlobalUtil;
 import com.example.community.classes.OfferPostObj;
 
@@ -31,14 +33,14 @@ public class OfferPostViewModel extends AndroidViewModel {
         super(application);
         this.application = application;
         mList = new MutableLiveData<>();
-        fetchOfferPosts();
+        fetchOfferPosts(null);
     }
 
     public LiveData<ArrayList<OfferPostObj>> getList() {
         return mList;
     }
 
-    protected void fetchOfferPosts() {
+    protected void fetchOfferPosts(VolleyCallBack callback) {
         RequestQueue queue = Volley.newRequestQueue(this.application);
         String url = GlobalUtil.POST_URL + "/communitypost/offers";
 
@@ -59,10 +61,11 @@ public class OfferPostViewModel extends AndroidViewModel {
                         }
                     }
                     mList.setValue(offerPosts);
+                    if (callback != null) callback.onSuccess();
                 },
                 error -> {
                     Log.e(TAG, "fetchRequestPostsError: " + error);
-//                    callback.onError(error);
+                    if (callback != null) callback.onError();
                 }) {
             @Override
             public Map<String, String> getHeaders() {

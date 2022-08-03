@@ -1,6 +1,5 @@
 package com.example.community.ui.home;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -15,10 +14,6 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.community.databinding.FragmentHomeBinding;
 import com.example.community.databinding.TimeSunMoonElementBinding;
-import com.example.community.offer_list.NewOfferForm;
-import com.example.community.offer_list.OfferPostFragment;
-import com.example.community.request_list.NewRequestForm;
-import com.example.community.request_list.ReqPostFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -54,39 +49,12 @@ public class HomeFragment extends Fragment {
         binding = null;
     }
 
-    private void setTabListener(TabLayout tabLayout) {
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                int position = tab.getPosition();
-                if (position == 0) {
-                    binding.addPostButton.setOnClickListener(view -> {
-                        Intent addReqIntent = new Intent(requireActivity(), NewOfferForm.class);
-                        startActivity(addReqIntent);
-                    });
-                } else {
-                    binding.addPostButton.setOnClickListener(view -> {
-                        Intent addReqIntent = new Intent(requireActivity(), NewRequestForm.class);
-                        startActivity(addReqIntent);
-                    });
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
-    }
-
     private void initTabViewPager() {
         final PostTabAdapter adapter = new PostTabAdapter(getChildFragmentManager(), getLifecycle());
         ViewPager2 tabViewPager = binding.postTabs.tabViewPager;
+        tabViewPager.canScrollHorizontally(0);
+        tabViewPager.setUserInputEnabled(false);
         TabLayout tabLayout = binding.postTabs.tabLayout;
-        setTabListener(tabLayout);
         tabViewPager.setAdapter(adapter);
         new TabLayoutMediator(tabLayout, tabViewPager,
                 (tab, position) -> tab.setText(tabNames[position])

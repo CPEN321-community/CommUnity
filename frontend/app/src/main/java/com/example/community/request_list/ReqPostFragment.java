@@ -11,17 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.community.databinding.FragmentReqPostBinding;
+import com.example.community.databinding.FragmentReqPostListBinding;
 
 public class ReqPostFragment extends Fragment {
 
-    private FragmentReqPostBinding binding_req;
+    private FragmentReqPostListBinding binding_req;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         ReqPostViewModel reqPostViewModel = new ViewModelProvider(this).get(ReqPostViewModel.class);
-        binding_req = FragmentReqPostBinding.inflate(inflater, container, false);
+        binding_req = FragmentReqPostListBinding.inflate(inflater, container, false);
 
         View root = binding_req.getRoot();
         Button refreshButton = binding_req.buttonRefreshReqPosts;
