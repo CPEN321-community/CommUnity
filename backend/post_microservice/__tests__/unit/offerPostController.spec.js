@@ -37,6 +37,61 @@ const offerPostDataVals = {
   }
 };
 
+/**
+ * describe("POST /user", () => {
+    let request = null;
+    beforeAll(async () => {
+      request = supertest(app);
+    })
+    
+  test("Pass", async () => {
+    User.create = jest.fn().mockReturnValueOnce(userWithId);
+    const response = await request.post("/user").set('token', s2sToken).set('userId', 'user1').send(user);
+    expect(JSON.parse(response.text)).toEqual(userWithId);
+    expect(response.statusCode).toEqual(CREATED);
+  });
+ */
+
+  const createdOffer = {
+    userId: "user2",
+    title: "Juice",
+    description: "Juicy",
+    quantity: 2,
+    pickUpLocation: "Juice Bar",
+    image: "juicyPic",
+    status: "Active",
+    bestBeforeDate: "04/20/2024",
+    tagList: ["juice"]
+  }
+
+  const createdOfferWithId = {
+    offerId: "offer1",
+    userId: "user2",
+    title: "Juice",
+    description: "Juicy",
+    quantity: 2,
+    pickUpLocation: "Juice Bar",
+    image: "juicyPic",
+    status: "Active",
+    bestBeforeDate: "04/20/2024",
+    tagList: ["juice"]
+  }
+
+describe("POST communitypost/offers", () => {
+  let request = null;
+  beforeAll(async () => {
+    request = supertest(app);
+  })
+
+  test("Pass", async () => {
+    OfferPost.create = jest.fn().mockReturnValueOnce(createdOfferWithId);
+    const response = await request.post("/communitypost/offers").set('token', s2sToken).send(createdOffer);
+    expect(JSON.parse(response.text)).toEqual(createdOfferWithId);
+    expect(response.statusCode).toEqual(OK);
+  });
+  
+});
+
 describe("GET communitypost/offers/:offerID", () => {
     let request = null;
     beforeAll(async () => {
