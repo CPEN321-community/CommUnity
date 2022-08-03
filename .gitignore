@@ -3,6 +3,7 @@ firebase_service_key.json
 .DS_Store
 **/.env
 
+espresso
 /coverage.data
 /coverage/
 /lcov.info
