@@ -1,6 +1,7 @@
 package com.example.community;
 
 import android.graphics.Color;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -25,10 +26,16 @@ import java.text.DecimalFormat;
 public class Weather extends AppCompatActivity {
     EditText city_input, country_input;
     TextView weather_data;
+    protected LocationManager locationManager;
     //OpenWeatherMap API used for the Surprise weather button functionality
     private final String url = "http://api.openweathermap.org/data/2.5/weather";
     private final String appid = "5603ddab5ca3086399dbee9a2fba312d";
 
+    //Use google maps API to turn latitude and longitude values to address
+    private final String url = "https://maps.googleapis.com/maps/api/geocode/json";
+    //TODO: change the api key
+    private final String apikey = "AIzaSyDZDy1pZBbYHzj8On-4_ZB6sN8pG44Agic";
+    TextView currCity;
     //Decimal format says that we are specifying up to 1 decimal place and rounding the number
     DecimalFormat df = new DecimalFormat("#.#");
 

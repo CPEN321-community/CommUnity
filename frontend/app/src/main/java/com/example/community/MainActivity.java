@@ -113,10 +113,10 @@ public class MainActivity extends AppCompatActivity {
             if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                     && ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)){
                 Log.d(TAG, "denied at least 1 permission");
-                Toast.makeText(MainActivity.this, "We need these location permissions to run!", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Are you sure? We need these location permissions to personalise this app!", Toast.LENGTH_LONG).show();
                 new AlertDialog.Builder(this)
                         .setTitle("Need Location Permissions")
-                        .setMessage("We need the location permissions to mark your location on a map")
+                        .setMessage("Are you sure? We need these location permissions to personalise this app!")
                         .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
