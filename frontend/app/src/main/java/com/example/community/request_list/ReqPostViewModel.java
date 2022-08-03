@@ -12,6 +12,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.community.VolleyCallBack;
 import com.example.community.classes.GlobalUtil;
 import com.example.community.classes.ReqPostObj;
 
@@ -31,14 +32,14 @@ public class ReqPostViewModel extends AndroidViewModel {
         super(application);
         this.application = application;
         mList = new MutableLiveData<>();
-        fetchReqPosts();
+        fetchReqPosts(null);
     }
 
     public LiveData<ArrayList<ReqPostObj>> getList() {
         return mList;
     }
 
-    protected void fetchReqPosts() {
+    protected void fetchReqPosts(VolleyCallBack callback) {
         RequestQueue queue = Volley.newRequestQueue(this.application);
         String url = GlobalUtil.POST_URL + "/communitypost/requests";
 
@@ -59,10 +60,15 @@ public class ReqPostViewModel extends AndroidViewModel {
                         }
                     }
                     mList.setValue(reqPosts);
+                    if (callback != null) {
+                        callback.onSuccess();
+                    }
                 },
                 error -> {
                     Log.e(TAG, "fetchRequestPostsError: " + error);
-//                    callback.onError(error);
+                    if (callback != null) {
+                        callback.onError();
+                    }
                 }) {
             @Override
             public Map<String, String> getHeaders() {

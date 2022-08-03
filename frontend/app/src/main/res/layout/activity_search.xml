@@ -87,7 +87,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/req_post_result_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -96,7 +96,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/offer_post_result_list" />
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/offer_post_result_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -106,7 +106,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include">
 
-    </ListView>
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

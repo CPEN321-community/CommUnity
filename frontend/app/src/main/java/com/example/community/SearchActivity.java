@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -41,8 +42,8 @@ public class SearchActivity extends AppCompatActivity {
     private EditText searchField;
     private final MutableLiveData<ArrayList<ReqPostObj>> mRequestPosts = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<OfferPostObj>> mOfferPosts = new MutableLiveData<>();
-    private ListView reqPostResultList;
-    private ListView offerPostResultList;
+    private RecyclerView reqPostResultList;
+    private RecyclerView offerPostResultList;
     private Tags tags;
 
     @Override
@@ -63,8 +64,8 @@ public class SearchActivity extends AppCompatActivity {
                 hideKeyboard(view);
             }
         });
-        this.reqPostResultList = (ListView) findViewById(R.id.req_post_result_list);
-        this.offerPostResultList = (ListView) findViewById(R.id.offer_post_result_list);
+        this.reqPostResultList = (RecyclerView) findViewById(R.id.req_post_result_list);
+        this.offerPostResultList = (RecyclerView) findViewById(R.id.offer_post_result_list);
         ImageButton searchButton = findViewById(R.id.submit_search_button);
         Switch reqOfferSwitch = findViewById(R.id.req_or_offer_switch);
         reqOfferSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {

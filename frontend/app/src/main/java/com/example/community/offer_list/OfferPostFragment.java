@@ -1,33 +1,33 @@
 package com.example.community.offer_list;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.VolleyError;
 import com.example.community.VolleyCallBack;
-import com.example.community.databinding.FragmentOfferPostListBinding;
+import com.example.community.databinding.FragmentPostListBinding;
 
 
 public class OfferPostFragment extends Fragment {
 
     private static final String TAG = "OFFER_POST_FRAGMENT";
-    private FragmentOfferPostListBinding binding_offer;
+    private FragmentPostListBinding binding_offer;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         OfferPostViewModel offerPostViewModel = new ViewModelProvider(this).get(OfferPostViewModel.class);
-        binding_offer = FragmentOfferPostListBinding.inflate(inflater, container, false);
+        binding_offer = FragmentPostListBinding.inflate(inflater, container, false);
 
         View root = binding_offer.getRoot();
         SwipeRefreshLayout refresher = binding_offer.pullToRefresh;
@@ -53,15 +53,10 @@ public class OfferPostFragment extends Fragment {
                 }
             });
         });
-        binding_offer.addOfferPostButton.setOnClickListener(view -> {
-            Intent addReqIntent = new Intent(requireActivity(), NewOfferForm.class);
-            startActivity(addReqIntent);
-        });
-        final ListView listView = binding_offer.offerPostList;
-        listView.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
+        final RecyclerView listView = binding_offer.offerPostList;
+        listView.setLayoutManager(new LinearLayoutManager(requireContext()));
         offerPostViewModel.getList().observe(getViewLifecycleOwner(), offerList -> {
-            OfferPostAdapter adapter;
-            adapter = new OfferPostAdapter(requireContext(),
+            OfferPostAdapter adapter = new OfferPostAdapter(requireContext(),
                     offerList);
             listView.setAdapter(adapter);
         });
