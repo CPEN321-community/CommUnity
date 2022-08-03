@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <coverage generated="1659562620772" clover="3.2.0">
   <project timestamp="1659562620772" name="All files">
     <metrics statements="331" coveredstatements="186" conditionals="106" coveredconditionals="41" methods="39" coveredmethods="16" elements="476" coveredelements="243" complexity="0" loc="331" ncloc="331" packages="3" files="10" classes="10"/>
+=======
+<coverage generated="1659556820720" clover="3.2.0">
+  <project timestamp="1659556820720" name="All files">
+    <metrics statements="329" coveredstatements="182" conditionals="94" coveredconditionals="28" methods="39" coveredmethods="16" elements="462" coveredelements="226" complexity="0" loc="329" ncloc="329" packages="3" files="10" classes="10"/>
+>>>>>>> 41a9f227e178ac269060e1627b30ba16315efd66
     <package name="post_microservice">
       <metrics statements="61" coveredstatements="48" conditionals="8" coveredconditionals="4" methods="3" coveredmethods="1"/>
       <file name="httpCodes.js" path="/Users/parthvikulkarni/Projects/CommUnity/backend/post_microservice/httpCodes.js">
@@ -29,10 +35,17 @@
         <line num="26" count="3" type="stmt"/>
         <line num="28" count="3" type="stmt"/>
         <line num="29" count="3" type="stmt"/>
+<<<<<<< HEAD
         <line num="30" count="29" type="stmt"/>
         <line num="31" count="29" type="cond" truecount="3" falsecount="1"/>
         <line num="32" count="29" type="stmt"/>
         <line num="33" count="29" type="stmt"/>
+=======
+        <line num="30" count="26" type="stmt"/>
+        <line num="31" count="26" type="cond" truecount="3" falsecount="1"/>
+        <line num="32" count="26" type="stmt"/>
+        <line num="33" count="26" type="stmt"/>
+>>>>>>> 41a9f227e178ac269060e1627b30ba16315efd66
         <line num="35" count="0" type="stmt"/>
         <line num="36" count="0" type="stmt"/>
         <line num="37" count="0" type="stmt"/>
@@ -76,9 +89,15 @@
       </file>
     </package>
     <package name="post_microservice.controllers">
+<<<<<<< HEAD
       <metrics statements="223" coveredstatements="95" conditionals="88" coveredconditionals="31" methods="28" coveredmethods="9"/>
       <file name="offerPostController.js" path="/Users/parthvikulkarni/Projects/CommUnity/backend/post_microservice/controllers/offerPostController.js">
         <metrics statements="113" coveredstatements="71" conditionals="50" coveredconditionals="29" methods="14" coveredmethods="8"/>
+=======
+      <metrics statements="221" coveredstatements="91" conditionals="76" coveredconditionals="18" methods="28" coveredmethods="9"/>
+      <file name="offerPostController.js" path="/Users/parthvikulkarni/Projects/CommUnity/backend/post_microservice/controllers/offerPostController.js">
+        <metrics statements="111" coveredstatements="67" conditionals="38" coveredconditionals="16" methods="14" coveredmethods="8"/>
+>>>>>>> 41a9f227e178ac269060e1627b30ba16315efd66
         <line num="1" count="3" type="stmt"/>
         <line num="2" count="3" type="stmt"/>
         <line num="3" count="3" type="stmt"/>
@@ -137,6 +156,7 @@
         <line num="125" count="4" type="stmt"/>
         <line num="127" count="2" type="stmt"/>
         <line num="131" count="3" type="stmt"/>
+<<<<<<< HEAD
         <line num="132" count="4" type="cond" truecount="9" falsecount="0"/>
         <line num="133" count="4" type="stmt"/>
         <line num="134" count="4" type="stmt"/>
@@ -192,6 +212,61 @@
         <line num="257" count="0" type="stmt"/>
         <line num="258" count="0" type="stmt"/>
         <line num="262" count="3" type="stmt"/>
+=======
+        <line num="132" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="133" count="1" type="stmt"/>
+        <line num="144" count="1" type="stmt"/>
+        <line num="145" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="146" count="1" type="stmt"/>
+        <line num="147" count="1" type="stmt"/>
+        <line num="154" count="1" type="stmt"/>
+        <line num="160" count="1" type="stmt"/>
+        <line num="161" count="1" type="stmt"/>
+        <line num="164" count="0" type="stmt"/>
+        <line num="165" count="0" type="stmt"/>
+        <line num="169" count="3" type="stmt"/>
+        <line num="170" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="171" count="0" type="stmt"/>
+        <line num="172" count="0" type="stmt"/>
+        <line num="173" count="0" type="stmt"/>
+        <line num="175" count="0" type="stmt"/>
+        <line num="176" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="177" count="0" type="stmt"/>
+        <line num="185" count="0" type="stmt"/>
+        <line num="187" count="0" type="stmt"/>
+        <line num="191" count="3" type="stmt"/>
+        <line num="192" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="193" count="0" type="stmt"/>
+        <line num="194" count="0" type="stmt"/>
+        <line num="195" count="0" type="stmt"/>
+        <line num="197" count="0" type="stmt"/>
+        <line num="198" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="199" count="0" type="stmt"/>
+        <line num="205" count="0" type="stmt"/>
+        <line num="207" count="0" type="stmt"/>
+        <line num="208" count="0" type="stmt"/>
+        <line num="212" count="3" type="stmt"/>
+        <line num="213" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="214" count="0" type="stmt"/>
+        <line num="215" count="0" type="stmt"/>
+        <line num="216" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="217" count="0" type="stmt"/>
+        <line num="227" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="228" count="0" type="stmt"/>
+        <line num="230" count="0" type="stmt"/>
+        <line num="232" count="0" type="stmt"/>
+        <line num="235" count="0" type="stmt"/>
+        <line num="236" count="0" type="stmt"/>
+        <line num="240" count="3" type="stmt"/>
+        <line num="241" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="242" count="0" type="stmt"/>
+        <line num="247" count="0" type="stmt"/>
+        <line num="252" count="0" type="stmt"/>
+        <line num="253" count="0" type="stmt"/>
+        <line num="255" count="0" type="stmt"/>
+        <line num="256" count="0" type="stmt"/>
+        <line num="260" count="3" type="stmt"/>
+>>>>>>> 41a9f227e178ac269060e1627b30ba16315efd66
       </file>
       <file name="requestPostController.js" path="/Users/parthvikulkarni/Projects/CommUnity/backend/post_microservice/controllers/requestPostController.js">
         <metrics statements="110" coveredstatements="24" conditionals="38" coveredconditionals="2" methods="14" coveredmethods="1"/>
