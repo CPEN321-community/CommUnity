@@ -37,11 +37,21 @@ const offerPostDataVals = {
   }
 };
 
+// describe("POST communitypost/offers", () => {
+//   let request = null;
+//   beforeAll(async () => {
+//     request = supertest(app);
+//   });
+
+//   test("Offer post is successfully created", async () => {
+//     OfferPost.
+//   })
+// })
 describe("GET communitypost/offers/:offerID", () => {
     let request = null;
     beforeAll(async () => {
       request = supertest(app);
-    })
+    });
     
   test("Pass", async () => {
     OfferPost.findOne = jest.fn().mockReturnValueOnce(offerPost);
