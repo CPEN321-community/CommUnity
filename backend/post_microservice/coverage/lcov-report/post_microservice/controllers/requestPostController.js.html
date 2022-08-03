@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">51.75% </span>
+                <span class="strong">43.85% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>59/114</span>
+                <span class='fraction'>50/114</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">36.84% </span>
+                <span class="strong">23.68% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>14/38</span>
+                <span class='fraction'>9/38</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">35.71% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>7/14</span>
+                <span class='fraction'>5/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">51.81% </span>
+                <span class="strong">43.63% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>57/110</span>
+                <span class='fraction'>48/110</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -330,12 +330,12 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -343,11 +343,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -590,25 +590,25 @@ const axios = require("axios").default;
 const { RequestPost, RequestPostTags } = require("../models");
 const { OK, INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST } = require("../httpCodes");
 &nbsp;
-const getRequest = async (req, res) =&gt; {
-   if(req.params.requestId){
-       const response = await RequestPost.findOne({where: {requestId: req.params.requestId}});
-       if (response) {
-           res.json(response);
+const getRequest = <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
+<span class="cstat-no" title="statement not covered" >   if(req.params.requestId){</span>
+       const response = <span class="cstat-no" title="statement not covered" >await RequestPost.findOne({where: {requestId: req.params.requestId}});</span>
+<span class="cstat-no" title="statement not covered" >       if (response) {</span>
+<span class="cstat-no" title="statement not covered" >           res.json(response);</span>
        } else {
-           res.sendStatus(NOT_FOUND);
+<span class="cstat-no" title="statement not covered" >           res.sendStatus(NOT_FOUND);</span>
        }
-   } else <span class="missing-if-branch" title="else path not taken" >E</span>{
+   } else {
 <span class="cstat-no" title="statement not covered" >       res.sendStatus(INTERNAL_SERVER_ERROR);</span>
    }
 }
 &nbsp;
-const getAllRequests = async (req, res) =&gt; {
-    const response = await RequestPost.findAll();
-    if (response) {
-        res.status(OK).json(response);
+const getAllRequests = <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
+    const response = <span class="cstat-no" title="statement not covered" >await RequestPost.findAll();</span>
+<span class="cstat-no" title="statement not covered" >    if (response) {</span>
+<span class="cstat-no" title="statement not covered" >        res.status(OK).json(response);</span>
     } else {
-        res.sendStatus(NOT_FOUND);
+<span class="cstat-no" title="statement not covered" >        res.sendStatus(NOT_FOUND);</span>
     }
 }
 &nbsp;
@@ -853,7 +853,7 @@ module.exports = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2022-08-03T01:49:51.664Z
+                at 2022-08-03T03:52:12.959Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
