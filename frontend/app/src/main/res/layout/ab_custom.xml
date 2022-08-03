@@ -26,10 +26,10 @@
     <ImageButton
         android:id="@+id/chat_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="62dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="0dp"
-        android:background="@color/gray_400"
+        android:background="@color/transparent"
         android:padding="16dp"
         android:src="@drawable/ic_chat"
         tools:ignore="SpeakableTextPresentCheck" />
