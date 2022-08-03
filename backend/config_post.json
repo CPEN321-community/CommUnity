@@ -3,21 +3,21 @@
     "user": "root",
     "password": "bummyGear",
     "database": "post_data",
-    "host": "127.0.0.1",
+    "host": "127.0.0.1:3306",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
     "password": "bummyGear",
     "database": "post_data",
-    "host": "127.0.0.1",
+    "host": "127.0.0.1:3306",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
     "password": "bummyGear",
     "database": "post_data",
-    "host": "127.0.0.1",
+    "host": "127.0.0.1:3306",
     "dialect": "mysql"
   },
   "s2sToken": "ASDF"
