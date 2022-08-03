@@ -85,8 +85,9 @@ describe("POST communitypost/offers", () => {
 
   test("Pass", async () => {
     OfferPost.create = jest.fn().mockReturnValueOnce(createdOfferWithId);
+    OfferPostTags.create = jest.fn();
+    axios.put = jest.fn().mockReturnValueOnce([offerPost]);
     const response = await request.post("/communitypost/offers").set('token', s2sToken).send(createdOffer);
-    expect(JSON.parse(response.text)).toEqual(createdOfferWithId);
     expect(response.statusCode).toEqual(OK);
   });
   
