@@ -38,7 +38,8 @@ const similarPosts = {
 }
 
 axios.defaults.headers = { token: s2sToken }
-axios.defaults.baseURL = process.env.CLOUD_POST_URL;
+// axios.defaults.baseURL = process.env.CLOUD_POST_URL;
+axios.defaults.baseURL = "http://localhost:8081";
 
 describe("GET communitypost/requests/:requestID", () => {
     test("Pass", async () => {
@@ -100,19 +101,19 @@ describe("GET communitypost/requests/search/:title", () => {
 
 describe("PUT communitypost/requestTags", () => {    
     test("Pass", async () => {
-        const response = await request.put("/communitypost/requestTags").send({ tagList: ["dairy"] });
+        const response = await request.put("/communitypost/requestTags", { tagList: ["dairy"] });
         expect(JSON.parse(response.text).results).toEqual([requestPost]);
         expect(response.statusCode).toEqual(OK);
     });
 
     test("No tags provided", async () => {
-        const response = await request.put("/communitypost/requestTags").send({ tagList: [] });
+        const response = await request.put("/communitypost/requestTags", { tagList: [] });
         expect(JSON.parse(response.text).results).toEqual([requestPost]);
         expect(response.statusCode).toEqual(OK);
     });
 
     test("Invalid tags", async () => {
-        const response = await request.put("/communitypost/requestTags").send({ tagList: null });
+        const response = await request.put("/communitypost/requestTags", { tagList: null });
         expect(response.statusCode).toEqual(BAD_REQUEST);
     });
 });

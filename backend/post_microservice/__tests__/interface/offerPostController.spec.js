@@ -31,12 +31,13 @@ const offerPostDataVals = {
 };
 
 axios.defaults.headers = { token: s2sToken }
-axios.defaults.baseURL = process.env.CLOUD_POST_URL;
+// axios.defaults.baseURL = process.env.CLOUD_POST_URL;
+axios.defaults.baseURL = "http://localhost:8081";
 
 describe("GET communitypost/offers/:offerID", () => {
   test("Pass", async () => {
     const response = await axios.get("/communitypost/offers/offer1");
-    expect(JSON.parse(response.text)).toEqual(offerPost);
+    expect(response).toEqual(offerPost);
     expect(response.statusCode).toEqual(OK);
   });
 
@@ -49,7 +50,7 @@ describe("GET communitypost/offers/:offerID", () => {
 describe("GET communitypost/offers", () => {
   test("Pass", async () => {
     const response = await axios.get("/communitypost/offers");
-    expect(JSON.parse(response.text)).toEqual([offerPost]);
+    expect(response).toEqual([offerPost]);
     expect(response.statusCode).toEqual(OK);
   });
 
@@ -63,7 +64,7 @@ describe("GET communitypost/offers", () => {
 describe("GET communitypost/offers/users/:userId", () => {
   test("Pass", async () => {
       const response = await axios.get("/communitypost/offers/users/user1");
-      expect(JSON.parse(response.text)).toEqual([offerPost]);
+      expect(response).toEqual([offerPost]);
       expect(response.statusCode).toEqual(OK);
   });
 
@@ -81,32 +82,32 @@ describe("GET communitypost/offers/users/:userId", () => {
 describe("GET communitypost/offers/search/:title", () => {
   test("Similar posts found", async () => {
       const response = await axios.get("/communitypost/offers/search/similarPostsExist");
-      expect(JSON.parse(response.text)).toEqual([offerPost]);
+      expect(response).toEqual([offerPost]);
       expect(response.statusCode).toEqual(OK);
   });
 
   test("No similar posts", async () => {
       const response = await axios.get("/communitypost/offers/search/noSimilarPosts");
-      expect(JSON.parse(response.text)).toEqual([offerPost]);
+      expect(response).toEqual([offerPost]);
       expect(response.statusCode).toEqual(OK);
   });
 });
 
 describe("GET communitypost/offerTags", () => {
   test("Pass", async () => {
-      const response = await axios.put("/communitypost/offerTags").send({ tagList: ["dairy"] });
-      expect(JSON.parse(response.text).results).toEqual([offerPost]);
+      const response = await axios.put("/communitypost/offerTags", { tagList: ["dairy"] });
+      expect(response.results).toEqual([offerPost]);
       expect(response.statusCode).toEqual(OK);
   });
 
   test("No tags provided", async () => {
-      const response = await axios.put("/communitypost/offerTags").send({ tagList: [] });
-      expect(JSON.parse(response.text).results).toEqual([offerPost]);
+      const response = await axios.put("/communitypost/offerTags", { tagList: [] });
+      expect(response.results).toEqual([offerPost]);
       expect(response.statusCode).toEqual(OK);
   });
 
   test("Invalid tags", async () => {
-      const response = await axios.put("/communitypost/offerTags").send({ tagList: null });
+      const response = await axios.put("/communitypost/offerTags", { tagList: null });
       expect(response.statusCode).toEqual(BAD_REQUEST);
   });
 });

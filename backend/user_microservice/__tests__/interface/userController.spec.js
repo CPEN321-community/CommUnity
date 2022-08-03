@@ -18,12 +18,13 @@ const userWithId = {
   profilePicture: "profilePicture.com",
 }
 
-axios.defaults.headers = { token: s2sToken }
-axios.defaults.baseURL = process.env.CLOUD_USER_URL;
+axios.defaults.headers = { token: s2sToken, userId: 'some_user_token' }
+// axios.defaults.baseURL = process.env.CLOUD_USER_URL;
+axios.defaults.baseURL = "http://localhost:8080";
 
 describe("POST /user", () => {
   test("Pass", async () => {
-    const response = await axios.post("/user").set('userId', 'user1').send(user);
+    const response = await axios.post("/user", user);
     expect(JSON.parse(response.text)).toEqual(userWithId);
     expect(response.statusCode).toEqual(CREATED);
   });
@@ -34,7 +35,7 @@ describe("POST /user", () => {
       email: "email@email.com",
       profilePicture: "profilePicture.com",
     }    
-    const response = await axios.post("/user").set('userId', 'user1').send(missingFieldUser);
+    const response = await axios.post("/user", missingFieldUser);
     expect(response.statusCode).toEqual(BAD_REQUEST);
   });
 
@@ -45,7 +46,7 @@ describe("POST /user", () => {
       email: "whacky",
       profilePicture: "profilePicture.com",
     }    
-    const response = await axios.post("/user").set('userId', 'user1').send(badEmail);
+    const response = await axios.post("/user", badEmail);
     expect(response.statusCode).toEqual(BAD_REQUEST);
   });
 
@@ -56,14 +57,14 @@ describe("POST /user", () => {
       email: "email@email.com",
       profilePicture: "whacky",
     }    
-    const response = await axios.post("/user").set('userId', 'user1').send(badPic);
+    const response = await axios.post("/user", badPic);
     expect(response.statusCode).toEqual(BAD_REQUEST);
   });
 });
 
 describe("PUT /user", () => {
   test("Pass", async () => {
-    const response = await axios.put("/user").set('userId', 'user1').send(user);
+    const response = await axios.put("/user", user);
     expect(JSON.parse(response.text)).toEqual(userWithId);
     expect(response.statusCode).toEqual(OK);
   });
@@ -74,7 +75,7 @@ describe("PUT /user", () => {
       email: "email@email.com",
       profilePicture: "profilePicture.com",
     }    
-    const response = await axios.put("/user").set('userId', 'user1').send(missingFieldUser);
+    const response = await axios.put("/user", missingFieldUser);
     expect(response.statusCode).toEqual(BAD_REQUEST);
   });
 
@@ -85,7 +86,7 @@ describe("PUT /user", () => {
       email: "whacky",
       profilePicture: "profilePicture.com",
     }    
-    const response = await axios.put("/user").set('userId', 'user1').send(badEmail);
+    const response = await axios.put("/user", badEmail);
     expect(response.statusCode).toEqual(BAD_REQUEST);
   });
 
@@ -96,12 +97,12 @@ describe("PUT /user", () => {
       email: "email@email.com",
       profilePicture: "whacky",
     }    
-    const response = await axios.put("/user").set('userId', 'user1').send(badPic);
+    const response = await axios.put("/user", badPic);
     expect(response.statusCode).toEqual(BAD_REQUEST);
   });
 
   test("user not found", async () => {
-    const response = await axios.put("/user").set('userId', 'user1').send(badPic);
+    const response = await axios.put("/user", badPic);
     expect(response.statusCode).toEqual(NOT_FOUND);
   });
 });
