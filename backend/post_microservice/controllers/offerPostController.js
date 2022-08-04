@@ -169,47 +169,27 @@ const createOffer = async (req, res) => {
 }
 
 const removeOfferTags = async (req, res) => {
+    // const foundOfferTags = await OfferPostTags.findAll({where:})
     if(req.body.tagList) {
-        const currentTags = await OfferPostTags.findAll({where: {postId: req.body.offerId}});
-        const updatedTags = req.body.tagList;
 
-        for (let i = 0; i < currentTags.length; i = i + 1){
-            if (!(updatedTags.includes(currentTags[i].dataValues.name))) {
-                OfferPostTags.destroy({
-                    where: {
-                        postId: req.body.offerId,
-                        name: currentTags[i].dataValues.name
-                    }
-                });
-            }
-        }
+        // const currentTags = await OfferPostTags.findAll({where: {postId: req.body.offerId}});
+        // const deleteTags = req.body.tagList;
+
+        // for (let i = 0; i < currentTags.length; i = i + 1){
+        //     if (deleteTags.includes(currentTags[i].dataValues.name)) {
+        //         OfferPostTags.destroy({
+        //             where: {
+        //                 postId: req.body.offerId,
+        //                 name: currentTags[i].dataValues.name
+        //             }
+        //         });
+        //     }
+        // }
         res.sendStatus(OK);
     } else {
-        console.log("Error deleting offer tags: " + error);
-        res.sendStatus(INTERNAL_SERVER_ERROR);
+        res.sendStatus(BAD_REQUEST);
     }
 }
-// const addRequestTags = async (req, res) => {
-//     const requestId = req.body.requestId;
-//     const updatedTags = req.body.tagList;
-//     const hasAllFields = requestId && updatedTags;
-//     if(hasAllFields){
-//         const isPresetTags = updatedTags.includes("fruit") || updatedTags.includes("vegetable") || updatedTags.includes("meat");
-//         if(isPresetTags){
-//             updatedTags.forEach(tag => {
-//                 RequestPostTags.create({
-//                     postId: requestId,
-//                     name: tag
-//                 });
-//             });
-//             res.sendStatus(CREATED);
-//         } else {
-//             res.sendStatus(BAD_REQUEST);
-//         }
-//     } else {
-//         res.sendStatus(BAD_REQUEST);
-//     }
-// }
   
 const addOfferTags = async (req, res) => {
     const offerId = req.body.offerId;
@@ -262,22 +242,24 @@ const updateOffer = async (req, res) => {
 }
 
 const deleteOffer = async (req, res) => {
-    if(req.body.offerId) {
+    const offerId = req.params.offerId;
+    const foundOfferTags = await OfferPostTags.findAll({where: {postId: offerId}});
+    const foundOffer = await OfferPost.findOne({where: {offerId: offerId}});
+    if(foundOfferTags && foundOffer) {
         await OfferPostTags.destroy({
             where: {
-                postId: req.body.offerId
+                postId: offerId
             }
         })
         await OfferPost.destroy({
             where: {
-                offerId: req.body.offerId
+                offerId: offerId
             }
         });
-        await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/offer/${req.body.offerId}`);
+        await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/offer/${offerId}`);
         res.sendStatus(OK);
     } else {
-        console.log("Error deleting post: " + error);
-        res.sendStatus(INTERNAL_SERVER_ERROR);
+        res.sendStatus(NOT_FOUND);
     }
 }
 

@@ -137,6 +137,31 @@ describe("POST communitypost/requestTags", () => {
     });
 });
 
+describe("DELETE communitypost/requests/:requestId", () => {
+    let request = null;
+    beforeAll(async () => {
+      request = supertest(app);
+    })
+    
+    test("Offer post is successfully deleted", async () => {
+      RequestPostTags.findAll = jest.fn().mockReturnValueOnce(createdRequestWithId);
+      RequestPost.findOne = jest.fn().mockReturnValueOnce(createdRequestWithId);
+      RequestPostTags.destroy = jest.fn().mockReturnValueOnce(createdRequestWithId);
+      RequestPost.destroy = jest.fn().mockReturnValueOnce(createdRequestWithId);
+      const response = await request.delete("/communitypost/requests/request1").set('token', s2sToken);
+      expect(response.statusCode).toEqual(OK);
+    });
+    
+    test("Offer post with corresponding offerId does not exist", async () => {
+      RequestPostTags.findAll = jest.fn().mockReturnValueOnce(false);
+      RequestPost.findOne = jest.fn().mockReturnValueOnce(false);
+      RequestPostTags.destroy = jest.fn().mockReturnValueOnce(createdRequestWithId);
+      RequestPost.destroy = jest.fn().mockReturnValueOnce(createdRequestWithId);
+      const response = await request.delete("/communitypost/requests/request1").set('token', s2sToken);
+      expect(response.statusCode).toEqual(NOT_FOUND);
+    });
+  });
+
 describe("GET communitypost/requests/:requestID", () => {
     let request = null;
     beforeAll(async () => {

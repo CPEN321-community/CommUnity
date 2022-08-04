@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">71.05% </span>
+                <span class="strong">77.58% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>81/114</span>
+                <span class='fraction'>90/116</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">65.3% </span>
+                <span class="strong">70.58% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>32/49</span>
+                <span class='fraction'>36/51</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76.92% </span>
+                <span class="strong">84.61% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>10/13</span>
+                <span class='fraction'>11/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">71.17% </span>
+                <span class="strong">77.87% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>79/111</span>
+                <span class='fraction'>88/113</span>
             </div>
         
             
@@ -322,7 +322,17 @@
 <a name='L257'></a><a href='#L257'>257</a>
 <a name='L258'></a><a href='#L258'>258</a>
 <a name='L259'></a><a href='#L259'>259</a>
-<a name='L260'></a><a href='#L260'>260</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
+<a name='L260'></a><a href='#L260'>260</a>
+<a name='L261'></a><a href='#L261'>261</a>
+<a name='L262'></a><a href='#L262'>262</a>
+<a name='L263'></a><a href='#L263'>263</a>
+<a name='L264'></a><a href='#L264'>264</a>
+<a name='L265'></a><a href='#L265'>265</a>
+<a name='L266'></a><a href='#L266'>266</a>
+<a name='L267'></a><a href='#L267'>267</a>
+<a name='L268'></a><a href='#L268'>268</a>
+<a name='L269'></a><a href='#L269'>269</a>
+<a name='L270'></a><a href='#L270'>270</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -558,14 +568,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -816,15 +836,25 @@ const addRequestTags = async (req, res) =&gt; {
     }
 }
 &nbsp;
-const deleteRequest = <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
-<span class="cstat-no" title="statement not covered" >    if(req.body.requestId) {</span>
-<span class="cstat-no" title="statement not covered" >        await RequestPostTags.destroy({where: {postId: req.body.requestId}});</span>
-<span class="cstat-no" title="statement not covered" >        await RequestPost.destroy({where: {requestId: req.body.requestId}});</span>
-<span class="cstat-no" title="statement not covered" >        await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/request/${req.body.requestId}`);</span>
-<span class="cstat-no" title="statement not covered" >        res.sendStatus(OK);</span>
+const deleteRequest = async (req, res) =&gt; {
+    const requestId = req.params.requestId;
+    const foundRequestTags = await RequestPostTags.findAll({where: {postId: requestId}});
+    const foundRequest = await RequestPost.findOne({where: {requestId: requestId}});
+    if(foundRequestTags &amp;&amp; foundRequest) {
+        await RequestPostTags.destroy({
+            where: {
+                postId: requestId
+            }
+        })
+        await RequestPost.destroy({
+            where: {
+                requestId: requestId
+            }
+        });
+        await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/request/${requestId}`);
+        res.sendStatus(OK);
     } else {
-<span class="cstat-no" title="statement not covered" >        console.log("Error deleting post: " + error);</span>
-<span class="cstat-no" title="statement not covered" >        res.sendStatus(INTERNAL_SERVER_ERROR);</span>
+        res.sendStatus(NOT_FOUND);
     }
 }
 &nbsp;
@@ -847,7 +877,7 @@ module.exports = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2022-08-04T04:37:50.280Z
+                at 2022-08-04T21:15:35.052Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
