@@ -3,7 +3,7 @@ const { OfferPost, OfferPostTags } = require("../../models");
 const supertest = require("supertest");
 const axios = require("axios");
 const app = require("../../index");
-const { afterAll, beforeAll } = require("@jest/globals");
+const { afterAll, beforeAll, expect } = require("@jest/globals");
 const s2sToken = require('./../../../config_post.json')["s2sToken"];
 const { OK, CREATED, INTERNAL_SERVER_ERROR, UNAUTHORIZED, NOT_FOUND, BAD_REQUEST } = require("../../httpCodes");
 
@@ -97,16 +97,16 @@ describe("POST communitypost/offers", () => {
 
   test("Invalid URL for image", async () => {
     const invalidUrl = {
-    offerId: "offer1",
-    userId: "user1",
-    title: "Juice",
-    description: "Juicy",
-    quantity: 2,
-    pickUpLocation: "Juice Bar",
-    image: "juicyPic",
-    status: "Active",
-    bestBeforeDate: "04/20/2024",
-    tagList: []
+      offerId: "offer1",
+      userId: "user1",
+      title: "Juice",
+      description: "Juicy",
+      quantity: 2,
+      pickUpLocation: "Juice Bar",
+      image: "juicyPic",
+      status: "Active",
+      bestBeforeDate: "04/20/2024",
+      tagList: []
     }
     OfferPost.create = jest.fn().mockReturnValueOnce(invalidUrl);
     OfferPostTags.create = jest.fn();
@@ -117,16 +117,16 @@ describe("POST communitypost/offers", () => {
 
   test("bestBeforeDate entry is invalid (wrong format)", async () => {
     const invalidDate = {
-    offerId: "offer1",
-    userId: "user1",
-    title: "Juice",
-    description: "Juicy",
-    quantity: 2,
-    pickUpLocation: "Juice Bar",
-    image: "juicyPic.com",
-    status: "Active",
-    bestBeforeDate: "04/20/202",
-    tagList: []
+      offerId: "offer1",
+      userId: "user1",
+      title: "Juice",
+      description: "Juicy",
+      quantity: 2,
+      pickUpLocation: "Juice Bar",
+      image: "juicyPic.com",
+      status: "Active",
+      bestBeforeDate: "04/20/202",
+      tagList: []
     }
     OfferPost.create = jest.fn().mockReturnValueOnce(invalidDate);
     OfferPostTags.create = jest.fn();
@@ -136,6 +136,54 @@ describe("POST communitypost/offers", () => {
   });
   
 });
+
+describe("POST communitypost/offerTags", () => {
+  let request = null;
+  beforeAll(async () => {
+    request = supertest(app);
+  })
+
+  test("Specified offer post tags are successfully added", async () => {
+    const newTags = {
+      offerId: "offer4",
+      tagList: ["fruit"]
+    }
+
+    OfferPostTags.create = jest.fn().mockReturnValueOnce(newTags);
+    const response = await request.post("/communitypost/offerTags").set('token', s2sToken).send(newTags);
+    expect(response.statusCode).toEqual(CREATED);
+  });
+
+  test("Missing at least 1 field", async () => {
+      const missingFieldTags = {
+        offerId: "offer5"
+      }
+      OfferPostTags.create = jest.fn();
+      const response = await request.post("/communitypost/offerTags").set('token', s2sToken).send(missingFieldTags);
+      expect(response.statusCode).toEqual(BAD_REQUEST);
+  });
+
+  test("Invalid tag (not part of our preset tags)", async () => {
+      const invalidTags = {
+        offerId: "offer5",
+        tagList: ["human"]
+      }
+      OfferPostTags.create = jest.fn();
+      const response = await request.post("/communitypost/offerTags").set('token', s2sToken).send(invalidTags);
+      expect(response.statusCode).toEqual(BAD_REQUEST);
+  });
+  
+  test("No tags are provided", async () => {
+      const invalidTags = {
+        offerId: "offer5",
+        tagList: []
+      }
+      OfferPostTags.create = jest.fn();
+      const response = await request.post("/communitypost/offerTags").set('token', s2sToken).send(invalidTags);
+      expect(response.statusCode).toEqual(BAD_REQUEST);
+  });
+});
+
 
 describe("GET communitypost/offers/:offerID", () => {
     let request = null;

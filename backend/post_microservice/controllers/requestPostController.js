@@ -127,46 +127,6 @@ const searchRequestsWithTags = async (req, res) => {
     }
 }
 
-// const createOffer = async (req, res) => {
-//     const hasAllFields = req.body.userId && req.body.title && req.body.description && req.body.quantity && req.body.pickUpLocation && req.body.image && req.body.status && req.body.bestBeforeDate && req.body.tagList;
-//     const validDate = req.body.bestBeforeDate.length == 10;
-//     const validImage = req.body.image.includes(".com");
-//     if(hasAllFields && validImage && validDate) {
-//         const createdOffer = await OfferPost.create({
-//             userId: req.body.userId,
-//             title: req.body.title,
-//             description: req.body.description,
-//             quantity: req.body.quantity,
-//             pickUpLocation: req.body.pickUpLocation,
-//             image: req.body.image,
-//             status: req.body.status,
-//             bestBeforeDate: req.body.bestBeforeDate
-//         });
-
-//         let tagList = req.body.tagList;
-//         if(tagList != null){
-//             for(let item of tagList) {
-//                 OfferPostTags.create({
-//                     postId: createdOffer.offerId,
-//                     name: item
-//                 });
-//             }
-//             }
-
-//         const updateUserBody = {
-//             userId: req.body.userId,
-//             offerPosts: 1,
-//             requestPosts: 0,
-//         };
-
-//         await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
-//         res.sendStatus(CREATED);
-
-//     } else {
-//         res.sendStatus(BAD_REQUEST);
-//     }
-// }
-
 const createRequest = async (req, res) => {
     const hasAllFields = req.body.userId && req.body.title && req.body.description && req.body.currentLocation && req.body.status && req.body.tagList;
     if(hasAllFields) {
@@ -198,47 +158,6 @@ const createRequest = async (req, res) => {
       res.sendStatus(BAD_REQUEST);
     }
 }
-
-/**
- * 
- * const createOffer = async (req, res) => {
-    if(req.body.tagList) {
-        const createdOffer = await OfferPost.create({
-            userId: req.body.userId,
-            title: req.body.title,
-            description: req.body.description,
-            quantity: req.body.quantity,
-            pickUpLocation: req.body.pickUpLocation,
-            image: req.body.image,
-            status: req.body.status,
-            bestBeforeDate: req.body.bestBeforeDate
-        });
-
-        let tagList = req.body.tagList;
-        if(tagList != null){
-            for(let item of tagList) {
-                OfferPostTags.create({
-                    postId: createdOffer.offerId,
-                    name: item
-                });
-            }
-            }
-
-        const updateUserBody = {
-            userId: req.body.userId,
-            offerPosts: 1,
-            requestPosts: 0,
-        };
-
-        await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
-        res.sendStatus(OK);
-
-    } else {
-        console.log("Error creating a new post: " + error);
-        res.sendStatus(INTERNAL_SERVER_ERROR);
-    }} 
- * 
- */
 
 const updateRequest = async (req, res) => {
     if(req.body.requestId) {
@@ -293,24 +212,24 @@ const removeRequestTags = async (req, res) => {
 }
 
 const addRequestTags = async (req, res) => {
-    if(req.body.requestId) {
-        const currentTags = await RequestPostTags.findAll({where: {postId: req.body.requestId}});
-
-        const updatedTags = req.body.tagList;
-        const currentTagsList = currentTags.map(tag => tag.dataValues.name);
-
-        updatedTags.forEach(tag => {
-            if (!currentTagsList.includes(tag)) {
+    const requestId = req.body.requestId;
+    const updatedTags = req.body.tagList;
+    const hasAllFields = requestId && updatedTags;
+    if(hasAllFields){
+        const isPresetTags = updatedTags.includes("fruit") || updatedTags.includes("vegetable") || updatedTags.includes("meat");
+        if(isPresetTags){
+            updatedTags.forEach(tag => {
                 RequestPostTags.create({
-                    postId: req.body.requestId,
+                    postId: requestId,
                     name: tag
                 });
-            }
-        });
-        res.sendStatus(OK);
+            });
+            res.sendStatus(CREATED);
+        } else {
+            res.sendStatus(BAD_REQUEST);
+        }
     } else {
-        console.log("Error with adding new offer tags: " + error);
-        res.sendStatus(INTERNAL_SERVER_ERROR);
+        res.sendStatus(BAD_REQUEST);
     }
 }
 

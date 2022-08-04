@@ -189,25 +189,47 @@ const removeOfferTags = async (req, res) => {
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
+// const addRequestTags = async (req, res) => {
+//     const requestId = req.body.requestId;
+//     const updatedTags = req.body.tagList;
+//     const hasAllFields = requestId && updatedTags;
+//     if(hasAllFields){
+//         const isPresetTags = updatedTags.includes("fruit") || updatedTags.includes("vegetable") || updatedTags.includes("meat");
+//         if(isPresetTags){
+//             updatedTags.forEach(tag => {
+//                 RequestPostTags.create({
+//                     postId: requestId,
+//                     name: tag
+//                 });
+//             });
+//             res.sendStatus(CREATED);
+//         } else {
+//             res.sendStatus(BAD_REQUEST);
+//         }
+//     } else {
+//         res.sendStatus(BAD_REQUEST);
+//     }
+// }
   
 const addOfferTags = async (req, res) => {
-    if(req.body.tagList) {
-        const currentTags = await OfferPostTags.findAll({where: {postId: req.body.offerId}});
-        const updatedTags = req.body.tagList;
-        const currentTagsList = currentTags.map(tag => tag.dataValues.name);
-        
-        updatedTags.forEach(tag => {
-            if (!currentTagsList.includes(tag)) {
+    const offerId = req.body.offerId;
+    const updatedTags = req.body.tagList;
+    const hasAllFields = offerId && updatedTags;
+    if(hasAllFields) {
+        const isPresetTags = updatedTags.includes("fruit") || updatedTags.includes("vegetable") || updatedTags.includes("meat");
+        if(isPresetTags){
+            updatedTags.forEach(tag => {
                 OfferPostTags.create({
-                    postId: req.body.offerId,
+                    postId: offerId,
                     name: tag
                 });
-            }
-        });
-        res.sendStatus(OK);
+            });
+            res.sendStatus(CREATED);
+        } else {
+            res.sendStatus(BAD_REQUEST);
+        }
     } else {
-        console.log("Error with adding new offer tags: " + error);
-        res.sendStatus(INTERNAL_SERVER_ERROR);
+        res.sendStatus(BAD_REQUEST);
     }
 }
 
