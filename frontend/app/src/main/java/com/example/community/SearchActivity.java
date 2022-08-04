@@ -9,7 +9,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -39,9 +38,9 @@ import java.util.Map;
 
 public class SearchActivity extends AppCompatActivity {
     private static final String TAG = "SEARCH_ACTIVITY";
-    private EditText searchField;
     private final MutableLiveData<ArrayList<ReqPostObj>> mRequestPosts = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<OfferPostObj>> mOfferPosts = new MutableLiveData<>();
+    private EditText searchField;
     private RecyclerView reqPostResultList;
     private RecyclerView offerPostResultList;
     private Tags tags;
@@ -58,7 +57,6 @@ public class SearchActivity extends AppCompatActivity {
         Tags tags = new Tags(fruit, vegetable, nut);
         this.tags = tags;
 
-        // Ack: https://stackoverflow.com/questions/4165414/how-to-hide-soft-keyboard-on-android-after-clicking-outside-edittext
         this.searchField.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
                 hideKeyboard(view);
@@ -136,7 +134,7 @@ public class SearchActivity extends AppCompatActivity {
                 },
                 error -> {
                     Log.e(TAG, "getChats: " + error);
-                })  {
+                }) {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
@@ -298,7 +296,7 @@ public class SearchActivity extends AppCompatActivity {
                 },
                 error -> {
                     Log.e(TAG, "getChats: " + error);
-                })  {
+                }) {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();

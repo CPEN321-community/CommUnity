@@ -15,6 +15,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.community.VolleyCallBack;
 import com.example.community.classes.GlobalUtil;
 import com.example.community.classes.ReqPostObj;
+import com.example.community.classes.SearchManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +33,9 @@ public class ReqPostViewModel extends AndroidViewModel {
         super(application);
         this.application = application;
         mList = new MutableLiveData<>();
-        fetchReqPosts(null);
+        if ("".equals(SearchManager.getQuery())) {
+            fetchReqPosts(null);
+        }
     }
 
     public LiveData<ArrayList<ReqPostObj>> getList() {

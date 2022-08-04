@@ -28,6 +28,11 @@ public class ReqPostAdapter extends RecyclerView.Adapter<ReqPostAdapter.ViewHold
         this.reqPosts = reqPostList;
     }
 
+    public void setItems(ArrayList<ReqPostObj> items) {
+        this.reqPosts.clear();
+        this.reqPosts.addAll(items);
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

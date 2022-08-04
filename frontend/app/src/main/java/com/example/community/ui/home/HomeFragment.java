@@ -1,19 +1,23 @@
 package com.example.community.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.community.classes.SearchManager;
 import com.example.community.databinding.FragmentHomeBinding;
 import com.example.community.databinding.TimeSunMoonElementBinding;
+import com.example.community.ui.chat.ChatActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -32,7 +36,24 @@ public class HomeFragment extends Fragment {
         });
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        binding.toolbar.chatButton.setOnClickListener((view) -> {
+            Intent chatIntent = new Intent(requireActivity(), ChatActivity.class);
+            startActivity(chatIntent);
+        });
 
+        binding.toolbar.searchToolbar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                SearchManager.search(requireContext());
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                SearchManager.setQuery(s);
+                return false;
+            }
+        });
         return root;
     }
 
@@ -48,6 +69,7 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
 
     private void initTabViewPager() {
         final PostTabAdapter adapter = new PostTabAdapter(getChildFragmentManager(), getLifecycle());
@@ -65,7 +87,7 @@ public class HomeFragment extends Fragment {
     private void initSunMoonWatcher() {
         TimeSunMoonElementBinding sunMoonElementBinding = binding.sunMoonBg;
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
         new SunMoonWatcher(sunMoonElementBinding, width, height);

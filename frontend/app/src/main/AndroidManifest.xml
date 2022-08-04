@@ -59,8 +59,9 @@
         <activity
             android:name=".MainActivity"
             android:exported="false"
+            android:windowSoftInputMode="adjustPan|adjustResize"
             android:label="@string/app_name" />
-        <activity android:name=".ui.tabs.CustomTab" /> <!-- Firebase Cloud Messaging configuration -->
+        <!-- Firebase Cloud Messaging configuration -->
         <service
             android:name=".CustomFirebaseMessagingService"
             android:exported="false">

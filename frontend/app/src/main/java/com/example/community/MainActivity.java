@@ -1,15 +1,8 @@
 package com.example.community;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +13,6 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.community.classes.GlobalUtil;
 import com.example.community.databinding.ActivityMainBinding;
-import com.example.community.ui.chat.ChatActivity;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,13 +36,7 @@ public class MainActivity extends AppCompatActivity {
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_leaderboard, R.id.navigation_profile)
                 .build();
-        ActionBar actionBar = getSupportActionBar();
-        initCustomActionBar();
-
-        if (actionBar != null) {
-            actionBar.setDisplayShowTitleEnabled(false);
-            actionBar.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        }
+        hideActionBar();
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -70,28 +56,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void initCustomActionBar() {
-        LayoutInflater inflator = (LayoutInflater) this
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflator.inflate(R.layout.ab_custom, null);
+    private void hideActionBar() {
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar == null) {
-            Log.e(TAG, "initCustomActionBar: Failed to get support action bar");
-            return;
-        }
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setDisplayShowHomeEnabled(false);
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayShowTitleEnabled(false);
-        v.findViewById(R.id.chat_button).setOnClickListener((view) -> {
-            Intent chatIntent = new Intent(MainActivity.this, ChatActivity.class);
-            startActivity(chatIntent);
-        });
-        v.findViewById(R.id.search_button).setOnClickListener((view) -> {
-            Intent chatIntent = new Intent(MainActivity.this, SearchActivity.class);
-            startActivity(chatIntent);
-        });
-        actionBar.setCustomView(v);
+        actionBar.hide();
     }
 
 }

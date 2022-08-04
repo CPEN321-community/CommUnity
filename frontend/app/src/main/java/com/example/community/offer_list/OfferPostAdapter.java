@@ -27,6 +27,11 @@ public class OfferPostAdapter extends RecyclerView.Adapter<OfferPostAdapter.View
         this.offerPosts = offerPostList;
     }
 
+    public void setItems(ArrayList<OfferPostObj> posts) {
+        this.offerPosts.clear();
+        this.offerPosts.addAll(posts);
+    }
+
 
     @NonNull
     @Override
@@ -67,17 +72,18 @@ public class OfferPostAdapter extends RecyclerView.Adapter<OfferPostAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView itemName;
-        private TextView itemQuantity;
-        private TextView pickupLocation;
-        private ImageView itemImage;
+        private final TextView itemName;
+        private final TextView itemQuantity;
+        private final TextView pickupLocation;
+        private final ImageView itemImage;
+
         public ViewHolder(@NonNull View view) {
             super(view);
-            this.itemName = (TextView)view
+            this.itemName = (TextView) view
                     .findViewById(R.id.offer_item_name);
-            this.itemQuantity = (TextView)view
+            this.itemQuantity = (TextView) view
                     .findViewById(R.id.offer_quantity);
-            this.pickupLocation = (TextView)view
+            this.pickupLocation = (TextView) view
                     .findViewById(R.id.offer_pickup_loc);
             this.itemImage = view.findViewById(R.id.offer_image);
         }

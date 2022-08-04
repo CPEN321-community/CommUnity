@@ -16,7 +16,7 @@
         android:visibility="visible">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/offer_post_list"
+            android:id="@+id/post_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false">

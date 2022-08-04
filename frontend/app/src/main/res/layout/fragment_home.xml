@@ -9,6 +9,33 @@
     app:layout_constraintTop_toTopOf="parent"
     tools:context=".ui.home.HomeFragment">
 
+    <include
+        android:id="@+id/sun_moon_bg"
+        layout="@layout/time_sun_moon_element"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="false"
+        android:contextClickable="false"
+        android:focusable="false"
+        android:longClickable="false"
+        android:stateListAnimator="@animator/nav_default_exit_anim"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/ab_custom_search"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addPostButton"
         android:layout_width="wrap_content"
@@ -26,18 +53,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/add"
         tools:ignore="ImageContrastCheck" />
-
-    <include
-        android:id="@+id/sun_moon_bg"
-        layout="@layout/time_sun_moon_element"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
 
     <include
         android:id="@+id/post_tabs"

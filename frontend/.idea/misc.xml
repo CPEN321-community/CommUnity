@@ -6,6 +6,7 @@
         <entry key="../../../../../../../layout/custom_preview.xml" value="0.22" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/drawable/border_background.xml" value="0.1535" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/drawable/chat.xml" value="0.1135" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/drawable/full_rounded_card.xml" value="0.1535" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/drawable/ic_chat.xml" value="0.1485" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/drawable/ic_search.xml" value="0.1" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/drawable/ic_sun_background.xml" value="0.152" />
@@ -18,11 +19,14 @@
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/drawable/tab_bg_selected.xml" value="0.1535" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/drawable/tabs_custom.xml" value="0.1535" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/font/inter.xml" value="0.22135416666666666" />
-        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/ab_custom.xml" value="0.33" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/ab_custom.xml" value="0.22" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/ab_custom_no_search.xml" value="0.1" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/ab_custom_search.xml" value="0.2" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/activity_chat.xml" value="0.10208333333333333" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/activity_edit_restrictions.xml" value="0.33" />
-        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/activity_login.xml" value="0.33" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/activity_main.xml" value="0.18795289855072464" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/activity_message_list.xml" value="0.1" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/activity_new_offer_form.xml" value="0.1762917933130699" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/activity_new_request_form.xml" value="0.1621376811594203" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/activity_offer_posts.xml" value="0.1716485507246377" />
@@ -33,8 +37,8 @@
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/content_scrolling.xml" value="0.10208333333333333" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/fragment_chat_item.xml" value="0.17806484295845998" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/fragment_dietary_restriction.xml" value="0.16666666666666666" />
-        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/fragment_home.xml" value="0.18" />
-        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/fragment_leaderboard.xml" value="0.19635416666666666" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/fragment_home.xml" value="0.33" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/fragment_leaderboard.xml" value="0.25" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/fragment_leaderboard_user.xml" value="0.19635416666666666" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/fragment_login.xml" value="0.25" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/fragment_message_list.xml" value="0.20199275362318841" />
@@ -42,10 +46,12 @@
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/fragment_offer_post.xml" value="0.17831813576494426" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/fragment_offer_post_individual.xml" value="0.22" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/fragment_offer_post_list.xml" value="0.18" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/fragment_post_list.xml" value="0.18" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/fragment_profile.xml" value="0.18795289855072464" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/fragment_req_post.xml" value="0.20199275362318841" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/fragment_req_post_individual.xml" value="0.1" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/fragment_req_post_list.xml" value="0.25" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/non_clickable_toolbar.xml" value="0.25" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/offer_request_tab.xml" value="0.25" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/rounded_card.xml" value="0.20199275362318841" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/layout/time_sun_moon_element.xml" value="0.33" />
@@ -53,6 +59,7 @@
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/menu/bottom_nav_menu.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/menu/chat_menu.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/menu/menu_chat.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/menu/no_search.xml" value="0.18489583333333334" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/mipmap-anydpi-v26/ic_sun.xml" value="0.152" />
         <entry key="..\:/Users/ch3p5/StudioProjects/CommUnity/frontend/app/src/main/res/mipmap-anydpi-v26/ic_sun_round.xml" value="0.152" />
         <entry key="app/src/main/res/drawable/default_avatar.xml" value="0.103" />
