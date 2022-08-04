@@ -1,7 +1,7 @@
 const { Op } = require("sequelize");
 const axios = require("axios").default;
 const { RequestPost, RequestPostTags } = require("../models");
-const { OK, INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST } = require("../httpCodes");
+const { OK, INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST, CREATED } = require("../httpCodes");
 
 const getRequest = async (req, res) => {
    if(req.params.requestId){
@@ -62,7 +62,8 @@ const searchRequests = async (req, res) => {
                     title: similarPosts[i].dataValues.title,
                     description: similarPosts[i].dataValues.description,
                     currentLocation: similarPosts[i].dataValues.currentLocation,
-                    status: similarPosts[i].dataValues.status
+                    status: similarPosts[i].dataValues.status,
+                    tagList: similarPosts[i].dataValues.tagList,
                 });
             }
         } else {
@@ -70,7 +71,8 @@ const searchRequests = async (req, res) => {
             if (res.length) {
                 const resolved = await Promise.all(res.map(async r => {
                     const item = await RequestPost.findOne({ where: { requestId: r.postId }});
-                    const { userId, requestId, title, description, status, requestTags } = item.dataValues;
+
+                    const { userId, requestId, title, description, currentLocation, status, tagList } = item.dataValues;
                     return {
                         userId,
                         requestId,
@@ -78,10 +80,10 @@ const searchRequests = async (req, res) => {
                         description,
                         currentLocation,
                         status,
-                        requestTags
+                        tagList
                     };
                 }));
-
+                
                 response = response.concat(resolved);
             }
         }
@@ -125,8 +127,49 @@ const searchRequestsWithTags = async (req, res) => {
     }
 }
 
+// const createOffer = async (req, res) => {
+//     const hasAllFields = req.body.userId && req.body.title && req.body.description && req.body.quantity && req.body.pickUpLocation && req.body.image && req.body.status && req.body.bestBeforeDate && req.body.tagList;
+//     const validDate = req.body.bestBeforeDate.length == 10;
+//     const validImage = req.body.image.includes(".com");
+//     if(hasAllFields && validImage && validDate) {
+//         const createdOffer = await OfferPost.create({
+//             userId: req.body.userId,
+//             title: req.body.title,
+//             description: req.body.description,
+//             quantity: req.body.quantity,
+//             pickUpLocation: req.body.pickUpLocation,
+//             image: req.body.image,
+//             status: req.body.status,
+//             bestBeforeDate: req.body.bestBeforeDate
+//         });
+
+//         let tagList = req.body.tagList;
+//         if(tagList != null){
+//             for(let item of tagList) {
+//                 OfferPostTags.create({
+//                     postId: createdOffer.offerId,
+//                     name: item
+//                 });
+//             }
+//             }
+
+//         const updateUserBody = {
+//             userId: req.body.userId,
+//             offerPosts: 1,
+//             requestPosts: 0,
+//         };
+
+//         await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
+//         res.sendStatus(CREATED);
+
+//     } else {
+//         res.sendStatus(BAD_REQUEST);
+//     }
+// }
+
 const createRequest = async (req, res) => {
-    if(req.body.tagList) {
+    const hasAllFields = req.body.userId && req.body.title && req.body.description && req.body.currentLocation && req.body.status && req.body.tagList;
+    if(hasAllFields) {
         const createdRequest = await RequestPost.create({
             userId: req.body.userId,
             title: req.body.title,
@@ -146,14 +189,13 @@ const createRequest = async (req, res) => {
         }
         const updateUserBody = {
             userId: req.body.userId,
-            offerPosts: 0, //BUG ALERT, what if they already made a bunch of offer posts and this is their first request post?
+            offerPosts: 0, 
             requestPosts: 1,
         };
         await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
-        res.sendStatus(OK);
+        res.sendStatus(CREATED);
     } else {
-      console.log("Error creating a new post: " + error);
-      res.sendStatus(INTERNAL_SERVER_ERROR);
+      res.sendStatus(BAD_REQUEST);
     }
 }
 
