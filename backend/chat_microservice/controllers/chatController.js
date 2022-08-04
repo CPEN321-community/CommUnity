@@ -104,7 +104,6 @@ const getAssociatedRooms = async (userId) => {
 }
 
 const createRoom = async (postId, isOffer, senderData) => {
-  if (post.data) {
     let typeString = isOffer ? "offers" : "requests";
     let post = await axios.get(`${process.env.POST_URL}/communitypost/${typeString}/${postId}`);
     let postData = post.data;
@@ -157,9 +156,6 @@ const createRoom = async (postId, isOffer, senderData) => {
     });
 
     return room1[1] && room2[1];
-  } else {
-    console.log('createRoom Error ' + e);
-  }
 };
 
 const sendMessage = async (message, userId, postId) => {

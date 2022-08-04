@@ -7,18 +7,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Message implements Serializable {
-    public Chat parentChat;
     public String postId;
     public String messageText;
     public String userId;
     public Date createdAt;
 
-    public Message(JSONObject messageJSON, String postId, Chat parentChat) {
+    public Message(JSONObject messageJSON, String postId) {
         try {
             this.messageText = messageJSON.getString("message");
             this.userId = messageJSON.getString("userId");
             this.postId = postId;
-            this.parentChat = parentChat;
             String createdAtString = messageJSON.getString("createdAt");
             this.createdAt = new SimpleDateFormat(DateImgUtil.dateFormatString).parse(createdAtString);
 
@@ -32,10 +30,8 @@ public class Message implements Serializable {
             this.messageText = messageJSON.getString("message");
             this.userId = messageJSON.getString("userId");
             this.postId = messageJSON.getString("postId");
-            this.parentChat = Chat.getChat(this.postId);
             String createdAtString = messageJSON.getString("createdAt");
             this.createdAt = new SimpleDateFormat(DateImgUtil.dateFormatString).parse(createdAtString);
-
         } catch (Exception e) {
             e.printStackTrace();
         }

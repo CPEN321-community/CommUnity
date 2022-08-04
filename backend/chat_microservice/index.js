@@ -9,11 +9,7 @@ const db = require('./models');
 const dotenv = require("dotenv");
 const s2sToken = require('./../config_chat.json')["s2sToken"];
 const {OAuth2Client} = require('google-auth-library');
-
-const OK = 200;
-const CREATED = 201
-const INTERNAL_SERVER_ERROR = 500;
-
+const {UNAUTHORIZED} = require('./httpCodes');
 dotenv.config({path: "../ports.env"});
 dotenv.config();
 
@@ -62,5 +58,3 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Node.js Server running on port ${PORT}`);
 });
-
-module.exports = { OK, CREATED, INTERNAL_SERVER_ERROR };

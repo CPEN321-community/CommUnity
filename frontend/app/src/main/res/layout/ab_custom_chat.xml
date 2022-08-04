@@ -28,28 +28,15 @@
             android:gravity="center_vertical"
             android:paddingVertical="10dp">
 
-            <com.example.community.ui.home.EmptySubmitSearchView
-                android:id="@+id/search_toolbar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:iconifiedByDefault="true"
-                android:queryBackground="@drawable/full_rounded_card"
-                android:searchIcon="@drawable/ic_search"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/chat_button"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/chat_button"
-                app:searchIcon="@drawable/ic_search" />
-
             <ImageButton
-                android:id="@+id/chat_button"
+                android:id="@+id/back_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:padding="16dp"
-                android:src="@drawable/ic_chat"
+                android:src="@drawable/ic_arrow_back"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="SpeakableTextPresentCheck" />
 
