@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1659636520237" clover="3.2.0">
-  <project timestamp="1659636520237" name="All files">
-    <metrics statements="333" coveredstatements="252" conditionals="122" coveredconditionals="80" methods="37" coveredmethods="27" elements="492" coveredelements="359" complexity="0" loc="333" ncloc="333" packages="3" files="10" classes="10"/>
+<coverage generated="1659587870295" clover="3.2.0">
+  <project timestamp="1659587870295" name="All files">
+    <metrics statements="332" coveredstatements="241" conditionals="117" coveredconditionals="71" methods="38" coveredmethods="25" elements="487" coveredelements="337" complexity="0" loc="332" ncloc="332" packages="3" files="10" classes="10"/>
     <package name="post_microservice">
       <metrics statements="61" coveredstatements="48" conditionals="8" coveredconditionals="4" methods="3" coveredmethods="1"/>
       <file name="httpCodes.js" path="/Users/parthvikulkarni/Projects/CommUnity/backend/post_microservice/httpCodes.js">
@@ -29,10 +29,10 @@
         <line num="26" count="3" type="stmt"/>
         <line num="28" count="3" type="stmt"/>
         <line num="29" count="3" type="stmt"/>
-        <line num="30" count="50" type="stmt"/>
-        <line num="31" count="50" type="cond" truecount="3" falsecount="1"/>
-        <line num="32" count="50" type="stmt"/>
-        <line num="33" count="50" type="stmt"/>
+        <line num="30" count="46" type="stmt"/>
+        <line num="31" count="46" type="cond" truecount="3" falsecount="1"/>
+        <line num="32" count="46" type="stmt"/>
+        <line num="33" count="46" type="stmt"/>
         <line num="35" count="0" type="stmt"/>
         <line num="36" count="0" type="stmt"/>
         <line num="37" count="0" type="stmt"/>
@@ -76,7 +76,7 @@
       </file>
     </package>
     <package name="post_microservice.controllers">
-      <metrics statements="225" coveredstatements="161" conditionals="104" coveredconditionals="70" methods="26" coveredmethods="20"/>
+      <metrics statements="224" coveredstatements="150" conditionals="99" coveredconditionals="61" methods="27" coveredmethods="18"/>
       <file name="offerPostController.js" path="/Users/parthvikulkarni/Projects/CommUnity/backend/post_microservice/controllers/offerPostController.js">
         <metrics statements="114" coveredstatements="82" conditionals="55" coveredconditionals="38" methods="13" coveredmethods="10"/>
         <line num="1" count="3" type="stmt"/>
