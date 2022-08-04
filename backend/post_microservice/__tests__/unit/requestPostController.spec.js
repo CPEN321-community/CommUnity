@@ -137,6 +137,92 @@ describe("POST communitypost/requestTags", () => {
     });
 });
 
+describe("DELETE communitypost/requests/:requestId", () => {
+    let request = null;
+    beforeAll(async () => {
+      request = supertest(app);
+    })
+    
+    test("Offer post is successfully deleted", async () => {
+      RequestPostTags.findAll = jest.fn().mockReturnValueOnce(createdRequestWithId);
+      RequestPost.findOne = jest.fn().mockReturnValueOnce(createdRequestWithId);
+      RequestPostTags.destroy = jest.fn().mockReturnValueOnce(createdRequestWithId);
+      RequestPost.destroy = jest.fn().mockReturnValueOnce(createdRequestWithId);
+      const response = await request.delete("/communitypost/requests/request1").set('token', s2sToken);
+      expect(response.statusCode).toEqual(OK);
+    });
+    
+    test("Offer post with corresponding offerId does not exist", async () => {
+      RequestPostTags.findAll = jest.fn().mockReturnValueOnce(false);
+      RequestPost.findOne = jest.fn().mockReturnValueOnce(false);
+      RequestPostTags.destroy = jest.fn().mockReturnValueOnce(createdRequestWithId);
+      RequestPost.destroy = jest.fn().mockReturnValueOnce(createdRequestWithId);
+      const response = await request.delete("/communitypost/requests/request1").set('token', s2sToken);
+      expect(response.statusCode).toEqual(NOT_FOUND);
+    });
+  });
+
+  describe("DELETE communitypost/requests/tags", () => {
+    let request = null;
+    beforeAll(async () => {
+      request = supertest(app);
+    })
+    
+    test("Specified request post tags are successfully deleted", async () => {
+      const deleteTags = {
+        requestId: "request1",
+        tagList: ["fruit", "vegetable"]
+      }
+      RequestPostTags.findAll = jest.fn().mockReturnValueOnce(true);
+      RequestPostTags.destroy = jest.fn().mockReturnValueOnce(deleteTags);
+      const response = await request.delete("/communitypost/requests/tags").set('token', s2sToken).send(deleteTags);
+      expect(response.statusCode).toEqual(OK);
+    });
+    
+    test("Missing at least 1 field", async () => {
+      const deleteTags = {
+        tagList: ["fruit", "vegetable"]
+      }
+      RequestPostTags.findAll = jest.fn().mockReturnValueOnce(true);
+      RequestPostTags.destroy = jest.fn().mockReturnValueOnce(deleteTags);
+      const response = await request.delete("/communitypost/requests/tags").set('token', s2sToken).send(deleteTags);
+      expect(response.statusCode).toEqual(BAD_REQUEST);
+    });
+  
+    test("Request post corresponding to the requestId does not have any tags", async () => {
+      const deleteTags = {
+        requestId: "request1",
+        tagList: []
+      }
+      RequestPostTags.findAll = jest.fn().mockReturnValueOnce(true);
+      RequestPostTags.destroy = jest.fn().mockReturnValueOnce(deleteTags);
+      const response = await request.delete("/communitypost/requests/tags").set('token', s2sToken).send(deleteTags);
+      expect(response.statusCode).toEqual(OK);
+    });
+  
+    test("Specified tags do not exist for the request post associated with the requestId", async () => {
+      const deleteTags = {
+        requestId: "request1",
+        tagList: ["fruit", "vegetable"]
+      }
+      RequestPostTags.findAll = jest.fn().mockReturnValueOnce(true);
+      RequestPostTags.destroy = jest.fn().mockReturnValueOnce(deleteTags);
+      const response = await request.delete("/communitypost/requests/tags").set('token', s2sToken).send(deleteTags);
+      expect(response.statusCode).toEqual(OK);
+    });
+  
+    test("No tags provided", async () => {
+      const deleteTags = {
+        requestId: "request1",
+        tagList: null
+      }
+      RequestPostTags.findAll = jest.fn().mockReturnValueOnce(true);
+      RequestPostTags.destroy = jest.fn().mockReturnValueOnce(deleteTags);
+      const response = await request.delete("/communitypost/requests/tags").set('token', s2sToken).send(deleteTags);
+      expect(response.statusCode).toEqual(BAD_REQUEST);
+    });
+  });
+
 describe("GET communitypost/requests/:requestID", () => {
     let request = null;
     beforeAll(async () => {

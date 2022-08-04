@@ -188,26 +188,23 @@ const updateRequest = async (req, res) => {
 }
 
 const removeRequestTags = async (req, res) => {
-    if(req.body.requestId) {
-        const currentTags = await RequestPostTags.findAll({
-            where: {postId: req.body.requestId}
-        });
-        const updatedTags = req.body.tagList;
-
-        for (let i = 0; i < currentTags.length; i = i + 1){
-            if (!(updatedTags.includes(currentTags[i].dataValues.name))) {
-                RequestPostTags.destroy({
-                    where: {
-                        postId: req.body.requestId,
-                        name: currentTags[i].dataValues.name
-                    }
-                });
-            }
+    const requestId = req.body.requestId;
+    const tagList = req.body.tagList;
+    const hasAllFields = requestId && tagList;
+    const foundRequestTags = await RequestPostTags.findAll({where: {postId: requestId}});
+    if(foundRequestTags && hasAllFields) {
+        for(let i = 0; i < tagList.length; i = i + 1){
+            RequestPostTags.destroy({
+                where: {
+                    postId: requestId,
+                    name: tagList[i]
+                }
+            });
         }
         res.sendStatus(OK);
-    } else {
-        console.log("Error deleting offer tags: " + error);
-        res.sendStatus(INTERNAL_SERVER_ERROR);
+    }
+    else {
+        res.sendStatus(BAD_REQUEST);
     }
 }
 
@@ -234,14 +231,24 @@ const addRequestTags = async (req, res) => {
 }
 
 const deleteRequest = async (req, res) => {
-    if(req.body.requestId) {
-        await RequestPostTags.destroy({where: {postId: req.body.requestId}});
-        await RequestPost.destroy({where: {requestId: req.body.requestId}});
-        await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/request/${req.body.requestId}`);
+    const requestId = req.params.requestId;
+    const foundRequestTags = await RequestPostTags.findAll({where: {postId: requestId}});
+    const foundRequest = await RequestPost.findOne({where: {requestId: requestId}});
+    if(foundRequestTags && foundRequest) {
+        await RequestPostTags.destroy({
+            where: {
+                postId: requestId
+            }
+        })
+        await RequestPost.destroy({
+            where: {
+                requestId: requestId
+            }
+        });
+        await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/request/${requestId}`);
         res.sendStatus(OK);
     } else {
-        console.log("Error deleting post: " + error);
-        res.sendStatus(INTERNAL_SERVER_ERROR);
+        res.sendStatus(NOT_FOUND);
     }
 }
 
