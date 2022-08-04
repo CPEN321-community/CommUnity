@@ -64,13 +64,29 @@ describe("POST communitypost/requests", () => {
       request = supertest(app);
     })
   
-    test("Pass", async () => {
+    test("Request post is successfully created", async () => {
       RequestPost.create = jest.fn().mockReturnValueOnce(createdRequestWithId);
       RequestPostTags.create = jest.fn();
       axios.put = jest.fn().mockReturnValueOnce([createdRequestWithId]);
       const response = await request.post("/communitypost/requests").set('token', s2sToken).send(createdRequest);
-      expect(response.statusCode).toEqual(OK);
+      expect(response.statusCode).toEqual(CREATED);
     });
+
+    test("Missing a field", async () => {
+        const missingFieldRequest = {
+        requestId: "request2",
+        userId: "user1",
+        title: "Juice",
+        description: "Juicy",
+        currentLocation: "Juice Bar",
+        tagList: ["orange"]
+        }
+        RequestPost.create = jest.fn().mockReturnValueOnce(missingFieldRequest);
+        RequestPostTags.create = jest.fn();
+        axios.put = jest.fn().mockReturnValueOnce([missingFieldRequest]);
+        const response = await request.post("/communitypost/requests").set('token', s2sToken).send(missingFieldRequest);
+        expect(response.statusCode).toEqual(BAD_REQUEST);
+      });
     
 });
 
