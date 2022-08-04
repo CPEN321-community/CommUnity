@@ -33,9 +33,6 @@
             android:name=".request_list.NewRequestForm"
             android:exported="false" />
         <activity
-            android:name=".SearchActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.chat.message.MessageActivity"
             android:exported="false"
             android:label="@string/title_activity_message"

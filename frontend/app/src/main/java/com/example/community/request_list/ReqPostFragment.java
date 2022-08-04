@@ -31,8 +31,6 @@ public class ReqPostFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.R)
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
-        ReqPostViewModel reqPostViewModel = new ViewModelProvider(this).get(ReqPostViewModel.class);
         binding_req = FragmentPostListBinding.inflate(inflater, container, false);
 
         View root = binding_req.getRoot();
@@ -42,7 +40,6 @@ public class ReqPostFragment extends Fragment {
         SwipeRefreshLayout refresher = binding_req.pullToRefresh;
         refresher.setOnRefreshListener(() -> {
             Log.d(TAG, "onCreateView: Refreshing");
-            if (!"".equals(SearchManager.getQuery())) {
                 SearchManager.search(requireContext());
                 Observer<Boolean> observer = new Observer<Boolean>() {
                     @Override
@@ -54,36 +51,11 @@ public class ReqPostFragment extends Fragment {
                     }
                 };
                 SearchManager.getLoadingData().observe(getViewLifecycleOwner(), observer);
-            } else {
-                reqPostViewModel.fetchReqPosts(new VolleyCallBack() {
-                    @Override
-                    public void onError(VolleyError error) {
-                    }
-
-                    @Override
-                    public void onSuccess(boolean b) {
-                    }
-
-                    @Override
-                    public void onSuccess() {
-                        refresher.setRefreshing(false);
-                    }
-
-                    @Override
-                    public void onError() {
-                        refresher.setRefreshing(false);
-                    }
-                });
-            }
         });
+
         ReqPostAdapter adapter = new ReqPostAdapter(requireContext(),
                 new ArrayList<>());
         listView.setAdapter(adapter);
-
-        reqPostViewModel.getList().observe(getViewLifecycleOwner(), reqList -> {
-            adapter.setItems(reqList);
-            adapter.notifyDataSetChanged();
-        });
 
         SearchManager.getRequestLiveData().observe(getViewLifecycleOwner(), reqList -> {
             adapter.setItems(reqList);

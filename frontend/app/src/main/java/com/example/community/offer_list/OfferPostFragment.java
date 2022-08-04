@@ -30,7 +30,6 @@ public class OfferPostFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        OfferPostViewModel offerPostViewModel = new ViewModelProvider(this).get(OfferPostViewModel.class);
         binding_offer = FragmentPostListBinding.inflate(inflater, container, false);
 
         View root = binding_offer.getRoot();
@@ -40,7 +39,6 @@ public class OfferPostFragment extends Fragment {
         SwipeRefreshLayout refresher = binding_offer.pullToRefresh;
         refresher.setOnRefreshListener(() -> {
             Log.d(TAG, "onCreateView: Refreshing");
-            if (!"".equals(SearchManager.getQuery())) {
                 SearchManager.search(requireContext());
                 Observer<Boolean> observer = new Observer<Boolean>() {
                     @Override
@@ -52,35 +50,11 @@ public class OfferPostFragment extends Fragment {
                     }
                 };
                 SearchManager.getLoadingData().observe(getViewLifecycleOwner(), observer);
-            } else {
-                offerPostViewModel.fetchOfferPosts(new VolleyCallBack() {
-                    @Override
-                    public void onError(VolleyError error) {
-                    }
 
-                    @Override
-                    public void onSuccess(boolean b) {
-                    }
-
-                    @Override
-                    public void onSuccess() {
-                        refresher.setRefreshing(false);
-                    }
-
-                    @Override
-                    public void onError() {
-                        refresher.setRefreshing(false);
-                    }
-                });
-            }
         });
 
         OfferPostAdapter adapter = new OfferPostAdapter(requireContext(), new ArrayList<>());
         listView.setAdapter(adapter);
-        offerPostViewModel.getList().observe(getViewLifecycleOwner(), offerList -> {
-            adapter.setItems(offerList);
-            adapter.notifyDataSetChanged();
-        });
 
         SearchManager.getOfferPostLiveData().observe(getViewLifecycleOwner(), offerList -> {
             adapter.setItems(offerList);

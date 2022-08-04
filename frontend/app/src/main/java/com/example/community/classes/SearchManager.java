@@ -19,8 +19,8 @@ public class SearchManager {
     private static final String TAG = "SEARCH_MANAGER";
     private static final MutableLiveData<ArrayList<ReqPostObj>> requestPosts = new MutableLiveData<>();
     private static final MutableLiveData<ArrayList<OfferPostObj>> offerPosts = new MutableLiveData<>();
-    private static String query;
-    private static MutableLiveData<Boolean> loading = new MutableLiveData<>();
+    private static String query = "";
+    private static final MutableLiveData<Boolean> loading = new MutableLiveData<>();
 
     private static void PerformRequestSearch(Context ctx) {
         String url = GlobalUtil.POST_URL + "/communitypost/requests/search/" + query;
@@ -94,9 +94,87 @@ public class SearchManager {
         queue.add(request);
     }
 
+    private static void GetAllOfferPosts(Context ctx) {
+        String url = GlobalUtil.POST_URL + "/communitypost/offers/";
+        loading.setValue(true);
+        RequestQueue queue = Volley.newRequestQueue(ctx);
+        CustomJSONArrayRequest request = new CustomJSONArrayRequest(Request.Method.GET,
+                url,
+                null,
+                (JSONArray response) -> {
+                    Log.d(TAG, "requestSearch: " + response);
+                    if (response.length() == 0) {
+                        loading.setValue(false);
+                        offerPosts.setValue(new ArrayList<>());
+                        return;
+                    }
+                    ArrayList<OfferPostObj> searchResults = new ArrayList<>();
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            OfferPostObj currReqPost = new OfferPostObj(response.getJSONObject(i));
+                            searchResults.add(currReqPost);
+                        } catch (JSONException e) {
+                            Log.e(TAG, "getChats: " + e);
+                            e.printStackTrace();
+                        }
+                    }
+                    loading.setValue(false);
+                    offerPosts.setValue(searchResults);
+                },
+                error -> {
+                    loading.setValue(false);
+                    Log.e(TAG, "getChats: " + error);
+                });
+        queue.add(request);
+    }
+
+    private static void GetAllRequestPosts(Context ctx) {
+        String url = GlobalUtil.POST_URL + "/communitypost/requests/";
+        loading.setValue(true);
+        RequestQueue queue = Volley.newRequestQueue(ctx);
+        CustomJSONArrayRequest request = new CustomJSONArrayRequest(Request.Method.GET,
+                url,
+                null,
+                (JSONArray response) -> {
+                    Log.d(TAG, "requestSearch: " + response);
+                    if (response.length() == 0) {
+                        loading.setValue(false);
+                        requestPosts.setValue(new ArrayList<>());
+                        return;
+                    }
+                    ArrayList<ReqPostObj> searchResults = new ArrayList<>();
+                    Log.d(TAG, "PerformRequestSearch: " + response);
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            JSONObject jobj = response.getJSONObject(i);
+                            Log.d(TAG, "PerformRequestSearch: jobj" + jobj);
+                            ReqPostObj currReqPost = new ReqPostObj(response.getJSONObject(i));
+                            searchResults.add(currReqPost);
+                            Log.d(TAG, "PerformRequestSearch: " + currReqPost.createdAt);
+                        } catch (JSONException e) {
+                            Log.e(TAG, "getChats: " + e);
+                            e.printStackTrace();
+                        }
+                    }
+                    loading.setValue(false);
+                    requestPosts.setValue(searchResults);
+                },
+                error -> {
+                    loading.setValue(false);
+                    Log.e(TAG, "getChats: " + error);
+                });
+        queue.add(request);
+    }
+
     public static void search(Context ctx) {
-        PerformRequestSearch(ctx);
-        PerformOfferSearch(ctx);
+        if (!"".equals(query)) {
+            PerformRequestSearch(ctx);
+            PerformOfferSearch(ctx);
+
+        } else {
+            GetAllOfferPosts(ctx);
+            GetAllRequestPosts(ctx);
+        }
     }
 
     public static String getQuery() {

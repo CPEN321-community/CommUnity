@@ -99,13 +99,6 @@ public class NonFunctionalNavigationTest {
     }
 
     @Test
-    public void TestSearchTakes4Navigations() {
-        onView(withId(R.id.search_button)).perform(click());
-        NavigateTo(SearchActivity.class);
-        assert navigations <= 4;
-    }
-
-    @Test
     public void TestRestrictionsTakes4Navigations() {
         onView(withId(R.id.navigation_profile)).perform(click());
         NavigateTo(R.id.profile_fragment);
