@@ -1,5 +1,5 @@
 const supertest = require("supertest");
-const { afterAll, beforeAll } = require("@jest/globals");
+const { afterAll, beforeAll, expect } = require("@jest/globals");
 const axios = require("axios");
 const { RequestPost, RequestPostTags } = require("../../models");
 const app = require("../../index");
@@ -89,6 +89,52 @@ describe("POST communitypost/requests", () => {
         expect(response.statusCode).toEqual(BAD_REQUEST);
       });
     
+});
+
+describe("POST communitypost/requestTags", () => {
+    let request = null;
+    beforeAll(async () => {
+      request = supertest(app);
+    })
+
+    test("Specified request post tags are successfully added", async () => {
+        const newTags = {
+            requestId: "request3",
+            tagList: ["fruit"]
+        }
+        RequestPostTags.create = jest.fn().mockReturnValueOnce(newTags);
+        const response = await request.post("/communitypost/requestTags").set('token', s2sToken).send(newTags);
+        expect(response.statusCode).toEqual(CREATED);
+    });
+
+    test("Missing at least 1 field", async () => {
+        const missingFieldTags = {
+            requestId: "request4"
+        }
+        RequestPostTags.create = jest.fn();
+        const response = await request.post("/communitypost/requestTags").set('token', s2sToken).send(missingFieldTags);
+        expect(response.statusCode).toEqual(BAD_REQUEST);
+    });
+
+    test("Invalid tag (not part of our preset tags)", async () => {
+        const invalidTags = {
+            requestId: "request4",
+            tagList: ["human"]
+        }
+        RequestPostTags.create = jest.fn();
+        const response = await request.post("/communitypost/requestTags").set('token', s2sToken).send(invalidTags);
+        expect(response.statusCode).toEqual(BAD_REQUEST);
+    });
+    
+    test("No tags are provided", async () => {
+        const invalidTags = {
+            requestId: "request4",
+            tagList: []
+        }
+        RequestPostTags.create = jest.fn();
+        const response = await request.post("/communitypost/requestTags").set('token', s2sToken).send(invalidTags);
+        expect(response.statusCode).toEqual(BAD_REQUEST);
+    });
 });
 
 describe("GET communitypost/requests/:requestID", () => {
