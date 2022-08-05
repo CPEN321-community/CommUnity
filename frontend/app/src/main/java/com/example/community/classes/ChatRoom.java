@@ -17,6 +17,7 @@ public class ChatRoom {
     private ChatUser me;
     private ChatUser you;
     private String roomId;
+
     private final MutableLiveData<ArrayList<Message>> messages = new MutableLiveData<>(new ArrayList<>());
 
     public ChatRoom(ChatUser me, ChatUser you, String roomId) {

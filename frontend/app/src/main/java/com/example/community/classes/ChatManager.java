@@ -130,8 +130,31 @@ public class ChatManager {
         socket.emit("sendMessage", body);
     }
 
-    public static void CreateRoom(String postId, boolean isOffer) {
+    public static void CreateRoom(String roomId, boolean isOffer, CreateRoomInterface i) {
+        Socket socket = GetSocket();
+        JSONObject body = new JSONObject();
+        socket.once("createRoom", args -> {
+            if (args[0] == null) {
+                i.onFailure();
+            }
+            ChatRoom room = new ChatRoom((JSONObject) args[0]);
+            i.onSuccess(room);
+        });
+        try {
+            JSONObject senderData = new JSONObject();
+            senderData.put("senderId", GlobalUtil.getId());
+            senderData.put("senderFirstName", GlobalUtil.getGivenName());
+            senderData.put("senderLastName", GlobalUtil.getLastName());
+            senderData.put("senderProfilePicture", GlobalUtil.getAccount().getPhotoUrl());
+            body.put("userId", GlobalUtil.getId());
+            body.put("postId", roomId);
+            body.put("isOffer", isOffer);
+            body.put("senderData", senderData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
+        socket.emit("createRoom", body);
     }
 
     public static MutableLiveData<HashMap<String, ChatRoom>> getChats() {

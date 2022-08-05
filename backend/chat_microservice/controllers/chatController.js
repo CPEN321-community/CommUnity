@@ -254,7 +254,7 @@ const sendMessage = async (message, userId, postId) => {
     }
     return msg.dataValues;
   } else {
-    console.log("sendMessage Error " + e);
+    console.log("sendMessage Error, no message or userId or postId");
   }
 };
 

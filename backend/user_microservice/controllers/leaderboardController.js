@@ -21,7 +21,8 @@ const getTopNUsers = async (req, res) => {
                 offerPosts: userScore.dataValues.offerPosts,
                 requestPosts: userScore.dataValues.requestPosts,
                 score: userScore.dataValues.score,
-                profilePicture: user.dataValues.profilePicture
+                profilePicture: user.dataValues.profilePicture,
+                userId: user.dataValues.userId,
             };
             return returnObj;
         }));
