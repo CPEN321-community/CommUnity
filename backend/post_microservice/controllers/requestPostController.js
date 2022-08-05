@@ -7,7 +7,7 @@ const getRequest = async (req, res) => {
    if(req.params.requestId){
        const response = await RequestPost.findOne({where: {requestId: req.params.requestId}});
        if (response) {
-           res.json(response);
+           res.json(JSON.parse(JSON.stringify(response)));
        } else {
            res.sendStatus(NOT_FOUND);
        }
@@ -19,7 +19,7 @@ const getRequest = async (req, res) => {
 const getAllRequests = async (req, res) => {
     const response = await RequestPost.findAll();
     if (response) {
-        res.status(OK).json(response);
+        res.status(OK).json(JSON.parse(JSON.stringify(response)));
     } else {
         res.sendStatus(NOT_FOUND);
     }
@@ -29,7 +29,7 @@ const getAllUserRequests = async (req, res) => {
     if (req.params.userId) {
         const response = await RequestPost.findAll({where: {userId: req.params.userId}});
         if (response) {
-            res.status(OK).json(response);
+            res.status(OK).json(JSON.parse(JSON.stringify(response)));
         } else {
             res.sendStatus(NOT_FOUND)
         }
@@ -90,7 +90,7 @@ const searchRequests = async (req, res) => {
             }
         }
 
-        res.status(OK).json(response);
+        res.status(OK).json(JSON.parse(JSON.stringify(response)));
 
     } catch (error) {
         console.log("Error with searching for request posts: " + error);
@@ -123,7 +123,7 @@ const searchRequestsWithTags = async (req, res) => {
             return post.dataValues;
         })
 
-        res.status(OK).json({results: result});
+        res.status(OK).json(JSON.parse(JSON.stringify({results: result})));
     } else {
       res.sendStatus(BAD_REQUEST);
     }
@@ -178,9 +178,9 @@ const updateRequest = async (req, res) => {
             if (req.body.status == "Fulfilled") {
                 await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/request/${req.body.requestId}`);
             }
-            res.status(OK).json("Post updated");
+            res.status(OK).json(JSON.parse(JSON.stringify("Post updated")));
         }else{
-            res.status(NOT_FOUND).json("You cannot update a post that does not exist");
+            res.status(NOT_FOUND).json(JSON.parse(JSON.stringify("You cannot update a post that does not exist")));
         }
     } else {
       console.log("Error updating post: " + error);
