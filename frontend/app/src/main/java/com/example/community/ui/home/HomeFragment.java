@@ -12,17 +12,24 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.community.classes.SearchManager;
+import com.example.community.classes.Tag;
+import com.example.community.classes.TagManager;
 import com.example.community.databinding.FragmentHomeBinding;
 import com.example.community.databinding.TimeSunMoonElementBinding;
 import com.example.community.offer_list.NewOfferForm;
 import com.example.community.request_list.NewRequestForm;
+import com.example.community.ui.TagAdapter;
 import com.example.community.ui.chat.ChatActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
@@ -38,15 +45,44 @@ public class HomeFragment extends Fragment {
         });
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        RecyclerView tagList = binding.includeTagsHome.tagsList;
+        tagList.setVisibility(View.INVISIBLE);
+        ArrayList<Tag> tags = TagManager.getTags();
+        tagList.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        TagAdapter adapter = new TagAdapter(requireContext(), TagManager.reset());
+        tagList.setAdapter(adapter);
+        for (int i = 0; i < tags.size(); i++) {
+            Tag t = tags.get(i);
+
+            int finalI = i;
+            t.getClickData().observe(getViewLifecycleOwner(), clicked -> {
+                adapter.notifyItemChanged(finalI);
+            });
+        }
+
         binding.toolbar.chatButton.setOnClickListener((view) -> {
             Intent chatIntent = new Intent(requireActivity(), ChatActivity.class);
             startActivity(chatIntent);
         });
 
         binding.addPostButton.setOnClickListener(v -> {
+            TagManager.reset();
             Intent newOfferIntent = new Intent(requireContext(), NewOfferForm.class);
             requireActivity().startActivity(newOfferIntent);
         });
+
+        for (Tag t : TagManager.getTags()) {
+            t.getClickData().observe(getViewLifecycleOwner(), clicked -> {
+                if (TagManager.getClickedTags().size() > 0) {
+                    binding.toolbar.searchToolbar.mSearchSrcTextView.setEnabled(false);
+                    binding.toolbar.searchToolbar.mSearchSrcTextView.setText("");
+                } else {
+                    binding.toolbar.searchToolbar.mSearchSrcTextView.setEnabled(true);
+                }
+                SearchManager.search(requireContext());
+            });
+        }
 
         binding.toolbar.searchToolbar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -62,6 +98,17 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        binding.toolbar.searchToolbar.mSearchSrcTextView.setOnFocusChangeListener((view, hasFocus) -> {
+            if (hasFocus || TagManager.getClickedTags().size() > 0) {
+                tagList.setVisibility(View.VISIBLE);
+            } else {
+                tagList.setVisibility(View.INVISIBLE);
+            }
+        });
+        binding.toolbar.searchToolbar.setOnCloseListener(() -> {
+            TagManager.reset();
+            return false;
+        });
 
         return root;
     }
@@ -96,20 +143,23 @@ public class HomeFragment extends Fragment {
                 int position = tabLayout.getSelectedTabPosition();
                 if (position == 0) {
                     binding.addPostButton.setOnClickListener(v -> {
+                        TagManager.reset();
                         Intent newOfferIntent = new Intent(requireContext(), NewOfferForm.class);
                         requireActivity().startActivity(newOfferIntent);
                     });
-                }
-                else {
+                } else {
                     binding.addPostButton.setOnClickListener(v -> {
+                        TagManager.reset();
                         Intent newReqIntent = new Intent(requireContext(), NewRequestForm.class);
                         requireActivity().startActivity(newReqIntent);
                     });
                 }
             }
+
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
             }
+
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
             }

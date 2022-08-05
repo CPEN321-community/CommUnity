@@ -19,9 +19,9 @@ public class TagManager {
     }
 
     public static ArrayList<Tag> reset() {
-        tags.clear();
-        for (String s : allTags) {
-            tags.add(new Tag(s));
+        ArrayList<Tag> tags = getTags();
+        for (Tag t : tags) {
+            t.getClickData().postValue(false);
         }
         return tags;
     }

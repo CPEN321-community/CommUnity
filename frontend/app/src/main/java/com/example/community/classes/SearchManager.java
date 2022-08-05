@@ -19,8 +19,8 @@ public class SearchManager {
     private static final String TAG = "SEARCH_MANAGER";
     private static final MutableLiveData<ArrayList<ReqPostObj>> requestPosts = new MutableLiveData<>();
     private static final MutableLiveData<ArrayList<OfferPostObj>> offerPosts = new MutableLiveData<>();
-    private static String query = "";
     private static final MutableLiveData<Boolean> loading = new MutableLiveData<>();
+    private static String query = "";
 
     private static void PerformRequestSearch(Context ctx) {
         String url = GlobalUtil.POST_URL + "/communitypost/requests/search/" + query;
@@ -167,6 +167,12 @@ public class SearchManager {
     }
 
     public static void search(Context ctx) {
+        ArrayList<Tag> tags = TagManager.getClickedTags();
+        if (tags.size() > 0) {
+            PerformRequestTagSearch(ctx);
+            PerformOfferTagSearch(ctx);
+            return;
+        }
         if (!"".equals(query)) {
             PerformRequestSearch(ctx);
             PerformOfferSearch(ctx);
@@ -175,6 +181,98 @@ public class SearchManager {
             GetAllOfferPosts(ctx);
             GetAllRequestPosts(ctx);
         }
+    }
+
+    private static void PerformRequestTagSearch(Context ctx) {
+        String url = GlobalUtil.POST_URL + "/communitypost/requestTags";
+        loading.setValue(true);
+        RequestQueue queue = Volley.newRequestQueue(ctx);
+        JSONObject body = new JSONObject();
+        try {
+            body.put("tagList", TagManager.getJSONArr());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        CustomJSONObjectRequest request = new CustomJSONObjectRequest(Request.Method.PUT,
+                url,
+                body,
+                (JSONObject res) -> {
+                    JSONArray response = null;
+                    try {
+                        response = res.getJSONArray("results");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, "requestSearch: " + response);
+                    if (response.length() == 0) {
+                        loading.setValue(false);
+                        offerPosts.setValue(new ArrayList<>());
+                        return;
+                    }
+                    ArrayList<ReqPostObj> searchResults = new ArrayList<>();
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            ReqPostObj currReqPost = new ReqPostObj(response.getJSONObject(i));
+                            searchResults.add(currReqPost);
+                        } catch (JSONException e) {
+                            Log.e(TAG, "getChats: " + e);
+                            e.printStackTrace();
+                        }
+                    }
+                    loading.setValue(false);
+                    requestPosts.setValue(searchResults);
+                },
+                error -> {
+                    loading.setValue(false);
+                    Log.e(TAG, "getChats: " + error);
+                });
+        queue.add(request);
+    }
+
+    private static void PerformOfferTagSearch(Context ctx) {
+        String url = GlobalUtil.POST_URL + "/communitypost/offerTags";
+        loading.setValue(true);
+        RequestQueue queue = Volley.newRequestQueue(ctx);
+        JSONObject body = new JSONObject();
+        try {
+            body.put("tagList", TagManager.getJSONArr());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        CustomJSONObjectRequest request = new CustomJSONObjectRequest(Request.Method.PUT,
+                url,
+                body,
+                (JSONObject res) -> {
+                    JSONArray response = null;
+                    try {
+                        response = res.getJSONArray("results");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, "requestSearch: " + response);
+                    if (response.length() == 0) {
+                        loading.setValue(false);
+                        offerPosts.setValue(new ArrayList<>());
+                        return;
+                    }
+                    ArrayList<OfferPostObj> searchResults = new ArrayList<>();
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            OfferPostObj currReqPost = new OfferPostObj(response.getJSONObject(i));
+                            searchResults.add(currReqPost);
+                        } catch (JSONException e) {
+                            Log.e(TAG, "getChats: " + e);
+                            e.printStackTrace();
+                        }
+                    }
+                    loading.setValue(false);
+                    offerPosts.setValue(searchResults);
+                },
+                error -> {
+                    loading.setValue(false);
+                    Log.e(TAG, "getChats: " + error);
+                });
+        queue.add(request);
     }
 
     public static String getQuery() {

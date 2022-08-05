@@ -98,6 +98,7 @@ const searchOffers = async (req, res) => {
 }
 
 const searchOffersWithTags = async (req, res) => {
+    console.log(req.body);
     if(req.body.tagList) {
         const tagList = req.body.tagList;
         const postTags = await OfferPostTags.findAll({

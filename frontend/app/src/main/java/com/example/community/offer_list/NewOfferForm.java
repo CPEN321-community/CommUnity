@@ -45,6 +45,19 @@ public class NewOfferForm extends AppCompatActivity {
     private EditText pickup;
     private EditText desc;
 
+
+    @Override
+    public void onBackPressed() {
+        TagManager.reset();
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        TagManager.reset();
+        super.onDestroy();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

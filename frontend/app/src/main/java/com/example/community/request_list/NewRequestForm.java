@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.community.R;
 import com.example.community.classes.CustomJSONObjectRequest;
@@ -29,8 +28,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class NewRequestForm extends AppCompatActivity {
 
@@ -38,6 +35,18 @@ public class NewRequestForm extends AppCompatActivity {
     private EditText itemName;
     private EditText desc;
 
+
+    @Override
+    public void onBackPressed() {
+        TagManager.reset();
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        TagManager.reset();
+        super.onDestroy();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
