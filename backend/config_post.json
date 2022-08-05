@@ -1,23 +1,23 @@
 {
   "development": {
     "user": "root",
-    "password": "",
+    "password": "bummyGear",
     "database": "post_data",
-    "host": "127.0.0.1",
+    "host": "127.0.0.1:3306",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": "D4V1nk1L30",
+    "password": "bummyGear",
     "database": "post_data",
-    "host": "127.0.0.1",
+    "host": "127.0.0.1:3306",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": "D4V1nk1L30",
+    "password": "bummyGear",
     "database": "post_data",
-    "host": "127.0.0.1",
+    "host": "127.0.0.1:3306",
     "dialect": "mysql"
   },
   "s2sToken": "cpen321_s2stoken"
