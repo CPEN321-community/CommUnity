@@ -58,16 +58,14 @@ public class SunMoonWatcher {
         if (isDay) {
             if (hour < 12) {
                 binding.greeting.setText("Good Morning!");
-            }
-            else {
+            } else {
                 binding.greeting.setText("Good Afternoon!");
             }
             imageView.setImageResource(R.mipmap.ic_sun_img);
         } else {
             if (hour > 6 && hour < 20) {
                 binding.greeting.setText("Good Evening!");
-            }
-            else {
+            } else {
                 binding.greeting.setText("Good Night!");
             }
             imageView.setImageResource(R.mipmap.ic_moon_img);
@@ -86,8 +84,7 @@ public class SunMoonWatcher {
             midYTime = twelvePM;
             leftXTime = sixAM;
             rightXTime = sixPM;
-        }
-        else {
+        } else {
             midYTime = twelveAM;
             rightXTime = sixAM;
             leftXTime = sixPM;

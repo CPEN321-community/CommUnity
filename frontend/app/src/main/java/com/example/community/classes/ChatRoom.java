@@ -1,7 +1,5 @@
 package com.example.community.classes;
 
-import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.community.exceptions.NoMessagesException;

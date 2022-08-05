@@ -18,7 +18,6 @@ import com.example.community.classes.UserWithScore;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -70,7 +69,7 @@ public class LeaderboardViewModel extends AndroidViewModel {
 
     private void getMyRank() {
         RequestQueue queue = Volley.newRequestQueue(this.application);
-        String url = GlobalUtil.USER_URL + "/rank/"+GlobalUtil.getId();
+        String url = GlobalUtil.USER_URL + "/rank/" + GlobalUtil.getId();
 
         CustomJSONObjectRequest request = new CustomJSONObjectRequest(Request.Method.GET,
                 url,
@@ -78,12 +77,12 @@ public class LeaderboardViewModel extends AndroidViewModel {
                 (response) -> {
                     Log.d(TAG, "fetchLeaderboard: " + response);
                     if (response != null) {
-                            try {
-                                int rank = response.getInt("rank");
-                                this.rank.postValue(rank);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                        try {
+                            int rank = response.getInt("rank");
+                            this.rank.postValue(rank);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 error -> {

@@ -1,8 +1,5 @@
 package com.example.community.classes;
 
-import android.util.Log;
-
-import com.example.community.exceptions.NoMessagesException;
 import com.example.community.ui.chat.ChatAdapter;
 import com.example.community.ui.chat.message.MessageAdapter;
 
@@ -12,8 +9,8 @@ import java.util.HashMap;
 public class ChatMessageHandlerUtil {
     private static ChatAdapter chatAdapter;
     private static final String TAG = "CHAT_MESSAGE_HANDLER_CLASS";
-    private static HashMap<String, ArrayList<Message>> chatMap = new HashMap<>();
-    private static HashMap<String, MessageAdapter> adapterHashMap = new HashMap<>();
+    private static final HashMap<String, ArrayList<Message>> chatMap = new HashMap<>();
+    private static final HashMap<String, MessageAdapter> adapterHashMap = new HashMap<>();
 
 
     public static void AddRoom(String roomId) {

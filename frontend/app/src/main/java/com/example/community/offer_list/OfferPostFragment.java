@@ -9,13 +9,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.android.volley.VolleyError;
-import com.example.community.VolleyCallBack;
 import com.example.community.classes.SearchManager;
 import com.example.community.databinding.FragmentPostListBinding;
 
@@ -39,17 +36,17 @@ public class OfferPostFragment extends Fragment {
         SwipeRefreshLayout refresher = binding_offer.pullToRefresh;
         refresher.setOnRefreshListener(() -> {
             Log.d(TAG, "onCreateView: Refreshing");
-                SearchManager.search(requireContext());
-                Observer<Boolean> observer = new Observer<Boolean>() {
-                    @Override
-                    public void onChanged(Boolean loading) {
-                        if (!loading) {
-                            SearchManager.getLoadingData().removeObserver(this);
-                            refresher.setRefreshing(false);
-                        }
+            SearchManager.search(requireContext());
+            Observer<Boolean> observer = new Observer<Boolean>() {
+                @Override
+                public void onChanged(Boolean loading) {
+                    if (!loading) {
+                        SearchManager.getLoadingData().removeObserver(this);
+                        refresher.setRefreshing(false);
                     }
-                };
-                SearchManager.getLoadingData().observe(getViewLifecycleOwner(), observer);
+                }
+            };
+            SearchManager.getLoadingData().observe(getViewLifecycleOwner(), observer);
 
         });
 

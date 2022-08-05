@@ -79,11 +79,11 @@ public class OfferPostAdapter extends RecyclerView.Adapter<OfferPostAdapter.View
 
         public ViewHolder(@NonNull View view) {
             super(view);
-            this.itemName = (TextView) view
+            this.itemName = view
                     .findViewById(R.id.offer_item_name);
-            this.itemQuantity = (TextView) view
+            this.itemQuantity = view
                     .findViewById(R.id.offer_quantity);
-            this.pickupLocation = (TextView) view
+            this.pickupLocation = view
                     .findViewById(R.id.offer_pickup_loc);
             this.itemImage = view.findViewById(R.id.offer_image);
         }

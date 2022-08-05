@@ -24,6 +24,7 @@ public class LoginManager {
     public static GoogleSignInAccount GetLastSignedInAccount(Context context) {
         return GoogleSignIn.getLastSignedInAccount(context);
     }
+
     public static void SignOut(Context context) {
         GoogleSignInClient client = GetGoogleClient(context);
         client.signOut();

@@ -71,7 +71,7 @@ public class DietaryRestrictionsAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         View newView = view;
         newView = inflater.inflate(R.layout.fragment_dietary_restriction, null);
-        TextView name = (TextView) newView.findViewById(R.id.restriction_name);
+        TextView name = newView.findViewById(R.id.restriction_name);
         ImageButton removeButton = newView.findViewById(R.id.remove_restriction_button);
         DietaryRestriction restriction = this.restrictions.get(i);
         removeButton.setOnClickListener(v -> {

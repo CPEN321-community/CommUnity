@@ -30,11 +30,11 @@ public class ExpandedOfferPost extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expanded_offer_post);
 
-        TextView itemName = (TextView) this.findViewById(R.id.offer_item_name_exp);
-        TextView itemQuantity = (TextView) this.findViewById(R.id.offer_item_quantity_exp);
-        TextView pickupLocation = (TextView) this.findViewById(R.id.offer_item_addr_exp);
-        TextView description = (TextView) this.findViewById(R.id.offer_item_description_exp);
-        TextView bestBefore = (TextView) this.findViewById(R.id.offer_item_bb_date_exp);
+        TextView itemName = this.findViewById(R.id.offer_item_name_exp);
+        TextView itemQuantity = this.findViewById(R.id.offer_item_quantity_exp);
+        TextView pickupLocation = this.findViewById(R.id.offer_item_addr_exp);
+        TextView description = this.findViewById(R.id.offer_item_description_exp);
+        TextView bestBefore = this.findViewById(R.id.offer_item_bb_date_exp);
         Button acceptButton = this.findViewById(R.id.accept_offer_button);
         Intent expOfferIntent = getIntent();
         OfferPostObj post = (OfferPostObj) expOfferIntent.getSerializableExtra("currOffer");
@@ -68,7 +68,7 @@ public class ExpandedOfferPost extends AppCompatActivity {
         String bbDateParsed = post.bestBefore.toString().split(" ")[1] + " " + post.bestBefore.toString().split(" ")[2];
         bestBefore.setText("Best Before: " + bbDateParsed);
 
-        ImageView itemImage = (ImageView) this.findViewById(R.id.offer_item_image_exp);
+        ImageView itemImage = this.findViewById(R.id.offer_item_image_exp);
         if (!Objects.equals(post.image, "")) {
             DateImgUtil.setImageWhenLoaded(this, post.image, itemImage);
         } else {

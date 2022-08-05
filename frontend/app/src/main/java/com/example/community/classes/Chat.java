@@ -1,12 +1,6 @@
 package com.example.community.classes;
 
-import android.util.Log;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Chat implements Serializable {
     private static final String TAG = "CHAT_CLASS";
