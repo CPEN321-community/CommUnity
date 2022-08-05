@@ -55,8 +55,7 @@ public class LeaderboardFragment extends Fragment {
         leaderboardViewModel.getRankData().observe(getViewLifecycleOwner(), rank -> {
             if (rank <= 10) {
                 myScore.setVisibility(View.INVISIBLE);
-            }
-            else {
+            } else {
                 myScore.setVisibility(View.VISIBLE);
             }
         });
