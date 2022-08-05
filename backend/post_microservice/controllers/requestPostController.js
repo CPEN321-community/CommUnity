@@ -1,7 +1,7 @@
 const { Op } = require("sequelize");
 const axios = require("axios").default;
 const { RequestPost, RequestPostTags } = require("../models");
-const { OK, INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST } = require("../httpCodes");
+const { OK, INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST, CREATED } = require("../httpCodes");
 
 const getRequest = async (req, res) => {
    if(req.params.requestId){
@@ -63,7 +63,7 @@ const searchRequests = async (req, res) => {
                     description: similarPosts[i].dataValues.description,
                     currentLocation: similarPosts[i].dataValues.currentLocation,
                     status: similarPosts[i].dataValues.status,
-                    createdAt: similarPosts[i].dataValues.createdAt,
+                    tagList: similarPosts[i].dataValues.tagList,
                 });
             }
         } else {
@@ -71,21 +71,19 @@ const searchRequests = async (req, res) => {
             if (res.length) {
                 const resolved = await Promise.all(res.map(async r => {
                     const item = await RequestPost.findOne({ where: { requestId: r.postId }});
-                    const { userId, offerId, title, description, quantity, pickUpLocation, image, status, bestBeforeDate, requestTags } = item.dataValues;
+
+                    const { userId, requestId, title, description, currentLocation, status, tagList } = item.dataValues;
                     return {
                         userId,
-                        offerId,
+                        requestId,
                         title,
                         description,
-                        quantity,
-                        pickUpLocation,
-                        image,
+                        currentLocation,
                         status,
-                        bestBeforeDate,
-                        requestTags
+                        tagList
                     };
                 }));
-
+                
                 response = response.concat(resolved);
             }
         }
@@ -130,39 +128,40 @@ const searchRequestsWithTags = async (req, res) => {
 }
 
 const createRequest = async (req, res) => {
-    if(req.body.tagList) {
+    const hasAllFields = req.body.userId && req.body.title && req.body.description && req.body.currentLocation && req.body.status && req.body.tagList;
+    if(hasAllFields) {
         const createdRequest = await RequestPost.create({
             userId: req.body.userId,
             title: req.body.title,
             description: req.body.description,
+            currentLocation: req.body.currentLocation,
             status: req.body.status
           });
 
         let tagList = req.body.tagList;
-        if (tagList) {
+        if (tagList != null) {
             for(let item of tagList) {
                 RequestPostTags.create({
-                    postId: createdRequest.dataValues.requestId,
+                    postId: createdRequest.requestId,
                     name: item
                   });
             }
         }
-        
         const updateUserBody = {
             userId: req.body.userId,
-            offerPosts: 0,
+            offerPosts: 0, 
             requestPosts: 1,
         };
         await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
-        res.status(OK).json({message: "Successfully created post!"});
+        res.sendStatus(CREATED);
     } else {
-      console.log("Error creating a new post: " + error);
-      res.sendStatus(INTERNAL_SERVER_ERROR);
+      res.sendStatus(BAD_REQUEST);
     }
 }
 
 const updateRequest = async (req, res) => {
-    if(req.body.requestId) {
+    const hasAllFields = req.body.requestId && req.body.userId && req.body.title && req.body.description && req.body.currentLocation && req.body.status;
+    if(hasAllFields) {
         const updateRequest = RequestPost.findOne({
             where: {requestId: req.body.requestId}
         });
@@ -183,67 +182,72 @@ const updateRequest = async (req, res) => {
             res.status(NOT_FOUND).json("You cannot update a post that does not exist");
         }
     } else {
-      console.log("Error updating post: " + error);
-      res.sendStatus(INTERNAL_SERVER_ERROR);
+      res.sendStatus(BAD_REQUEST);
     }
-
 }
 
 const removeRequestTags = async (req, res) => {
-    if(req.body.requestId) {
-        const currentTags = await RequestPostTags.findAll({
-            where: {postId: req.body.requestId}
-        });
-        const updatedTags = req.body.tagList;
-
-        for (let i = 0; i < currentTags.length; i = i + 1){
-            if (!(updatedTags.includes(currentTags[i].dataValues.name))) {
-                RequestPostTags.destroy({
-                    where: {
-                        postId: req.body.requestId,
-                        name: currentTags[i].dataValues.name
-                    }
-                });
-            }
+    const requestId = req.body.requestId;
+    const tagList = req.body.tagList;
+    const hasAllFields = requestId && tagList;
+    const foundRequestTags = await RequestPostTags.findAll({where: {postId: requestId}});
+    if(foundRequestTags && hasAllFields) {
+        for(let i = 0; i < tagList.length; i = i + 1){
+            RequestPostTags.destroy({
+                where: {
+                    postId: requestId,
+                    name: tagList[i]
+                }
+            });
         }
         res.sendStatus(OK);
-    } else {
-        console.log("Error deleting offer tags: " + error);
-        res.sendStatus(INTERNAL_SERVER_ERROR);
+    }
+    else {
+        res.sendStatus(BAD_REQUEST);
     }
 }
 
 const addRequestTags = async (req, res) => {
-    if(req.body.requestId) {
-        const currentTags = await RequestPostTags.findAll({where: {postId: req.body.requestId}});
-
-        const updatedTags = req.body.tagList;
-        const currentTagsList = currentTags.map(tag => tag.dataValues.name);
-
-        updatedTags.forEach(tag => {
-            if (!currentTagsList.includes(tag)) {
+    const requestId = req.body.requestId;
+    const updatedTags = req.body.tagList;
+    const hasAllFields = requestId && updatedTags;
+    if(hasAllFields){
+        const isPresetTags = updatedTags.includes("fruit") || updatedTags.includes("vegetable") || updatedTags.includes("meat");
+        if(isPresetTags){
+            updatedTags.forEach(tag => {
                 RequestPostTags.create({
-                    postId: req.body.requestId,
+                    postId: requestId,
                     name: tag
                 });
-            }
-        });
-        res.sendStatus(OK);
+            });
+            res.sendStatus(CREATED);
+        } else {
+            res.sendStatus(BAD_REQUEST);
+        }
     } else {
-        console.log("Error with adding new offer tags: " + error);
-        res.sendStatus(INTERNAL_SERVER_ERROR);
+        res.sendStatus(BAD_REQUEST);
     }
 }
 
 const deleteRequest = async (req, res) => {
-    if(req.body.requestId) {
-        await RequestPostTags.destroy({where: {postId: req.body.requestId}});
-        await RequestPost.destroy({where: {requestId: req.body.requestId}});
-        await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/request/${req.body.requestId}`);
+    const requestId = req.params.requestId;
+    const foundRequestTags = await RequestPostTags.findAll({where: {postId: requestId}});
+    const foundRequest = await RequestPost.findOne({where: {requestId: requestId}});
+    if(foundRequestTags && foundRequest) {
+        await RequestPostTags.destroy({
+            where: {
+                postId: requestId
+            }
+        })
+        await RequestPost.destroy({
+            where: {
+                requestId: requestId
+            }
+        });
+        await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/request/${requestId}`);
         res.sendStatus(OK);
     } else {
-        console.log("Error deleting post: " + error);
-        res.sendStatus(INTERNAL_SERVER_ERROR);
+        res.sendStatus(NOT_FOUND);
     }
 }
 

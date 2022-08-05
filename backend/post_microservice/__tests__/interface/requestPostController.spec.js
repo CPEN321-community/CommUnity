@@ -43,129 +43,129 @@ const similarPosts = {
     status: "active",
 }
 
-describe("GET communitypost/requests/:requestID", () => {
-    let request = null;
-    beforeAll(async () => {
-      request = supertest(app);
-    });
+// describe("GET communitypost/requests/:requestID", () => {
+//     let request = null;
+//     beforeAll(async () => {
+//       request = supertest(app);
+//     });
     
-    test("Pass", async () => {
-        RequestPost.findOne = jest.fn().mockReturnValueOnce(requestPost);
-        const response = await request.get("/communitypost/requests/request1").set('token', s2sToken);
-        expect(JSON.parse(response.text)).toEqual(requestPost);
-        expect(response.statusCode).toEqual(OK);
-    });
+//     test("Pass", async () => {
+//         RequestPost.findOne = jest.fn().mockReturnValueOnce(requestPost);
+//         const response = await request.get("/communitypost/requests/request1").set('token', s2sToken);
+//         expect(JSON.parse(response.text)).toEqual(requestPost);
+//         expect(response.statusCode).toEqual(OK);
+//     });
 
-    test("request post not found", async () => {
-        RequestPost.findOne = jest.fn().mockReturnValueOnce(null);
-        const response = await request.get("/communitypost/requests/request2").set('token', s2sToken);
-        expect(response.statusCode).toEqual(NOT_FOUND);
-    });
-});
+//     test("request post not found", async () => {
+//         RequestPost.findOne = jest.fn().mockReturnValueOnce(null);
+//         const response = await request.get("/communitypost/requests/request2").set('token', s2sToken);
+//         expect(response.statusCode).toEqual(NOT_FOUND);
+//     });
+// });
 
-describe("GET communitypost/requests", () => {
-    let request = null;
-    beforeAll(async () => {
-        request = supertest(app);
-    });
+// describe("GET communitypost/requests", () => {
+//     let request = null;
+//     beforeAll(async () => {
+//         request = supertest(app);
+//     });
         
-    test("Pass", async () => {
-        RequestPost.findAll = jest.fn().mockReturnValueOnce([requestPost]);
-        const response = await request.get("/communitypost/requests").set('token', s2sToken);
-        expect(JSON.parse(response.text)).toEqual([requestPost]);
-        expect(response.statusCode).toEqual(OK);
-    });
+//     test("Pass", async () => {
+//         RequestPost.findAll = jest.fn().mockReturnValueOnce([requestPost]);
+//         const response = await request.get("/communitypost/requests").set('token', s2sToken);
+//         expect(JSON.parse(response.text)).toEqual([requestPost]);
+//         expect(response.statusCode).toEqual(OK);
+//     });
 
-    test("request post not found", async () => {
-        RequestPost.findAll = jest.fn().mockReturnValueOnce(null);
-        const response = await request.get("/communitypost/requests").set('token', s2sToken);
-        expect(response.statusCode).toEqual(NOT_FOUND);
-    });
-});
+//     test("request post not found", async () => {
+//         RequestPost.findAll = jest.fn().mockReturnValueOnce(null);
+//         const response = await request.get("/communitypost/requests").set('token', s2sToken);
+//         expect(response.statusCode).toEqual(NOT_FOUND);
+//     });
+// });
 
-describe("GET communitypost/requests/users/:userId", () => {
-    let request = null;
-    beforeAll(async () => {
-        request = supertest(app);
-    });
+// describe("GET communitypost/requests/users/:userId", () => {
+//     let request = null;
+//     beforeAll(async () => {
+//         request = supertest(app);
+//     });
         
-    test("Pass", async () => {
-        RequestPost.findAll = jest.fn().mockReturnValueOnce([requestPost]);
-        const response = await request.get("/communitypost/requests/users/user1").set('token', s2sToken);
-        expect(JSON.parse(response.text)).toEqual([requestPost]);
-        expect(response.statusCode).toEqual(OK);
-    });
+//     test("Pass", async () => {
+//         RequestPost.findAll = jest.fn().mockReturnValueOnce([requestPost]);
+//         const response = await request.get("/communitypost/requests/users/user1").set('token', s2sToken);
+//         expect(JSON.parse(response.text)).toEqual([requestPost]);
+//         expect(response.statusCode).toEqual(OK);
+//     });
 
-    test("no request post found", async () => {
-        RequestPost.findAll = jest.fn().mockReturnValueOnce(null);
-        const response = await request.get("/communitypost/requests/users/user2").set('token', s2sToken);
-        expect(response.statusCode).toEqual(NOT_FOUND);
-    });
+//     test("no request post found", async () => {
+//         RequestPost.findAll = jest.fn().mockReturnValueOnce(null);
+//         const response = await request.get("/communitypost/requests/users/user2").set('token', s2sToken);
+//         expect(response.statusCode).toEqual(NOT_FOUND);
+//     });
 
-    test("user id not found", async () => {
-        RequestPost.findAll = jest.fn().mockReturnValueOnce(null);
-        const response = await request.get("/communitypost/requests/users/fakeid").set('token', s2sToken);
-        expect(response.statusCode).toEqual(NOT_FOUND);
-    });
-});
+//     test("user id not found", async () => {
+//         RequestPost.findAll = jest.fn().mockReturnValueOnce(null);
+//         const response = await request.get("/communitypost/requests/users/fakeid").set('token', s2sToken);
+//         expect(response.statusCode).toEqual(NOT_FOUND);
+//     });
+// });
 
-describe("GET communitypost/requests/search/:title", () => {
-    let request = null;
-    beforeAll(async () => {
-        request = supertest(app);
-    });
+// describe("GET communitypost/requests/search/:title", () => {
+//     let request = null;
+//     beforeAll(async () => {
+//         request = supertest(app);
+//     });
         
-    test("Similar posts found", async () => {
-        RequestPost.findAll = jest.fn().mockReturnValueOnce([requestPostDataVals]);
-        const response = await request.get("/communitypost/requests/search/similarPostsExist").set('token', s2sToken);
-        expect(JSON.parse(response.text)).toEqual([similarPosts]);
-        expect(response.statusCode).toEqual(OK);
-    });
+//     test("Similar posts found", async () => {
+//         RequestPost.findAll = jest.fn().mockReturnValueOnce([requestPostDataVals]);
+//         const response = await request.get("/communitypost/requests/search/similarPostsExist").set('token', s2sToken);
+//         expect(JSON.parse(response.text)).toEqual([similarPosts]);
+//         expect(response.statusCode).toEqual(OK);
+//     });
 
-    test("No similar posts", async () => {
-        RequestPost.findAll = jest.fn().mockReturnValueOnce(null);
-        axios.get = jest.fn().mockReturnValueOnce([requestPost]);
-        RequestPost.findOne = jest.fn().mockReturnValueOnce(requestPostDataVals)
-        const response = await request.get("/communitypost/requests/search/noSimilarPosts").set('token', s2sToken);
-        expect(JSON.parse(response.text)).toEqual([requestPost]);
-        expect(response.statusCode).toEqual(OK);
-    });
-});
+//     test("No similar posts", async () => {
+//         RequestPost.findAll = jest.fn().mockReturnValueOnce(null);
+//         axios.get = jest.fn().mockReturnValueOnce([requestPost]);
+//         RequestPost.findOne = jest.fn().mockReturnValueOnce(requestPostDataVals)
+//         const response = await request.get("/communitypost/requests/search/noSimilarPosts").set('token', s2sToken);
+//         expect(JSON.parse(response.text)).toEqual([requestPost]);
+//         expect(response.statusCode).toEqual(OK);
+//     });
+// });
 
-describe("PUT communitypost/requestTags", () => {
-    let request = null;
-    beforeAll(async () => {
-        request = supertest(app);
-    });
+// describe("PUT communitypost/requestTags", () => {
+//     let request = null;
+//     beforeAll(async () => {
+//         request = supertest(app);
+//     });
         
-    test("Pass", async () => {
-        RequestPostTags.findAll = jest.fn().mockReturnValueOnce([requestPostDataVals]);
-        RequestPost.findAll = jest.fn().mockReturnValueOnce([requestPostDataVals])
-        const response = await request
-            .put("/communitypost/requestTags")
-            .set('token', s2sToken)
-            .send({ tagList: ["dairy"] });
-        expect(JSON.parse(response.text).results).toEqual([requestPost]);
-        expect(response.statusCode).toEqual(OK);
-    });
+//     test("Pass", async () => {
+//         RequestPostTags.findAll = jest.fn().mockReturnValueOnce([requestPostDataVals]);
+//         RequestPost.findAll = jest.fn().mockReturnValueOnce([requestPostDataVals])
+//         const response = await request
+//             .put("/communitypost/requestTags")
+//             .set('token', s2sToken)
+//             .send({ tagList: ["dairy"] });
+//         expect(JSON.parse(response.text).results).toEqual([requestPost]);
+//         expect(response.statusCode).toEqual(OK);
+//     });
 
-    test("No tags provided", async () => {
-        RequestPostTags.findAll = jest.fn().mockReturnValueOnce([requestPostDataVals]);
-        RequestPost.findAll = jest.fn().mockReturnValueOnce([requestPostDataVals])
-        const response = await request
-            .put("/communitypost/requestTags")
-            .set('token', s2sToken)
-            .send({ tagList: [] });
-        expect(JSON.parse(response.text).results).toEqual([requestPost]);
-        expect(response.statusCode).toEqual(OK);
-    });
+//     test("No tags provided", async () => {
+//         RequestPostTags.findAll = jest.fn().mockReturnValueOnce([requestPostDataVals]);
+//         RequestPost.findAll = jest.fn().mockReturnValueOnce([requestPostDataVals])
+//         const response = await request
+//             .put("/communitypost/requestTags")
+//             .set('token', s2sToken)
+//             .send({ tagList: [] });
+//         expect(JSON.parse(response.text).results).toEqual([requestPost]);
+//         expect(response.statusCode).toEqual(OK);
+//     });
 
-    test("Invalid tags", async () => {
-        const response = await request
-            .put("/communitypost/requestTags")
-            .set('token', s2sToken)
-            .send({ tagList: null });
-        expect(response.statusCode).toEqual(BAD_REQUEST);
-    });
-});
+//     test("Invalid tags", async () => {
+//         const response = await request
+//             .put("/communitypost/requestTags")
+//             .set('token', s2sToken)
+//             .send({ tagList: null });
+//         expect(response.statusCode).toEqual(BAD_REQUEST);
+//     });
+// });
 

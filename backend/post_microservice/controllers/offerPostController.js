@@ -130,8 +130,10 @@ const searchOffersWithTags = async (req, res) => {
 }
 
 const createOffer = async (req, res) => {
-    console.log(req.body);
-    if(req.body.tagList) {
+    const hasAllFields = req.body.userId && req.body.title && req.body.description && req.body.quantity && req.body.pickUpLocation && req.body.image && req.body.status && req.body.bestBeforeDate && req.body.tagList;
+    const validDate = req.body.bestBeforeDate.length == 10;
+    const validImage = req.body.image.includes(".com");
+    if(hasAllFields && validImage && validDate) {
         const createdOffer = await OfferPost.create({
             userId: req.body.userId,
             title: req.body.title,
@@ -160,59 +162,59 @@ const createOffer = async (req, res) => {
         };
 
         await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
-        res.status(CREATED).json({message: "Successfully Created Post!"});
+        res.sendStatus(CREATED);
 
     } else {
-        console.log("Error creating a new post: no tag list");
-        res.sendStatus(INTERNAL_SERVER_ERROR);
+        res.sendStatus(BAD_REQUEST);
     }
 }
 
 const removeOfferTags = async (req, res) => {
-    if(req.body.tagList) {
-        const currentTags = await OfferPostTags.findAll({where: {postId: req.body.offerId}});
-        const updatedTags = req.body.tagList;
-
-        for (let i = 0; i < currentTags.length; i = i + 1){
-            if (!(updatedTags.includes(currentTags[i].dataValues.name))) {
-                OfferPostTags.destroy({
-                    where: {
-                        postId: req.body.offerId,
-                        name: currentTags[i].dataValues.name
-                    }
-                });
-            }
+    const offerId = req.body.offerId;
+    const tagList = req.body.tagList;
+    const hasAllFields = offerId && tagList;
+    const foundOfferTags = await OfferPostTags.findAll({where: {postId: offerId}});
+    if(foundOfferTags && hasAllFields) {
+        for(let i = 0; i < tagList.length; i = i + 1){
+            OfferPostTags.destroy({
+                where: {
+                    postId: offerId,
+                    name: tagList[i]
+                }
+            });
         }
         res.sendStatus(OK);
-    } else {
-        console.log("Error deleting offer tags: " + error);
-        res.sendStatus(INTERNAL_SERVER_ERROR);
+    }
+    else {
+        res.sendStatus(BAD_REQUEST);
     }
 }
   
 const addOfferTags = async (req, res) => {
-    if(req.body.tagList) {
-        const currentTags = await OfferPostTags.findAll({where: {postId: req.body.offerId}});
-        const updatedTags = req.body.tagList;
-        const currentTagsList = currentTags.map(tag => tag.dataValues.name);
-        
-        updatedTags.forEach(tag => {
-            if (!currentTagsList.includes(tag)) {
+    const offerId = req.body.offerId;
+    const updatedTags = req.body.tagList;
+    const hasAllFields = offerId && updatedTags;
+    if(hasAllFields) {
+        const isPresetTags = updatedTags.includes("fruit") || updatedTags.includes("vegetable") || updatedTags.includes("meat");
+        if(isPresetTags){
+            updatedTags.forEach(tag => {
                 OfferPostTags.create({
-                    postId: req.body.offerId,
+                    postId: offerId,
                     name: tag
                 });
-            }
-        });
-        res.sendStatus(OK);
+            });
+            res.sendStatus(CREATED);
+        } else {
+            res.sendStatus(BAD_REQUEST);
+        }
     } else {
-        console.log("Error with adding new offer tags: " + error);
-        res.sendStatus(INTERNAL_SERVER_ERROR);
+        res.sendStatus(BAD_REQUEST);
     }
 }
 
 const updateOffer = async (req, res) => {
-    if(req.body.offerId) {
+    const hasAllFields = req.body.offerId && req.body.userId && req.body.title && req.body.description && req.body.quantity && req.body.pickUpLocation && req.body.image && req.body.status && req.body.bestBeforeDate;
+    if(hasAllFields) {
         const updateOffer = OfferPost.findOne({where: {offerId: req.body.offerId}});
         const offerAlreadyExists = updateOffer != null;
         if(offerAlreadyExists){
@@ -231,31 +233,32 @@ const updateOffer = async (req, res) => {
             }
             res.sendStatus(OK);
         }else{
-            res.sendStatus(OK);
+            res.sendStatus(NOT_FOUND);
         }
     } else {
-        console.log("Error updating post: " + error);
-        res.sendStatus(INTERNAL_SERVER_ERROR);
+        res.sendStatus(BAD_REQUEST);
     }
 }
 
 const deleteOffer = async (req, res) => {
-    if(req.body.offerId) {
+    const offerId = req.params.offerId;
+    const foundOfferTags = await OfferPostTags.findAll({where: {postId: offerId}});
+    const foundOffer = await OfferPost.findOne({where: {offerId: offerId}});
+    if(foundOfferTags && foundOffer) {
         await OfferPostTags.destroy({
             where: {
-                postId: req.body.offerId
+                postId: offerId
             }
         })
         await OfferPost.destroy({
             where: {
-                offerId: req.body.offerId
+                offerId: offerId
             }
         });
-        await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/offer/${req.body.offerId}`);
+        await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/offer/${offerId}`);
         res.sendStatus(OK);
     } else {
-        console.log("Error deleting post: " + error);
-        res.sendStatus(INTERNAL_SERVER_ERROR);
+        res.sendStatus(NOT_FOUND);
     }
 }
 
