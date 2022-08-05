@@ -23,30 +23,54 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
+<<<<<<< HEAD
                 <span class="strong">86.55% </span>
                 <span class="quiet">Statements</span>
                 <span class='fraction'>103/119</span>
+=======
+                <span class="strong">83.03% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>93/112</span>
+>>>>>>> c00e7d4cb645d53ea6b9ddde7b3b941aadc51751
             </div>
         
             
             <div class='fl pad1y space-right2'>
+<<<<<<< HEAD
                 <span class="strong">81.35% </span>
                 <span class="quiet">Branches</span>
                 <span class='fraction'>48/59</span>
+=======
+                <span class="strong">76.36% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>42/55</span>
+>>>>>>> c00e7d4cb645d53ea6b9ddde7b3b941aadc51751
             </div>
         
             
             <div class='fl pad1y space-right2'>
+<<<<<<< HEAD
                 <span class="strong">92.3% </span>
                 <span class="quiet">Functions</span>
                 <span class='fraction'>12/13</span>
+=======
+                <span class="strong">84.61% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>11/13</span>
+>>>>>>> c00e7d4cb645d53ea6b9ddde7b3b941aadc51751
             </div>
         
             
             <div class='fl pad1y space-right2'>
+<<<<<<< HEAD
                 <span class="strong">86.2% </span>
                 <span class="quiet">Lines</span>
                 <span class='fraction'>100/116</span>
+=======
+                <span class="strong">82.72% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>91/110</span>
+>>>>>>> c00e7d4cb645d53ea6b9ddde7b3b941aadc51751
             </div>
         
             
@@ -337,7 +361,13 @@
 <a name='L272'></a><a href='#L272'>272</a>
 <a name='L273'></a><a href='#L273'>273</a>
 <a name='L274'></a><a href='#L274'>274</a>
+<<<<<<< HEAD
 <a name='L275'></a><a href='#L275'>275</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
+=======
+<a name='L275'></a><a href='#L275'>275</a>
+<a name='L276'></a><a href='#L276'>276</a>
+<a name='L277'></a><a href='#L277'>277</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
+>>>>>>> c00e7d4cb645d53ea6b9ddde7b3b941aadc51751
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -508,6 +538,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
+<<<<<<< HEAD
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
@@ -515,16 +546,34 @@
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">4x</span>
+=======
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+>>>>>>> c00e7d4cb645d53ea6b9ddde7b3b941aadc51751
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<<<<<<< HEAD
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+=======
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+>>>>>>> c00e7d4cb645d53ea6b9ddde7b3b941aadc51751
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -781,6 +830,7 @@ const createOffer = async (req, res) =&gt; {
     }
 }
 &nbsp;
+<<<<<<< HEAD
 const removeOfferTags = async (req, res) =&gt; {
     const offerId = req.body.offerId;
     const tagList = req.body.tagList;
@@ -799,6 +849,28 @@ const removeOfferTags = async (req, res) =&gt; {
     }
     else {
         res.sendStatus(BAD_REQUEST);
+=======
+const removeOfferTags = <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
+    // const foundOfferTags = await OfferPostTags.findAll({where:})
+<span class="cstat-no" title="statement not covered" >    if(req.body.tagList) {</span>
+&nbsp;
+        // const currentTags = await OfferPostTags.findAll({where: {postId: req.body.offerId}});
+        // const deleteTags = req.body.tagList;
+&nbsp;
+        // for (let i = 0; i &lt; currentTags.length; i = i + 1){
+        //     if (deleteTags.includes(currentTags[i].dataValues.name)) {
+        //         OfferPostTags.destroy({
+        //             where: {
+        //                 postId: req.body.offerId,
+        //                 name: currentTags[i].dataValues.name
+        //             }
+        //         });
+        //     }
+        // }
+<span class="cstat-no" title="statement not covered" >        res.sendStatus(OK);</span>
+    } else {
+<span class="cstat-no" title="statement not covered" >        res.sendStatus(BAD_REQUEST);</span>
+>>>>>>> c00e7d4cb645d53ea6b9ddde7b3b941aadc51751
     }
 }
   
@@ -892,7 +964,11 @@ module.exports = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+<<<<<<< HEAD
                 at 2022-08-05T00:56:08.254Z
+=======
+                at 2022-08-04T21:15:35.052Z
+>>>>>>> c00e7d4cb645d53ea6b9ddde7b3b941aadc51751
             </div>
         <script src="../../prettify.js"></script>
         <script>

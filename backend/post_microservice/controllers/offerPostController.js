@@ -169,6 +169,7 @@ const createOffer = async (req, res) => {
 }
 
 const removeOfferTags = async (req, res) => {
+<<<<<<< HEAD
     const offerId = req.body.offerId;
     const tagList = req.body.tagList;
     const hasAllFields = offerId && tagList;
@@ -185,6 +186,26 @@ const removeOfferTags = async (req, res) => {
         res.sendStatus(OK);
     }
     else {
+=======
+    // const foundOfferTags = await OfferPostTags.findAll({where:})
+    if(req.body.tagList) {
+
+        // const currentTags = await OfferPostTags.findAll({where: {postId: req.body.offerId}});
+        // const deleteTags = req.body.tagList;
+
+        // for (let i = 0; i < currentTags.length; i = i + 1){
+        //     if (deleteTags.includes(currentTags[i].dataValues.name)) {
+        //         OfferPostTags.destroy({
+        //             where: {
+        //                 postId: req.body.offerId,
+        //                 name: currentTags[i].dataValues.name
+        //             }
+        //         });
+        //     }
+        // }
+        res.sendStatus(OK);
+    } else {
+>>>>>>> c00e7d4cb645d53ea6b9ddde7b3b941aadc51751
         res.sendStatus(BAD_REQUEST);
     }
 }

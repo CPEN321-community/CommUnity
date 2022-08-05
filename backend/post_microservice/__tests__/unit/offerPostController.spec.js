@@ -209,6 +209,7 @@ describe("DELETE communitypost/offers/:offerId", () => {
   });
 });
 
+<<<<<<< HEAD
 describe("DELETE communitypost/offers/tags", () => {
   let request = null;
   beforeAll(async () => {
@@ -269,6 +270,39 @@ describe("DELETE communitypost/offers/tags", () => {
     expect(response.statusCode).toEqual(BAD_REQUEST);
   });
 });
+=======
+// describe("DELETE communitypost/offers/tags", () => {
+//   let request = null;
+//   beforeAll(async () => {
+//     request = supertest(app);
+//   })
+  
+//   test("Specified offer post tags are successfully deleted", async () => {
+//     const currentTags = {
+//       o
+//     }
+//     const deleteTags = {
+//       offerId: "offer1",
+//       tagList: ["fruit", "vegetable"]
+//     }
+//     OfferPostTags.findAll = jest.fn().mockReturnValueOnce(createdOfferWithId);
+//     OfferPost.findOne = jest.fn().mockReturnValueOnce(createdOfferWithId);
+//     OfferPostTags.destroy = jest.fn().mockReturnValueOnce(createdOfferWithId);
+//     OfferPost.destroy = jest.fn().mockReturnValueOnce(createdOfferWithId);
+//     const response = await request.delete("/communitypost/offers/offer1").set('token', s2sToken);
+//     expect(response.statusCode).toEqual(OK);
+//   });
+  
+//   test("Missing at least 1 field", async () => {
+//     OfferPostTags.findAll = jest.fn().mockReturnValueOnce(false);
+//     OfferPost.findOne = jest.fn().mockReturnValueOnce(false);
+//     OfferPostTags.destroy = jest.fn().mockReturnValueOnce(createdOfferWithId);
+//     OfferPost.destroy = jest.fn().mockReturnValueOnce(createdOfferWithId);
+//     const response = await request.delete("/communitypost/offers/offer1").set('token', s2sToken);
+//     expect(response.statusCode).toEqual(NOT_FOUND);
+//   });
+// });
+>>>>>>> c00e7d4cb645d53ea6b9ddde7b3b941aadc51751
 
 describe("GET communitypost/offers/:offerID", () => {
     let request = null;
