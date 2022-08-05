@@ -34,9 +34,7 @@ public class EditRestrictionsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        FragmentDietaryRestrictionBinding binding = FragmentDietaryRestrictionBinding.inflate(getLayoutInflater());
-//        this.previewText = binding.restrictionName;
-//        binding.removeRestrictionButton.setEnabled(false);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_edit_restrictions);
         this.textField = findViewById(R.id.restriction_input);
         submitButton = findViewById(R.id.add_dietary_restriction_button);
