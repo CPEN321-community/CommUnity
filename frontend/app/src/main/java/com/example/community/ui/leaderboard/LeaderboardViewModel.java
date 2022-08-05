@@ -10,28 +10,29 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.community.classes.CustomJSONArrayRequest;
+import com.example.community.classes.CustomJSONObjectRequest;
 import com.example.community.classes.GlobalUtil;
 import com.example.community.classes.UserWithScore;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class LeaderboardViewModel extends AndroidViewModel {
 
     private static final String TAG = "LEADERBOARD_MODEL";
     private final MutableLiveData<ArrayList<UserWithScore>> mList;
+    private final MutableLiveData<Integer> rank = new MutableLiveData<>(0);
     private final Application application;
 
     public LeaderboardViewModel(@NonNull Application application) {
         super(application);
         this.application = application;
-        mList = new MutableLiveData<>();
+        mList = new MutableLiveData<>(new ArrayList<>());
         fetchLeaderboard();
     }
 
@@ -43,7 +44,7 @@ public class LeaderboardViewModel extends AndroidViewModel {
         RequestQueue queue = Volley.newRequestQueue(this.application);
         String url = GlobalUtil.USER_URL + "/rank/top/10";
 
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET,
+        CustomJSONArrayRequest request = new CustomJSONArrayRequest(Request.Method.GET,
                 url,
                 null,
                 (JSONArray response) -> {
@@ -63,16 +64,40 @@ public class LeaderboardViewModel extends AndroidViewModel {
                 },
                 error -> {
                     Log.e(TAG, "fetchLeaderboard: " + error);
-//                    callback.onError(error);
-                }) {
-            @Override
-            public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("token", GlobalUtil.getHeaderToken());
-                return headers;
-            }
-        };
+                });
         queue.add(request);
+    }
+
+    private void getMyRank() {
+        RequestQueue queue = Volley.newRequestQueue(this.application);
+        String url = GlobalUtil.USER_URL + "/rank/"+GlobalUtil.getId();
+
+        CustomJSONObjectRequest request = new CustomJSONObjectRequest(Request.Method.GET,
+                url,
+                null,
+                (response) -> {
+                    Log.d(TAG, "fetchLeaderboard: " + response);
+                    if (response != null) {
+                            try {
+                                int rank = response.getInt("rank");
+                                this.rank.postValue(rank);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                    }
+                },
+                error -> {
+                    Log.e(TAG, "fetchLeaderboard: " + error);
+                });
+        queue.add(request);
+    }
+
+    public MutableLiveData<Integer> getRankData() {
+        return this.rank;
+    }
+
+    public boolean UserIsTopTen() {
+        return this.rank.getValue() <= 10;
     }
 
     public void setData(ArrayList<UserWithScore> users) {

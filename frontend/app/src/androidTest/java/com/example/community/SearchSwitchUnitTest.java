@@ -30,10 +30,6 @@ import org.junit.runner.RunWith;
 @LargeTest
 public class SearchSwitchUnitTest {
 
-    @Rule
-    public ActivityScenarioRule<SearchActivity> activityRule =
-            new ActivityScenarioRule<>(SearchActivity.class);
-
     @Test
     public void SwitchPressChangesText() {
         Matcher<View> switchView = withId(R.id.req_or_offer_switch);

@@ -1,39 +1,65 @@
 package com.example.community.request_list;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.community.databinding.FragmentReqPostBinding;
+import com.android.volley.VolleyError;
+import com.example.community.VolleyCallBack;
+import com.example.community.classes.SearchManager;
+import com.example.community.databinding.FragmentPostListBinding;
+
+import java.util.ArrayList;
 
 public class ReqPostFragment extends Fragment {
 
-    private FragmentReqPostBinding binding_req;
+    private static final String TAG = "REQ_POST_FRAGMENT";
+    private FragmentPostListBinding binding_req;
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
-        ReqPostViewModel reqPostViewModel = new ViewModelProvider(this).get(ReqPostViewModel.class);
-        binding_req = FragmentReqPostBinding.inflate(inflater, container, false);
+        binding_req = FragmentPostListBinding.inflate(inflater, container, false);
 
         View root = binding_req.getRoot();
-        Button refreshButton = binding_req.buttonRefreshReqPosts;
-        refreshButton.setOnClickListener(view -> {
-            reqPostViewModel.fetchReqPosts();
+        final RecyclerView listView = binding_req.postList;
+        LinearLayoutManager manager = new LinearLayoutManager(requireContext());
+        listView.setLayoutManager(manager);
+        SwipeRefreshLayout refresher = binding_req.pullToRefresh;
+        refresher.setOnRefreshListener(() -> {
+            Log.d(TAG, "onCreateView: Refreshing");
+                SearchManager.search(requireContext());
+                Observer<Boolean> observer = new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(Boolean loading) {
+                        if (!loading) {
+                            SearchManager.getLoadingData().removeObserver(this);
+                            refresher.setRefreshing(false);
+                        }
+                    }
+                };
+                SearchManager.getLoadingData().observe(getViewLifecycleOwner(), observer);
         });
-        final ListView listView = binding_req.reqPostList;
-        reqPostViewModel.getList().observe(getViewLifecycleOwner(), reqList -> {
-            ReqPostAdapter adapter;
-            adapter = new ReqPostAdapter(requireContext(),
-                    reqList);
-            listView.setAdapter(adapter);
+
+        ReqPostAdapter adapter = new ReqPostAdapter(requireContext(),
+                new ArrayList<>());
+        listView.setAdapter(adapter);
+
+        SearchManager.getRequestLiveData().observe(getViewLifecycleOwner(), reqList -> {
+            adapter.setItems(reqList);
+            adapter.notifyDataSetChanged();
         });
 
         return root;

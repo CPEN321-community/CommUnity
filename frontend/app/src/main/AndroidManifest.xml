@@ -30,16 +30,7 @@
             android:name=".offer_list.NewOfferForm"
             android:exported="false" />
         <activity
-            android:name=".offer_list.OfferPosts"
-            android:exported="false" />
-        <activity
             android:name=".request_list.NewRequestForm"
-            android:exported="false" />
-        <activity
-            android:name=".SearchActivity"
-            android:exported="false" />
-        <activity
-            android:name=".request_list.RequestPosts"
             android:exported="false" />
         <activity
             android:name=".ui.chat.message.MessageActivity"
@@ -65,7 +56,9 @@
         <activity
             android:name=".MainActivity"
             android:exported="false"
-            android:label="@string/app_name" /> <!-- Firebase Cloud Messaging configuration -->
+            android:windowSoftInputMode="adjustPan|adjustResize"
+            android:label="@string/app_name" />
+        <!-- Firebase Cloud Messaging configuration -->
         <service
             android:name=".CustomFirebaseMessagingService"
             android:exported="false">

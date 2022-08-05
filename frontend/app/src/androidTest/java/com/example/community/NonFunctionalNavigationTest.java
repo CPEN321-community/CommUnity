@@ -7,8 +7,6 @@ import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
-import static androidx.test.runner.lifecycle.Stage.RESUMED;
 import static com.example.community.TestUtils.SetTestUserData;
 import static com.example.community.TestUtils.getActivityInstance;
 import static org.hamcrest.CoreMatchers.anything;
@@ -17,7 +15,6 @@ import static org.hamcrest.CoreMatchers.not;
 import android.app.Activity;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
-import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 
 import com.example.community.classes.Chat;
 import com.example.community.classes.ChatUser;
@@ -34,7 +31,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class NonFunctionalNavigationTest {
 
@@ -88,7 +84,7 @@ public class NonFunctionalNavigationTest {
     public void TestAddOfferPostTakes4Navigations() {
         onView(withText("Offers")).perform(click());
         navigations++;
-        onView(withId(R.id.addPostButton)).perform(click());
+        onView(withId(R.id.addOfferPostButton)).perform(click());
         NavigateTo(NewOfferForm.class);
         assert navigations <= 4;
     }
@@ -97,15 +93,8 @@ public class NonFunctionalNavigationTest {
     public void TestAddRequestPostTakes4Navigations() {
         onView(withText("Requests")).perform(click());
         navigations++;
-        onView(withId(R.id.addPostButton)).perform(click());
+        onView(withId(R.id.addOfferPostButton)).perform(click());
         NavigateTo(NewRequestForm.class);
-        assert navigations <= 4;
-    }
-
-    @Test
-    public void TestSearchTakes4Navigations() {
-        onView(withId(R.id.search_button)).perform(click());
-        NavigateTo(SearchActivity.class);
         assert navigations <= 4;
     }
 
