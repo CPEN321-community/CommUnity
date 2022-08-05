@@ -1,6 +1,7 @@
 package com.example.community;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -11,7 +12,10 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.community.classes.ChatHelper;
 import com.example.community.classes.GlobalUtil;
+import com.example.community.classes.SearchHelper;
+import com.example.community.classes.TagHelper;
 import com.example.community.databinding.ActivityMainBinding;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -22,8 +26,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: Starting Main Activity!");
 
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+
         setContentView(binding.getRoot());
         GlobalUtil.setAppContext(getApplicationContext());
 
@@ -37,6 +43,11 @@ public class MainActivity extends AppCompatActivity {
                 R.id.navigation_home, R.id.navigation_leaderboard, R.id.navigation_profile)
                 .build();
         hideActionBar();
+        SearchHelper.search(this);
+        ChatHelper.GetSocket();
+        ChatHelper.FetchChats(this);
+        TagHelper.getTags();
+
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

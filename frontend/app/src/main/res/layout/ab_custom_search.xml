@@ -28,7 +28,7 @@
             android:gravity="center_vertical"
             android:paddingVertical="10dp">
 
-            <SearchView
+            <com.example.community.ui.home.EmptySubmitSearchView
                 android:id="@+id/search_toolbar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -38,7 +38,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/chat_button"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/chat_button" />
+                app:layout_constraintTop_toTopOf="@+id/chat_button"
+                app:searchIcon="@drawable/ic_search" />
 
             <ImageButton
                 android:id="@+id/chat_button"

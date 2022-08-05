@@ -117,4 +117,3 @@ describe("PUT communitypost/requestTags", () => {
         expect(response.statusCode).toEqual(BAD_REQUEST);
     });
 });
-

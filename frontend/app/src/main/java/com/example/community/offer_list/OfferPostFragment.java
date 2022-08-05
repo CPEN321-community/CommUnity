@@ -9,14 +9,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.android.volley.VolleyError;
-import com.example.community.VolleyCallBack;
-import com.example.community.classes.SearchManager;
+import com.example.community.classes.SearchHelper;
 import com.example.community.databinding.FragmentPostListBinding;
 
 import java.util.ArrayList;
@@ -30,7 +27,6 @@ public class OfferPostFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        OfferPostViewModel offerPostViewModel = new ViewModelProvider(this).get(OfferPostViewModel.class);
         binding_offer = FragmentPostListBinding.inflate(inflater, container, false);
 
         View root = binding_offer.getRoot();
@@ -40,49 +36,24 @@ public class OfferPostFragment extends Fragment {
         SwipeRefreshLayout refresher = binding_offer.pullToRefresh;
         refresher.setOnRefreshListener(() -> {
             Log.d(TAG, "onCreateView: Refreshing");
-            if (!"".equals(SearchManager.getQuery())) {
-                SearchManager.search(requireContext());
-                Observer<Boolean> observer = new Observer<Boolean>() {
-                    @Override
-                    public void onChanged(Boolean loading) {
-                        if (!loading) {
-                            SearchManager.getLoadingData().removeObserver(this);
-                            refresher.setRefreshing(false);
-                        }
-                    }
-                };
-                SearchManager.getLoadingData().observe(getViewLifecycleOwner(), observer);
-            } else {
-                offerPostViewModel.fetchOfferPosts(new VolleyCallBack() {
-                    @Override
-                    public void onError(VolleyError error) {
-                    }
-
-                    @Override
-                    public void onSuccess(boolean b) {
-                    }
-
-                    @Override
-                    public void onSuccess() {
+            SearchHelper.search(requireContext());
+            Observer<Boolean> observer = new Observer<Boolean>() {
+                @Override
+                public void onChanged(Boolean loading) {
+                    if (!loading) {
+                        SearchHelper.getLoadingData().removeObserver(this);
                         refresher.setRefreshing(false);
                     }
+                }
+            };
+            SearchHelper.getLoadingData().observe(getViewLifecycleOwner(), observer);
 
-                    @Override
-                    public void onError() {
-                        refresher.setRefreshing(false);
-                    }
-                });
-            }
         });
 
         OfferPostAdapter adapter = new OfferPostAdapter(requireContext(), new ArrayList<>());
         listView.setAdapter(adapter);
-        offerPostViewModel.getList().observe(getViewLifecycleOwner(), offerList -> {
-            adapter.setItems(offerList);
-            adapter.notifyDataSetChanged();
-        });
 
-        SearchManager.getOfferPostLiveData().observe(getViewLifecycleOwner(), offerList -> {
+        SearchHelper.getOfferPostLiveData().observe(getViewLifecycleOwner(), offerList -> {
             adapter.setItems(offerList);
             adapter.notifyDataSetChanged();
         });

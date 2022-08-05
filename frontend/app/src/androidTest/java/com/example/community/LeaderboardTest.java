@@ -1,7 +1,7 @@
 package com.example.community;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
@@ -38,7 +38,6 @@ public class LeaderboardTest {
 
     @Before
     public void before() throws Exception {
-        GlobalUtil.setIsTest(true);
         GlobalUtil.setId("testuserid");
         GlobalUtil.setGivenName("Community Tester");
         GlobalUtil.setHeaderToken(BuildConfig.S2S_TOKEN);
@@ -55,7 +54,7 @@ public class LeaderboardTest {
             LeaderboardViewModel viewModel = fragment.getViewModel();
             ArrayList<UserWithScore> users = new ArrayList<>();
             for (int i = 0; i < 11; i++) {
-                UserWithScore user = new UserWithScore("TestUser", i + "", "", 1000, 1000, 10000);
+                UserWithScore user = new UserWithScore("TestUser", i + "", "", 1000, 1000, 10000, "testuserid");
                 users.add(user);
             }
             try {
@@ -68,7 +67,7 @@ public class LeaderboardTest {
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
         DoLeaderboardTest();
-        onView(withId(R.id.button_refresh_leaderboard)).perform(click());
+        onView(withId(R.id.leaderboard_list)).perform(scrollTo());
         DoLeaderboardTest();
     }
 

@@ -18,12 +18,12 @@ import java.util.Map;
 import io.socket.client.Socket;
 
 public class GlobalUtil {
-//        public static final String CHAT_URL = "http://10.0.2.2:3000";
-//    public static final String USER_URL = "http://10.0.2.2:8080";
-//    public static final String POST_URL = "http://10.0.2.2:8081";
-    public static final String CHAT_URL = "http://ec2-3-96-132-62.ca-central-1.compute.amazonaws.com:3000";
-    public static final String USER_URL = "http://ec2-3-98-122-163.ca-central-1.compute.amazonaws.com:3000";
-    public static final String POST_URL = "http://ec2-3-99-226-175.ca-central-1.compute.amazonaws.com:3000";
+    public static final String CHAT_URL = "http://10.0.2.2:3000";
+    public static final String USER_URL = "http://10.0.2.2:8080";
+    public static final String POST_URL = "http://10.0.2.2:8081";
+    //    public static final String CHAT_URL = "http://ec2-3-96-132-62.ca-central-1.compute.amazonaws.com:3000";
+//    public static final String USER_URL = "http://ec2-3-98-122-163.ca-central-1.compute.amazonaws.com:3000";
+//    public static final String POST_URL = "http://ec2-3-99-226-175.ca-central-1.compute.amazonaws.com:3000";
     private static final String TAG = "GLOBAL_CLASS";
     public static UserProfile userProfile;
     private static GoogleSignInAccount account;
@@ -32,7 +32,7 @@ public class GlobalUtil {
     private static String headerToken;
     private static String id;
     private static String givenName;
-    private static boolean IS_TEST;
+    private static String lastName;
 
     public static void cleanup() {
         account = null;
@@ -52,7 +52,8 @@ public class GlobalUtil {
     public static void setAccount(GoogleSignInAccount account) {
         GlobalUtil.account = account;
         setId(account.getId());
-        setGivenName(account.getDisplayName());
+        setGivenName(account.getGivenName());
+        setLastName(account.getFamilyName());
     }
 
     public static Socket getSocket() {
@@ -131,11 +132,12 @@ public class GlobalUtil {
         GlobalUtil.givenName = givenName;
     }
 
-    public static boolean IsTest() {
-        return IS_TEST;
+
+    public static String getLastName() {
+        return lastName;
     }
 
-    public static void setIsTest(boolean isTest) {
-        IS_TEST = isTest;
+    public static void setLastName(String lastName) {
+        GlobalUtil.lastName = lastName;
     }
 }

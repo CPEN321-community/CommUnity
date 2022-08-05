@@ -10,14 +10,16 @@ public class UserWithScore {
     public int offerPosts;
     public int requestPosts;
     public int score;
+    public String userId;
 
-    public UserWithScore(String firstName, String lastName, String profilePicture, int offerPosts, int requestPosts, int score) {
+    public UserWithScore(String firstName, String lastName, String profilePicture, int offerPosts, int requestPosts, int score, String userId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.profilePicture = profilePicture;
         this.offerPosts = offerPosts;
         this.requestPosts = requestPosts;
         this.score = score;
+        this.userId = userId;
     }
 
     public UserWithScore(JSONObject json) {
@@ -28,6 +30,7 @@ public class UserWithScore {
             this.offerPosts = json.getInt("offerPosts");
             this.requestPosts = json.getInt("requestPosts");
             this.score = json.getInt("score");
+            this.userId = json.getString("userId");
         } catch (JSONException e) {
             e.printStackTrace();
         }

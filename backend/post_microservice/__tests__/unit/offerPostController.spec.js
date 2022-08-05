@@ -3,7 +3,7 @@ const { OfferPost, OfferPostTags } = require("../../models");
 const supertest = require("supertest");
 const axios = require("axios");
 const app = require("../../index");
-const { afterAll, beforeAll } = require("@jest/globals");
+const { afterAll, beforeAll, expect } = require("@jest/globals");
 const s2sToken = require('./../../../config_post.json')["s2sToken"];
 const { OK, CREATED, INTERNAL_SERVER_ERROR, UNAUTHORIZED, NOT_FOUND, BAD_REQUEST } = require("../../httpCodes");
 
@@ -16,7 +16,7 @@ const offerPost = {
   description: "des1",
   quantity: 1,
   pickUpLocation: "location1",
-  image: "img1",
+  image: "img1.com",
   status: "active",
   bestBeforeDate: "date1",
   offerTags: ["beep", "boop"]
@@ -30,12 +30,309 @@ const offerPostDataVals = {
       description: "des1",
       quantity: 1,
       pickUpLocation: "location1",
-      image: "img1",
+      image: "img1.com",
       status: "active",
       bestBeforeDate: "date1",
       offerTags: ["beep", "boop"]
   }
 };
+
+  const createdOffer = {
+    userId: "user2",
+    title: "Juice",
+    description: "Juicy",
+    quantity: 2,
+    pickUpLocation: "Juice Bar",
+    image: "juicyPic.com",
+    status: "Active",
+    bestBeforeDate: "04/20/2024",
+    tagList: ["juice"]
+  }
+
+  const createdOfferWithId = {
+    offerId: "offer1",
+    userId: "user2",
+    title: "Juice",
+    description: "Juicy",
+    quantity: 2,
+    pickUpLocation: "Juice Bar",
+    image: "juicyPic.com",
+    status: "Active",
+    bestBeforeDate: "04/20/2024",
+    tagList: ["juice"]
+  }
+
+describe("POST communitypost/offers", () => {
+  let request = null;
+  beforeAll(async () => {
+    request = supertest(app);
+  })
+
+  test("Offer post is successfully created", async () => {
+    OfferPost.create = jest.fn().mockReturnValueOnce(createdOfferWithId);
+    OfferPostTags.create = jest.fn();
+    axios.put = jest.fn().mockReturnValueOnce([createdOfferWithId]);
+    const response = await request.post("/communitypost/offers").set('token', s2sToken).send(createdOffer);
+    expect(response.statusCode).toEqual(CREATED);
+  });
+
+  test("Missing a field", async () => {
+    const missingFieldOffer = {
+    offerId: "offer1",
+    userId: "user1",
+    title: "Juice",
+    description: "Juicy",
+    quantity: 2,
+    pickUpLocation: "Juice Bar",
+    image: "juicyPic.com",
+    status: "Active",
+    bestBeforeDate: "04/20/2024"
+    }
+    OfferPost.create = jest.fn().mockReturnValueOnce(missingFieldOffer);
+    OfferPostTags.create = jest.fn();
+    axios.put = jest.fn().mockReturnValueOnce([missingFieldOffer]);
+    const response = await request.post("/communitypost/offers").set('token', s2sToken).send(missingFieldOffer);
+    expect(response.statusCode).toEqual(BAD_REQUEST);
+  });
+
+  test("Invalid URL for image", async () => {
+    const invalidUrl = {
+      offerId: "offer1",
+      userId: "user1",
+      title: "Juice",
+      description: "Juicy",
+      quantity: 2,
+      pickUpLocation: "Juice Bar",
+      image: "juicyPic",
+      status: "Active",
+      bestBeforeDate: "04/20/2024",
+      tagList: []
+    }
+    OfferPost.create = jest.fn().mockReturnValueOnce(invalidUrl);
+    OfferPostTags.create = jest.fn();
+    axios.put = jest.fn().mockReturnValueOnce([invalidUrl]);
+    const response = await request.post("/communitypost/offers").set('token', s2sToken).send(invalidUrl);
+    expect(response.statusCode).toEqual(BAD_REQUEST);
+  });
+
+  test("bestBeforeDate entry is invalid (wrong format)", async () => {
+    const invalidDate = {
+      offerId: "offer1",
+      userId: "user1",
+      title: "Juice",
+      description: "Juicy",
+      quantity: 2,
+      pickUpLocation: "Juice Bar",
+      image: "juicyPic.com",
+      status: "Active",
+      bestBeforeDate: "04/20/202",
+      tagList: []
+    }
+    OfferPost.create = jest.fn().mockReturnValueOnce(invalidDate);
+    OfferPostTags.create = jest.fn();
+    axios.put = jest.fn().mockReturnValueOnce([invalidDate]);
+    const response = await request.post("/communitypost/offers").set('token', s2sToken).send(invalidDate);
+    expect(response.statusCode).toEqual(BAD_REQUEST);
+  });
+  
+});
+
+describe("POST communitypost/offerTags", () => {
+  let request = null;
+  beforeAll(async () => {
+    request = supertest(app);
+  })
+
+  test("Specified offer post tags are successfully added", async () => {
+    const newTags = {
+      offerId: "offer4",
+      tagList: ["fruit"]
+    }
+
+    OfferPostTags.create = jest.fn().mockReturnValueOnce(newTags);
+    const response = await request.post("/communitypost/offerTags").set('token', s2sToken).send(newTags);
+    expect(response.statusCode).toEqual(CREATED);
+  });
+
+  test("Missing at least 1 field", async () => {
+      const missingFieldTags = {
+        offerId: "offer5"
+      }
+      OfferPostTags.create = jest.fn();
+      const response = await request.post("/communitypost/offerTags").set('token', s2sToken).send(missingFieldTags);
+      expect(response.statusCode).toEqual(BAD_REQUEST);
+  });
+
+  test("Invalid tag (not part of our preset tags)", async () => {
+      const invalidTags = {
+        offerId: "offer5",
+        tagList: ["human"]
+      }
+      OfferPostTags.create = jest.fn();
+      const response = await request.post("/communitypost/offerTags").set('token', s2sToken).send(invalidTags);
+      expect(response.statusCode).toEqual(BAD_REQUEST);
+  });
+  
+  test("No tags are provided", async () => {
+      const invalidTags = {
+        offerId: "offer5",
+        tagList: []
+      }
+      OfferPostTags.create = jest.fn();
+      const response = await request.post("/communitypost/offerTags").set('token', s2sToken).send(invalidTags);
+      expect(response.statusCode).toEqual(BAD_REQUEST);
+  });
+});
+
+describe("DELETE communitypost/offers/:offerId", () => {
+  let request = null;
+  beforeAll(async () => {
+    request = supertest(app);
+  })
+  
+  test("Offer post is successfully deleted", async () => {
+    OfferPostTags.findAll = jest.fn().mockReturnValueOnce(createdOfferWithId);
+    OfferPost.findOne = jest.fn().mockReturnValueOnce(createdOfferWithId);
+    OfferPostTags.destroy = jest.fn().mockReturnValueOnce(createdOfferWithId);
+    OfferPost.destroy = jest.fn().mockReturnValueOnce(createdOfferWithId);
+    const response = await request.delete("/communitypost/offers/offer1").set('token', s2sToken);
+    expect(response.statusCode).toEqual(OK);
+  });
+  
+  test("Offer post with corresponding offerId does not exist", async () => {
+    OfferPostTags.findAll = jest.fn().mockReturnValueOnce(false);
+    OfferPost.findOne = jest.fn().mockReturnValueOnce(false);
+    OfferPostTags.destroy = jest.fn().mockReturnValueOnce(createdOfferWithId);
+    OfferPost.destroy = jest.fn().mockReturnValueOnce(createdOfferWithId);
+    const response = await request.delete("/communitypost/offers/offer1").set('token', s2sToken);
+    expect(response.statusCode).toEqual(NOT_FOUND);
+  });
+});
+
+describe("DELETE communitypost/offers/tags", () => {
+  let request = null;
+  beforeAll(async () => {
+    request = supertest(app);
+  })
+  
+  test("Specified offer post tags are successfully deleted", async () => {
+    const deleteTags = {
+      offerId: "offer1",
+      tagList: ["fruit", "vegetable"]
+    }
+    OfferPostTags.findAll = jest.fn().mockReturnValueOnce(true);
+    OfferPostTags.destroy = jest.fn().mockReturnValueOnce(deleteTags);
+    const response = await request.delete("/communitypost/offers/tags").set('token', s2sToken).send(deleteTags);
+    expect(response.statusCode).toEqual(OK);
+  });
+  
+  test("Missing at least 1 field", async () => {
+    const deleteTags = {
+      tagList: ["fruit", "vegetable"]
+    }
+    OfferPostTags.findAll = jest.fn().mockReturnValueOnce(true);
+    OfferPostTags.destroy = jest.fn().mockReturnValueOnce(deleteTags);
+    const response = await request.delete("/communitypost/offers/tags").set('token', s2sToken).send(deleteTags);
+    expect(response.statusCode).toEqual(BAD_REQUEST);
+  });
+
+  test("Offer post corresponding to the offerId does not have any tags", async () => {
+    const deleteTags = {
+      offerId: "offer1",
+      tagList: []
+    }
+    OfferPostTags.findAll = jest.fn().mockReturnValueOnce(true);
+    OfferPostTags.destroy = jest.fn().mockReturnValueOnce(deleteTags);
+    const response = await request.delete("/communitypost/offers/tags").set('token', s2sToken).send(deleteTags);
+    expect(response.statusCode).toEqual(OK);
+  });
+
+  test("Specified tags do not exist for the offer post associated with the offerId", async () => {
+    const deleteTags = {
+      offerId: "offer1",
+      tagList: ["fruit", "vegetable"]
+    }
+    OfferPostTags.findAll = jest.fn().mockReturnValueOnce(true);
+    OfferPostTags.destroy = jest.fn().mockReturnValueOnce(deleteTags);
+    const response = await request.delete("/communitypost/offers/tags").set('token', s2sToken).send(deleteTags);
+    expect(response.statusCode).toEqual(OK);
+  });
+
+  test("No tags provided", async () => {
+    const deleteTags = {
+      offerId: "offer1",
+      tagList: null
+    }
+    OfferPostTags.findAll = jest.fn().mockReturnValueOnce(true);
+    OfferPostTags.destroy = jest.fn().mockReturnValueOnce(deleteTags);
+    const response = await request.delete("/communitypost/offers/tags").set('token', s2sToken).send(deleteTags);
+    expect(response.statusCode).toEqual(BAD_REQUEST);
+  });
+});
+
+describe("PUT communitypost/offers", () => {
+  let request = null;
+  beforeAll(async () => {
+    request = supertest(app);
+  });
+  
+  test("Offer post is successfully updated", async () => {
+      const originalOfferPost = {
+        offerId: "offer1",
+        userId: "kulkarni",
+        title: "Juice",
+        description: "Juicy",
+        quantity: 2,
+        pickUpLocation: "Juice Bar",
+        image: "juicyPic.com",
+        status: "Active",
+        bestBeforeDate: "04/20/2024",
+        tagList: ["juice"]
+      };
+      const updatedOfferPost = {
+        offerId: "offer1",
+        userId: "kulkarni",
+        title: "Mango Juice",
+        description: "I only have mango juice",
+        quantity: 2,
+        pickUpLocation: "Juice Bar",
+        image: "juicyPic.com",
+        status: "Active",
+        bestBeforeDate: "04/20/2024",
+        tagList: ["juice"]
+      };
+
+      OfferPost.findOne = jest.fn().mockReturnValueOnce(originalOfferPost);
+      OfferPost.update = jest.fn().mockReturnValueOnce(updatedOfferPost);
+      const response = await request.put("/communitypost/offers").set('token', s2sToken).send(updatedOfferPost);
+      expect(response.statusCode).toEqual(OK);
+  });
+
+  // test("Missing at least 1 field", async () => {
+  //     const originalRequestPost = {
+  //         userId: "parthvi",
+  //         requestId: "R13",
+  //         title: "Mangoes",
+  //         description: "Mangoes are my favourite fruit of all time :)",
+  //         currentLocation: "Mangoless place :(",
+  //         status: "active",
+  //         tagList: ["fruit"]
+  //     };
+  //     const updatedRequestPost = {
+  //         requestId: "R13",
+  //         title: "YUMMY Mangoes",
+  //         description: "Mangoes are my favourite fruit of all time :)",
+  //         currentLocation: "Mangoless place :(",
+  //         status: "active",
+  //         tagList: ["fruit"]
+  //     };
+
+  //     RequestPost.findOne = jest.fn().mockReturnValueOnce(originalRequestPost);
+  //     RequestPost.update = jest.fn().mockReturnValueOnce(updatedRequestPost);
+  //     const response = await request.put("/communitypost/requests").set('token', s2sToken).send(updatedRequestPost);
+  //     expect(response.statusCode).toEqual(BAD_REQUEST);
+  // });
+});
 
 describe("GET communitypost/offers/:offerID", () => {
     let request = null;

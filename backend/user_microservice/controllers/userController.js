@@ -37,20 +37,20 @@ const getUser = async (req, res) => {
 };
 
 const upsertUserPreference = async (req, res) => {
-    const userId = req.headers.userId;
-    const user = await User.findByPk(userId);
-    if (!user) {
-      console.error("User not found");
-      res.status(NOT_FOUND).json(JSON.parse(JSON.stringify({error: "User not found!"})));
-      return;
-    }
-    const [preference] = await Preference.upsert({
-      userId,
-      type: req.body.type,
-      value: req.body.value,
-    });
-    await preference.setUser(user);
-    res.status(CREATED).json(JSON.parse(JSON.stringify(preference)));
+  const userId = req.headers.userId;
+  const user = await User.findByPk(userId);
+  if (!user) {
+    console.error("User not found");
+    res.status(NOT_FOUND).json({error: "User not found!"});
+    return;
+  }
+  const [preference] = await Preference.upsert({
+    userId,
+    type: req.body.type,
+    value: req.body.value,
+  });
+  await preference.setUser(user);
+  res.status(CREATED).json(preference);
 };
 
 const deleteUserPreference = async (req, res) => {
@@ -60,8 +60,9 @@ const deleteUserPreference = async (req, res) => {
     const deleted = await Preference.destroy({
       where: { id: preferenceId },
     });
-    res.json(JSON.parse(JSON.stringify({ deleted })));
+    res.json({ deleted });
   } else {
+    console.log("Error deleting user preferences: " + error);
     res.sendStatus(INTERNAL_SERVER_ERROR);
   }
 };
@@ -127,9 +128,9 @@ const createUser = async (req, res) => {
 
 module.exports = {
   getUser,
-  upsertUserPreference,
   updateUser,
   createUser,
-  deleteUserPreference,
   verifyToken,
+  upsertUserPreference,
+  deleteUserPreference
 };

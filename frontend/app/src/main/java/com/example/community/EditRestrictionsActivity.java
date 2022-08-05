@@ -34,9 +34,7 @@ public class EditRestrictionsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        FragmentDietaryRestrictionBinding binding = FragmentDietaryRestrictionBinding.inflate(getLayoutInflater());
-//        this.previewText = binding.restrictionName;
-//        binding.removeRestrictionButton.setEnabled(false);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_edit_restrictions);
         this.textField = findViewById(R.id.restriction_input);
         submitButton = findViewById(R.id.add_dietary_restriction_button);
@@ -44,6 +42,7 @@ public class EditRestrictionsActivity extends AppCompatActivity {
         this.textField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Don't need to do anything
             }
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -54,6 +53,7 @@ public class EditRestrictionsActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
+                // Don't need to do anything
             }
         });
         submitButton.setOnClickListener(v -> {
