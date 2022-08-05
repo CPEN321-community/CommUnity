@@ -243,6 +243,64 @@ describe("GET communitypost/requests/:requestID", () => {
     });
 });
 
+describe("PUT communitypost/requests", () => {
+    let request = null;
+    beforeAll(async () => {
+      request = supertest(app);
+    });
+    
+    test("Request post is successfully updated", async () => {
+        const originalRequestPost = {
+            userId: "parthvi",
+            requestId: "R13",
+            title: "Mangoes",
+            description: "Mangoes are my favourite fruit of all time :)",
+            currentLocation: "Mangoless place :(",
+            status: "active",
+            tagList: ["fruit"]
+        };
+        const updatedRequestPost = {
+            userId: "parthvi",
+            requestId: "R13",
+            title: "YUMMY Mangoes",
+            description: "Mangoes are my favourite fruit of all time :)",
+            currentLocation: "Mangoless place :(",
+            status: "active",
+            tagList: ["fruit"]
+        };
+
+        RequestPost.findOne = jest.fn().mockReturnValueOnce(originalRequestPost);
+        RequestPost.update = jest.fn().mockReturnValueOnce(updatedRequestPost);
+        const response = await request.put("/communitypost/requests").set('token', s2sToken).send(updatedRequestPost);
+        expect(response.statusCode).toEqual(OK);
+    });
+
+    test("Missing at least 1 field", async () => {
+        const originalRequestPost = {
+            userId: "parthvi",
+            requestId: "R13",
+            title: "Mangoes",
+            description: "Mangoes are my favourite fruit of all time :)",
+            currentLocation: "Mangoless place :(",
+            status: "active",
+            tagList: ["fruit"]
+        };
+        const updatedRequestPost = {
+            requestId: "R13",
+            title: "YUMMY Mangoes",
+            description: "Mangoes are my favourite fruit of all time :)",
+            currentLocation: "Mangoless place :(",
+            status: "active",
+            tagList: ["fruit"]
+        };
+
+        RequestPost.findOne = jest.fn().mockReturnValueOnce(originalRequestPost);
+        RequestPost.update = jest.fn().mockReturnValueOnce(updatedRequestPost);
+        const response = await request.put("/communitypost/requests").set('token', s2sToken).send(updatedRequestPost);
+        expect(response.statusCode).toEqual(BAD_REQUEST);
+    });
+});
+
 describe("GET communitypost/requests", () => {
     let request = null;
     beforeAll(async () => {

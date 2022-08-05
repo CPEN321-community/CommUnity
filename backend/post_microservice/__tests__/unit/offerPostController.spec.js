@@ -209,7 +209,6 @@ describe("DELETE communitypost/offers/:offerId", () => {
   });
 });
 
-<<<<<<< HEAD
 describe("DELETE communitypost/offers/tags", () => {
   let request = null;
   beforeAll(async () => {
@@ -270,39 +269,70 @@ describe("DELETE communitypost/offers/tags", () => {
     expect(response.statusCode).toEqual(BAD_REQUEST);
   });
 });
-=======
-// describe("DELETE communitypost/offers/tags", () => {
-//   let request = null;
-//   beforeAll(async () => {
-//     request = supertest(app);
-//   })
+
+describe("PUT communitypost/offers", () => {
+  let request = null;
+  beforeAll(async () => {
+    request = supertest(app);
+  });
   
-//   test("Specified offer post tags are successfully deleted", async () => {
-//     const currentTags = {
-//       o
-//     }
-//     const deleteTags = {
-//       offerId: "offer1",
-//       tagList: ["fruit", "vegetable"]
-//     }
-//     OfferPostTags.findAll = jest.fn().mockReturnValueOnce(createdOfferWithId);
-//     OfferPost.findOne = jest.fn().mockReturnValueOnce(createdOfferWithId);
-//     OfferPostTags.destroy = jest.fn().mockReturnValueOnce(createdOfferWithId);
-//     OfferPost.destroy = jest.fn().mockReturnValueOnce(createdOfferWithId);
-//     const response = await request.delete("/communitypost/offers/offer1").set('token', s2sToken);
-//     expect(response.statusCode).toEqual(OK);
-//   });
-  
-//   test("Missing at least 1 field", async () => {
-//     OfferPostTags.findAll = jest.fn().mockReturnValueOnce(false);
-//     OfferPost.findOne = jest.fn().mockReturnValueOnce(false);
-//     OfferPostTags.destroy = jest.fn().mockReturnValueOnce(createdOfferWithId);
-//     OfferPost.destroy = jest.fn().mockReturnValueOnce(createdOfferWithId);
-//     const response = await request.delete("/communitypost/offers/offer1").set('token', s2sToken);
-//     expect(response.statusCode).toEqual(NOT_FOUND);
-//   });
-// });
->>>>>>> c00e7d4cb645d53ea6b9ddde7b3b941aadc51751
+  test("Offer post is successfully updated", async () => {
+      const originalOfferPost = {
+        offerId: "offer1",
+        userId: "kulkarni",
+        title: "Juice",
+        description: "Juicy",
+        quantity: 2,
+        pickUpLocation: "Juice Bar",
+        image: "juicyPic.com",
+        status: "Active",
+        bestBeforeDate: "04/20/2024",
+        tagList: ["juice"]
+      };
+      const updatedOfferPost = {
+        offerId: "offer1",
+        userId: "kulkarni",
+        title: "Mango Juice",
+        description: "I only have mango juice",
+        quantity: 2,
+        pickUpLocation: "Juice Bar",
+        image: "juicyPic.com",
+        status: "Active",
+        bestBeforeDate: "04/20/2024",
+        tagList: ["juice"]
+      };
+
+      OfferPost.findOne = jest.fn().mockReturnValueOnce(originalOfferPost);
+      OfferPost.update = jest.fn().mockReturnValueOnce(updatedOfferPost);
+      const response = await request.put("/communitypost/offers").set('token', s2sToken).send(updatedOfferPost);
+      expect(response.statusCode).toEqual(OK);
+  });
+
+  // test("Missing at least 1 field", async () => {
+  //     const originalRequestPost = {
+  //         userId: "parthvi",
+  //         requestId: "R13",
+  //         title: "Mangoes",
+  //         description: "Mangoes are my favourite fruit of all time :)",
+  //         currentLocation: "Mangoless place :(",
+  //         status: "active",
+  //         tagList: ["fruit"]
+  //     };
+  //     const updatedRequestPost = {
+  //         requestId: "R13",
+  //         title: "YUMMY Mangoes",
+  //         description: "Mangoes are my favourite fruit of all time :)",
+  //         currentLocation: "Mangoless place :(",
+  //         status: "active",
+  //         tagList: ["fruit"]
+  //     };
+
+  //     RequestPost.findOne = jest.fn().mockReturnValueOnce(originalRequestPost);
+  //     RequestPost.update = jest.fn().mockReturnValueOnce(updatedRequestPost);
+  //     const response = await request.put("/communitypost/requests").set('token', s2sToken).send(updatedRequestPost);
+  //     expect(response.statusCode).toEqual(BAD_REQUEST);
+  // });
+});
 
 describe("GET communitypost/offers/:offerID", () => {
     let request = null;

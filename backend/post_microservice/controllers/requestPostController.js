@@ -160,7 +160,8 @@ const createRequest = async (req, res) => {
 }
 
 const updateRequest = async (req, res) => {
-    if(req.body.requestId) {
+    const hasAllFields = req.body.requestId && req.body.userId && req.body.title && req.body.description && req.body.currentLocation && req.body.status;
+    if(hasAllFields) {
         const updateRequest = RequestPost.findOne({
             where: {requestId: req.body.requestId}
         });
@@ -181,10 +182,8 @@ const updateRequest = async (req, res) => {
             res.status(NOT_FOUND).json("You cannot update a post that does not exist");
         }
     } else {
-      console.log("Error updating post: " + error);
-      res.sendStatus(INTERNAL_SERVER_ERROR);
+      res.sendStatus(BAD_REQUEST);
     }
-
 }
 
 const removeRequestTags = async (req, res) => {

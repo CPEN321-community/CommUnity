@@ -169,7 +169,6 @@ const createOffer = async (req, res) => {
 }
 
 const removeOfferTags = async (req, res) => {
-<<<<<<< HEAD
     const offerId = req.body.offerId;
     const tagList = req.body.tagList;
     const hasAllFields = offerId && tagList;
@@ -186,26 +185,6 @@ const removeOfferTags = async (req, res) => {
         res.sendStatus(OK);
     }
     else {
-=======
-    // const foundOfferTags = await OfferPostTags.findAll({where:})
-    if(req.body.tagList) {
-
-        // const currentTags = await OfferPostTags.findAll({where: {postId: req.body.offerId}});
-        // const deleteTags = req.body.tagList;
-
-        // for (let i = 0; i < currentTags.length; i = i + 1){
-        //     if (deleteTags.includes(currentTags[i].dataValues.name)) {
-        //         OfferPostTags.destroy({
-        //             where: {
-        //                 postId: req.body.offerId,
-        //                 name: currentTags[i].dataValues.name
-        //             }
-        //         });
-        //     }
-        // }
-        res.sendStatus(OK);
-    } else {
->>>>>>> c00e7d4cb645d53ea6b9ddde7b3b941aadc51751
         res.sendStatus(BAD_REQUEST);
     }
 }
@@ -233,7 +212,8 @@ const addOfferTags = async (req, res) => {
 }
 
 const updateOffer = async (req, res) => {
-    if(req.body.offerId) {
+    const hasAllFields = req.body.offerId && req.body.userId && req.body.title && req.body.description && req.body.quantity && req.body.pickUpLocation && req.body.image && req.body.status && req.body.bestBeforeDate;
+    if(hasAllFields) {
         const updateOffer = OfferPost.findOne({where: {offerId: req.body.offerId}});
         const offerAlreadyExists = updateOffer != null;
         if(offerAlreadyExists){
@@ -252,11 +232,10 @@ const updateOffer = async (req, res) => {
             }
             res.sendStatus(OK);
         }else{
-            res.sendStatus(OK);
+            res.sendStatus(NOT_FOUND);
         }
     } else {
-        console.log("Error updating post: " + error);
-        res.sendStatus(INTERNAL_SERVER_ERROR);
+        res.sendStatus(BAD_REQUEST);
     }
 }
 
