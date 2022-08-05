@@ -56,12 +56,12 @@ const getUserRank = async (req, res) => {
 };
 
 const upsertUserMethod = async ({ userId, offerPosts, requestPosts }) => {
-    if (userId) {
+    const hasAllFields = userId && offerPosts && requestPosts;
+    if (hasAllFields) {
         const currLeaderboard = await Leaderboard.findOne({
                     where: { userId }
         });
         const scoreAlreadyExists = currLeaderboard != null;
-        console.log(currLeaderboard);
         if (scoreAlreadyExists) {
             const newOfferPosts = currLeaderboard.dataValues.offerPosts + offerPosts;
             const newRequestPosts = currLeaderboard.dataValues.requestPosts + requestPosts;
@@ -82,7 +82,6 @@ const upsertUserMethod = async ({ userId, offerPosts, requestPosts }) => {
         }
         return true;
     } else {
-        console.log("Error upserting user rank: " + error);
         return false;
     }
 }

@@ -5,7 +5,7 @@ const axios = require("axios");
 const app = require("../../index");
 const { beforeAll } = require("@jest/globals");
 const s2sToken = require('./../../../config_post.json')["s2sToken"];
-const { OK, CREATED, BAD_REQUEST, INTERNAL_SERVER_ERROR } = require("../../httpCodes");
+const { OK, CREATED, BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND } = require("../../httpCodes");
 
 jest.mock("axios");
 
@@ -116,8 +116,77 @@ describe("PUT /user", () => {
   });
 
   test("user not found", async () => {
+    const badPic = {
+      firstName: "firstName",
+      lastName: "lastName",
+      email: "email@email.com",
+      profilePicture: "whacky",
+    }    
     const response = await request.put("/user").set('token', s2sToken).set('userId', 'user1').send(badPic);
-    expect(response.statusCode).toEqual(NOT_FOUND);
+    expect(response.statusCode).toEqual(BAD_REQUEST);
+  });
+});
+
+describe("PUT /rank", () => {
+  let request = null;
+  beforeAll(async () => {
+    request = supertest(app);
+  })
+  
+  test("Successfully updates the user's score", async () => {
+    const existingUserStats = {
+      dataValues: {
+      userId: "parthvi", 
+      offerPosts: 2,
+      requestPosts: 0
+      }
+    }
+    const newUserStats = {
+      userId: "parthvi",
+      offerPosts: 3,
+      requestPosts: 0
+    }
+    Leaderboard.findOne = jest.fn().mockReturnValueOnce(existingUserStats);
+    Leaderboard.update = jest.fn().mockReturnValueOnce(newUserStats);
+    const response = await request.put("/rank").set('token', s2sToken).send(newUserStats);
+    expect(response.statusCode).toEqual(OK);
+  });
+  
+  test("Successfully creates the user's score when it doesn't already exist", async () => {
+    const existingUserStats = {
+      dataValues: {
+      userId: "parthvi", 
+      offerPosts: 2,
+      requestPosts: 0
+      }
+    }
+    const newUserStats = {
+      userId: "parthvi",
+      offerPosts: 3,
+      requestPosts: 0
+    }
+    Leaderboard.findOne = jest.fn().mockReturnValueOnce(null);
+    Leaderboard.create = jest.fn().mockReturnValueOnce(newUserStats);
+    const response = await request.put("/rank").set('token', s2sToken).send(newUserStats);
+    expect(response.statusCode).toEqual(OK);
+  });
+
+  test("Missing at least 1 field", async () => {
+    const existingUserStats = {
+      dataValues: {
+      userId: "parthvi", 
+      offerPosts: 2,
+      requestPosts: 0
+      }
+    }
+    const newUserStats = {
+      userId: "parthvi",
+      requestPosts: 0
+    }
+    Leaderboard.findOne = jest.fn().mockReturnValueOnce(existingUserStats);
+    Leaderboard.update = jest.fn().mockReturnValueOnce(newUserStats);
+    const response = await request.put("/rank").set('token', s2sToken).send(newUserStats);
+    expect(response.statusCode).toEqual(OK);
   });
 });
 
