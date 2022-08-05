@@ -1,15 +1,15 @@
 const { Op } = require("sequelize");
 const { Leaderboard, User } = require("../models");
-const { INTERNAL_SERVER_ERROR } = require('../httpCodes');
+const { OK, INTERNAL_SERVER_ERROR, BAD_REQUEST } = require('../httpCodes');
 
 const getTopNUsers = async (req, res) => {
-   if (req.params.N) {
+    if (req.params.N) {
         const N = req.params.N;
         const response = await Leaderboard.findAll({
             order: [["score","DESC"]],
             limit: parseInt(N),
         });
-        
+
         const responseWithNames = await Promise.all(response.map(async userScore => {
             console.log(userScore);         
             const user = await User.findOne({
@@ -25,9 +25,9 @@ const getTopNUsers = async (req, res) => {
             };
             return returnObj;
         }));
-       res.status(200).json(responseWithNames);
+
+        res.status(OK).json(responseWithNames);
    } else {
-       console.log("Error getting top N users");
        res.sendStatus(INTERNAL_SERVER_ERROR);
    }
 };
@@ -41,27 +41,23 @@ const getUserRank = async (req, res) => {
         const user = await Leaderboard.findOne({ 
             where: { userId }
         });
-
-        console.log(user);
-        //create a function that finds all of the users with higher scores than you
         const higherScoringUsers = await Leaderboard.findAll({
             where: {score: {[Op.gte]: user.score}}
         })
         const rank = higherScoringUsers.length;
-        res.status(200).json({ rank });
+        res.status(OK).json({ rank });
     } else {
-        console.log("Error getting user rank");
-        res.sendStatus(INTERNAL_SERVER_ERROR);
+        res.sendStatus(BAD_REQUEST);
     }
 };
 
 const upsertUserMethod = async ({ userId, offerPosts, requestPosts }) => {
-    if (userId) {
+    const hasAllFields = userId && offerPosts && requestPosts;
+    if (hasAllFields) {
         const currLeaderboard = await Leaderboard.findOne({
                     where: { userId }
         });
         const scoreAlreadyExists = currLeaderboard != null;
-        console.log(currLeaderboard);
         if (scoreAlreadyExists) {
             const newOfferPosts = currLeaderboard.dataValues.offerPosts + offerPosts;
             const newRequestPosts = currLeaderboard.dataValues.requestPosts + requestPosts;
@@ -82,7 +78,6 @@ const upsertUserMethod = async ({ userId, offerPosts, requestPosts }) => {
         }
         return true;
     } else {
-        console.log("Error upserting user rank: " + error);
         return false;
     }
 }
