@@ -60,14 +60,12 @@ public class NewRequestForm extends AppCompatActivity {
         tagList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         TagAdapter adapter = new TagAdapter(this, TagManager.reset());
         tagList.setAdapter(adapter);
-        for (int i = 0; i < tags.size(); i++) {
-            Tag t = tags.get(i);
 
-            int finalI = i;
-            t.getClickData().observe(this, clicked -> {
-                adapter.notifyItemChanged(finalI);
-            });
-        }
+        TagManager.getTagData().observe(this, ts -> {
+            adapter.setItems(ts);
+            adapter.notifyDataSetChanged();
+        });
+
         this.itemName = this.findViewById(R.id.request_name_input);
         this.desc = this.findViewById(R.id.description_input);
         Button createPostButton = this.findViewById(R.id.create_request_button);

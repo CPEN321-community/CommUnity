@@ -26,6 +26,11 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
         Log.d(TAG, "TagAdapter: Created");
     }
 
+    public void setItems(ArrayList<Tag> tags) {
+        this.tags.clear();
+        this.tags.addAll(tags);
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -37,7 +42,7 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
         Tag t = this.tags.get(position);
         holder.name.setText(t.name);
         holder.itemView.setOnClickListener(v -> t.click());
-        if (t.clicked.getValue()) {
+        if (t.clicked) {
             holder.name.setBackgroundResource(R.drawable.full_rounded_card_clicked);
         } else {
             holder.name.setBackgroundResource(R.drawable.full_rounded_card);

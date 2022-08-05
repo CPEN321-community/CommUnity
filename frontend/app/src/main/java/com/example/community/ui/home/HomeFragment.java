@@ -52,14 +52,18 @@ public class HomeFragment extends Fragment {
         tagList.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         TagAdapter adapter = new TagAdapter(requireContext(), TagManager.reset());
         tagList.setAdapter(adapter);
-        for (int i = 0; i < tags.size(); i++) {
-            Tag t = tags.get(i);
 
-            int finalI = i;
-            t.getClickData().observe(getViewLifecycleOwner(), clicked -> {
-                adapter.notifyItemChanged(finalI);
-            });
-        }
+        TagManager.getTagData().observe(getViewLifecycleOwner(), ts -> {
+            adapter.setItems(ts);
+            adapter.notifyDataSetChanged();
+            if (TagManager.getClickedTags().size() > 0) {
+                binding.toolbar.searchToolbar.mSearchSrcTextView.setEnabled(false);
+                binding.toolbar.searchToolbar.mSearchSrcTextView.setText("");
+            } else {
+                binding.toolbar.searchToolbar.mSearchSrcTextView.setEnabled(true);
+            }
+            SearchManager.search(requireContext());
+        });
 
         binding.toolbar.chatButton.setOnClickListener((view) -> {
             Intent chatIntent = new Intent(requireActivity(), ChatActivity.class);
@@ -71,18 +75,6 @@ public class HomeFragment extends Fragment {
             Intent newOfferIntent = new Intent(requireContext(), NewOfferForm.class);
             requireActivity().startActivity(newOfferIntent);
         });
-
-        for (Tag t : TagManager.getTags()) {
-            t.getClickData().observe(getViewLifecycleOwner(), clicked -> {
-                if (TagManager.getClickedTags().size() > 0) {
-                    binding.toolbar.searchToolbar.mSearchSrcTextView.setEnabled(false);
-                    binding.toolbar.searchToolbar.mSearchSrcTextView.setText("");
-                } else {
-                    binding.toolbar.searchToolbar.mSearchSrcTextView.setEnabled(true);
-                }
-                SearchManager.search(requireContext());
-            });
-        }
 
         binding.toolbar.searchToolbar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

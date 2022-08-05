@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.community.R;
 import com.example.community.classes.CustomJSONObjectRequest;
@@ -32,8 +31,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class NewOfferForm extends AppCompatActivity {
 
@@ -71,14 +68,11 @@ public class NewOfferForm extends AppCompatActivity {
         tagList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         TagAdapter adapter = new TagAdapter(this, TagManager.reset());
         tagList.setAdapter(adapter);
-        for (int i = 0; i < tags.size(); i++) {
-            Tag t = tags.get(i);
 
-            int finalI = i;
-            t.getClickData().observe(this, clicked -> {
-                adapter.notifyItemChanged(finalI);
-            });
-        }
+        TagManager.getTagData().observe(this, ts -> {
+            adapter.setItems(ts);
+            adapter.notifyDataSetChanged();
+        });
         this.itemName = this.findViewById(R.id.offer_name_input);
         this.itemQuantity = this.findViewById(R.id.quantity_input);
         this.bestBefore = this.findViewById(R.id.best_before_input);
