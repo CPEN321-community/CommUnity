@@ -177,6 +177,8 @@ public class ChatManager {
         return chats.getValue().get(roomId);
     }
 
-
+    public static void SetChats(HashMap<String, ChatRoom> mChats) {
+        chats.postValue(mChats);
+    }
 }
 

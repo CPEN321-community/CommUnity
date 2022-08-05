@@ -1,7 +1,7 @@
 package com.example.community;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
@@ -67,7 +67,7 @@ public class LeaderboardTest {
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
         DoLeaderboardTest();
-        onView(withId(R.id.button_refresh_leaderboard)).perform(click());
+        onView(withId(R.id.leaderboard_list)).perform(scrollTo());
         DoLeaderboardTest();
     }
 

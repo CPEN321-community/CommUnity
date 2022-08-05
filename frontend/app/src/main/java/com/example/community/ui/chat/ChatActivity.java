@@ -31,6 +31,7 @@ public class ChatActivity extends AppCompatActivity {
             finish();
         });
         ChatAdapter adapter = new ChatAdapter(this);
+        this.adapter = adapter;
         ListView chatListView = findViewById(R.id.chat_list);
         chatListView.setAdapter(adapter);
         ChatManager.getChats().observe(this, (chats) -> {

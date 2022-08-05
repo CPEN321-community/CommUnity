@@ -2,9 +2,12 @@ package com.example.community;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static androidx.test.runner.lifecycle.Stage.RESUMED;
+
+import static org.hamcrest.Matchers.allOf;
 
 import android.app.Activity;
 import android.view.View;
@@ -16,6 +19,7 @@ import androidx.test.espresso.ViewAction;
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 
 import com.example.community.classes.GlobalUtil;
+import com.google.android.material.tabs.TabLayout;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -87,7 +91,6 @@ public class TestUtils {
     }
 
     public static void SetTestUserData() {
-        GlobalUtil.setIsTest(true);
         GlobalUtil.setId("testuserid");
         GlobalUtil.setGivenName("Community Tester");
         GlobalUtil.setHeaderToken(BuildConfig.S2S_TOKEN);
@@ -104,5 +107,27 @@ public class TestUtils {
         });
 
         return currentActivity[0];
+    }
+
+    public static ViewAction selectTabAtPosition(int tabIndex) {
+        return new ViewAction(){
+            @Override
+            public Matcher<View> getConstraints() {
+                return allOf(isDisplayed(), isAssignableFrom(TabLayout.class));
+            }
+
+            @Override
+            public String getDescription() {
+                return "with tab at index" + tabIndex;
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                TabLayout tabLayout = (TabLayout) view;
+                TabLayout.Tab tab = tabLayout.getTabAt(tabIndex);
+
+                tab.select();
+            }
+        };
     }
 }
