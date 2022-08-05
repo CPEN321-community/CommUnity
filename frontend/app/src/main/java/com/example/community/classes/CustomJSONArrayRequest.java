@@ -10,8 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CustomJSONArrayRequest extends JsonArrayRequest {
-    private static final String TAG = "CUSTOMJSON";
-
     public CustomJSONArrayRequest(int method, String url, JSONArray jsonRequest, Response.Listener<JSONArray> listener, Response.ErrorListener errorListener) {
         super(method, url, jsonRequest, listener, errorListener);
     }

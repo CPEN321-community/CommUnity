@@ -79,6 +79,7 @@ public class ChatRoom {
 
     public Message getLastMessage() throws NoMessagesException {
         if (this.messages.getValue() == null) {
+            Log.e(TAG, "getLastMessage: No Messages Available");
             throw new NoMessagesException();
         }
         int size = this.messages.getValue().size();

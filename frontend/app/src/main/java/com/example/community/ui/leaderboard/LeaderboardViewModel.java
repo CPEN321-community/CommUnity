@@ -12,13 +12,11 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.example.community.classes.CustomJSONArrayRequest;
-import com.example.community.classes.CustomJSONObjectRequest;
 import com.example.community.classes.GlobalUtil;
 import com.example.community.classes.UserWithScore;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -61,30 +59,6 @@ public class LeaderboardViewModel extends AndroidViewModel {
                         }
                     }
                     mList.setValue(users);
-                },
-                error -> {
-                    Log.e(TAG, "fetchLeaderboard: " + error);
-                });
-        queue.add(request);
-    }
-
-    private void getMyRank() {
-        RequestQueue queue = Volley.newRequestQueue(this.application);
-        String url = GlobalUtil.USER_URL + "/rank/"+GlobalUtil.getId();
-
-        CustomJSONObjectRequest request = new CustomJSONObjectRequest(Request.Method.GET,
-                url,
-                null,
-                (response) -> {
-                    Log.d(TAG, "fetchLeaderboard: " + response);
-                    if (response != null) {
-                            try {
-                                int rank = response.getInt("rank");
-                                this.rank.postValue(rank);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                    }
                 },
                 error -> {
                     Log.e(TAG, "fetchLeaderboard: " + error);

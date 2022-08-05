@@ -18,21 +18,14 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.community.EditRestrictionsActivity;
-import com.example.community.R;
+import com.example.community.classes.DateImgUtil;
 import com.example.community.classes.DietaryRestriction;
-import com.example.community.classes.GlobalUtil;
-import com.example.community.classes.LoginManager;
+import com.example.community.classes.LoginUtils;
 import com.example.community.classes.Stats;
 import com.example.community.classes.UserProfile;
-import com.example.community.classes.DateImgUtil;
 import com.example.community.databinding.FragmentProfileBinding;
 import com.example.community.login.LoginActivity;
 import com.example.community.ui.chat.ChatActivity;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInApi;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 import java.util.ArrayList;
 
@@ -56,7 +49,7 @@ public class ProfileFragment extends Fragment {
         Button signOutButton = binding.signOutButton;
 
         signOutButton.setOnClickListener(v -> {
-            LoginManager.SignOut(this.requireContext());
+            LoginUtils.SignOut(this.requireContext());
             Intent loginIntent = new Intent(this.requireContext(), LoginActivity.class);
             startActivity(loginIntent);
             this.requireActivity().finish();

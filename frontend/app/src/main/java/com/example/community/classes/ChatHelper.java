@@ -20,7 +20,7 @@ import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
-public class ChatManager {
+public class ChatHelper {
     private static final String TAG = "CHAT_MANAGER";
     private static final MutableLiveData<Boolean> loading = new MutableLiveData<>(false);
     private static final MutableLiveData<HashMap<String, ChatRoom>> chats = new MutableLiveData<>(new HashMap<>());
@@ -177,6 +177,8 @@ public class ChatManager {
         return chats.getValue().get(roomId);
     }
 
-
+    public static void SetChats(HashMap<String, ChatRoom> mChats) {
+        chats.postValue(mChats);
+    }
 }
 

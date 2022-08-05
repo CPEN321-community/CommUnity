@@ -6,8 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -67,14 +65,15 @@ public class ReqPostAdapter extends RecyclerView.Adapter<ReqPostAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView itemName;
-        private TextView postDate;
-        private TextView description;
+        private final TextView itemName;
+        private final TextView postDate;
+        private final TextView description;
+
         public ViewHolder(@NonNull View view) {
             super(view);
-            this.itemName = (TextView) view.findViewById(R.id.req_item_name);
-            this.postDate = (TextView) view.findViewById(R.id.req_post_date);
-            this.description = (TextView) view.findViewById(R.id.req_description);
+            this.itemName = view.findViewById(R.id.req_item_name);
+            this.postDate = view.findViewById(R.id.req_post_date);
+            this.description = view.findViewById(R.id.req_description);
         }
     }
 }

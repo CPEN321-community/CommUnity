@@ -16,13 +16,12 @@ import android.app.Activity;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
-import com.example.community.classes.Chat;
+import com.example.community.classes.ChatHelper;
+import com.example.community.classes.ChatRoom;
 import com.example.community.classes.ChatUser;
-import com.example.community.classes.Message;
 import com.example.community.offer_list.NewOfferForm;
 import com.example.community.request_list.NewRequestForm;
 import com.example.community.ui.chat.ChatActivity;
-import com.example.community.ui.chat.ChatAdapter;
 import com.example.community.ui.chat.message.MessageActivity;
 
 import org.junit.After;
@@ -30,11 +29,10 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class NonFunctionalNavigationTest {
 
-    private static final String TAG = "NONFUNCTIONAL_NAVIGATION_TEST";
     @Rule
     public ActivityScenarioRule<MainActivity> activityRule =
             new ActivityScenarioRule<>(MainActivity.class);
@@ -56,16 +54,13 @@ public class NonFunctionalNavigationTest {
     public void TestChatTakes4Navigations() {
         onView(withId(R.id.chat_button)).perform(click());
         NavigateTo(ChatActivity.class);
-        ChatActivity chatActivity = (ChatActivity) getActivityInstance();
         ChatUser me = new ChatUser("Community", "Tester", "");
         ChatUser other = new ChatUser("Community", "Tester", "");
 
-        ArrayList<Message> messages = new ArrayList<>();
-        Chat chat = new Chat(me, other, messages, "testpostid");
-        ArrayList<Chat> chats = new ArrayList<>();
-        chats.add(chat);
-        ChatAdapter adapter = chatActivity.getAdapter();
-        adapter.setChats(chats);
+        ChatRoom chat = new ChatRoom(me, other, "testpostid");
+        HashMap<String, ChatRoom> chats = new HashMap<>();
+        chats.put("testpostid", chat);
+        ChatHelper.SetChats(chats);
         onData(anything())
                 .atPosition(0)
                 .perform(click());
@@ -84,7 +79,7 @@ public class NonFunctionalNavigationTest {
     public void TestAddOfferPostTakes4Navigations() {
         onView(withText("Offers")).perform(click());
         navigations++;
-        onView(withId(R.id.addOfferPostButton)).perform(click());
+        onView(withId(R.id.addPostButton)).perform(click());
         NavigateTo(NewOfferForm.class);
         assert navigations <= 4;
     }
@@ -93,7 +88,7 @@ public class NonFunctionalNavigationTest {
     public void TestAddRequestPostTakes4Navigations() {
         onView(withText("Requests")).perform(click());
         navigations++;
-        onView(withId(R.id.addOfferPostButton)).perform(click());
+        onView(withId(R.id.addPostButton)).perform(click());
         NavigateTo(NewRequestForm.class);
         assert navigations <= 4;
     }

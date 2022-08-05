@@ -7,26 +7,28 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.community.R;
-import com.example.community.classes.GlobalUtil;
-import com.example.community.classes.Tags;
+import com.example.community.classes.CustomJSONObjectRequest;
 import com.example.community.classes.DateImgUtil;
+import com.example.community.classes.GlobalUtil;
+import com.example.community.classes.TagHelper;
+import com.example.community.databinding.ActivityNewOfferFormBinding;
+import com.example.community.ui.TagAdapter;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class NewOfferForm extends AppCompatActivity {
 
@@ -37,15 +39,37 @@ public class NewOfferForm extends AppCompatActivity {
     private CalendarView bestBefore;
     private EditText pickup;
     private EditText desc;
-    private Tags tags;
+
+
+    @Override
+    public void onBackPressed() {
+        TagHelper.reset();
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        TagHelper.reset();
+        super.onDestroy();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         Button uploadPhotoButton;
         Button createPostButton;
+        getSupportActionBar().hide();
+        ActivityNewOfferFormBinding binding = ActivityNewOfferFormBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        RecyclerView tagList = binding.includeTags.tagsList;
+        tagList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        TagAdapter adapter = new TagAdapter(this, TagHelper.reset());
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_offer_form);
+
+        TagHelper.getTagData().observe(this, ts -> {
+            adapter.setItems(ts);
+            adapter.notifyDataSetChanged();
+        });
         this.itemName = this.findViewById(R.id.offer_name_input);
         this.itemQuantity = this.findViewById(R.id.quantity_input);
         this.bestBefore = this.findViewById(R.id.best_before_input);
@@ -56,12 +80,6 @@ public class NewOfferForm extends AppCompatActivity {
         createPostButton.setOnClickListener(v -> {
             this.createOfferPost();
         });
-        TextView fruit = findViewById(R.id.fruit);
-        TextView vegetable = findViewById(R.id.vegetable);
-        TextView nut = findViewById(R.id.nut);
-
-        Tags tags = new Tags(fruit, vegetable, nut);
-        this.tags = tags;
 
         uploadPhotoButton.setOnClickListener(v -> {
             Intent intent = new Intent();
@@ -103,7 +121,9 @@ public class NewOfferForm extends AppCompatActivity {
             postBody.put("pickUpLocation", this.pickup.getText().toString());
             postBody.put("image", "");
             postBody.put("status", "ACTIVE");
-            postBody.put("tagList", this.tags.getJSONArr());
+            JSONArray arr = TagHelper.getJSONArr();
+            postBody.put("tagList", arr);
+            Log.d(TAG, "createOfferPost: " + arr);
             Date selectedDate = new Date(this.bestBefore.getDate());
             String dateString = DateImgUtil.DateToString(selectedDate);
             postBody.put("bestBeforeDate", dateString);
@@ -113,7 +133,7 @@ public class NewOfferForm extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+        CustomJSONObjectRequest request = new CustomJSONObjectRequest(Request.Method.POST,
                 url,
                 postBody,
                 (JSONObject response) -> {
@@ -122,15 +142,9 @@ public class NewOfferForm extends AppCompatActivity {
                     finish();
                 },
                 error -> {
+                    Toast.makeText(this, "Failed to create post, please try again", Toast.LENGTH_LONG).show();
                     Log.e(TAG, "fetchLeaderboard: " + error);
-                }) {
-            @Override
-            public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("token", GlobalUtil.getHeaderToken());
-                return headers;
-            }
-        };
+                });
         queue.add(request);
     }
 

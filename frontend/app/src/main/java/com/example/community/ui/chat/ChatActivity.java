@@ -7,7 +7,7 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.community.R;
-import com.example.community.classes.ChatManager;
+import com.example.community.classes.ChatHelper;
 import com.example.community.classes.ChatRoom;
 import com.example.community.databinding.ActivityChatBinding;
 
@@ -31,9 +31,10 @@ public class ChatActivity extends AppCompatActivity {
             finish();
         });
         ChatAdapter adapter = new ChatAdapter(this);
+        this.adapter = adapter;
         ListView chatListView = findViewById(R.id.chat_list);
         chatListView.setAdapter(adapter);
-        ChatManager.getChats().observe(this, (chats) -> {
+        ChatHelper.getChats().observe(this, (chats) -> {
             Log.d(TAG, "onCreate: chats!!!" + chats.size());
             adapter.setItems(new ArrayList<>(chats.values()));
             adapter.notifyDataSetChanged();

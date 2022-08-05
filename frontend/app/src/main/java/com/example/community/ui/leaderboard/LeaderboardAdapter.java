@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.community.R;
-import com.example.community.classes.UserWithScore;
 import com.example.community.classes.DateImgUtil;
+import com.example.community.classes.UserWithScore;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -45,9 +45,9 @@ public class LeaderboardAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         View newView = view;
         newView = inflater.inflate(R.layout.fragment_leaderboard_user, null);
-        TextView number = (TextView) newView.findViewById(R.id.item_number);
-        TextView name = (TextView) newView.findViewById(R.id.leaderboard_name);
-        TextView score = (TextView) newView.findViewById(R.id.leaderboard_score);
+        TextView number = newView.findViewById(R.id.item_number);
+        TextView name = newView.findViewById(R.id.leaderboard_name);
+        TextView score = newView.findViewById(R.id.leaderboard_score);
         UserWithScore user = this.users.get(i);
 
         number.setText(String.valueOf(i + 1));
@@ -55,7 +55,7 @@ public class LeaderboardAdapter extends BaseAdapter {
         name.setText(nameAndInitial);
         score.setText(String.valueOf(user.score));
 
-        ImageView avatar = (ImageView) newView.findViewById(R.id.chat_avatar);
+        ImageView avatar = newView.findViewById(R.id.chat_avatar);
         if (!Objects.equals(user.profilePicture, "")) {
             DateImgUtil.setImageWhenLoaded(context, user.profilePicture, avatar);
         } else {
