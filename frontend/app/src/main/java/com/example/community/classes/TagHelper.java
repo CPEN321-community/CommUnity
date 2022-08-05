@@ -6,7 +6,7 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 
-public class TagManager {
+public class TagHelper {
     private static final String[] allTags = {"Fruit", "Veggie", "Meat", "Fish", "Keto", "Nut-Free", "Spice", "Carb", "Sauce", "Other"};
 
     private static final MutableLiveData<ArrayList<Tag>> tags = new MutableLiveData<>(new ArrayList());

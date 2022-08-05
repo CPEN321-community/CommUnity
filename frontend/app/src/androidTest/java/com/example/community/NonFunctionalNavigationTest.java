@@ -35,7 +35,6 @@ import java.util.HashMap;
 
 public class NonFunctionalNavigationTest {
 
-    private static final String TAG = "NONFUNCTIONAL_NAVIGATION_TEST";
     @Rule
     public ActivityScenarioRule<MainActivity> activityRule =
             new ActivityScenarioRule<>(MainActivity.class);
@@ -57,7 +56,6 @@ public class NonFunctionalNavigationTest {
     public void TestChatTakes4Navigations() {
         onView(withId(R.id.chat_button)).perform(click());
         NavigateTo(ChatActivity.class);
-        ChatActivity chatActivity = (ChatActivity) getActivityInstance();
         ChatUser me = new ChatUser("Community", "Tester", "");
         ChatUser other = new ChatUser("Community", "Tester", "");
 

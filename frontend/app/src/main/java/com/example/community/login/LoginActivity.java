@@ -22,7 +22,7 @@ import com.example.community.R;
 import com.example.community.VolleyCallBack;
 import com.example.community.classes.CustomJSONObjectRequest;
 import com.example.community.classes.GlobalUtil;
-import com.example.community.classes.LoginManager;
+import com.example.community.classes.LoginUtils;
 import com.example.community.databinding.ActivityLoginBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -47,8 +47,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //      Set app context so Volley Utils can reference some context.
         GlobalUtil.setAppContext(getApplicationContext());
-        mGoogleSignInClient = LoginManager.GetGoogleClient(this);
-        GoogleSignInAccount account = LoginManager.GetLastSignedInAccount(this);
+        mGoogleSignInClient = LoginUtils.GetGoogleClient(this);
+        GoogleSignInAccount account = LoginUtils.GetLastSignedInAccount(this);
         updateUI(account);
 
         ActivityLoginBinding binding = ActivityLoginBinding.inflate(getLayoutInflater());

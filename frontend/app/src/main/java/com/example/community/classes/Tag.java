@@ -12,7 +12,7 @@ public class Tag {
     }
 
     public void click() {
-        TagManager.click(index);
+        TagHelper.click(index);
     }
 
 }

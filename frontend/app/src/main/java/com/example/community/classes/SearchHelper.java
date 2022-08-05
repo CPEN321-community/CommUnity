@@ -15,7 +15,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class SearchManager {
+public class SearchHelper {
     private static final String TAG = "SEARCH_MANAGER";
     private static final MutableLiveData<ArrayList<ReqPostObj>> requestPosts = new MutableLiveData<>();
     private static final MutableLiveData<ArrayList<OfferPostObj>> offerPosts = new MutableLiveData<>();
@@ -167,7 +167,7 @@ public class SearchManager {
     }
 
     public static void search(Context ctx) {
-        ArrayList<Tag> tags = TagManager.getClickedTags();
+        ArrayList<Tag> tags = TagHelper.getClickedTags();
         if (tags.size() > 0) {
             PerformRequestTagSearch(ctx);
             PerformOfferTagSearch(ctx);
@@ -189,7 +189,7 @@ public class SearchManager {
         RequestQueue queue = Volley.newRequestQueue(ctx);
         JSONObject body = new JSONObject();
         try {
-            body.put("tagList", TagManager.getJSONArr());
+            body.put("tagList", TagHelper.getJSONArr());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -235,7 +235,7 @@ public class SearchManager {
         RequestQueue queue = Volley.newRequestQueue(ctx);
         JSONObject body = new JSONObject();
         try {
-            body.put("tagList", TagManager.getJSONArr());
+            body.put("tagList", TagHelper.getJSONArr());
         } catch (JSONException e) {
             e.printStackTrace();
         }

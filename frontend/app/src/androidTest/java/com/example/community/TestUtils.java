@@ -30,8 +30,6 @@ import java.util.Collection;
 
 public class TestUtils {
 
-    private static final String TAG = "TEST_UTILS";
-
     public static String getText(final Matcher<View> matcher) {
         final String[] stringHolder = {null};
         onView(matcher).perform(new ViewAction() {
@@ -52,42 +50,6 @@ public class TestUtils {
             }
         });
         return stringHolder[0];
-    }
-
-    /**
-     * Perform action of waiting for a specific time.
-     */
-    public static ViewAction waitFor(final long millis) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isRoot();
-            }
-
-            @Override
-            public String getDescription() {
-                return "Wait for " + millis + " milliseconds.";
-            }
-
-            @Override
-            public void perform(UiController uiController, final View view) {
-                uiController.loopMainThreadForAtLeast(millis);
-            }
-        };
-    }
-
-    public static Matcher<View> withListOfAtMost(final int size) {
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public boolean matchesSafely(final View view) {
-                return ((ListView) view).getCount() <= size;
-            }
-
-            @Override
-            public void describeTo(final Description description) {
-                description.appendText("ListView should have " + size + " items");
-            }
-        };
     }
 
     public static void SetTestUserData() {

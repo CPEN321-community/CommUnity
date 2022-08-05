@@ -42,6 +42,7 @@ public class EditRestrictionsActivity extends AppCompatActivity {
         this.textField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Don't need to do anything
             }
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -52,6 +53,7 @@ public class EditRestrictionsActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
+                // Don't need to do anything
             }
         });
         submitButton.setOnClickListener(v -> {

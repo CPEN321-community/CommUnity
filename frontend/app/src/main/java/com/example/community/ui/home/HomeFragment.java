@@ -16,9 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.community.classes.SearchManager;
-import com.example.community.classes.Tag;
-import com.example.community.classes.TagManager;
+import com.example.community.classes.SearchHelper;
+import com.example.community.classes.TagHelper;
 import com.example.community.databinding.FragmentHomeBinding;
 import com.example.community.databinding.TimeSunMoonElementBinding;
 import com.example.community.offer_list.NewOfferForm;
@@ -28,8 +27,6 @@ import com.example.community.ui.chat.ChatActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.messaging.FirebaseMessaging;
-
-import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
@@ -48,21 +45,20 @@ public class HomeFragment extends Fragment {
 
         RecyclerView tagList = binding.includeTagsHome.tagsList;
         tagList.setVisibility(View.INVISIBLE);
-        ArrayList<Tag> tags = TagManager.getTags();
         tagList.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-        TagAdapter adapter = new TagAdapter(requireContext(), TagManager.reset());
+        TagAdapter adapter = new TagAdapter(requireContext(), TagHelper.reset());
         tagList.setAdapter(adapter);
 
-        TagManager.getTagData().observe(getViewLifecycleOwner(), ts -> {
+        TagHelper.getTagData().observe(getViewLifecycleOwner(), ts -> {
             adapter.setItems(ts);
             adapter.notifyDataSetChanged();
-            if (TagManager.getClickedTags().size() > 0) {
+            if (TagHelper.getClickedTags().size() > 0) {
                 binding.toolbar.searchToolbar.mSearchSrcTextView.setEnabled(false);
                 binding.toolbar.searchToolbar.mSearchSrcTextView.setText("");
             } else {
                 binding.toolbar.searchToolbar.mSearchSrcTextView.setEnabled(true);
             }
-            SearchManager.search(requireContext());
+            SearchHelper.search(requireContext());
         });
 
         binding.toolbar.chatButton.setOnClickListener((view) -> {
@@ -71,7 +67,7 @@ public class HomeFragment extends Fragment {
         });
 
         binding.addPostButton.setOnClickListener(v -> {
-            TagManager.reset();
+            TagHelper.reset();
             Intent newOfferIntent = new Intent(requireContext(), NewOfferForm.class);
             requireActivity().startActivity(newOfferIntent);
         });
@@ -79,26 +75,26 @@ public class HomeFragment extends Fragment {
         binding.toolbar.searchToolbar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                SearchManager.search(requireContext());
+                SearchHelper.search(requireContext());
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
-                SearchManager.setQuery(s);
+                SearchHelper.setQuery(s);
                 return false;
             }
         });
 
         binding.toolbar.searchToolbar.mSearchSrcTextView.setOnFocusChangeListener((view, hasFocus) -> {
-            if (hasFocus || TagManager.getClickedTags().size() > 0) {
+            if (hasFocus || TagHelper.getClickedTags().size() > 0) {
                 tagList.setVisibility(View.VISIBLE);
             } else {
                 tagList.setVisibility(View.INVISIBLE);
             }
         });
         binding.toolbar.searchToolbar.setOnCloseListener(() -> {
-            TagManager.reset();
+            TagHelper.reset();
             tagList.setVisibility(View.INVISIBLE);
             return false;
         });
@@ -136,13 +132,13 @@ public class HomeFragment extends Fragment {
                 int position = tabLayout.getSelectedTabPosition();
                 if (position == 0) {
                     binding.addPostButton.setOnClickListener(v -> {
-                        TagManager.reset();
+                        TagHelper.reset();
                         Intent newOfferIntent = new Intent(requireContext(), NewOfferForm.class);
                         requireActivity().startActivity(newOfferIntent);
                     });
                 } else {
                     binding.addPostButton.setOnClickListener(v -> {
-                        TagManager.reset();
+                        TagHelper.reset();
                         Intent newReqIntent = new Intent(requireContext(), NewRequestForm.class);
                         requireActivity().startActivity(newReqIntent);
                     });
@@ -151,10 +147,12 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
+                // Handled inside tabselected
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
+                // Handled inside tabselected
             }
         });
 

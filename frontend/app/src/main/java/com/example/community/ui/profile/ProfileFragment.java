@@ -20,7 +20,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.community.EditRestrictionsActivity;
 import com.example.community.classes.DateImgUtil;
 import com.example.community.classes.DietaryRestriction;
-import com.example.community.classes.LoginManager;
+import com.example.community.classes.LoginUtils;
 import com.example.community.classes.Stats;
 import com.example.community.classes.UserProfile;
 import com.example.community.databinding.FragmentProfileBinding;
@@ -49,7 +49,7 @@ public class ProfileFragment extends Fragment {
         Button signOutButton = binding.signOutButton;
 
         signOutButton.setOnClickListener(v -> {
-            LoginManager.SignOut(this.requireContext());
+            LoginUtils.SignOut(this.requireContext());
             Intent loginIntent = new Intent(this.requireContext(), LoginActivity.class);
             startActivity(loginIntent);
             this.requireActivity().finish();

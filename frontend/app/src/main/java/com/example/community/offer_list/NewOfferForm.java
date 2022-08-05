@@ -20,8 +20,7 @@ import com.example.community.R;
 import com.example.community.classes.CustomJSONObjectRequest;
 import com.example.community.classes.DateImgUtil;
 import com.example.community.classes.GlobalUtil;
-import com.example.community.classes.Tag;
-import com.example.community.classes.TagManager;
+import com.example.community.classes.TagHelper;
 import com.example.community.databinding.ActivityNewOfferFormBinding;
 import com.example.community.ui.TagAdapter;
 
@@ -29,7 +28,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 public class NewOfferForm extends AppCompatActivity {
@@ -45,13 +43,13 @@ public class NewOfferForm extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        TagManager.reset();
+        TagHelper.reset();
         super.onBackPressed();
     }
 
     @Override
     protected void onDestroy() {
-        TagManager.reset();
+        TagHelper.reset();
         super.onDestroy();
     }
 
@@ -64,12 +62,11 @@ public class NewOfferForm extends AppCompatActivity {
         ActivityNewOfferFormBinding binding = ActivityNewOfferFormBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         RecyclerView tagList = binding.includeTags.tagsList;
-        ArrayList<Tag> tags = TagManager.getTags();
         tagList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        TagAdapter adapter = new TagAdapter(this, TagManager.reset());
+        TagAdapter adapter = new TagAdapter(this, TagHelper.reset());
         tagList.setAdapter(adapter);
 
-        TagManager.getTagData().observe(this, ts -> {
+        TagHelper.getTagData().observe(this, ts -> {
             adapter.setItems(ts);
             adapter.notifyDataSetChanged();
         });
@@ -124,7 +121,7 @@ public class NewOfferForm extends AppCompatActivity {
             postBody.put("pickUpLocation", this.pickup.getText().toString());
             postBody.put("image", "");
             postBody.put("status", "ACTIVE");
-            JSONArray arr = TagManager.getJSONArr();
+            JSONArray arr = TagHelper.getJSONArr();
             postBody.put("tagList", arr);
             Log.d(TAG, "createOfferPost: " + arr);
             Date selectedDate = new Date(this.bestBefore.getDate());

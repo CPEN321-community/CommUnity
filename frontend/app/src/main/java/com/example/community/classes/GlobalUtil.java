@@ -33,7 +33,6 @@ public class GlobalUtil {
     private static String id;
     private static String givenName;
     private static String lastName;
-    private static boolean IS_TEST;
 
     public static void cleanup() {
         account = null;

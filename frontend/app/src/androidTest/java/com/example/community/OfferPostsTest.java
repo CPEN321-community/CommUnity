@@ -82,7 +82,7 @@ public class OfferPostsTest {
     public void editOfferPost() {
         activityRule.getScenario().recreate();
         onView(withId(R.id.navigation_home)).perform(click());
-        Matcher<View> list = withId(R.id.tab_view_pager);
+//        Matcher<View> list = withId(R.id.tab_view_pager);
 
         //TODO: create an edit and delete button associated with each offer you created
         //onView(withId(R.id.edit_offer_button)).perform(click());

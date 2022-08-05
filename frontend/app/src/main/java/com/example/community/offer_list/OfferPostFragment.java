@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.community.classes.SearchManager;
+import com.example.community.classes.SearchHelper;
 import com.example.community.databinding.FragmentPostListBinding;
 
 import java.util.ArrayList;
@@ -36,24 +36,24 @@ public class OfferPostFragment extends Fragment {
         SwipeRefreshLayout refresher = binding_offer.pullToRefresh;
         refresher.setOnRefreshListener(() -> {
             Log.d(TAG, "onCreateView: Refreshing");
-            SearchManager.search(requireContext());
+            SearchHelper.search(requireContext());
             Observer<Boolean> observer = new Observer<Boolean>() {
                 @Override
                 public void onChanged(Boolean loading) {
                     if (!loading) {
-                        SearchManager.getLoadingData().removeObserver(this);
+                        SearchHelper.getLoadingData().removeObserver(this);
                         refresher.setRefreshing(false);
                     }
                 }
             };
-            SearchManager.getLoadingData().observe(getViewLifecycleOwner(), observer);
+            SearchHelper.getLoadingData().observe(getViewLifecycleOwner(), observer);
 
         });
 
         OfferPostAdapter adapter = new OfferPostAdapter(requireContext(), new ArrayList<>());
         listView.setAdapter(adapter);
 
-        SearchManager.getOfferPostLiveData().observe(getViewLifecycleOwner(), offerList -> {
+        SearchHelper.getOfferPostLiveData().observe(getViewLifecycleOwner(), offerList -> {
             adapter.setItems(offerList);
             adapter.notifyDataSetChanged();
         });

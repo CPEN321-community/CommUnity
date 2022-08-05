@@ -1,5 +1,7 @@
 package com.example.community.classes;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.community.exceptions.NoMessagesException;
@@ -77,6 +79,7 @@ public class ChatRoom {
 
     public Message getLastMessage() throws NoMessagesException {
         if (this.messages.getValue() == null) {
+            Log.e(TAG, "getLastMessage: No Messages Available");
             throw new NoMessagesException();
         }
         int size = this.messages.getValue().size();

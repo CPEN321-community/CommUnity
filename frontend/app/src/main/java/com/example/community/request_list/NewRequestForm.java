@@ -18,16 +18,13 @@ import com.android.volley.toolbox.Volley;
 import com.example.community.R;
 import com.example.community.classes.CustomJSONObjectRequest;
 import com.example.community.classes.GlobalUtil;
-import com.example.community.classes.SearchManager;
-import com.example.community.classes.Tag;
-import com.example.community.classes.TagManager;
+import com.example.community.classes.SearchHelper;
+import com.example.community.classes.TagHelper;
 import com.example.community.databinding.ActivityNewRequestFormBinding;
 import com.example.community.ui.TagAdapter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class NewRequestForm extends AppCompatActivity {
 
@@ -38,13 +35,13 @@ public class NewRequestForm extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        TagManager.reset();
+        TagHelper.reset();
         super.onBackPressed();
     }
 
     @Override
     protected void onDestroy() {
-        TagManager.reset();
+        TagHelper.reset();
         super.onDestroy();
     }
 
@@ -56,12 +53,11 @@ public class NewRequestForm extends AppCompatActivity {
         getSupportActionBar().hide();
 
         RecyclerView tagList = binding.includeTagsReq.tagsList;
-        ArrayList<Tag> tags = TagManager.getTags();
         tagList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        TagAdapter adapter = new TagAdapter(this, TagManager.reset());
+        TagAdapter adapter = new TagAdapter(this, TagHelper.reset());
         tagList.setAdapter(adapter);
 
-        TagManager.getTagData().observe(this, ts -> {
+        TagHelper.getTagData().observe(this, ts -> {
             adapter.setItems(ts);
             adapter.notifyDataSetChanged();
         });
@@ -84,7 +80,7 @@ public class NewRequestForm extends AppCompatActivity {
             postBody.put("title", this.itemName.getText().toString());
             postBody.put("description", this.desc.getText().toString());
             postBody.put("status", "ACTIVE");
-            postBody.put("tagList", TagManager.getJSONArr());
+            postBody.put("tagList", TagHelper.getJSONArr());
         } catch (JSONException e) {
             Log.e(TAG, "createPost: " + e);
             e.printStackTrace();
@@ -100,7 +96,7 @@ public class NewRequestForm extends AppCompatActivity {
                     View toastView = toast.getView();
                     toastView.setBackgroundColor(Color.parseColor("#00ff00"));
                     toast.show();
-                    SearchManager.search(this);
+                    SearchHelper.search(this);
                     finish();
                 },
                 error -> {
