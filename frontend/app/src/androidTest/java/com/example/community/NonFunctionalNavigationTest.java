@@ -22,7 +22,6 @@ import com.example.community.classes.ChatUser;
 import com.example.community.offer_list.NewOfferForm;
 import com.example.community.request_list.NewRequestForm;
 import com.example.community.ui.chat.ChatActivity;
-import com.example.community.ui.chat.ChatAdapter;
 import com.example.community.ui.chat.message.MessageActivity;
 
 import org.junit.After;
@@ -30,7 +29,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class NonFunctionalNavigationTest {

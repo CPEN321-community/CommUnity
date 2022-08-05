@@ -3,15 +3,12 @@ package com.example.community;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static androidx.test.runner.lifecycle.Stage.RESUMED;
-
 import static org.hamcrest.Matchers.allOf;
 
 import android.app.Activity;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.test.espresso.UiController;
@@ -21,9 +18,7 @@ import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import com.example.community.classes.GlobalUtil;
 import com.google.android.material.tabs.TabLayout;
 
-import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 
 import java.util.Collection;
 
@@ -72,7 +67,7 @@ public class TestUtils {
     }
 
     public static ViewAction selectTabAtPosition(int tabIndex) {
-        return new ViewAction(){
+        return new ViewAction() {
             @Override
             public Matcher<View> getConstraints() {
                 return allOf(isDisplayed(), isAssignableFrom(TabLayout.class));

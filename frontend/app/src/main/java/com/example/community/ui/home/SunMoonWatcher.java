@@ -16,13 +16,11 @@ public class SunMoonWatcher {
     private static final String TAG = "SUN_MOON_WATCHER";
     private final static long twelvePM = LocalTime.of(12, 0).toNanoOfDay();
     private final static long twelveAM = LocalTime.of(0, 0).toNanoOfDay();
-    private final static long sixAM = LocalTime.of(6, 0).toNanoOfDay();
-    private final static long sixPM = LocalTime.of(18, 0).toNanoOfDay();
 
     private final TimeSunMoonElementBinding binding;
     private final ImageView imageView;
 
-    public SunMoonWatcher(TimeSunMoonElementBinding binding, int screenWidth, int screenHeight) {
+    public SunMoonWatcher(TimeSunMoonElementBinding binding) {
         this.binding = binding;
         this.imageView = binding.sunOrMoon;
         CountDownTimer timer = new CountDownTimer(Long.MAX_VALUE, 1000) {
@@ -35,6 +33,7 @@ public class SunMoonWatcher {
 
             @Override
             public void onFinish() {
+                // Never Finishes.
             }
         };
         timer.start();

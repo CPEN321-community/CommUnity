@@ -64,7 +64,7 @@ public class NewOfferForm extends AppCompatActivity {
         RecyclerView tagList = binding.includeTags.tagsList;
         tagList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         TagAdapter adapter = new TagAdapter(this, TagHelper.reset());
-        tagList.setAdapter(adapter);
+
 
         TagHelper.getTagData().observe(this, ts -> {
             adapter.setItems(ts);

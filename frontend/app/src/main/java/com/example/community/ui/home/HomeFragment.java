@@ -160,10 +160,6 @@ public class HomeFragment extends Fragment {
 
     private void initSunMoonWatcher() {
         TimeSunMoonElementBinding sunMoonElementBinding = binding.sunMoonBg;
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int width = displayMetrics.widthPixels;
-        int height = displayMetrics.heightPixels;
-        new SunMoonWatcher(sunMoonElementBinding, width, height);
+        new SunMoonWatcher(sunMoonElementBinding);
     }
 }

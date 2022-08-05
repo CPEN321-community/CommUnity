@@ -80,9 +80,8 @@ public class ManagePreferencesUnitTest {
                         .atPosition(0)
                         .onChildView(withId(R.id.remove_restriction_button))
                         .perform(click());
-            }
-            catch (NoMatchingViewException e) {
-                Log.e(TAG, "resetRestrictions: " + e );
+            } catch (NoMatchingViewException e) {
+                Log.e(TAG, "resetRestrictions: " + e);
             }
         }
     }
@@ -112,13 +111,12 @@ public class ManagePreferencesUnitTest {
         Matcher<View> restrictionName = withId(R.id.restriction_name);
         Matcher<View> restrictionButton = withId(R.id.remove_restriction_button);
         try {
-        onView(restrictionName).check(matches(isDisplayed()));
-        onView(restrictionName).check(matches(withText("Vegan")));
-        onView(restrictionButton).check(matches(isDisplayed()));
-        onView(restrictionButton).perform(click());
-        onView(restrictionName).check(doesNotExist());
-        }
-        catch(NoMatchingViewException e) {
+            onView(restrictionName).check(matches(isDisplayed()));
+            onView(restrictionName).check(matches(withText("Vegan")));
+            onView(restrictionButton).check(matches(isDisplayed()));
+            onView(restrictionButton).perform(click());
+            onView(restrictionName).check(doesNotExist());
+        } catch (NoMatchingViewException e) {
             // Cleanup was already handled
         }
     }
