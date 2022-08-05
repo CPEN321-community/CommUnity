@@ -16,7 +16,7 @@ import android.app.Activity;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
-import com.example.community.classes.ChatManager;
+import com.example.community.classes.ChatHelper;
 import com.example.community.classes.ChatRoom;
 import com.example.community.classes.ChatUser;
 import com.example.community.offer_list.NewOfferForm;
@@ -60,7 +60,7 @@ public class NonFunctionalNavigationTest {
         ChatRoom chat = new ChatRoom(me, other, "testpostid");
         HashMap<String, ChatRoom> chats = new HashMap<>();
         chats.put("testpostid", chat);
-        ChatManager.SetChats(chats);
+        ChatHelper.SetChats(chats);
         onData(anything())
                 .atPosition(0)
                 .perform(click());

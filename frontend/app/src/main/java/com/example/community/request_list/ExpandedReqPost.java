@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.community.R;
-import com.example.community.classes.ChatManager;
+import com.example.community.classes.ChatHelper;
 import com.example.community.classes.ChatRoom;
 import com.example.community.classes.CreateRoomInterface;
 import com.example.community.classes.GlobalUtil;
@@ -33,7 +33,7 @@ public class ExpandedReqPost extends AppCompatActivity {
         Intent expReqIntent = getIntent();
         ReqPostObj post = (ReqPostObj) expReqIntent.getSerializableExtra("currReq");
 
-        if (post.userId.equals(GlobalUtil.getId()) || ChatManager.getChats().getValue().containsKey(post.reqId)) {
+        if (post.userId.equals(GlobalUtil.getId()) || ChatHelper.getChats().getValue().containsKey(post.reqId)) {
             acceptButton.setVisibility(View.GONE);
         } else {
             acceptButton.setOnClickListener(v -> {
@@ -51,7 +51,7 @@ public class ExpandedReqPost extends AppCompatActivity {
                         Log.d(TAG, "onFailure: ERROR");
                     }
                 };
-                ChatManager.CreateRoom(post.reqId, false, i);
+                ChatHelper.CreateRoom(post.reqId, false, i);
             });
         }
 

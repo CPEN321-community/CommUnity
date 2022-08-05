@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.community.classes.ChatManager;
+import com.example.community.classes.ChatHelper;
 import com.example.community.classes.ChatRoom;
 import com.example.community.databinding.ActivityMessageListBinding;
 
@@ -23,7 +23,7 @@ public class MessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         String roomId = intent.getStringExtra("roomId");
-        ChatRoom thisRoom = ChatManager.getRoomById(roomId);
+        ChatRoom thisRoom = ChatHelper.getRoomById(roomId);
         ActivityMessageListBinding binding = ActivityMessageListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.msgToolbar.backButton.setOnClickListener(f -> {
@@ -47,7 +47,7 @@ public class MessageActivity extends AppCompatActivity {
         binding.sendMessageButton.setOnClickListener(v -> {
             String message = binding.messageEditText.getText().toString().trim();
             if (message.length() > 0) {
-                ChatManager.SendMessageToRoom(message, thisRoom.getRoomId());
+                ChatHelper.SendMessageToRoom(message, thisRoom.getRoomId());
                 binding.messageEditText.setText("");
             }
         });

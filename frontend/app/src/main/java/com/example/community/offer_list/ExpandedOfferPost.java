@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.community.R;
-import com.example.community.classes.ChatManager;
+import com.example.community.classes.ChatHelper;
 import com.example.community.classes.ChatRoom;
 import com.example.community.classes.CreateRoomInterface;
 import com.example.community.classes.DateImgUtil;
@@ -38,7 +38,7 @@ public class ExpandedOfferPost extends AppCompatActivity {
         Button acceptButton = this.findViewById(R.id.accept_offer_button);
         Intent expOfferIntent = getIntent();
         OfferPostObj post = (OfferPostObj) expOfferIntent.getSerializableExtra("currOffer");
-        if (post.userId.equals(GlobalUtil.getId()) || ChatManager.getChats().getValue().containsKey(post.offerId)) {
+        if (post.userId.equals(GlobalUtil.getId()) || ChatHelper.getChats().getValue().containsKey(post.offerId)) {
             acceptButton.setVisibility(View.GONE);
         } else {
             acceptButton.setOnClickListener(v -> {
@@ -56,7 +56,7 @@ public class ExpandedOfferPost extends AppCompatActivity {
                         Log.d(TAG, "onFailure: ERROR");
                     }
                 };
-                ChatManager.CreateRoom(post.offerId, true, i);
+                ChatHelper.CreateRoom(post.offerId, true, i);
             });
         }
 

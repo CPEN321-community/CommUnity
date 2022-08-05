@@ -12,7 +12,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.community.classes.ChatManager;
+import com.example.community.classes.ChatHelper;
 import com.example.community.classes.GlobalUtil;
 import com.example.community.classes.SearchHelper;
 import com.example.community.classes.TagHelper;
@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         hideActionBar();
         SearchHelper.search(this);
-        ChatManager.GetSocket();
-        ChatManager.FetchChats(this);
+        ChatHelper.GetSocket();
+        ChatHelper.FetchChats(this);
         TagHelper.getTags();
 
 
