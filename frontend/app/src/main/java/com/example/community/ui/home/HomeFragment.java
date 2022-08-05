@@ -17,6 +17,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.community.classes.SearchManager;
 import com.example.community.databinding.FragmentHomeBinding;
 import com.example.community.databinding.TimeSunMoonElementBinding;
+import com.example.community.offer_list.NewOfferForm;
+import com.example.community.request_list.NewRequestForm;
 import com.example.community.ui.chat.ChatActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -41,6 +43,11 @@ public class HomeFragment extends Fragment {
             startActivity(chatIntent);
         });
 
+        binding.addPostButton.setOnClickListener(v -> {
+            Intent newOfferIntent = new Intent(requireContext(), NewOfferForm.class);
+            requireActivity().startActivity(newOfferIntent);
+        });
+
         binding.toolbar.searchToolbar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -54,6 +61,8 @@ public class HomeFragment extends Fragment {
                 return false;
             }
         });
+
+
         return root;
     }
 
@@ -81,6 +90,30 @@ public class HomeFragment extends Fragment {
         new TabLayoutMediator(tabLayout, tabViewPager,
                 (tab, position) -> tab.setText(tabNames[position])
         ).attach();
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tabLayout.getSelectedTabPosition();
+                if (position == 0) {
+                    binding.addPostButton.setOnClickListener(v -> {
+                        Intent newOfferIntent = new Intent(requireContext(), NewOfferForm.class);
+                        requireActivity().startActivity(newOfferIntent);
+                    });
+                }
+                else {
+                    binding.addPostButton.setOnClickListener(v -> {
+                        Intent newReqIntent = new Intent(requireContext(), NewRequestForm.class);
+                        requireActivity().startActivity(newReqIntent);
+                    });
+                }
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
 
     }
 

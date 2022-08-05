@@ -154,7 +154,7 @@ const createRequest = async (req, res) => {
             requestPosts: 1,
         };
         await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
-        res.sendStatus(OK);
+        res.status(OK).json({message: "Successfully created post!"});
     } else {
       console.log("Error creating a new post: " + error);
       res.sendStatus(INTERNAL_SERVER_ERROR);

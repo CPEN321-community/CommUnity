@@ -14,6 +14,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.community.classes.ChatManager;
 import com.example.community.classes.GlobalUtil;
 import com.example.community.classes.SearchManager;
+import com.example.community.classes.TagManager;
 import com.example.community.databinding.ActivityMainBinding;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+
         setContentView(binding.getRoot());
         GlobalUtil.setAppContext(getApplicationContext());
 
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         SearchManager.search(this);
         ChatManager.GetSocket();
         ChatManager.FetchChats(this);
+        TagManager.getTags();
 
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);

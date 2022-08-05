@@ -132,7 +132,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="24dp"
-        android:padding="20dp"
+        android:padding="5dp"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.6"
@@ -142,45 +142,114 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="20dp">
+            android:layout_margin="5dp">
 
-            <TextView
-                android:id="@+id/stat_score"
+            <LinearLayout
+                android:id="@+id/linearLayout5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:fontFamily="@font/inter"
-                android:text="@string/score_sample"
-                android:textAlignment="center"
-                android:textSize="16sp"
-                app:layout_constraintTop_toBottomOf="@+id/stat_requestpost"
-                tools:layout_editor_absoluteX="0dp" />
-
-            <TextView
-                android:id="@+id/stat_requestpost"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:fontFamily="@font/inter"
-                android:text="@string/request_posts_sample"
-                android:textAlignment="center"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/stat_offerpost" />
-
-            <TextView
-                android:id="@+id/stat_offerpost"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:fontFamily="@font/inter"
-                android:text="@string/offer_posts_sample"
-                android:textAlignment="center"
-                android:textSize="16sp"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
+                app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".9"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/transparent"
+                        android:src="@drawable/ic_offer" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/stat_offerpost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:layout_weight=".4"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/offer_posts_sample"
+                    android:textAlignment="textStart"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".9"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imageView3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/transparent"
+                        android:src="@drawable/ic_req" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/stat_requestpost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:layout_weight=".4"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/request_posts_sample"
+                    android:textAlignment="textStart"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".9"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imageView4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/transparent"
+                        android:src="@drawable/ic_score" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/stat_score"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:layout_weight=".4"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/score_sample"
+                    android:textAlignment="textStart"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView"

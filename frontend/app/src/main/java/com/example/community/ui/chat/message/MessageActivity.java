@@ -5,14 +5,9 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.community.R;
 import com.example.community.classes.ChatManager;
 import com.example.community.classes.ChatRoom;
 import com.example.community.databinding.ActivityMessageListBinding;
