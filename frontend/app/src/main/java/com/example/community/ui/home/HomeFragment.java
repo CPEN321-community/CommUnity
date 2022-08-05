@@ -99,6 +99,7 @@ public class HomeFragment extends Fragment {
         });
         binding.toolbar.searchToolbar.setOnCloseListener(() -> {
             TagManager.reset();
+            tagList.setVisibility(View.INVISIBLE);
             return false;
         });
 
