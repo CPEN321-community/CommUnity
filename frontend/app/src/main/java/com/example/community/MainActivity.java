@@ -11,6 +11,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.community.classes.ChatManager;
 import com.example.community.classes.GlobalUtil;
 import com.example.community.classes.SearchManager;
 import com.example.community.databinding.ActivityMainBinding;
@@ -39,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         hideActionBar();
         SearchManager.search(this);
+        ChatManager.GetSocket();
+        ChatManager.FetchChats(this);
+
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

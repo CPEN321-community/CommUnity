@@ -18,15 +18,46 @@ import java.util.HashMap;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 
 public class ChatManager {
     private static final String TAG = "CHAT_MANAGER";
+    private static final MutableLiveData<Boolean> loading = new MutableLiveData<>(false);
+    private static final MutableLiveData<HashMap<String, ChatRoom>> chats = new MutableLiveData<>(new HashMap<>());
+    private static final Emitter.Listener sendMessageListener = args -> {
+        JSONObject data = (JSONObject) args[0];
+        Message message = new Message(data);
+        Log.d(TAG, "Message!: " + message);
+        String postId = message.postId;
+        ChatRoom chat = chats.getValue().get(postId);
+        if (chat != null) {
+            chat.AddMessage(message);
+//            chats.postValue(chats.getValue());
+        }
+    };
+
+    private static final Emitter.Listener createRoomListener = args -> {
+        JSONObject data = (JSONObject) args[0];
+        Log.d(TAG, "Connect: " + data);
+        ChatRoom chat = new ChatRoom(data);
+        Log.d(TAG, "iConnect: " + chat.getMe().firstName);
+        HashMap<String, ChatRoom> newChats = new HashMap<>();
+        newChats.put(chat.getRoomId(), chat);
+        newChats.putAll(chats.getValue());
+        chats.postValue(newChats);
+    };
+
     private static Socket socket;
-    private static MutableLiveData<HashMap<String, ChatRoom>> chats;
 
     public static void Connect() {
         try {
-            socket = IO.socket(GlobalUtil.CHAT_URL);
+            IO.Options opts = new IO.Options();
+            opts.query = "auth_token=" + GlobalUtil.getId();
+            socket = IO.socket(GlobalUtil.CHAT_URL, opts);
+            socket.on("sendMessage", sendMessageListener);
+            socket.on("createRoom", createRoomListener);
+
+            socket.connect();
             Log.d(TAG, "Socket Connected!");
         } catch (URISyntaxException e) {
             Log.e(TAG, "Failed to connect to socket" + e);
@@ -56,12 +87,14 @@ public class ChatManager {
     public static void FetchChats(Context ctx) {
         String url = GlobalUtil.CHAT_URL + "/chat/" + GlobalUtil.getId();
         RequestQueue queue = Volley.newRequestQueue(ctx);
+        setLoading(true);
         CustomJSONArrayRequest request = new CustomJSONArrayRequest(Request.Method.GET,
                 url,
                 null,
                 (JSONArray response) -> {
-                    Log.d(TAG, "getChats: " + response);
+                    Log.d(TAG, "FetchChats: " + response);
                     if (response.length() == 0) {
+                        setLoading(false);
                         return;
                     }
                     HashMap<String, ChatRoom> fetchedChats = new HashMap<>();
@@ -70,20 +103,57 @@ public class ChatManager {
                             ChatRoom chat = new ChatRoom(response.getJSONObject(i));
                             fetchedChats.put(chat.getRoomId(), chat);
                         } catch (JSONException e) {
-                            Log.e(TAG, "getChats: " + e);
+                            Log.e(TAG, "FetchChats: " + e);
                             e.printStackTrace();
                         }
                     }
                     chats.setValue(fetchedChats);
                 },
                 error -> {
+                    setLoading(false);
                     Log.e(TAG, "getChats: " + error);
                 });
         queue.add(request);
     }
 
-    public static void SendMessageToRoom(Message message, String roomId) {
+    public static void SendMessageToRoom(String message, String roomId) {
+        Socket socket = GetSocket();
+        JSONObject body = new JSONObject();
+        try {
+            body.put("userId", GlobalUtil.getId());
+            body.put("postId", roomId);
+            body.put("message", message);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        socket.emit("sendMessage", body);
+    }
+
+    public static void CreateRoom(String postId, boolean isOffer) {
 
     }
 
+    public static MutableLiveData<HashMap<String, ChatRoom>> getChats() {
+        return chats;
+    }
+
+    public static boolean isLoading() {
+        return Boolean.TRUE.equals(loading.getValue());
+    }
+
+    public static void setLoading(boolean l) {
+        loading.setValue(l);
+    }
+
+    public static MutableLiveData<Boolean> getLoadingData() {
+        return loading;
+    }
+
+    public static ChatRoom getRoomById(String roomId) {
+        return chats.getValue().get(roomId);
+    }
+
+
 }
+

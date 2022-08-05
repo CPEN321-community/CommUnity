@@ -32,6 +32,7 @@ public class GlobalUtil {
     private static String headerToken;
     private static String id;
     private static String givenName;
+    private static String lastName;
     private static boolean IS_TEST;
 
     public static void cleanup() {
@@ -52,7 +53,8 @@ public class GlobalUtil {
     public static void setAccount(GoogleSignInAccount account) {
         GlobalUtil.account = account;
         setId(account.getId());
-        setGivenName(account.getDisplayName());
+        setGivenName(account.getGivenName());
+        setLastName(account.getFamilyName());
     }
 
     public static Socket getSocket() {
@@ -132,4 +134,11 @@ public class GlobalUtil {
     }
 
 
+    public static String getLastName() {
+        return lastName;
+    }
+
+    public static void setLastName(String lastName) {
+        GlobalUtil.lastName = lastName;
+    }
 }

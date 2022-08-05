@@ -1,52 +1,81 @@
-const { getAssociatedRooms, createRoom, sendMessage } = require('../controllers/chatController');
-const Singleton = require('../singleton');
+const {
+  getAssociatedRooms,
+  createRoom,
+  sendMessage,
+} = require("../controllers/chatController");
+const Singleton = require("../singleton");
 
-const socketHandler = (socket, io) => {
-    const ActiveUsers = (new Singleton()).getInstance();
-    console.log("socket connection made with id: " + socket.id);
-    
-    socket.on('joinRooms', async ({ userId }) => {
-        const postIds = await getAssociatedRooms(userId);
-        console.log('joining rooms: ', postIds);
-        
-        if (postIds && postIds.length > 0) {
-            socket.join(postIds);
-            socket.emit('joinRooms', 'join_rooms_success');
-            ActiveUsers.set.add(userId);
-        } else {
-            socket.emit('joinRooms', 'join_rooms_failed');
-        }
-    });
+const Sockets = {};
 
-    socket.on('createRoom', async ({postId, isOffer, senderData}) => {
-        console.log("Hello world!******");
-        console.log(postId, isOffer, senderData);
-        const isCreated = await createRoom(postId, isOffer, senderData);
+const socketHandler = async (socket, io) => {
+  var handshakeData = socket.request;
+  var myUserId = handshakeData._query["auth_token"];
+  Sockets[myUserId] = socket;
+  const ActiveUsers = new Singleton().getInstance();
+  ActiveUsers.set.add(myUserId);
+  const postIds = await getAssociatedRooms(myUserId);
+  console.log("joining rooms: ", postIds);
+  if (postIds && postIds.length >= 0) {
+    socket.join(postIds);
+    ActiveUsers.set.add(myUserId);
+  } else {
+  }
 
-        if (isCreated) {
-            socket.join(postId);
-            socket.emit('createRoom', 'create_room_success')
-        } else {
-            socket.emit('createRoom', 'create_room_failure')
-        }
-    });
+  console.log("socket connection made with id: " + socket.id);
 
-    socket.on('sendMessage', async ({ message, userId, postId }) => {
-        const msgObj = await sendMessage(message, userId, postId);
+  socket.on("createRoom", async ({ postId, isOffer, senderData }) => {
+    console.log(postId, isOffer, senderData);
+    let room;
+    try {
+      room = await createRoom(postId, isOffer, senderData);
+    } catch (e) {
+      console.log(e.data);
+      room = false;
+    }
 
-        io.to(postId).emit('sendMessage', msgObj);
-    });
+    if (room) {
+      socket.join(postId);
+      const reciever = room.reciever;
+      if (Sockets[reciever]) {
+        let other = Sockets[reciever];
+        other.join(postId);
+        const {
+          senderFirstName,
+          senderLastName,
+          senderProfilePicture,
+          receiverFirstName,
+          receiverLastName,
+          recieverProfilePicture,
+        } = room;
+        const inverse = {
+          postId,
+          senderFirstName: receiverFirstName || "",
+          senderLastName: receiverLastName || "",
+          senderProfilePicture: recieverProfilePicture || "",
+          receiverFirstName: senderFirstName || "",
+          receiverLastName: senderLastName || "",
+          receiverProfilePicture: senderProfilePicture || "",
+          messages: [],
+        };
+        other.emit("createRoom", inverse);
+      }
+      socket.emit("createRoom", room);
+    } else {
+      socket.emit("createRoom", null);
+    }
+  });
 
-    socket.on('leave-all', async ({ userId }) => {
-        const postIds = await getAssociatedRooms(userId);
-        console.log('leaving rooms: ', postIds);
-        
-        if (postIds && postIds.length > 0) {
-            socket.leave(postIds);
-            ActiveUsers.set.delete(userId);
-        }
-    });
-}
+  socket.on("sendMessage", async ({ message, userId, postId }) => {
+    const msgObj = await sendMessage(message, userId, postId);
+
+    io.to(postId).emit("sendMessage", msgObj);
+  });
+
+  socket.on("disconnect", async () => {
+    console.log("socket disconnected with id: " + socket.id);
+    ActiveUsers.set.delete(myUserId);
+    Sockets[myUserId] = null;
+  });
+};
 
 module.exports = socketHandler;
-

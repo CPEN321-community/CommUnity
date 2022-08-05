@@ -1,8 +1,10 @@
 package com.example.community.classes;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -20,7 +22,7 @@ public class Message implements Serializable {
             String createdAtString = messageJSON.getString("createdAt");
             this.createdAt = new SimpleDateFormat(DateImgUtil.dateFormatString).parse(createdAtString);
 
-        } catch (Exception e) {
+        } catch (JSONException | ParseException e) {
             e.printStackTrace();
         }
     }
@@ -32,7 +34,7 @@ public class Message implements Serializable {
             this.postId = messageJSON.getString("postId");
             String createdAtString = messageJSON.getString("createdAt");
             this.createdAt = new SimpleDateFormat(DateImgUtil.dateFormatString).parse(createdAtString);
-        } catch (Exception e) {
+        } catch (JSONException | ParseException e) {
             e.printStackTrace();
         }
     }
