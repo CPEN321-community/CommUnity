@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/new_offer_post_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/skyteal"
     tools:context=".offer_list.NewOfferForm">
 
     <ScrollView
@@ -13,63 +14,87 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingHorizontal="10dp">
 
             <TextView
                 android:id="@+id/create_offer_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_bold"
                 android:text="Create Offer Post"
                 android:textAlignment="center"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/offer_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Item Name" />
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/inter"
+                android:text="Item Name"
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/offer_name_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/full_rounded_card"
                 android:ems="10"
                 android:hint="Broccoli"
                 android:inputType="textPersonName"
-                android:minHeight="48dp" />
+                android:minHeight="48dp"
+                android:padding="5dp" />
 
             <TextView
                 android:id="@+id/create_offer_quantity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Item Quantity (kg)" />
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/inter"
+                android:text="Item Quantity (kg)"
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/quantity_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/full_rounded_card"
                 android:ems="10"
                 android:hint=".5"
                 android:inputType="number"
                 android:minHeight="48dp"
+                android:padding="5dp"
                 tools:ignore="SpeakableTextPresentCheck" />
 
             <TextView
                 android:id="@+id/best_before_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Best Before Date" />
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/inter"
+                android:text="Best Before Date"
+                android:textSize="18sp" />
 
             <CalendarView
                 android:id="@+id/best_before_input"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/full_rounded_card" />
 
             <TextView
                 android:id="@+id/upload_photo_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Photo of Item" />
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/inter"
+                android:text="Photo of Item"
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/imageView"
@@ -87,39 +112,56 @@
                 android:id="@+id/pickup_location_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Preferred Pickup Location" />
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/inter"
+                android:text="Preferred Pickup Location"
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/pickup_location_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/full_rounded_card"
                 android:ems="10"
                 android:hint="1234 Main St."
                 android:inputType="textPostalAddress"
-                android:minHeight="48dp" />
+                android:minHeight="48dp"
+                android:padding="5dp" />
 
             <TextView
                 android:id="@+id/description_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Description" />
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/inter"
+                android:text="Description"
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/description_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/full_rounded_card"
                 android:ems="10"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
-                android:minHeight="48dp" />
+                android:minHeight="48dp"
+                android:padding="5dp" />
 
             <TextView
                 android:id="@+id/select_tags_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Select Tags" />
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/inter"
+                android:text="Select Tags"
+                android:textSize="18sp" />
 
             <include
+                android:id="@+id/include_tags"
                 layout="@layout/fragment_tags"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

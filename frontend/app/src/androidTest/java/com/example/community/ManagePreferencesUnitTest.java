@@ -14,23 +14,18 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-
-import static org.hamcrest.CoreMatchers.allOf;
+import static com.example.community.TestUtils.SetTestUserData;
 import static org.hamcrest.CoreMatchers.anything;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 
+import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import androidx.lifecycle.Lifecycle;
+import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
-
-import com.example.community.classes.GlobalUtil;
 
 import org.hamcrest.Matcher;
 import org.junit.After;
@@ -40,6 +35,7 @@ import org.junit.Test;
 
 public class ManagePreferencesUnitTest {
 
+    private static final String TAG = "MANAGE_PREF_TEST";
     @Rule
     public ActivityScenarioRule<MainActivity> activityRule =
             new ActivityScenarioRule<>(MainActivity.class);
@@ -55,12 +51,6 @@ public class ManagePreferencesUnitTest {
         resetRestrictions();
     }
 
-    private void SetTestUserData() {
-        GlobalUtil.setIsTest(true);
-        GlobalUtil.setId("testuserid");
-        GlobalUtil.setGivenName("Community Tester");
-        GlobalUtil.setHeaderToken(BuildConfig.S2S_TOKEN);
-    }
 
     private void resetRestrictions() {
         activityRule.getScenario().recreate();
@@ -85,10 +75,15 @@ public class ManagePreferencesUnitTest {
             }
         });
         for (int i = 0; i < count[0]; i++) {
-            onData(anything())
-                    .atPosition(0)
-                    .onChildView(withId(R.id.remove_restriction_button))
-                    .perform(click());
+            try {
+                onData(anything())
+                        .atPosition(0)
+                        .onChildView(withId(R.id.remove_restriction_button))
+                        .perform(click());
+            }
+            catch (NoMatchingViewException e) {
+                Log.e(TAG, "resetRestrictions: " + e );
+            }
         }
     }
 
@@ -96,6 +91,7 @@ public class ManagePreferencesUnitTest {
     @Test
     public void AddAndRemoveRestriction() {
         onView(withId(R.id.navigation_profile)).perform(click());
+
         Matcher<View> titleView = withText("My Profile");
         onView(titleView).check(matches(isDisplayed()));
         Matcher<View> submitButton = withId(R.id.add_dietary_restriction_button);
@@ -113,12 +109,13 @@ public class ManagePreferencesUnitTest {
         closeSoftKeyboard();
         onView(submitButton).perform(click());
 //      Activity Finishes
-        TestUtils.waitFor(1000);
         Matcher<View> restrictionName = withId(R.id.restriction_name);
+        Matcher<View> restrictionButton = withId(R.id.remove_restriction_button);
         onView(restrictionName).check(matches(isDisplayed()));
         onView(restrictionName).check(matches(withText("Vegan")));
-        onView(withId(R.id.remove_restriction_button)).check(matches(isDisplayed()));
-        onView(withId(R.id.remove_restriction_button)).perform(click());
+        onView(restrictionButton).check(matches(isDisplayed()));
+        onView(restrictionButton).perform(click());
         onView(restrictionName).check(doesNotExist());
+
     }
 }

@@ -1,0 +1,6 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!--  Gradient Bg for Log In/Out Button -->
+    <corners android:radius="12dp" />
+    <solid android:color="?attr/bubble_me"/>
+</shape>

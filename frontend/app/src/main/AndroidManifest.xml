@@ -21,37 +21,16 @@
             android:name=".EditRestrictionsActivity"
             android:exported="false" />
         <activity
-            android:name=".ExpandedOfferPost"
-            android:exported="false" />
-        <activity
-            android:name=".ExpandedReqPost"
-            android:exported="false" />
-        <activity
-            android:name=".OfferHomeFragment"
-            android:exported="false" />
-        <activity
-            android:name=".OfferPostFragment"
-            android:exported="false" />
-        <activity
-            android:name=".offer_list.NewOfferForm"
-            android:exported="false" />
-        <activity
-            android:name=".offer_list.OfferPosts"
-            android:exported="false" />
-        <activity
-            android:name=".request_list.NewRequestForm"
-            android:exported="false" />
-        <activity
-            android:name=".SearchActivity"
-            android:exported="false" />
-        <activity
-            android:name=".request_list.RequestPosts"
+            android:name=".offer_list.ExpandedOfferPost"
             android:exported="false" />
         <activity
             android:name=".request_list.ExpandedReqPost"
             android:exported="false" />
         <activity
-            android:name=".offer_list.ExpandedOfferPost"
+            android:name=".offer_list.NewOfferForm"
+            android:exported="false" />
+        <activity
+            android:name=".request_list.NewRequestForm"
             android:exported="false" />
         <activity
             android:name=".ui.chat.message.MessageActivity"
@@ -77,7 +56,9 @@
         <activity
             android:name=".MainActivity"
             android:exported="false"
-            android:label="@string/app_name" /> <!-- Firebase Cloud Messaging configuration -->
+            android:windowSoftInputMode="adjustPan|adjustResize"
+            android:label="@string/app_name" />
+        <!-- Firebase Cloud Messaging configuration -->
         <service
             android:name=".CustomFirebaseMessagingService"
             android:exported="false">

@@ -5,53 +5,52 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.community.R;
-import com.example.community.classes.Chat;
 import com.example.community.classes.GlobalUtil;
 import com.example.community.classes.Message;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class MessageAdapter extends BaseAdapter {
+public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
     private static final String TAG = "MESSAGE_ADAPTER";
     private final Context context;
     private final ArrayList<Message> messages;
-    private final LayoutInflater inflater;
 
     public MessageAdapter(Context applicationContext, ArrayList<Message> messages) {
         this.context = applicationContext;
         this.messages = messages;
-        inflater = LayoutInflater.from(applicationContext);
     }
 
-    public void AddMessage(Message message) {
-        Log.d(TAG, "AddAdapter: " + this);
-        this.messages.add(message);
-        ((MessageActivity) context).runOnUiThread(() -> {
-            this.notifyDataSetChanged();
-        });
-    }
-
-    public void AddMessages(ArrayList<Message> messages) {
+    public void setMessages(ArrayList<Message> m) {
         this.messages.clear();
-        this.messages.addAll(messages);
-        ((MessageActivity) context).runOnUiThread(() -> {
-            this.notifyDataSetChanged();
-        });
+        this.messages.addAll(m);
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new MessageAdapter.ViewHolder(LayoutInflater.from(context).inflate(R.layout.fragment_message_bubbles, parent, false));
     }
 
     @Override
-    public int getCount() {
-        return this.messages.size();
-    }
-
-    @Override
-    public Object getItem(int i) {
-        return this.messages.get(i);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Message message = this.messages.get(position);
+        holder.layout.setClickable(false);
+        holder.date.setVisibility(View.GONE);
+        holder.myTime.setVisibility(View.GONE);
+        holder.youTime.setVisibility(View.GONE);
+        Log.d(TAG, "onBindViewHolder: " + message.messageText);
+        if (Objects.equals(message.userId, GlobalUtil.getId())) {
+            renderMyMessage(holder, message);
+        } else {
+            renderOtherMessage(holder, message);
+        }
     }
 
     @Override
@@ -60,44 +59,40 @@ public class MessageAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        Message message = this.messages.get(i);
-        if (Objects.equals(message.userId, GlobalUtil.getId())) {
-            return renderMyMessage(message);
-        } else {
-            return renderOtherMessage(message);
+    public int getItemCount() {
+        return this.messages.size();
+    }
+
+    private void renderMyMessage(@NonNull ViewHolder holder, Message message) {
+        holder.myText.setText(message.messageText);
+        holder.myText.setVisibility(View.VISIBLE);
+        holder.youText.setVisibility(View.GONE);
+        holder.youTime.setVisibility(View.GONE);
+    }
+
+    private void renderOtherMessage(@NonNull ViewHolder holder, Message message) {
+        holder.youText.setText(message.messageText);
+        holder.youText.setVisibility(View.VISIBLE);
+        holder.myText.setVisibility(View.GONE);
+        holder.myTime.setVisibility(View.GONE);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView youTime;
+        private final TextView youText;
+        private final View layout;
+        private final TextView myTime;
+        private final TextView myText;
+        private final TextView date;
+
+        public ViewHolder(@NonNull View view) {
+            super(view);
+            this.date = view.findViewById(R.id.message_date);
+            this.myTime = view.findViewById(R.id.my_message_timestamp);
+            this.layout = view.findViewById(R.id.message_layout);
+            this.myText = view.findViewById(R.id.my_message_text);
+            this.youText = view.findViewById(R.id.other_message_text);
+            this.youTime = view.findViewById(R.id.other_message_timestamp);
         }
-    }
-
-    private View renderMyMessage(Message message) {
-        View view = inflater.inflate(R.layout.fragment_my_message_bubble, null);
-        TextView message_text = (TextView) view.findViewById(R.id.chat_message_preview);
-        message_text.setText(message.messageText);
-        view.findViewById(R.id.my_message_date).setVisibility(View.GONE);
-        view.findViewById(R.id.my_message_timestamp).setVisibility(View.GONE);
-        view.findViewById(R.id.message_layout).setClickable(false);
-
-
-        return view;
-    }
-
-    private View renderOtherMessage(Message message) {
-        View view = inflater.inflate(R.layout.fragment_other_message_bubble, null);
-        TextView message_text = (TextView) view.findViewById(R.id.other_message_text);
-        TextView message_name = (TextView) view.findViewById(R.id.other_message_name);
-        view.findViewById(R.id.message_layout).setClickable(false);
-
-        view.findViewById(R.id.other_message_date).setVisibility(View.GONE);
-        view.findViewById(R.id.other_message_timestamp).setVisibility(View.GONE);
-
-        message_text.setText(message.messageText);
-        Chat parent = message.parentChat;
-        message_name.setText(parent.other.firstName);
-
-        return view;
-    }
-
-    public Message getLastMessage() {
-        return this.messages.get(this.messages.size() - 1);
     }
 }

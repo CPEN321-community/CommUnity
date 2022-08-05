@@ -2,6 +2,9 @@ node_modules
 firebase_service_key.json
 .DS_Store
 **/.env
-backend/post_microservice/config/config.json
-backend/chat_microservice/config/config.json
-backend/user_microservice/config/config.json
+
+espresso
+/coverage.data
+/coverage/
+/lcov.info
+/lcov-report/

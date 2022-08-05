@@ -27,6 +27,7 @@ import com.example.community.classes.UserProfile;
 import com.example.community.classes.DateImgUtil;
 import com.example.community.databinding.FragmentProfileBinding;
 import com.example.community.login.LoginActivity;
+import com.example.community.ui.chat.ChatActivity;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInApi;
@@ -59,6 +60,11 @@ public class ProfileFragment extends Fragment {
             Intent loginIntent = new Intent(this.requireContext(), LoginActivity.class);
             startActivity(loginIntent);
             this.requireActivity().finish();
+        });
+
+        binding.profileToolbar.chatButton.setOnClickListener(v -> {
+            Intent chatIntent = new Intent(requireActivity(), ChatActivity.class);
+            startActivity(chatIntent);
         });
 
         addRestrictionButton.setOnClickListener(v -> {

@@ -64,5 +64,9 @@ public class LeaderboardAdapter extends BaseAdapter {
         return newView;
     }
 
+    public void setItems(ArrayList<UserWithScore> list) {
+        this.users.clear();
+        this.users.addAll(list);
+    }
 
 }

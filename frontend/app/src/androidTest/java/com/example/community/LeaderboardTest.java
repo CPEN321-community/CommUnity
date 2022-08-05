@@ -11,29 +11,33 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.not;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import androidx.fragment.app.testing.FragmentScenario;
+import androidx.lifecycle.Lifecycle;
+import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.example.community.classes.GlobalUtil;
+import com.example.community.classes.UserWithScore;
+import com.example.community.ui.leaderboard.LeaderboardFragment;
+import com.example.community.ui.leaderboard.LeaderboardViewModel;
 
 import org.hamcrest.Matcher;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 public class LeaderboardTest {
-    @Rule
-    public ActivityScenarioRule<MainActivity> activityRule =
-            new ActivityScenarioRule<>(MainActivity.class);
 
     @Before
     public void before() throws Exception {
-        GlobalUtil.setIsTest(true);
         GlobalUtil.setId("testuserid");
         GlobalUtil.setGivenName("Community Tester");
         GlobalUtil.setHeaderToken(BuildConfig.S2S_TOKEN);
@@ -41,9 +45,36 @@ public class LeaderboardTest {
 
     @Test
     public void GetLeaderboardStats() {
-        onView(withId(R.id.navigation_leaderboard)).perform(click());
+//        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+//        onView(withId(R.id.navigation_leaderboard)).perform(click());
+        Bundle args = new Bundle();
+        int theme = R.style.Theme_Community;
+        FragmentScenario<LeaderboardFragment> navhostScenario = FragmentScenario.launchInContainer(LeaderboardFragment.class, args, theme, Lifecycle.State.STARTED);
+        navhostScenario.onFragment(fragment -> {
+            LeaderboardViewModel viewModel = fragment.getViewModel();
+            ArrayList<UserWithScore> users = new ArrayList<>();
+            for (int i = 0; i < 11; i++) {
+                UserWithScore user = new UserWithScore("TestUser", i + "", "", 1000, 1000, 10000, "testuserid");
+                users.add(user);
+            }
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            viewModel.setData(users);
+        });
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+        DoLeaderboardTest();
+        onView(withId(R.id.button_refresh_leaderboard)).perform(click());
+        DoLeaderboardTest();
+    }
+
+    public void DoLeaderboardTest() {
+//        onView(withId(R.id.navigation_leaderboard)).perform(click());
         Matcher<View> list = withId(R.id.leaderboard_list);
-        onView(list).check(matches(TestUtils.withListOfAtMost(10)));
+//        onView(list).check(matches(TestUtils.withListOfAtMost(10)));
         final int[] count = {0};
         onView(list).perform(new ViewAction() {
             @Override
@@ -67,36 +98,36 @@ public class LeaderboardTest {
 
         // Get my user card if its in the list
         final View[] myLeaderboardUser = {null};
+        try {
+            InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+            onView(allOf(
+                    hasDescendant(
+                            allOf(withText("Community T."), withId(R.id.leaderboard_name))
+                    ),
+                    withId(R.id.leaderboard_user_card)))
+                    .perform(new ViewAction() {
+                        @Override
+                        public Matcher<View> getConstraints() {
+                            return isAssignableFrom(LinearLayout.class);
+                        }
 
-        onView(allOf(
-                hasDescendant(
-                        allOf(withText("Community T."), withId(R.id.leaderboard_name))
-                ),
-                withId(R.id.leaderboard_user_card)))
-                .perform(new ViewAction() {
-                    @Override
-                    public Matcher<View> getConstraints() {
-                        return isAssignableFrom(LinearLayout.class);
-                    }
+                        @Override
+                        public String getDescription() {
+                            return "Finding Test User in list";
+                        }
 
-                    @Override
-                    public String getDescription() {
-                        return "Finding Test User in list";
-                    }
-
-                    @Override
-                    public void perform(UiController uiController, View view) {
-                        LinearLayout ll = (LinearLayout) view;
-                        myLeaderboardUser[0] = ll;
-                    }
-                });
-
-        if (myLeaderboardUser[0] != null) {
+                        @Override
+                        public void perform(UiController uiController, View view) {
+                            LinearLayout ll = (LinearLayout) view;
+                            myLeaderboardUser[0] = ll;
+                        }
+                    });
             onView(withId(R.id.my_score)).check(matches(not(isDisplayed())));
-        } else {
+        } catch (NoMatchingViewException e) {
             // I am not in the top 10, so my score should be shown at the bottom
             onView(withId(R.id.my_score)).check(matches(isDisplayed()));
         }
+
 
     }
 }

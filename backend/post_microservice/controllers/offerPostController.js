@@ -1,7 +1,7 @@
 const { Op } = require("sequelize");
 const { OfferPost, OfferPostTags } = require("../models");
 const axios = require("axios");
-const { INTERNAL_SERVER_ERROR, OK, NOT_FOUND, BAD_REQUEST } = require('../httpCodes');
+const { INTERNAL_SERVER_ERROR, OK, NOT_FOUND, BAD_REQUEST, CREATED } = require('../httpCodes');
 
 const getOffer = async (req, res) => {
     if(req.params.offerId) {
@@ -129,6 +129,7 @@ const searchOffersWithTags = async (req, res) => {
 }
 
 const createOffer = async (req, res) => {
+    console.log(req.body);
     if(req.body.tagList) {
         const createdOffer = await OfferPost.create({
             userId: req.body.userId,
@@ -158,10 +159,10 @@ const createOffer = async (req, res) => {
         };
 
         await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
-        res.sendStatus(OK);
+        res.status(CREATED).json({message: "Successfully Created Post!"});
 
     } else {
-        console.log("Error creating a new post: " + error);
+        console.log("Error creating a new post: no tag list");
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
@@ -267,5 +268,5 @@ module.exports = {
     updateOffer,
     removeOfferTags,
     addOfferTags,
-    deleteOffer
+    deleteOffer,
 };

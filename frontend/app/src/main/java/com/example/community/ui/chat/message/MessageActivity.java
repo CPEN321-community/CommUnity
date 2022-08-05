@@ -5,47 +5,52 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.community.R;
-import com.example.community.classes.Chat;
+import com.example.community.classes.ChatManager;
+import com.example.community.classes.ChatRoom;
 import com.example.community.databinding.ActivityMessageListBinding;
+
+import java.util.ArrayList;
 
 public class MessageActivity extends AppCompatActivity {
 
     private static final String TAG = "MESSAGE_ACTIVITY";
-    private AppBarConfiguration appBarConfiguration;
-    protected Chat chat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ActivityMessageListBinding binding;
-
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        this.chat = (Chat) intent.getSerializableExtra("chat");
-        binding = ActivityMessageListBinding.inflate(getLayoutInflater());
+        String roomId = intent.getStringExtra("roomId");
+        ChatRoom thisRoom = ChatManager.getRoomById(roomId);
+        ActivityMessageListBinding binding = ActivityMessageListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        binding.msgToolbar.backButton.setOnClickListener(f -> {
+            finish();
+        });
 
-        setSupportActionBar(binding.toolbar);
+        binding.chatName.setText(thisRoom.getYou().firstName);
+        final RecyclerView messageList = binding.msgs.messageRecyclerView;
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        manager.setStackFromEnd(true);
+        messageList.setLayoutManager(manager);
+        MessageAdapter adapter = new MessageAdapter(this, thisRoom.getMessages());
+        messageList.setAdapter(adapter);
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_message);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        thisRoom.getMessageData().observe(this, messages -> {
+            Log.d(TAG, "onCreate: observer" + messages);
+            adapter.setMessages(new ArrayList<>(messages));
+            adapter.notifyDataSetChanged();
+        });
 
+        binding.sendMessageButton.setOnClickListener(v -> {
+            String message = binding.messageEditText.getText().toString().trim();
+            if (message.length() > 0) {
+                ChatManager.SendMessageToRoom(message, thisRoom.getRoomId());
+                binding.messageEditText.setText("");
+            }
+        });
 
-        binding.toolbar.setTitle(chat.other.firstName);
-        Log.d(TAG, "onCreate: " + chat.me.firstName);
-        Log.d(TAG, "onCreate: " + chat.other.firstName);
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_message);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
     }
 }

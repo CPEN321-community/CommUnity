@@ -2,6 +2,7 @@ package com.example.community.offer_list;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -10,14 +11,19 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.community.R;
+import com.example.community.classes.ChatManager;
+import com.example.community.classes.ChatRoom;
+import com.example.community.classes.CreateRoomInterface;
+import com.example.community.classes.DateImgUtil;
 import com.example.community.classes.GlobalUtil;
 import com.example.community.classes.OfferPostObj;
-import com.example.community.classes.DateImgUtil;
 import com.example.community.ui.chat.ChatActivity;
 
 import java.util.Objects;
 
 public class ExpandedOfferPost extends AppCompatActivity {
+
+    private static final String TAG = "EXPANDED_OFFER_POST";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +38,25 @@ public class ExpandedOfferPost extends AppCompatActivity {
         Button acceptButton = this.findViewById(R.id.accept_offer_button);
         Intent expOfferIntent = getIntent();
         OfferPostObj post = (OfferPostObj) expOfferIntent.getSerializableExtra("currOffer");
-        if (post.userId.equals(GlobalUtil.getId())) {
+        if (post.userId.equals(GlobalUtil.getId()) || ChatManager.getChats().getValue().containsKey(post.offerId)) {
             acceptButton.setVisibility(View.GONE);
         } else {
             acceptButton.setOnClickListener(v -> {
-                Intent chatIntent = new Intent(this, ChatActivity.class);
-                chatIntent.putExtra("createRoomId", post.offerId);
-                startActivity(chatIntent);
-                finish();
+                CreateRoomInterface i = new CreateRoomInterface() {
+                    @Override
+                    public void onSuccess(ChatRoom room) {
+                        Intent chatIntent = new Intent(ExpandedOfferPost.this, ChatActivity.class);
+                        startActivity(chatIntent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure() {
+//                        Toast or something
+                        Log.d(TAG, "onFailure: ERROR");
+                    }
+                };
+                ChatManager.CreateRoom(post.offerId, true, i);
             });
         }
 

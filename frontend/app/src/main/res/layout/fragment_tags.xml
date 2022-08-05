@@ -1,38 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linearLayout7"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/fruit"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/tags_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@color/gray_400"
-        android:text="Fruit"
-        android:textAlignment="center" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/vegetable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:layout_weight="1"
-        android:background="@color/gray_400"
-        android:paddingHorizontal="10dp"
-        android:text="Vegetable"
-        android:textAlignment="center" />
-
-    <TextView
-        android:id="@+id/nut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:layout_weight="1"
-        android:background="@color/gray_400"
-        android:paddingHorizontal="10dp"
-        android:text="Nut"
-        android:textAlignment="center" />
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
