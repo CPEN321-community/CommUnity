@@ -1,8 +1,13 @@
 package com.example.community;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,46 +28,58 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 
-public class Weather extends AppCompatActivity {
-    EditText city_input, country_input;
-    TextView weather_data;
+public class Weather extends AppCompatActivity implements LocationListener {
+    final static String TAG = "Weather_Activity";
     protected LocationManager locationManager;
     //OpenWeatherMap API used for the Surprise weather button functionality
-    private final String url = "http://api.openweathermap.org/data/2.5/weather";
+    private final String weather_url = "http://api.openweathermap.org/data/2.5/weather";
     private final String appid = "5603ddab5ca3086399dbee9a2fba312d";
 
     //Use google maps API to turn latitude and longitude values to address
-    private final String url = "https://maps.googleapis.com/maps/api/geocode/json";
-    //TODO: change the api key
-    private final String apikey = "AIzaSyDZDy1pZBbYHzj8On-4_ZB6sN8pG44Agic";
-    TextView currCity;
-    //Decimal format says that we are specifying up to 1 decimal place and rounding the number
-    DecimalFormat df = new DecimalFormat("#.#");
+    private final String maps_url = "https://maps.googleapis.com/maps/api/geocode/json";
+    private final String apikey = "AIzaSyDqU7yXjuf0a5tcSboHwIQ_y7Hpw3Z_wZA";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_weather);
-        city_input = findViewById(R.id.city);
-        country_input = findViewById(R.id.country);
-        weather_data = findViewById(R.id.tvResult);
+        setContentView(R.layout.activity_main);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        //Error below can be ignored following Piazza post @29
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
     }
 
-    public void getWeatherData(View view) {
-        String tempurl = "";
-        String city = city_input.getText().toString().trim();
-        String country = country_input.getText().toString().trim();
+    @Override
+    public void onLocationChanged(Location location) {
+        final String[] city = new String[1];
 
-        //City field is mandatory
-        if(city.equals("")){
-            weather_data.setText("Cannot have empty city field");
-        } else{
-            //Country field is optional
-            if(country.equals("")){
-                tempurl = url + "?q=" + city + "&appid=" + appid;
-            } else{
-                tempurl = url + "?q=" + city + "," + country + "&appid=" + appid;
+        String tempurl = maps_url + "?latlng=" + location.getLatitude() + "," + location.getLongitude() + "&key=" + apikey;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, tempurl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    //Extract the city name from JSON response
+                    JSONObject jsonResp = new JSONObject(response);
+                    JSONObject plus_code = jsonResp.getJSONObject("plus_code");
+                    String compound_code = plus_code.getString("compound_code");
+                    String addr_fragment = compound_code.split(",")[0];
+                    city[0] = addr_fragment.substring(9, addr_fragment.length());
+                    Log.d(TAG, "city: " + city[0]);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), error.toString().trim(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
+
+        String weather_tempurl = "";
+        weather_tempurl = weather_url + "?q=" + city[0] + "&appid=" + appid;
 
             StringRequest stringReq = new StringRequest(Request.Method.POST, tempurl, new Response.Listener<String>(){
                 @Override
@@ -73,26 +90,8 @@ public class Weather extends AppCompatActivity {
                         JSONArray jsonArr = jsonResp.getJSONArray("weather");
                         JSONObject jsonObjWeather = jsonArr.getJSONObject(0);
                         String description = jsonObjWeather.getString("description");
-                        JSONObject jsonObjMain = jsonResp.getJSONObject("main");
+                        Log.d(TAG, "Current weather: " + description);
 
-                        //Get temperature in kelvins and convert to celsius
-                        double temp = jsonObjMain.getDouble("temp") - 273.15;
-                        double feelsLike = jsonObjMain.getDouble("feels_like") - 273.15;
-
-                        JSONObject jsonObjWind = jsonResp.getJSONObject("wind");
-                        String wind = jsonObjWind.getString("speed");
-
-                        //Location details
-                        JSONObject jsonObjectSys = jsonResp.getJSONObject("sys");
-                        String country_name = jsonObjectSys.getString("country");
-                        String city_name = jsonResp.getString("name");
-                        weather_data.setTextColor(Color.rgb(0, 0, 0));
-
-                        data_output += "Weather in " + city_name + " (" + country_name + ")" + "\n Description: " + description
-                                + "\n Temperature: " + df.format(temp) + " °C" + "\n Feels Like: " + df.format(feelsLike) + " °C"
-                                + "\n Wind Speed: " + wind + "m/s";
-
-                        weather_data.setText(data_output);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -104,8 +103,7 @@ public class Weather extends AppCompatActivity {
                 }
             });
 
-            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-            requestQueue.add(stringReq);
-        }
+            RequestQueue weather_requestQueue = Volley.newRequestQueue(getApplicationContext());
+            weather_requestQueue.add(stringReq);
     }
 }
