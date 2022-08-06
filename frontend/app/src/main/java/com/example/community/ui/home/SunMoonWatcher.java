@@ -18,11 +18,10 @@ public class SunMoonWatcher {
     private final static long twelveAM = LocalTime.of(0, 0).toNanoOfDay();
 
     private final TimeSunMoonElementBinding binding;
-    private final ImageView imageView;
 
     public SunMoonWatcher(TimeSunMoonElementBinding binding) {
         this.binding = binding;
-        this.imageView = binding.sunOrMoon;
+        //this.imageView = binding.sunOrMoon;
         CountDownTimer timer = new CountDownTimer(Long.MAX_VALUE, 1000) {
             @Override
             public void onTick(long l) {
@@ -50,17 +49,17 @@ public class SunMoonWatcher {
             } else {
                 binding.greeting.setText("Good Afternoon!");
             }
-            imageView.setImageResource(R.mipmap.ic_sun_img);
+            //imageView.setImageResource(R.mipmap.ic_sun_img);
         } else {
             if (hour > 6 && hour < 20) {
                 binding.greeting.setText("Good Evening!");
             } else {
                 binding.greeting.setText("Good Night!");
             }
-            imageView.setImageResource(R.mipmap.ic_moon_img);
+            //imageView.setImageResource(R.mipmap.ic_moon_img);
             Pair<Float, Float> coords = getCoordinates(isDay);
-            imageView.setX(coords.first);
-            imageView.setY(coords.second);
+            //imageView.setX(coords.first);
+            //imageView.setY(coords.second);
         }
     }
 
