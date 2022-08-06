@@ -81,10 +81,7 @@ const updateUser = async (req, res) => {
         lastName: req.body.lastName,
         email: req.body.email,
         profilePicture: req.body.profilePicture,
-      },
-      {
-        where: { userId: req.headers.userId || req.headers.userid }
-      }
+      }, { where: { userId: req.headers.userId || req.headers.userid } }
     );
 
     await axios.post(`${process.env.CHAT_URL}/chat/changeUserInfo`, {
