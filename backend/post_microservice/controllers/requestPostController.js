@@ -128,13 +128,22 @@ const searchRequestsWithTags = async (req, res) => {
 
 const createRequest = async (req, res) => {
     const hasAllFields = req.body.userId && req.body.title && req.body.description && req.body.status && req.body.tagList;
+<<<<<<< HEAD
+=======
+    console.log("here", hasAllFields);
+>>>>>>> a36fc458514f4a865ab24167291f4a3ec66ea51f
     if(hasAllFields) {
+        console.log("here2");
         const createdRequest = await RequestPost.create({
             userId: req.body.userId,
             title: req.body.title,
             description: req.body.description,
             status: req.body.status
           });
+<<<<<<< HEAD
+=======
+        console.log("here3", createRequest);
+>>>>>>> a36fc458514f4a865ab24167291f4a3ec66ea51f
         let tagList = req.body.tagList;
         if (tagList != null) {
             for(let item of tagList) {
