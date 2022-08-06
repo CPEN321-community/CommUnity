@@ -110,7 +110,10 @@ const getAssociatedRooms = async (userId) => {
 };
 
 const createRoom = async (postId, isOffer, senderData) => {
-  const { senderId, senderFirstName, senderLastName, senderProfilePicture } = senderData;
+  const senderId = senderData.senderId;
+  const senderFirstName = senderData.senderFirstName;
+  const senderLastName = senderData.senderLastName;
+  const senderProfilePicture = senderData.senderProfilePicture;
   if (!senderId) {
     console.error("createRoom Error: senderId does not exist");
     return false;
@@ -207,7 +210,18 @@ const createRoom = async (postId, isOffer, senderData) => {
         return false;
       }
       else {
-        return { postId, sender: senderId, senderFirstName, senderLastName, senderProfilePicture, reciever: receiverId, receiverFirstName, receiverLastName, receiverProfilePicture, messages: [] }
+        return { 
+          postId, 
+          sender: senderId, 
+          senderFirstName, 
+          senderLastName, 
+          senderProfilePicture, 
+          reciever: receiverId, 
+          receiverFirstName, 
+          receiverLastName, 
+          receiverProfilePicture, 
+          messages: [] 
+        }
       }
     });
     return room;

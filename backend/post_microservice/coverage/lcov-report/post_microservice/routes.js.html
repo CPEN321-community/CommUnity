@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/25</span>
+                <span class='fraction'>25/25</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/25</span>
+                <span class='fraction'>25/25</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -96,72 +96,72 @@
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a>
 <a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const Router = <span class="cstat-no" title="statement not covered" >require('express-promise-router');</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const Router = require('express-promise-router');
 &nbsp;
-const { getOffer, getAllOffers, getAllUserOffers, searchOffers, searchOffersWithTags, createOffer, updateOffer, deleteOffer, removeOfferTags, addOfferTags } = <span class="cstat-no" title="statement not covered" >require('./controllers/offerPostController');</span>
-const { getRequest, getAllRequests, getAllUserRequests, searchRequests, searchRequestsWithTags, createRequest, updateRequest, deleteRequest, removeRequestTags, addRequestTags} = <span class="cstat-no" title="statement not covered" >require('./controllers/requestPostController');</span>
+const { getOffer, getAllOffers, getAllUserOffers, searchOffers, searchOffersWithTags, createOffer, updateOffer, deleteOffer, removeOfferTags, addOfferTags } = require('./controllers/offerPostController');
+const { getRequest, getAllRequests, getAllUserRequests, searchRequests, searchRequestsWithTags, createRequest, updateRequest, deleteRequest, removeRequestTags, addRequestTags} = require('./controllers/requestPostController');
 &nbsp;
-const router = <span class="cstat-no" title="statement not covered" >Router();</span>
+const router = Router();
 &nbsp;
 // Requests
-<span class="cstat-no" title="statement not covered" >router.get('/communitypost/requests/:requestId', getRequest);</span>
-<span class="cstat-no" title="statement not covered" >router.get('/communitypost/requests', getAllRequests);</span>
-<span class="cstat-no" title="statement not covered" >router.get('/communitypost/requests/users/:userId', getAllUserRequests);</span>
-<span class="cstat-no" title="statement not covered" >router.get('/communitypost/requests/search/:title', searchRequests);</span>
-<span class="cstat-no" title="statement not covered" >router.put('/communitypost/requestTags', searchRequestsWithTags);</span>
-<span class="cstat-no" title="statement not covered" >router.post('/communitypost/requests', createRequest);</span>
-<span class="cstat-no" title="statement not covered" >router.put('/communitypost/requests', updateRequest);</span>
-<span class="cstat-no" title="statement not covered" >router.post('/communitypost/requestTags', addRequestTags);</span>
-<span class="cstat-no" title="statement not covered" >router.delete('/communitypost/requests/tags', removeRequestTags);</span>
-<span class="cstat-no" title="statement not covered" >router.delete('/communitypost/requests/:requestId', deleteRequest);</span>
+router.get('/communitypost/requests/:requestId', getRequest);
+router.get('/communitypost/requests', getAllRequests);
+router.get('/communitypost/requests/users/:userId', getAllUserRequests);
+router.get('/communitypost/requests/search/:title', searchRequests);
+router.put('/communitypost/requestTags', searchRequestsWithTags);
+router.post('/communitypost/requests', createRequest);
+router.put('/communitypost/requests', updateRequest);
+router.post('/communitypost/requestTags', addRequestTags);
+router.delete('/communitypost/requests/tags', removeRequestTags);
+router.delete('/communitypost/requests/:requestId', deleteRequest);
 &nbsp;
 &nbsp;
 // Offers
-<span class="cstat-no" title="statement not covered" >router.get('/communitypost/offers/:offerId', getOffer);</span>
-<span class="cstat-no" title="statement not covered" >router.get('/communitypost/offers', getAllOffers);</span>
-<span class="cstat-no" title="statement not covered" >router.get('/communitypost/offers/users/:userId', getAllUserOffers);</span>
-<span class="cstat-no" title="statement not covered" >router.get('/communitypost/offers/search/:title', searchOffers);</span>
-<span class="cstat-no" title="statement not covered" >router.put('/communitypost/offerTags', searchOffersWithTags);</span>
-<span class="cstat-no" title="statement not covered" >router.post('/communitypost/offers', createOffer);</span>
-<span class="cstat-no" title="statement not covered" >router.put('/communitypost/offers', updateOffer);</span>
-<span class="cstat-no" title="statement not covered" >router.post('/communitypost/offerTags', addOfferTags);</span>
-<span class="cstat-no" title="statement not covered" >router.delete('/communitypost/offers/tags', removeOfferTags);</span>
-<span class="cstat-no" title="statement not covered" >router.delete('/communitypost/offers/:offerId', deleteOffer);</span>
+router.get('/communitypost/offers/:offerId', getOffer);
+router.get('/communitypost/offers', getAllOffers);
+router.get('/communitypost/offers/users/:userId', getAllUserOffers);
+router.get('/communitypost/offers/search/:title', searchOffers);
+router.put('/communitypost/offerTags', searchOffersWithTags);
+router.post('/communitypost/offers', createOffer);
+router.put('/communitypost/offers', updateOffer);
+router.post('/communitypost/offerTags', addOfferTags);
+router.delete('/communitypost/offers/tags', removeOfferTags);
+router.delete('/communitypost/offers/:offerId', deleteOffer);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >module.exports = router;</span>
+module.exports = router;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -169,11 +169,7 @@ const router = <span class="cstat-no" title="statement not covered" >Router();</
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-<<<<<<< HEAD
-                at 2022-08-06T14:52:00.508Z
-=======
-                at 2022-08-06T14:42:40.668Z
->>>>>>> a36fc458514f4a865ab24167291f4a3ec66ea51f
+                at 2022-08-06T16:13:26.560Z
             </div>
         <script src="../prettify.js"></script>
         <script>

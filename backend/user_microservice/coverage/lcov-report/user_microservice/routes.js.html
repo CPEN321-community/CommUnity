@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for post_microservice/models/requestPostTagsModel.js</title>
+    <title>Code coverage report for user_microservice/routes.js</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../prettify.css" />
-    <link rel="stylesheet" href="../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../sort-arrow-sprite.png);
+            background-image: url(../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">post_microservice/models</a> requestPostTagsModel.js</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">user_microservice</a> routes.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>14/14</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>14/14</span>
             </div>
         
             
@@ -84,77 +84,65 @@
 <a name='L19'></a><a href='#L19'>19</a>
 <a name='L20'></a><a href='#L20'>20</a>
 <a name='L21'></a><a href='#L21'>21</a>
-<a name='L22'></a><a href='#L22'>22</a>
-<a name='L23'></a><a href='#L23'>23</a>
-<a name='L24'></a><a href='#L24'>24</a>
-<a name='L25'></a><a href='#L25'>25</a>
-<a name='L26'></a><a href='#L26'>26</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L22'></a><a href='#L22'>22</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span></td><td class="text"><pre class="prettyprint lang-js">"use strict";
+<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">const Router = require('express-promise-router');
+const { getTopNUsers, getUserRank, upsertUserRank } = require('./controllers/leaderboardController');
+const { getUser, upsertUserPreference, createUser, updateUser, deleteUserPreference, verifyToken } = require('./controllers/userController');
 &nbsp;
-const { RequestPost } = require("./requestPostModel");
+const router = Router();
 &nbsp;
- const RequestPostTagsObject = (sequelize, DataTypes) =&gt; {
-    const RequestPostTags = sequelize.define("RequestPostTags", {
-        requestTagId: {
-            type: DataTypes.STRING,
-            defaultValue: DataTypes.UUIDV4,
-            allowNull: false,
-            primaryKey: true
-        },
-        postId: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        }
-    });
-    return RequestPostTags;
-}
+// user
+router.get('/user/:userId', getUser);
+router.put('/user/preference', upsertUserPreference);
+router.post('/user', createUser);
+router.put('/user', updateUser);
+router.delete('/user/preference/:preferenceId', deleteUserPreference);
 &nbsp;
+// leaderboard
+router.get('/rank/top/:N', getTopNUsers);
+router.get('/rank/:userId', getUserRank);
+router.put('/rank', upsertUserRank);
 &nbsp;
-module.exports = RequestPostTagsObject;</pre></td></tr></table></pre>
+// token (used by other microservices)
+router.post('/token/verify', verifyToken);
+&nbsp;
+module.exports = router;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2022-08-06T16:13:26.560Z
+                at 2022-08-06T16:22:46.378Z
             </div>
-        <script src="../../prettify.js"></script>
+        <script src="../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../sorter.js"></script>
-        <script src="../../block-navigation.js"></script>
+        <script src="../sorter.js"></script>
+        <script src="../block-navigation.js"></script>
     </body>
 </html>
     

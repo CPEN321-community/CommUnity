@@ -12,9 +12,7 @@ const { OfferPost } = require("./offerPostModel");
         },
         postId: {
             type: DataTypes.STRING,
-            get: function() {
-                return OfferPost.offerId;
-            }
+            allowNull: false
         },
         name: {
             type: DataTypes.STRING,

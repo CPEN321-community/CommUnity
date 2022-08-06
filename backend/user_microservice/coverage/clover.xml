@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1659802966389" clover="3.2.0">
+  <project timestamp="1659802966389" name="All files">
+    <metrics statements="179" coveredstatements="130" conditionals="77" coveredconditionals="52" methods="19" coveredmethods="14" elements="275" coveredelements="196" complexity="0" loc="179" ncloc="179" packages="3" files="9" classes="9"/>
+    <package name="user_microservice">
+      <metrics statements="48" coveredstatements="34" conditionals="8" coveredconditionals="4" methods="3" coveredmethods="1"/>
+      <file name="httpCodes.js" path="/Users/parthvikulkarni/Projects/CommUnity/backend/user_microservice/httpCodes.js">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="2" type="stmt"/>
+      </file>
+      <file name="index.js" path="/Users/parthvikulkarni/Projects/CommUnity/backend/user_microservice/index.js">
+        <metrics statements="33" coveredstatements="19" conditionals="8" coveredconditionals="4" methods="3" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="29" count="24" type="stmt"/>
+        <line num="30" count="24" type="cond" truecount="3" falsecount="1"/>
+        <line num="31" count="24" type="stmt"/>
+        <line num="33" count="0" type="stmt"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="43" count="1" type="stmt"/>
+        <line num="46" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="49" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="55" count="1" type="stmt"/>
+      </file>
+      <file name="routes.js" path="/Users/parthvikulkarni/Projects/CommUnity/backend/user_microservice/routes.js">
+        <metrics statements="14" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="user_microservice.controllers">
+      <metrics statements="94" coveredstatements="61" conditionals="59" coveredconditionals="42" methods="11" coveredmethods="8"/>
+      <file name="leaderboardController.js" path="/Users/parthvikulkarni/Projects/CommUnity/backend/user_microservice/controllers/leaderboardController.js">
+        <metrics statements="43" coveredstatements="30" conditionals="15" coveredconditionals="8" methods="5" coveredmethods="5"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="32" count="0" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="41" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="42" count="1" type="stmt"/>
+        <line num="45" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="46" count="1" type="stmt"/>
+        <line num="49" count="1" type="stmt"/>
+        <line num="50" count="1" type="stmt"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="59" count="1" type="stmt"/>
+        <line num="60" count="6" type="cond" truecount="3" falsecount="0"/>
+        <line num="61" count="6" type="cond" truecount="1" falsecount="1"/>
+        <line num="62" count="0" type="stmt"/>
+        <line num="65" count="0" type="stmt"/>
+        <line num="66" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="67" count="0" type="stmt"/>
+        <line num="68" count="0" type="stmt"/>
+        <line num="69" count="0" type="stmt"/>
+        <line num="71" count="0" type="stmt"/>
+        <line num="77" count="0" type="stmt"/>
+        <line num="84" count="0" type="stmt"/>
+        <line num="86" count="6" type="stmt"/>
+        <line num="90" count="1" type="stmt"/>
+        <line num="91" count="6" type="stmt"/>
+        <line num="92" count="6" type="cond" truecount="1" falsecount="1"/>
+        <line num="93" count="6" type="stmt"/>
+        <line num="95" count="0" type="stmt"/>
+        <line num="99" count="1" type="stmt"/>
+      </file>
+      <file name="userController.js" path="/Users/parthvikulkarni/Projects/CommUnity/backend/user_microservice/controllers/userController.js">
+        <metrics statements="51" coveredstatements="31" conditionals="44" coveredconditionals="34" methods="6" coveredmethods="3"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="17" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="19" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="28" count="3" type="stmt"/>
+        <line num="29" count="3" type="stmt"/>
+        <line num="32" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="36" count="2" type="stmt"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="43" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="54" count="0" type="stmt"/>
+        <line num="57" count="1" type="stmt"/>
+        <line num="59" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="60" count="0" type="stmt"/>
+        <line num="61" count="0" type="stmt"/>
+        <line num="64" count="0" type="stmt"/>
+        <line num="67" count="0" type="stmt"/>
+        <line num="71" count="1" type="stmt"/>
+        <line num="72" count="9" type="cond" truecount="5" falsecount="1"/>
+        <line num="73" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="74" count="9" type="stmt"/>
+        <line num="76" count="9" type="cond" truecount="5" falsecount="0"/>
+        <line num="77" count="1" type="stmt"/>
+        <line num="90" count="1" type="stmt"/>
+        <line num="101" count="1" type="stmt"/>
+        <line num="103" count="8" type="stmt"/>
+        <line num="107" count="1" type="stmt"/>
+        <line num="108" count="4" type="cond" truecount="5" falsecount="1"/>
+        <line num="109" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="110" count="4" type="stmt"/>
+        <line num="112" count="4" type="cond" truecount="5" falsecount="0"/>
+        <line num="113" count="1" type="stmt"/>
+        <line num="130" count="1" type="stmt"/>
+        <line num="132" count="3" type="stmt"/>
+        <line num="136" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="user_microservice.models">
+      <metrics statements="37" coveredstatements="35" conditionals="10" coveredconditionals="6" methods="5" coveredmethods="5"/>
+      <file name="index.js" path="/Users/parthvikulkarni/Projects/CommUnity/backend/user_microservice/models/index.js">
+        <metrics statements="25" coveredstatements="23" conditionals="10" coveredconditionals="6" methods="2" coveredmethods="2"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="31" count="1" type="stmt"/>
+        <line num="42" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="45" count="1" type="stmt"/>
+        <line num="66" count="1" type="stmt"/>
+        <line num="67" count="1" type="stmt"/>
+        <line num="68" count="1" type="stmt"/>
+        <line num="69" count="1" type="stmt"/>
+        <line num="70" count="1" type="stmt"/>
+        <line num="71" count="1" type="stmt"/>
+        <line num="73" count="1" type="stmt"/>
+        <line num="74" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="75" count="0" type="stmt"/>
+        <line num="79" count="1" type="stmt"/>
+        <line num="81" count="1" type="stmt"/>
+        <line num="82" count="1" type="stmt"/>
+        <line num="84" count="1" type="stmt"/>
+      </file>
+      <file name="leaderboardModel.js" path="/Users/parthvikulkarni/Projects/CommUnity/backend/user_microservice/models/leaderboardModel.js">
+        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
+      </file>
+      <file name="preferencesModel.js" path="/Users/parthvikulkarni/Projects/CommUnity/backend/user_microservice/models/preferencesModel.js">
+        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="23" count="1" type="stmt"/>
+      </file>
+      <file name="userModel.js" path="/Users/parthvikulkarni/Projects/CommUnity/backend/user_microservice/models/userModel.js">
+        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="35" count="1" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>

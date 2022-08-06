@@ -230,7 +230,7 @@ const addRequestTags = async (req, res) => {
 const deleteRequest = async (req, res) => {
     const requestId = req.params.requestId;
     const foundRequestTags = await RequestPostTags.findAll({where: {postId: requestId}});
-    const foundRequest = await RequestPost.findOne({where: {requestId: requestId}});
+    const foundRequest = await RequestPost.findOne({where: {requestId}});
     if(foundRequestTags && foundRequest) {
         await RequestPostTags.destroy({
             where: {
@@ -239,7 +239,7 @@ const deleteRequest = async (req, res) => {
         })
         await RequestPost.destroy({
             where: {
-                requestId: requestId
+                requestId
             }
         });
         await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/request/${requestId}`);

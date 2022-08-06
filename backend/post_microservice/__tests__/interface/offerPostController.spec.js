@@ -217,12 +217,6 @@ describe("POST communitypost/offers", () => {
  });
 
  describe("GET communitypost/offers/:offerID", () => {
-  test("Pass", async () => {
-    const offers = await axios.get("/communitypost/offers");
-    const response = await axios.get(`/communitypost/offers/${offers.data[0].offerId}`);
-    expect(response.status).toEqual(OK);
-  });
-
   test("request post not found", async () => {
     await axios.get("/communitypost/offers/asdfasdfasdf").catch(e => {
       expect(e.response.status).toEqual(NOT_FOUND);

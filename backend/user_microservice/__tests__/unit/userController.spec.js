@@ -1,11 +1,10 @@
 
-const { Leaderboard, Preference, User } = require("../../models");
+const { Leaderboard, User } = require("../../models");
 const supertest = require("supertest");
-const axios = require("axios");
 const app = require("../../index");
 const { beforeAll } = require("@jest/globals");
 const s2sToken = require('./../../../config_post.json')["s2sToken"];
-const { OK, CREATED, BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND } = require("../../httpCodes");
+const { OK, CREATED, BAD_REQUEST, INTERNAL_SERVER_ERROR } = require("../../httpCodes");
 
 jest.mock("axios");
 
@@ -174,13 +173,6 @@ describe("PUT /rank", () => {
     });
     
     test("Successfully creates the user's score when it doesn't already exist", async () => {
-      const existingUserStats = {
-        dataValues: {
-        userId: "parthvi", 
-        offerPosts: 2,
-        requestPosts: 0
-        }
-      }
       const newUserStats = {
         userId: "parthvi",
         offerPosts: 3,
@@ -348,13 +340,6 @@ describe("PUT /rank", () => {
     });
     
     test("Successfully creates the user's score when it doesn't already exist", async () => {
-      const existingUserStats = {
-        dataValues: {
-        userId: "parthvi", 
-        offerPosts: 2,
-        requestPosts: 0
-        }
-      }
       const newUserStats = {
         userId: "parthvi",
         offerPosts: 3,

@@ -1,48 +1,6 @@
 const axios = require("axios");
 const s2sToken = require('./../../../config_post.json')["s2sToken"];
-const { OK, CREATED, INTERNAL_SERVER_ERROR, UNAUTHORIZED, NOT_FOUND, BAD_REQUEST } = require("../../httpCodes");
-
-const requestPost = {
-    userId: "user1",
-    requestId: "123",
-    title: "title1",
-    description: "des1",
-    currentLocation: "location1",
-    status: "active",
-    tagList: ["beep", "boop"]
-};
-
-const requestPostDataVals = {
-    dataValues: {
-        userId: "user1",
-        requestId: "123",
-        title: "title1",
-        description: "des1",
-        currentLocation: "location1",
-        status: "active",
-        tagList: ["beep", "boop"]
-    }
-};
-
-const similarPosts = {
-    userId: "user1",
-    requestId: "123",
-    title: "title1",
-    description: "des1",
-    currentLocation: "location1",
-    status: "active",
-    tagList: ["beep", "boop"]
-}
-
-const createdRequestWithId = {
-    userId: "user1",
-    requestId: "request1",
-    title: "Brocolli",
-    description: "Green Crunchy Fresh",
-    currentLocation: "My house",
-    status: "Active",
-    tagList: ["green"]
-}
+const { OK, CREATED, NOT_FOUND, BAD_REQUEST } = require("../../httpCodes");
 
 const createdRequest = {
   userId: "user2",
@@ -203,7 +161,7 @@ describe("DELETE communitypost/requests/:requestId", () => {
       const deleteTags = {
         tagList: ["fruit"]
       }
-      const response = await axios.delete("/communitypost/requests/tags", {data: deleteTags}).catch(e => {
+      await axios.delete("/communitypost/requests/tags", {data: deleteTags}).catch(e => {
         expect(e.response.status).toEqual(BAD_REQUEST);
       });
     });
@@ -231,7 +189,7 @@ describe("DELETE communitypost/requests/:requestId", () => {
         requestId: "request1",
         tagList: null
       }
-      const response = await axios.delete("/communitypost/requests/tags", { data: deleteTags }).catch(e => {
+      await axios.delete("/communitypost/requests/tags", { data: deleteTags }).catch(e => {
         expect(e.response.status).toEqual(BAD_REQUEST);
       });
     });
