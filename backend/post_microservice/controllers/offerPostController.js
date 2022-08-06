@@ -34,7 +34,7 @@ const getAllUserOffers = async (req, res) => {
             res.sendStatus(NOT_FOUND);
         }
     } else {
-        console.log("Error in retrieving offer posts made by user");
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
   
@@ -92,13 +92,13 @@ const searchOffers = async (req, res) => {
         res.json(JSON.parse(JSON.stringify(response)));
 
     } catch (error) {
-        console.log("Error with searching for offer posts: " + error);
+
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
 
 const searchOffersWithTags = async (req, res) => {
-    console.log(req.body);
+
     if(req.body.tagList) {
         const tagList = req.body.tagList;
         const postTags = await OfferPostTags.findAll({
@@ -111,10 +111,10 @@ const searchOffersWithTags = async (req, res) => {
             if (uniquePostIds.includes(postTags[i].dataValues.postId)){
                 duplicateOfferTagIds.push(postTags[i].dataValues.offerId);
             } else {
-                uniquePostIds.push(postTags[i].dataValues.postId);
+                uniquePostIds.push(postTags[i].dataValues.offerId);
             }
         }
-        
+
         const postList = await OfferPost.findAll({
             where: {offerId: uniquePostIds}
         });
@@ -163,7 +163,6 @@ const createOffer = async (req, res) => {
 
         await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
         res.sendStatus(CREATED);
-
     } else {
         res.sendStatus(BAD_REQUEST);
     }
@@ -173,7 +172,7 @@ const removeOfferTags = async (req, res) => {
     const offerId = req.body.offerId;
     const tagList = req.body.tagList;
     const hasAllFields = offerId && tagList;
-    const foundOfferTags = await OfferPostTags.findAll({where: {postId: offerId}});
+    const foundOfferTags = hasAllFields ? await OfferPostTags.findAll({where: {postId: offerId}}) : null;
     if(foundOfferTags && hasAllFields) {
         for(let i = 0; i < tagList.length; i = i + 1){
             OfferPostTags.destroy({
@@ -242,14 +241,14 @@ const updateOffer = async (req, res) => {
 
 const deleteOffer = async (req, res) => {
     const offerId = req.params.offerId;
-    const foundOfferTags = await OfferPostTags.findAll({where: {postId: offerId}});
     const foundOffer = await OfferPost.findOne({where: {offerId: offerId}});
+    const foundOfferTags = foundOffer ? await OfferPostTags.findAll({where: {postId: offerId}}) : null;
     if(foundOfferTags && foundOffer) {
         await OfferPostTags.destroy({
             where: {
                 postId: offerId
             }
-        })
+        });
         await OfferPost.destroy({
             where: {
                 offerId: offerId

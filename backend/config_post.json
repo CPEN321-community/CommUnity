@@ -8,14 +8,14 @@
   },
   "test": {
     "username": "root",
-    "password": "ssw0rd",
+    "password": "P@ssw0rd",
     "database": "post_data",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": "ssw0rd",
+    "password": "P@ssw0rd",
     "database": "post_data",
     "host": "127.0.0.1",
     "dialect": "mysql"

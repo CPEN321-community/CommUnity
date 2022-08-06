@@ -27,7 +27,7 @@ const getTopNUsers = async (req, res) => {
             return returnObj;
         }));
 
-        res.status(OK).json(responseWithNames);
+        res.status(OK).json(JSON.parse(JSON.stringify(responseWithNames)));
    } else {
        res.sendStatus(INTERNAL_SERVER_ERROR);
    }
@@ -46,7 +46,7 @@ const getUserRank = async (req, res) => {
             where: {score: {[Op.gte]: user.score}}
         })
         const rank = higherScoringUsers.length;
-        res.status(OK).json({ rank });
+        res.status(OK).json(JSON.parse(JSON.stringify({ rank })));
     } else {
         res.sendStatus(BAD_REQUEST);
     }

@@ -4,116 +4,253 @@ const { OK, CREATED, INTERNAL_SERVER_ERROR, UNAUTHORIZED, NOT_FOUND, BAD_REQUEST
 
 const requestPost = {
     userId: "user1",
-    offerId: "123",
+    requestId: "123",
     title: "title1",
     description: "des1",
-    quantity: 1,
-    pickUpLocation: "location1",
-    image: "img1",
+    currentLocation: "location1",
     status: "active",
-    bestBeforeDate: "date1",
-    requestTags: ["beep", "boop"]
+    tagList: ["beep", "boop"]
 };
 
 const requestPostDataVals = {
     dataValues: {
         userId: "user1",
-        offerId: "123",
+        requestId: "123",
         title: "title1",
         description: "des1",
-        quantity: 1,
-        pickUpLocation: "location1",
-        image: "img1",
+        currentLocation: "location1",
         status: "active",
-        bestBeforeDate: "date1",
-        requestTags: ["beep", "boop"],
+        tagList: ["beep", "boop"]
     }
 };
 
 const similarPosts = {
     userId: "user1",
+    requestId: "123",
     title: "title1",
     description: "des1",
+    currentLocation: "location1",
     status: "active",
+    tagList: ["beep", "boop"]
 }
 
-axios.defaults.headers = { token: s2sToken }
-// axios.defaults.baseURL = process.env.CLOUD_POST_URL;
-axios.defaults.baseURL = "http://localhost:8081";
+const createdRequestWithId = {
+    userId: "user1",
+    requestId: "request1",
+    title: "Brocolli",
+    description: "Green Crunchy Fresh",
+    currentLocation: "My house",
+    status: "Active",
+    tagList: ["green"]
+}
 
-describe("GET communitypost/requests/:requestID", () => {
-    test("Pass", async () => {
-        const response = await request.get("/communitypost/requests/request1");
-        expect(JSON.parse(response.text)).toEqual(requestPost);
-        expect(response.statusCode).toEqual(OK);
+const createdRequest = {
+    userId: "user1",
+    title: "Brocolli",
+    description: "Green Crunchy Fresh",
+    currentLocation: "My house",
+    status: "Active",
+    tagList: ["green"]
+}
+
+describe("POST communitypost/requests", () => {
+    test("test", () => { expect(true).toBe(t
+    test("Request post is successfully created", async () => {
+      const response = await axios.post("/communitypost/requests", createdRequest);
+      expect(response.status).toEqual(CREATED);
     });
 
-    test("request post not found", async () => {
-        const response = await request.get("/communitypost/requests/request2");
-        expect(response.statusCode).toEqual(NOT_FOUND);
+    test("Missing a field", async () => {
+        const missingFieldRequest = {
+            userId: "user1",
+            title: "Juice",
+            description: "Juicy",
+            currentLocation: "Juice Bar",
+            status: "Active",
+        }
+        await axios.post("/communitypost/requests", missingFieldRequest).catch(e => {
+            expect(e.response.status).toEqual(BAD_REQUEST);
+        });
+      });
+});
+
+describe("POST communitypost/requestTags", () => {
+    test("Specified request post tags are successfully added", async () => {
+        const newTags = {
+            requestId: "request3",
+            tagList: ["fruit"]
+        }
+        const response = await axios.post("/communitypost/requestTags", newTags);
+        expect(response.status).toEqual(CREATED);
+    });
+
+    test("Missing at least 1 field", async () => {
+        const missingFieldTags = {
+            requestId: "request4"
+        }
+        const response = await axios.post("/communitypost/requestTags", missingFieldTags).catch(e => {
+            expect(e.response.statusCode).toEqual(BAD_REQUEST);
+        });
+    });
+
+    test("Invalid tag (not part of our preset tags)", async () => {
+        const invalidTags = {
+            requestId: "request4",
+            tagList: ["human"]
+        }
+        const response = await axios.post("/communitypost/requestTags", invalidTags).catch(e => {
+            expect(e.response.status).toEqual(BAD_REQUEST)
+        });
+    });
+
+    test("No tags are provided", async () => {
+        const invalidTags = {
+            requestId: "request4",
+            tagList: []
+        }
+        const response = await axios.post("/communitypost/requestTags", invalidTags).catch(e => {
+            expect(e.response.status).toEqual(BAD_REQUEST);
+        });
     });
 });
 
-describe("GET communitypost/requests", () => {    
-    test("Pass", async () => {
-        const response = await request.get("/communitypost/requests");
-        expect(JSON.parse(response.text)).toEqual([requestPost]);
-        expect(response.statusCode).toEqual(OK);
+describe("DELETE communitypost/requests/:requestId", () => {
+    test("Request post is successfully deleted", async () => {
+      const response = await axios.delete("/communitypost/requests/request1");
+      expect(response.status).toEqual(OK);
     });
 
-    test("request post not found", async () => {
-        const response = await request.get("/communitypost/requests");
-        expect(response.statusCode).toEqual(NOT_FOUND);
+    test("Request post with corresponding offerId does not exist", async () => {
+      const response = await axios.delete("/communitypost/requests/request1");
+      expect(response.status).toEqual(NOT_FOUND);
     });
-});
+  });
 
-describe("GET communitypost/requests/users/:userId", () => {    
-    test("Pass", async () => {
-        const response = await request.get("/communitypost/requests/users/user1");
-        expect(JSON.parse(response.text)).toEqual([requestPost]);
-        expect(response.statusCode).toEqual(OK);
+  describe("DELETE communitypost/requests/tags", () => {
+    test("Specified request post tags are successfully deleted", async () => {
+      const deleteTags = {
+        requestId: "request1",
+        tagList: ["fruit", "vegetable"]
+      }
+      const response = await axios.delete("/communitypost/requests/tags",{ data: deleteTags });
+      expect(response.status).toEqual(OK);
     });
-
-    test("no request post found", async () => {
-        const response = await request.get("/communitypost/requests/users/user2");
-        expect(response.statusCode).toEqual(NOT_FOUND);
-    });
-
-    test("user id not found", async () => {
-        const response = await request.get("/communitypost/requests/users/fakeid");
-        expect(response.statusCode).toEqual(NOT_FOUND);
-    });
-});
-
-describe("GET communitypost/requests/search/:title", () => {    
-    test("Similar posts found", async () => {
-        const response = await request.get("/communitypost/requests/search/similarPostsExist");
-        expect(JSON.parse(response.text)).toEqual([similarPosts]);
-        expect(response.statusCode).toEqual(OK);
+    
+    test("Missing at least 1 field", async () => {
+      const deleteTags = {
+        tagList: ["fruit", "vegetable"]
+      }
+      const response = await axios.delete("/communitypost/requests/tags", {data: deleteTags}).catch(e => {
+        expect(e.response.statusCode).toEqual(BAD_REQUEST);
+      });
     });
 
-    test("No similar posts", async () => {
-        const response = await request.get("/communitypost/requests/search/noSimilarPosts");
-        expect(JSON.parse(response.text)).toEqual([requestPost]);
-        expect(response.statusCode).toEqual(OK);
+    test("Request post corresponding to the requestId does not have any tags", async () => {
+      const deleteTags = {
+        requestId: "request1",
+        tagList: []
+      }
+      const response = await axios.delete("/communitypost/requests/tags", { data: deleteTags });
+      expect(response.status).toEqual(OK);
     });
-});
 
-describe("PUT communitypost/requestTags", () => {    
-    test("Pass", async () => {
-        const response = await request.put("/communitypost/requestTags", { tagList: ["dairy"] });
-        expect(JSON.parse(response.text).results).toEqual([requestPost]);
-        expect(response.statusCode).toEqual(OK);
+    test("Specified tags do not exist for the request post associated with the requestId", async () => {
+      const deleteTags = {
+        requestId: "request1",
+        tagList: ["fruit", "vegetable"]
+      }
+      const response = await axios.delete("/communitypost/requests/tags", { data: deleteTags });
+      expect(response.status).toEqual(OK);
     });
 
     test("No tags provided", async () => {
-        const response = await request.put("/communitypost/requestTags", { tagList: [] });
-        expect(JSON.parse(response.text).results).toEqual([requestPost]);
-        expect(response.statusCode).toEqual(OK);
-    });
-
-    test("Invalid tags", async () => {
-        const response = await request.put("/communitypost/requestTags", { tagList: null });
-        expect(response.statusCode).toEqual(BAD_REQUEST);
+      const deleteTags = {
+        requestId: "request1",
+        tagList: null
+      }
+      const response = await axios.delete("/communitypost/requests/tags", { data: deleteTags }).catch(e => {
+        expect(e.response.status).toEqual(BAD_REQUEST);
+      });
     });
 });
+
+// // <3 <3 <3 Parthvi <3 <3 <3 :) :)  \(* o *)/
+// // --------------
+// // :( :( :( :( Josh :( :( :( :(  ( T . T)   -U-
+
+
+// describe("GET communitypost/requests/:requestID", () => {
+//     test("Pass", async () => {
+//         const response = await axios.get("/communitypost/requests/request1");
+//         expect(JSON.parse(response.text)).toEqual(requestPost);
+//         expect(response.statusCode).toEqual(OK);
+//     });
+//     test("request post not found", async () => {
+//         const response = await axios.get("/communitypost/requests/request2");
+//         expect(response.statusCode).toEqual(NOT_FOUND);
+//     });
+// });
+
+// describe("GET communitypost/requests", () => {    
+//     test("Pass", async () => {
+//         const response = await axios.get("/communitypost/requests");
+//         expect(JSON.parse(response.text)).toEqual([requestPost]);
+//         expect(response.statusCode).toEqual(OK);
+//     });
+
+//     test("request post not found", async () => {
+//         const response = await axios.get("/communitypost/requests");
+//         expect(response.statusCode).toEqual(NOT_FOUND);
+//     });
+// });
+
+// describe("GET communitypost/requests/users/:userId", () => {    
+//     test("Pass", async () => {
+//         const response = await axios.get("/communitypost/requests/users/user1");
+//         expect(JSON.parse(response.text)).toEqual([requestPost]);
+//         expect(response.statusCode).toEqual(OK);
+//     });
+
+//     test("no request post found", async () => {
+//         const response = await axios.get("/communitypost/requests/users/user2");
+//         expect(response.statusCode).toEqual(NOT_FOUND);
+//     });
+
+//     test("user id not found", async () => {
+//         const response = await axios.get("/communitypost/requests/users/fakeid");
+//         expect(response.statusCode).toEqual(NOT_FOUND);
+//     });
+// });
+
+// describe("GET communitypost/requests/search/:title", () => {    
+//     test("Similar posts found", async () => {
+//         const response = await axios.get("/communitypost/requests/search/similarPostsExist");
+//         expect(JSON.parse(response.text)).toEqual([similarPosts]);
+//         expect(response.statusCode).toEqual(OK);
+//     });
+
+//     test("No similar posts", async () => {
+//         const response = await axios.get("/communitypost/requests/search/noSimilarPosts");
+//         expect(JSON.parse(response.text)).toEqual([requestPost]);
+//         expect(response.statusCode).toEqual(OK);
+//     });
+// });
+
+// describe("PUT communitypost/requestTags", () => {    
+//     test("Pass", async () => {
+//         const response = await axios.put("/communitypost/requestTags", { tagList: ["dairy"] });
+//         expect(JSON.parse(response.text).results).toEqual([requestPost]);
+//         expect(response.statusCode).toEqual(OK);
+//     });
+
+//     test("No tags provided", async () => {
+//         const response = await axios.put("/communitypost/requestTags", { tagList: [] });
+//         expect(JSON.parse(response.text).results).toEqual([requestPost]);
+//         expect(response.statusCode).toEqual(OK);
+//     });
+
+//     test("Invalid tags", async () => {
+//         const response = await axios.put("/communitypost/requestTags", { tagList: null });
+//         expect(response.statusCode).toEqual(BAD_REQUEST);
+//     });
+// });

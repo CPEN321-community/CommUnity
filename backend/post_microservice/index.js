@@ -5,6 +5,7 @@ const db = require('./models');
 const dotenv = require("dotenv")
 const s2sToken = require('./../config_post.json')["s2sToken"];
 const {OAuth2Client} = require('google-auth-library');
+const bodyParser = require("body-parser");
 
 const {UNAUTHORIZED} = require('./httpCodes');
 
@@ -22,13 +23,14 @@ async function verify(token) {
 }
 
 const app = express();
-
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 app.use(express.json());
 
 axios.defaults.headers = { token: s2sToken }
 app.use(async (req, res, next) => {
   let token = req.headers["token"];
-  console.log(token);
+
   if (s2sToken && s2sToken === token) {
     req.headers.userId = "testuserid";
     next();

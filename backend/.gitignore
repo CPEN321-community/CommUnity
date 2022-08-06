@@ -1,1 +1,7 @@
 # config*.json
+
+espresso
+/coverage.data
+/coverage/
+/lcov.info
+/lcov-report/

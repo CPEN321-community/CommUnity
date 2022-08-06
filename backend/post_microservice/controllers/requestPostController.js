@@ -91,7 +91,6 @@ const searchRequests = async (req, res) => {
         res.status(OK).json(JSON.parse(JSON.stringify(response)));
 
     } catch (error) {
-        console.log("Error with searching for request posts: " + error);
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
