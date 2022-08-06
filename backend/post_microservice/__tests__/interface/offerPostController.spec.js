@@ -16,8 +16,8 @@ const createdOffer = {
 }
 
 axios.defaults.headers = { token: s2sToken }
-// axios.defaults.baseURL = process.env.CLOUD_POST_URL;
-axios.defaults.baseURL = "http://localhost:8081";
+axios.defaults.baseURL = process.env.CLOUD_POST_URL;
+// axios.defaults.baseURL = "http://localhost:8081";
 describe("POST communitypost/offers", () => {
 
   test("Offer post is successfully created", async () => {

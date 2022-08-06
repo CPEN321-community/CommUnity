@@ -15,8 +15,8 @@ const uuid1 = v4();
 const uuid2 = v4();
 
 axios.defaults.headers = { token: s2sToken, userId: uuid1 }
-// axios.defaults.baseURL = process.env.CLOUD_USER_URL;
-axios.defaults.baseURL = "http://localhost:8080";
+axios.defaults.baseURL = process.env.CLOUD_USER_URL;
+// axios.defaults.baseURL = "http://localhost:8080";
 
 describe("POST /user", () => {
   test("Pass", async () => {
