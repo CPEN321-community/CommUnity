@@ -49,7 +49,6 @@ const createdRequest = {
   requestId: "request4",
   title: "Brocolli",
   description: "Green Crunchy Fresh",
-  currentLocation: "My house",
   status: "Active",
   tagList: ["green"]
 }
@@ -97,40 +96,26 @@ describe("POST communitypost/requestTags", () => {
         });
     });
 
-//     test("Invalid tag (not part of our preset tags)", async () => {
-//         const invalidTags = {
-//             requestId: "request4",
-//             tagList: ["human"]
-//         }
-//         const response = await axios.post("/communitypost/requestTags", invalidTags).catch(e => {
-//             expect(e.response.status).toEqual(BAD_REQUEST)
-//         });
-//     });
+    test("Invalid tag (not part of our preset tags)", async () => {
+        const invalidTags = {
+            requestId: "request4",
+            tagList: ["human"]
+        }
+        const response = await axios.post("/communitypost/requestTags", invalidTags).catch(e => {
+            expect(e.response.status).toEqual(BAD_REQUEST)
+        });
+    });
 
-//     test("No tags are provided", async () => {
-//         const invalidTags = {
-//             requestId: "request4",
-//             tagList: []
-//         }
-//         const response = await axios.post("/communitypost/requestTags", invalidTags).catch(e => {
-//             expect(e.response.status).toEqual(BAD_REQUEST);
-//         });
-//     });
+    test("No tags are provided", async () => {
+        const invalidTags = {
+            requestId: "request4",
+            tagList: []
+        }
+        const response = await axios.post("/communitypost/requestTags", invalidTags).catch(e => {
+            expect(e.response.status).toEqual(BAD_REQUEST);
+        });
+    });
 });
-
-// describe("DELETE communitypost/requests/:requestId", () => {
-//     test("Request post is successfully deleted", async () => {
-//       const requests = await axios.get("/communitypost/requests");
-//       const response = await axios.delete(`/communitypost/requests/${requests.data[0].requestId}`);
-//       expect(response.status).toEqual(OK);
-//     });
-
-//     test("Request post with corresponding requestId does not exist", async () => {
-//       await axios.delete("/communitypost/requests/aasdfasdfasdfasdf").catch(e => {
-//         expect(e.response.status).toEqual(NOT_FOUND);
-//       });
-//     });
-//   });
 
 //   describe("DELETE communitypost/requests/tags", () => {
 //     test("Specified request post tags are successfully deleted", async () => {
@@ -260,3 +245,17 @@ describe("POST communitypost/requestTags", () => {
 //         expect(response.statusCode).toEqual(BAD_REQUEST);
 //     });
 // });
+
+describe("DELETE communitypost/requests/:requestId", () => {
+    test("Request post is successfully deleted", async () => {
+      const requests = await axios.get("/communitypost/requests");
+      const response = await axios.delete(`/communitypost/requests/${requests.data[0].requestId}`);
+      expect(response.status).toEqual(OK);
+    });
+
+    test("Request post with corresponding requestId does not exist", async () => {
+      await axios.delete("/communitypost/requests/aasdfasdfasdfasdf").catch(e => {
+        expect(e.response.status).toEqual(NOT_FOUND);
+      });
+    });
+  });

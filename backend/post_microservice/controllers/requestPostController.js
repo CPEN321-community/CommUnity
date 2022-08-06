@@ -127,16 +127,14 @@ const searchRequestsWithTags = async (req, res) => {
 }
 
 const createRequest = async (req, res) => {
-    const hasAllFields = req.body.userId && req.body.title && req.body.description && req.body.currentLocation && req.body.status && req.body.tagList;
+    const hasAllFields = req.body.userId && req.body.title && req.body.description && req.body.status && req.body.tagList;
     if(hasAllFields) {
         const createdRequest = await RequestPost.create({
             userId: req.body.userId,
             title: req.body.title,
             description: req.body.description,
-            currentLocation: req.body.currentLocation,
             status: req.body.status
           });
-
         let tagList = req.body.tagList;
         if (tagList != null) {
             for(let item of tagList) {
@@ -231,8 +229,11 @@ const addRequestTags = async (req, res) => {
 
 const deleteRequest = async (req, res) => {
     const requestId = req.params.requestId;
+    console.log("here1", requestId);
     const foundRequestTags = await RequestPostTags.findAll({where: {postId: requestId}});
+    console.log("here2", foundRequestTags);
     const foundRequest = await RequestPost.findOne({where: {requestId: requestId}});
+    console.log("here3", foundRequest);
     if(foundRequestTags && foundRequest) {
         await RequestPostTags.destroy({
             where: {
