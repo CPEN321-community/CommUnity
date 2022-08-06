@@ -3,9 +3,9 @@ const { OfferPost, OfferPostTags } = require("../../models");
 const supertest = require("supertest");
 const axios = require("axios");
 const app = require("../../index");
-const { afterAll, beforeAll, expect } = require("@jest/globals");
+const { beforeAll } = require("@jest/globals");
 const s2sToken = require('./../../../config_post.json')["s2sToken"];
-const { OK, CREATED, INTERNAL_SERVER_ERROR, UNAUTHORIZED, NOT_FOUND, BAD_REQUEST } = require("../../httpCodes");
+const { OK, CREATED, NOT_FOUND, BAD_REQUEST } = require("../../httpCodes");
 
 jest.mock("axios");
 

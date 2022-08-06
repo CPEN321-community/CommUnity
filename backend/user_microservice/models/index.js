@@ -61,7 +61,7 @@ if (config.use_env_variable) {
     pool: { maxConnections: 5, maxIdleTime: 30},
     language: 'en'
   });
-};
+}
 
 const leaderboardModel = require('./leaderboardModel.js')(sequelize, Sequelize.DataTypes);
 db[leaderboardModel.name] = leaderboardModel;

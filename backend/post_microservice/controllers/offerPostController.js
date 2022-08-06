@@ -131,7 +131,7 @@ const searchOffersWithTags = async (req, res) => {
 
 const createOffer = async (req, res) => {
     const hasAllFields = req.body.userId && req.body.title && req.body.description && req.body.quantity && req.body.pickUpLocation && req.body.image && req.body.status && req.body.bestBeforeDate && req.body.tagList;
-    const validDate = req.body.bestBeforeDate.length == 10;
+    const validDate = req.body.bestBeforeDate.length === 10;
     const validImage = req.body.image.includes(".com");
     if(hasAllFields && validImage && validDate) {
         const createdOffer = await OfferPost.create({
@@ -241,7 +241,7 @@ const updateOffer = async (req, res) => {
 
 const deleteOffer = async (req, res) => {
     const offerId = req.params.offerId;
-    const foundOffer = await OfferPost.findOne({where: {offerId: offerId}});
+    const foundOffer = await OfferPost.findOne({where: {offerId}});
     const foundOfferTags = foundOffer ? await OfferPostTags.findAll({where: {postId: offerId}}) : null;
     if(foundOfferTags && foundOffer) {
         await OfferPostTags.destroy({
@@ -250,9 +250,7 @@ const deleteOffer = async (req, res) => {
             }
         });
         await OfferPost.destroy({
-            where: {
-                offerId: offerId
-            }
+            where: { offerId }
         });
         await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/offer/${offerId}`);
         res.sendStatus(OK);

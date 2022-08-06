@@ -1,33 +1,7 @@
 const axios = require("axios");
 const s2sToken = require('./../../../config_post.json')["s2sToken"];
-const { OK, CREATED, INTERNAL_SERVER_ERROR, UNAUTHORIZED, NOT_FOUND, BAD_REQUEST } = require("../../httpCodes");
+const { OK, CREATED, NOT_FOUND, BAD_REQUEST } = require("../../httpCodes");
 
-const offerPost = {
-  userId: "user1",
-  offerId: "123",
-  title: "title1",
-  description: "des1",
-  quantity: 1,
-  pickUpLocation: "location1",
-  image: "img1",
-  status: "active",
-  bestBeforeDate: "date1",
-  offerTags: ["beep", "boop"]
-};
-const offerPostDataVals = {
-  dataValues: {
-      userId: "user1",
-      offerId: "123",
-      title: "title1",
-      description: "des1",
-      quantity: 1,
-      pickUpLocation: "location1",
-      image: "img1",
-      status: "active",
-      bestBeforeDate: "date1",
-      offerTags: ["beep", "boop"]
-  }
-};
 const createdOffer = {
   userId: "user2",
   offerId: "offer4",
@@ -40,18 +14,7 @@ const createdOffer = {
   bestBeforeDate: "04/20/2024",
   tagList: ["juice"]
 }
-const createdOfferWithId = {
-  offerId: "offer1",
-  userId: "user2",
-  title: "Juice",
-  description: "Juicy",
-  quantity: 2,
-  pickUpLocation: "Juice Bar",
-  image: "juicyPic.com",
-  status: "Active",
-  bestBeforeDate: "04/20/2024",
-  tagList: ["juice"]
-}
+
 axios.defaults.headers = { token: s2sToken }
 // axios.defaults.baseURL = process.env.CLOUD_POST_URL;
 axios.defaults.baseURL = "http://localhost:8081";
@@ -91,7 +54,7 @@ describe("POST communitypost/offers", () => {
       bestBeforeDate: "04/20/2024",
       tagList: []
     }
-    const response = await axios.post("/communitypost/offers", invalidUrl).catch(e => {
+    await axios.post("/communitypost/offers", invalidUrl).catch(e => {
       expect(e.response.status).toEqual(BAD_REQUEST);
     });
   });
@@ -109,7 +72,7 @@ describe("POST communitypost/offers", () => {
       bestBeforeDate: "04/20/202",
       tagList: []
     }
-    const response = await axios.post("/communitypost/offers", invalidDate).catch(e => {
+    await axios.post("/communitypost/offers", invalidDate).catch(e => {
       expect(e.response.status).toEqual(BAD_REQUEST);
     });
   });
@@ -130,7 +93,7 @@ describe("POST communitypost/offers", () => {
        const missingFieldTags = {
          offerId: "offer5"
        }
-       const response = await axios.post("/communitypost/offerTags", missingFieldTags).catch(e => {
+       await axios.post("/communitypost/offerTags", missingFieldTags).catch(e => {
         expect(e.response.status).toEqual(BAD_REQUEST);
       });
    });
@@ -140,7 +103,7 @@ describe("POST communitypost/offers", () => {
          offerId: "offer5",
          tagList: ["human"]
        }
-       const response = await axios.post("/communitypost/offerTags", invalidTags).catch(e => {
+       await axios.post("/communitypost/offerTags", invalidTags).catch(e => {
         expect(e.response.status).toEqual(BAD_REQUEST);
       });
    });
@@ -150,7 +113,7 @@ describe("POST communitypost/offers", () => {
          offerId: "offer5",
          tagList: []
        }
-       const response = await axios.post("/communitypost/offerTags", invalidTags).catch(e => {
+       await axios.post("/communitypost/offerTags", invalidTags).catch(e => {
         expect(e.response.status).toEqual(BAD_REQUEST);
       });
    });
@@ -184,7 +147,7 @@ describe("POST communitypost/offers", () => {
      const deleteTags = {
        tagList: ["fruit", "vegetable"]
      }
-     const response = await axios.delete("/communitypost/offers/tags", { data: deleteTags }).catch(e => {
+     await axios.delete("/communitypost/offers/tags", { data: deleteTags }).catch(e => {
       expect(e.response.status).toEqual(BAD_REQUEST);
     });
    });
@@ -212,7 +175,7 @@ describe("POST communitypost/offers", () => {
        offerId: "offer1",
        tagList: null
      }
-     const response = await axios.delete("/communitypost/offers/tags", { data: deleteTags }).catch(e => {
+     await axios.delete("/communitypost/offers/tags", { data: deleteTags }).catch(e => {
       expect(e.response.status).toEqual(BAD_REQUEST);
     });
    });
@@ -238,15 +201,6 @@ describe("POST communitypost/offers", () => {
    });
 
    test("Missing at least 1 field", async () => {
-       const originalRequestPost = {
-           userId: "parthvi",
-           requestId: "R13",
-           title: "Mangoes",
-           description: "Mangoes are my favourite fruit of all time :)",
-           currentLocation: "Mangoless place :(",
-           status: "active",
-           tagList: ["fruit"]
-       };
        const updatedRequestPost = {
            requestId: "R13",
            title: "YUMMY Mangoes",

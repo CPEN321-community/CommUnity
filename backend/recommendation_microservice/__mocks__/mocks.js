@@ -1,5 +1,4 @@
 'use strict';
-const {jest: requiredJest} = require('@jest/globals');
 
 const getSuggestedRequests = jest.fn(item => {
   return [{postId: 'post1', score: 100}, { postId: 'post2', score: 50}];
