@@ -132,23 +132,18 @@ describe("GET communitypost/requests", () => {
     });
 });
 
-// describe("GET communitypost/requests/users/:userId", () => {    
-//     test("Pass", async () => {
-//         const response = await axios.get("/communitypost/requests/users/user1");
-//         expect(JSON.parse(response.text)).toEqual([requestPost]);
-//         expect(response.statusCode).toEqual(OK);
-//     });
+describe("GET communitypost/requests/users/:userId", () => {    
+    test("Pass", async () => {
+        const response = await axios.get("/communitypost/requests/users/user2");
+        expect(response.status).toEqual(OK);
+    });
 
-//     test("no request post found", async () => {
-//         const response = await axios.get("/communitypost/requests/users/user2");
-//         expect(response.statusCode).toEqual(NOT_FOUND);
-//     });
-
-//     test("user id not found", async () => {
-//         const response = await axios.get("/communitypost/requests/users/fakeid");
-//         expect(response.statusCode).toEqual(NOT_FOUND);
-//     });
-// });
+    test("user id not found", async () => {
+        await axios.get('/communitypost/requests/users/123123123').catch(e => {
+            expect(e.response.status).toEqual(NOT_FOUND);
+          });
+    });
+});
 
 // describe("GET communitypost/requests/search/:title", () => {    
 //     test("Similar posts found", async () => {
