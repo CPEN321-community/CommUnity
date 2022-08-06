@@ -132,56 +132,48 @@ describe("GET communitypost/requests", () => {
     });
 });
 
-// describe("GET communitypost/requests/users/:userId", () => {    
-//     test("Pass", async () => {
-//         const response = await axios.get("/communitypost/requests/users/user1");
-//         expect(JSON.parse(response.text)).toEqual([requestPost]);
-//         expect(response.statusCode).toEqual(OK);
-//     });
+describe("GET communitypost/requests/users/:userId", () => {    
+    test("Pass", async () => {
+        const response = await axios.get("/communitypost/requests/users/user2");
+        expect(response.status).toEqual(OK);
+    });
 
-//     test("no request post found", async () => {
-//         const response = await axios.get("/communitypost/requests/users/user2");
-//         expect(response.statusCode).toEqual(NOT_FOUND);
-//     });
+    test("user id not found", async () => {
+        await axios.get('/communitypost/requests/users/123123123').catch(e => {
+            expect(e.response.status).toEqual(NOT_FOUND);
+          });
+    });
+});
 
-//     test("user id not found", async () => {
-//         const response = await axios.get("/communitypost/requests/users/fakeid");
-//         expect(response.statusCode).toEqual(NOT_FOUND);
-//     });
-// });
+describe("GET communitypost/requests/search/:title", () => {    
+    test("Similar posts found", async () => {
+        const response = await axios.get("/communitypost/requests/search/Brocolli");
+        expect(response.status).toEqual(OK);
+    });
 
-// describe("GET communitypost/requests/search/:title", () => {    
-//     test("Similar posts found", async () => {
-//         const response = await axios.get("/communitypost/requests/search/similarPostsExist");
-//         expect(JSON.parse(response.text)).toEqual([similarPosts]);
-//         expect(response.statusCode).toEqual(OK);
-//     });
+    test("No similar posts", async () => {
+        const response = await axios.get("/communitypost/requests/search/noSimilarPosts");
+        expect(response.status).toEqual(OK);
+    });
+});
 
-//     test("No similar posts", async () => {
-//         const response = await axios.get("/communitypost/requests/search/noSimilarPosts");
-//         expect(JSON.parse(response.text)).toEqual([requestPost]);
-//         expect(response.statusCode).toEqual(OK);
-//     });
-// });
+describe("PUT communitypost/requestTags", () => {    
+    test("Pass", async () => {
+        const response = await axios.put('/communitypost/requestTags', { tagList: ["dairy"] });
+        expect(response.status).toEqual(OK);
+    });
 
-// describe("PUT communitypost/requestTags", () => {    
-//     test("Pass", async () => {
-//         const response = await axios.put("/communitypost/requestTags", { tagList: ["dairy"] });
-//         expect(JSON.parse(response.text).results).toEqual([requestPost]);
-//         expect(response.statusCode).toEqual(OK);
-//     });
+    test("No tags provided", async () => {
+        const response = await axios.put('/communitypost/requestTags', { tagList: [] });
+        expect(response.status).toEqual(OK);
+    });
 
-//     test("No tags provided", async () => {
-//         const response = await axios.put("/communitypost/requestTags", { tagList: [] });
-//         expect(JSON.parse(response.text).results).toEqual([requestPost]);
-//         expect(response.statusCode).toEqual(OK);
-//     });
-
-//     test("Invalid tags", async () => {
-//         const response = await axios.put("/communitypost/requestTags", { tagList: null });
-//         expect(response.statusCode).toEqual(BAD_REQUEST);
-//     });
-// });
+    test("Invalid tags", async () => {
+        await axios.put('/communitypost/requestTags', { tagList: null }).catch(e => {
+            expect(e.response.status).toEqual(BAD_REQUEST);
+        });
+    });
+});
 
 describe("DELETE communitypost/requests/:requestId", () => {
     test("Request post is successfully deleted", async () => {
