@@ -116,55 +116,6 @@ describe("POST communitypost/requestTags", () => {
         });
     });
 });
-
-//   describe("DELETE communitypost/requests/tags", () => {
-//     test("Specified request post tags are successfully deleted", async () => {
-//       const deleteTags = {
-//         requestId: "request1",
-//         tagList: ["fruit", "vegetable"]
-//       }
-//       const response = await axios.delete("/communitypost/requests/tags",{ data: deleteTags });
-//       expect(response.status).toEqual(OK);
-//     });
-    
-//     test("Missing at least 1 field", async () => {
-//       const deleteTags = {
-//         tagList: ["fruit", "vegetable"]
-//       }
-//       const response = await axios.delete("/communitypost/requests/tags", {data: deleteTags}).catch(e => {
-//         expect(e.response.statusCode).toEqual(BAD_REQUEST);
-//       });
-//     });
-
-//     test("Request post corresponding to the requestId does not have any tags", async () => {
-//       const deleteTags = {
-//         requestId: "request1",
-//         tagList: []
-//       }
-//       const response = await axios.delete("/communitypost/requests/tags", { data: deleteTags });
-//       expect(response.status).toEqual(OK);
-//     });
-
-//     test("Specified tags do not exist for the request post associated with the requestId", async () => {
-//       const deleteTags = {
-//         requestId: "request1",
-//         tagList: ["fruit", "vegetable"]
-//       }
-//       const response = await axios.delete("/communitypost/requests/tags", { data: deleteTags });
-//       expect(response.status).toEqual(OK);
-//     });
-
-//     test("No tags provided", async () => {
-//       const deleteTags = {
-//         requestId: "request1",
-//         tagList: null
-//       }
-//       const response = await axios.delete("/communitypost/requests/tags", { data: deleteTags }).catch(e => {
-//         expect(e.response.status).toEqual(BAD_REQUEST);
-//       });
-//     });
-// });
-
 // // <3 <3 <3 Parthvi <3 <3 <3 :) :)  \(* o *)/
 // // --------------
 // // :( :( :( :( Josh :( :( :( :(  ( T . T)   -U-
@@ -259,3 +210,51 @@ describe("DELETE communitypost/requests/:requestId", () => {
       });
     });
   });
+
+  describe("DELETE communitypost/requests/tags", () => {
+    test("Specified request post tags are successfully deleted", async () => {
+      const deleteTags = {
+        requestId: "request3",
+        tagList: ["fruit"]
+      }
+      const response = await axios.delete("/communitypost/requests/tags",{ data: deleteTags });
+      expect(response.status).toEqual(OK);
+    });
+    
+    test("Missing at least 1 field", async () => {
+      const deleteTags = {
+        tagList: ["fruit"]
+      }
+      const response = await axios.delete("/communitypost/requests/tags", {data: deleteTags}).catch(e => {
+        expect(e.response.status).toEqual(BAD_REQUEST);
+      });
+    });
+
+    test("Request post corresponding to the requestId does not have any tags", async () => {
+      const deleteTags = {
+        requestId: "request1",
+        tagList: []
+      }
+      const response = await axios.delete("/communitypost/requests/tags", { data: deleteTags });
+      expect(response.status).toEqual(OK);
+    });
+
+    test("Specified tags do not exist for the request post associated with the requestId", async () => {
+      const deleteTags = {
+        requestId: "request1",
+        tagList: ["fruit", "vegetable"]
+      }
+      const response = await axios.delete("/communitypost/requests/tags", { data: deleteTags });
+      expect(response.status).toEqual(OK);
+    });
+
+    test("No tags provided", async () => {
+      const deleteTags = {
+        requestId: "request1",
+        tagList: null
+      }
+      const response = await axios.delete("/communitypost/requests/tags", { data: deleteTags }).catch(e => {
+        expect(e.response.status).toEqual(BAD_REQUEST);
+      });
+    });
+});
