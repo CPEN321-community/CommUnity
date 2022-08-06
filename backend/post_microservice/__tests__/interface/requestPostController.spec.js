@@ -116,35 +116,21 @@ describe("POST communitypost/requestTags", () => {
         });
     });
 });
-// // <3 <3 <3 Parthvi <3 <3 <3 :) :)  \(* o *)/
-// // --------------
-// // :( :( :( :( Josh :( :( :( :(  ( T . T)   -U-
 
+describe("GET communitypost/requests/:requestID", () => {
+    test("request post not found", async () => {
+        await axios.get("/communitypost/requests/request2").catch(e => {
+          expect(e.response.status).toEqual(NOT_FOUND);
+        });
+    });
+});
 
-// describe("GET communitypost/requests/:requestID", () => {
-//     test("Pass", async () => {
-//         const response = await axios.get("/communitypost/requests/request1");
-//         expect(JSON.parse(response.text)).toEqual(requestPost);
-//         expect(response.statusCode).toEqual(OK);
-//     });
-//     test("request post not found", async () => {
-//         const response = await axios.get("/communitypost/requests/request2");
-//         expect(response.statusCode).toEqual(NOT_FOUND);
-//     });
-// });
-
-// describe("GET communitypost/requests", () => {    
-//     test("Pass", async () => {
-//         const response = await axios.get("/communitypost/requests");
-//         expect(JSON.parse(response.text)).toEqual([requestPost]);
-//         expect(response.statusCode).toEqual(OK);
-//     });
-
-//     test("request post not found", async () => {
-//         const response = await axios.get("/communitypost/requests");
-//         expect(response.statusCode).toEqual(NOT_FOUND);
-//     });
-// });
+describe("GET communitypost/requests", () => {    
+    test("Pass", async () => {
+        const response = await axios.get("/communitypost/requests");
+        expect(response.status).toEqual(OK);
+    });
+});
 
 // describe("GET communitypost/requests/users/:userId", () => {    
 //     test("Pass", async () => {

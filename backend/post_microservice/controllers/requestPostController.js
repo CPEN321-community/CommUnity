@@ -7,12 +7,12 @@ const getRequest = async (req, res) => {
    if(req.params.requestId){
        const response = await RequestPost.findOne({where: {requestId: req.params.requestId}});
        if (response) {
-           res.json(JSON.parse(JSON.stringify(response)));
+            res.status(OK).json(JSON.parse(JSON.stringify(response)));
        } else {
            res.sendStatus(NOT_FOUND);
        }
    } else {
-       res.sendStatus(INTERNAL_SERVER_ERROR);
+       res.sendStatus(NOT_FOUND);
    }
 }
 
