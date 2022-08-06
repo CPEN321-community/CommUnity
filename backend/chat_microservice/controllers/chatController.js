@@ -210,18 +210,7 @@ const createRoom = async (postId, isOffer, senderData) => {
         return false;
       }
       else {
-        return { 
-          postId, 
-          sender: senderId, 
-          senderFirstName, 
-          senderLastName, 
-          senderProfilePicture, 
-          reciever: receiverId, 
-          receiverFirstName, 
-          receiverLastName, 
-          receiverProfilePicture, 
-          messages: [] 
-        }
+        return { postId, sender: senderId, senderFirstName, senderLastName, senderProfilePicture, reciever: receiverId, receiverFirstName, receiverLastName, receiverProfilePicture,  messages: []  }
       }
     });
     return room;
