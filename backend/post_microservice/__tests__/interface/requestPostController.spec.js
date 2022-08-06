@@ -49,7 +49,6 @@ const createdRequest = {
   requestId: "request4",
   title: "Brocolli",
   description: "Green Crunchy Fresh",
-  currentLocation: "My house",
   status: "Active",
   tagList: ["green"]
 }
@@ -97,15 +96,15 @@ describe("POST communitypost/requestTags", () => {
         });
     });
 
-//     test("Invalid tag (not part of our preset tags)", async () => {
-//         const invalidTags = {
-//             requestId: "request4",
-//             tagList: ["human"]
-//         }
-//         const response = await axios.post("/communitypost/requestTags", invalidTags).catch(e => {
-//             expect(e.response.status).toEqual(BAD_REQUEST)
-//         });
-//     });
+    test("Invalid tag (not part of our preset tags)", async () => {
+        const invalidTags = {
+            requestId: "request4",
+            tagList: ["human"]
+        }
+        const response = await axios.post("/communitypost/requestTags", invalidTags).catch(e => {
+            expect(e.response.status).toEqual(BAD_REQUEST)
+        });
+    });
 
 //     test("No tags are provided", async () => {
 //         const invalidTags = {

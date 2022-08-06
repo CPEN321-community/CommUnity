@@ -127,16 +127,17 @@ const searchRequestsWithTags = async (req, res) => {
 }
 
 const createRequest = async (req, res) => {
-    const hasAllFields = req.body.userId && req.body.title && req.body.description && req.body.currentLocation && req.body.status && req.body.tagList;
+    const hasAllFields = req.body.userId && req.body.title && req.body.description && req.body.status && req.body.tagList;
+    console.log("here", hasAllFields);
     if(hasAllFields) {
+        console.log("here2");
         const createdRequest = await RequestPost.create({
             userId: req.body.userId,
             title: req.body.title,
             description: req.body.description,
-            currentLocation: req.body.currentLocation,
             status: req.body.status
           });
-
+        console.log("here3", createRequest);
         let tagList = req.body.tagList;
         if (tagList != null) {
             for(let item of tagList) {
