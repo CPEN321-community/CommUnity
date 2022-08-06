@@ -1,18 +1,10 @@
 
 const axios = require("axios");
 const s2sToken = require('../../../config_post.json')["s2sToken"];
-const { OK, CREATED, BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND} = require("../../httpCodes");
+const { OK, CREATED, BAD_REQUEST, INTERNAL_SERVER_ERROR} = require("../../httpCodes");
 const { v4 } = require('uuid');
 
 const user = {
-  firstName: "firstName",
-  lastName: "lastName",
-  email: "email@email.com",
-  profilePicture: "profilePicture.com",
-}
-
-const userWithId = {
-  userId: 'u1',
   firstName: "firstName",
   lastName: "lastName",
   email: "email@email.com",

@@ -1,6 +1,4 @@
 "use strict";
- 
-const { OfferPost } = require("./offerPostModel");
 
  const OfferPostTagsObject = (sequelize, DataTypes) => {
     const OfferPostTags = sequelize.define("OfferPostTags", {

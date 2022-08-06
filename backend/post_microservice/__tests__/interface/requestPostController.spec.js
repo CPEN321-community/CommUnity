@@ -59,7 +59,7 @@ describe("POST communitypost/requestTags", () => {
             requestId: "request4",
             tagList: ["human"]
         }
-        const response = await axios.post("/communitypost/requestTags", invalidTags).catch(e => {
+        await axios.post("/communitypost/requestTags", invalidTags).catch(e => {
             expect(e.response.status).toEqual(BAD_REQUEST)
         });
     });
@@ -69,7 +69,7 @@ describe("POST communitypost/requestTags", () => {
             requestId: "request4",
             tagList: []
         }
-        const response = await axios.post("/communitypost/requestTags", invalidTags).catch(e => {
+        await axios.post("/communitypost/requestTags", invalidTags).catch(e => {
             expect(e.response.status).toEqual(BAD_REQUEST);
         });
     });
