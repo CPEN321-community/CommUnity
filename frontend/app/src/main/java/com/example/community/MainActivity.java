@@ -45,7 +45,7 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity implements LocationListener {
 
     private static final String TAG = "MAIN_ACTIVITY";
-    protected LocationManager locationManager;
+    //protected LocationManager locationManager;
     //OpenWeatherMap External API
     private final String weather_url = "http://api.openweathermap.org/data/2.5/weather";
     private final String appid = "5603ddab5ca3086399dbee9a2fba312d";
@@ -85,9 +85,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        //locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         //Error below can be ignored following Piazza post @29
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         checkLocationPermissions();
     }
 
