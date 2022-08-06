@@ -130,10 +130,8 @@ const searchOffersWithTags = async (req, res) => {
 }
 
 const createOffer = async (req, res) => {
-    const hasAllFields = req.body.userId && req.body.title && req.body.description && req.body.quantity && req.body.pickUpLocation && req.body.image && req.body.status && req.body.bestBeforeDate && req.body.tagList;
-    const validDate = req.body.bestBeforeDate.length === 10;
-    const validImage = req.body.image.includes(".com");
-    if(hasAllFields && validImage && validDate) {
+    const hasAllFields = req.body.userId && req.body.title && req.body.description && req.body.quantity && req.body.pickUpLocation && req.body.status && req.body.bestBeforeDate && req.body.tagList;
+    if(hasAllFields) {
         const createdOffer = await OfferPost.create({
             userId: req.body.userId,
             title: req.body.title,
@@ -162,7 +160,7 @@ const createOffer = async (req, res) => {
         };
 
         await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
-        res.sendStatus(CREATED);
+        res.status(CREATED).json({"message": "Offer created successfully"});
     } else {
         res.sendStatus(BAD_REQUEST);
     }

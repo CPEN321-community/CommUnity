@@ -1,5 +1,7 @@
 package com.example.community.classes;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 import org.json.JSONArray;
@@ -24,6 +26,7 @@ public class TagHelper {
     }
 
     public static ArrayList<Tag> reset() {
+        Log.d("TAG", "reset: called");
         ArrayList<Tag> tags = getTags();
         for (int i = 0; i < tags.size(); i++) {
             disable(i);
