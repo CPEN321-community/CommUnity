@@ -11,7 +11,7 @@ const getUserDietaryRestrictions = async (req, res) => {
     });
     console.log(restrictions);
 
-    res.json(restrictions);
+    res.json(JSON.parse(JSON.stringify(restrictions)));
   } else {
     res.sendStatus(INTERNAL_SERVER_ERROR);
   }
@@ -28,7 +28,7 @@ const createDietaryRestriction = async (req, res) => {
     });
     console.log(createdRestriction);
 
-    res.json(createdRestriction.dataValues);
+    res.json(JSON.parse(JSON.stringify(createdRestriction.dataValues)));
   } else {
     res.sendStatus(INTERNAL_SERVER_ERROR);
   }
@@ -43,7 +43,7 @@ const deleteDietaryRestriction = async (req, res) => {
       where: {id}
     });
 
-    res.json({deleted});
+    res.json(JSON.parse(JSON.stringify({deleted})));
   }else{
     console.error(e);
     res.sendStatus(INTERNAL_SERVER_ERROR);

@@ -1,6 +1,6 @@
 const Router = require('express-promise-router');
 
-const { getOffer, getAllOffers, getAllUserOffers, searchOffers, searchOffersWithTags, createOffer, updateOffer, deleteOffer, removeOfferTags, addOfferTags, getAllTags} = require('./controllers/offerPostController');
+const { getOffer, getAllOffers, getAllUserOffers, searchOffers, searchOffersWithTags, createOffer, updateOffer, deleteOffer, removeOfferTags, addOfferTags } = require('./controllers/offerPostController');
 const { getRequest, getAllRequests, getAllUserRequests, searchRequests, searchRequestsWithTags, createRequest, updateRequest, deleteRequest, removeRequestTags, addRequestTags} = require('./controllers/requestPostController');
 
 const router = Router();

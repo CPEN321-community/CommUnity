@@ -3,9 +3,9 @@ const { OfferPost, OfferPostTags } = require("../../models");
 const supertest = require("supertest");
 const axios = require("axios");
 const app = require("../../index");
-const { afterAll, beforeAll, expect } = require("@jest/globals");
+const { beforeAll } = require("@jest/globals");
 const s2sToken = require('./../../../config_post.json')["s2sToken"];
-const { OK, CREATED, INTERNAL_SERVER_ERROR, UNAUTHORIZED, NOT_FOUND, BAD_REQUEST } = require("../../httpCodes");
+const { OK, CREATED, NOT_FOUND, BAD_REQUEST } = require("../../httpCodes");
 
 jest.mock("axios");
 
@@ -307,31 +307,6 @@ describe("PUT communitypost/offers", () => {
       const response = await request.put("/communitypost/offers").set('token', s2sToken).send(updatedOfferPost);
       expect(response.statusCode).toEqual(OK);
   });
-
-  // test("Missing at least 1 field", async () => {
-  //     const originalRequestPost = {
-  //         userId: "parthvi",
-  //         requestId: "R13",
-  //         title: "Mangoes",
-  //         description: "Mangoes are my favourite fruit of all time :)",
-  //         currentLocation: "Mangoless place :(",
-  //         status: "active",
-  //         tagList: ["fruit"]
-  //     };
-  //     const updatedRequestPost = {
-  //         requestId: "R13",
-  //         title: "YUMMY Mangoes",
-  //         description: "Mangoes are my favourite fruit of all time :)",
-  //         currentLocation: "Mangoless place :(",
-  //         status: "active",
-  //         tagList: ["fruit"]
-  //     };
-
-  //     RequestPost.findOne = jest.fn().mockReturnValueOnce(originalRequestPost);
-  //     RequestPost.update = jest.fn().mockReturnValueOnce(updatedRequestPost);
-  //     const response = await request.put("/communitypost/requests").set('token', s2sToken).send(updatedRequestPost);
-  //     expect(response.statusCode).toEqual(BAD_REQUEST);
-  // });
 });
 
 describe("GET communitypost/offers/:offerID", () => {
@@ -424,7 +399,7 @@ describe("GET communitypost/offers/search/:title", () => {
   });
 });
 
-describe("GET communitypost/offerTags", () => {
+describe("PUT communitypost/offerTags", () => {
   let request = null;
   beforeAll(async () => {
       request = supertest(app);

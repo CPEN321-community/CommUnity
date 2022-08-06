@@ -12,9 +12,7 @@ const { RequestPost } = require("./requestPostModel");
         },
         postId: {
             type: DataTypes.STRING,
-            get: function() {
-                return RequestPost.requestId;
-            }
+            allowNull: false
         },
         name: {
             type: DataTypes.STRING,

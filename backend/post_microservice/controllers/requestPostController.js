@@ -7,12 +7,12 @@ const getRequest = async (req, res) => {
    if(req.params.requestId){
        const response = await RequestPost.findOne({where: {requestId: req.params.requestId}});
        if (response) {
-           res.json(JSON.parse(JSON.stringify(response)));
+            res.status(OK).json(JSON.parse(JSON.stringify(response)));
        } else {
            res.sendStatus(NOT_FOUND);
        }
    } else {
-       res.sendStatus(INTERNAL_SERVER_ERROR);
+       res.sendStatus(NOT_FOUND);
    }
 }
 
@@ -91,7 +91,6 @@ const searchRequests = async (req, res) => {
         res.status(OK).json(JSON.parse(JSON.stringify(response)));
 
     } catch (error) {
-        console.log("Error with searching for request posts: " + error);
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 }
@@ -128,16 +127,14 @@ const searchRequestsWithTags = async (req, res) => {
 }
 
 const createRequest = async (req, res) => {
-    const hasAllFields = req.body.userId && req.body.title && req.body.description && req.body.currentLocation && req.body.status && req.body.tagList;
+    const hasAllFields = req.body.userId && req.body.title && req.body.description && req.body.status && req.body.tagList;
     if(hasAllFields) {
         const createdRequest = await RequestPost.create({
             userId: req.body.userId,
             title: req.body.title,
             description: req.body.description,
-            currentLocation: req.body.currentLocation,
             status: req.body.status
           });
-
         let tagList = req.body.tagList;
         if (tagList != null) {
             for(let item of tagList) {
@@ -153,6 +150,7 @@ const createRequest = async (req, res) => {
             requestPosts: 1,
         };
         await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
+
         res.sendStatus(CREATED);
     } else {
       res.sendStatus(BAD_REQUEST);
@@ -190,7 +188,7 @@ const removeRequestTags = async (req, res) => {
     const requestId = req.body.requestId;
     const tagList = req.body.tagList;
     const hasAllFields = requestId && tagList;
-    const foundRequestTags = await RequestPostTags.findAll({where: {postId: requestId}});
+    const foundRequestTags = hasAllFields ? await RequestPostTags.findAll({where: {postId: requestId}}): null;
     if(foundRequestTags && hasAllFields) {
         for(let i = 0; i < tagList.length; i = i + 1){
             RequestPostTags.destroy({
@@ -232,7 +230,7 @@ const addRequestTags = async (req, res) => {
 const deleteRequest = async (req, res) => {
     const requestId = req.params.requestId;
     const foundRequestTags = await RequestPostTags.findAll({where: {postId: requestId}});
-    const foundRequest = await RequestPost.findOne({where: {requestId: requestId}});
+    const foundRequest = await RequestPost.findOne({where: {requestId}});
     if(foundRequestTags && foundRequest) {
         await RequestPostTags.destroy({
             where: {
@@ -241,7 +239,7 @@ const deleteRequest = async (req, res) => {
         })
         await RequestPost.destroy({
             where: {
-                requestId: requestId
+                requestId
             }
         });
         await axios.delete(`${process.env.RECOMMENDATION_URL}/suggestedPosts/request/${requestId}`);

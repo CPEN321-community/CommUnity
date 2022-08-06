@@ -18,7 +18,6 @@ const socketHandler = async (socket, io) => {
   if (postIds && postIds.length >= 0) {
     socket.join(postIds);
     ActiveUsers.set.add(myUserId);
-  } else {
   }
 
   console.log("socket connection made with id: " + socket.id);

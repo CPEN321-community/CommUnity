@@ -34,7 +34,6 @@ axios.defaults.headers = { token: s2sToken };
 app.use(async (req, res, next) => {
   let token = req.headers["token"];
   if (s2sToken && s2sToken === token) {
-    req.headers.userId = "testuserid";
     next();
   } else {
     try {

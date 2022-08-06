@@ -1,21 +1,25 @@
 {
   "development": {
     "user": "root",
+<<<<<<< HEAD
     "password": "",
+=======
+    "password": "bummyGear",
+>>>>>>> 4f6364dd5890c931f4aeed774df03699013a2663
     "database": "post_data",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": "ssw0rd",
+    "password": "bummyGear",
     "database": "post_data",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": "ssw0rd",
+    "password": "bummyGear",
     "database": "post_data",
     "host": "127.0.0.1",
     "dialect": "mysql"
