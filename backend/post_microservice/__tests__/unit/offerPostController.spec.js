@@ -338,8 +338,8 @@ describe("GET communitypost/offers/:offerID", () => {
     let request = null;
     beforeAll(async () => {
       request = supertest(app);
-    })
-    
+    });
+
   test("Pass", async () => {
     OfferPost.findOne = jest.fn().mockReturnValueOnce(offerPost);
     const response = await request.get("/communitypost/offers/offer1").set('token', s2sToken);

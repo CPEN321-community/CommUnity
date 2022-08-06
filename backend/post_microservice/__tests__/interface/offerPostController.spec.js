@@ -1,13 +1,6 @@
-
-const { OfferPost, OfferPostTags } = require("../../models");
-const supertest = require("supertest");
 const axios = require("axios");
-const app = require("../../index");
-const { afterAll, beforeAll } = require("@jest/globals");
 const s2sToken = require('./../../../config_post.json')["s2sToken"];
 const { OK, CREATED, INTERNAL_SERVER_ERROR, UNAUTHORIZED, NOT_FOUND, BAD_REQUEST } = require("../../httpCodes");
-
-jest.mock("axios");
 
 const offerPost = {
   userId: "user1",
@@ -37,129 +30,84 @@ const offerPostDataVals = {
   }
 };
 
+axios.defaults.headers = { token: s2sToken }
+// axios.defaults.baseURL = process.env.CLOUD_POST_URL;
+axios.defaults.baseURL = "http://localhost:8081";
+
 describe("GET communitypost/offers/:offerID", () => {
-    let request = null;
-    beforeAll(async () => {
-      request = supertest(app);
-    })
-    
   test("Pass", async () => {
-    OfferPost.findOne = jest.fn().mockReturnValueOnce(offerPost);
-    const response = await request.get("/communitypost/offers/offer1").set('token', s2sToken);
-    expect(JSON.parse(response.text)).toEqual(offerPost);
+    const response = await axios.get("/communitypost/offers/offer1");
+    expect(response).toEqual(offerPost);
     expect(response.statusCode).toEqual(OK);
   });
 
   test("request post not found", async () => {
-    OfferPost.findOne = jest.fn().mockReturnValueOnce(null);
-    const response = await request.get("/communitypost/offers/offer2").set('token', s2sToken);
+    const response = await axios.get("/communitypost/offers/offer2");
     expect(response.statusCode).toEqual(NOT_FOUND);
   });
 });
 
 describe("GET communitypost/offers", () => {
-  let request = null;
-  beforeAll(async () => {
-    request = supertest(app);
-  })
-    
   test("Pass", async () => {
-    OfferPost.findAll = jest.fn().mockReturnValueOnce([offerPost]);
-    const response = await request.get("/communitypost/offers").set('token', s2sToken);
-    expect(JSON.parse(response.text)).toEqual([offerPost]);
+    const response = await axios.get("/communitypost/offers");
+    expect(response).toEqual([offerPost]);
     expect(response.statusCode).toEqual(OK);
   });
 
   test("offers post not found", async () => {
-    OfferPost.findAll = jest.fn().mockReturnValueOnce(null);
-    const response = await request.get("/communitypost/offers").set('token', s2sToken);
+    const response = await axios.get("/communitypost/offers");
     expect(response.statusCode).toEqual(NOT_FOUND);
   });
 });
 
 
 describe("GET communitypost/offers/users/:userId", () => {
-  let request = null;
-  beforeAll(async () => {
-      request = supertest(app);
-  });
-      
   test("Pass", async () => {
-      OfferPost.findAll = jest.fn().mockReturnValueOnce([offerPost]);
-      const response = await request.get("/communitypost/offers/users/user1").set('token', s2sToken);
-      expect(JSON.parse(response.text)).toEqual([offerPost]);
+      const response = await axios.get("/communitypost/offers/users/user1");
+      expect(response).toEqual([offerPost]);
       expect(response.statusCode).toEqual(OK);
   });
 
   test("no request post found", async () => {
-      OfferPost.findAll = jest.fn().mockReturnValueOnce(null);
-      const response = await request.get("/communitypost/offers/users/user2").set('token', s2sToken);
+      const response = await axios.get("/communitypost/offers/users/user2");
       expect(response.statusCode).toEqual(NOT_FOUND);
   });
 
   test("user id not found", async () => {
-      OfferPost.findAll = jest.fn().mockReturnValueOnce(null);
-      const response = await request.get("/communitypost/offers/users/fakeid").set('token', s2sToken);
+      const response = await axios.get("/communitypost/offers/users/fakeid");
       expect(response.statusCode).toEqual(NOT_FOUND);
   });
 });
 
 describe("GET communitypost/offers/search/:title", () => {
-  let request = null;
-  beforeAll(async () => {
-      request = supertest(app);
-  });
-      
   test("Similar posts found", async () => {
-      OfferPost.findAll = jest.fn().mockReturnValueOnce([offerPostDataVals]);
-      const response = await request.get("/communitypost/offers/search/similarPostsExist").set('token', s2sToken);
-      expect(JSON.parse(response.text)).toEqual([offerPost]);
+      const response = await axios.get("/communitypost/offers/search/similarPostsExist");
+      expect(response).toEqual([offerPost]);
       expect(response.statusCode).toEqual(OK);
   });
 
   test("No similar posts", async () => {
-      OfferPost.findAll = jest.fn().mockReturnValueOnce(null);
-      axios.get = jest.fn().mockReturnValueOnce([offerPost]);
-      OfferPost.findOne = jest.fn().mockReturnValueOnce(offerPostDataVals)
-      const response = await request.get("/communitypost/offers/search/noSimilarPosts").set('token', s2sToken);
-      expect(JSON.parse(response.text)).toEqual([offerPost]);
+      const response = await axios.get("/communitypost/offers/search/noSimilarPosts");
+      expect(response).toEqual([offerPost]);
       expect(response.statusCode).toEqual(OK);
   });
 });
 
 describe("GET communitypost/offerTags", () => {
-  let request = null;
-  beforeAll(async () => {
-      request = supertest(app);
-  });
-      
   test("Pass", async () => {
-      OfferPostTags.findAll = jest.fn().mockReturnValueOnce([offerPostDataVals]);
-      OfferPost.findAll = jest.fn().mockReturnValueOnce([offerPostDataVals])
-      const response = await request
-          .put("/communitypost/offerTags")
-          .set('token', s2sToken)
-          .send({ tagList: ["dairy"] });
-      expect(JSON.parse(response.text).results).toEqual([offerPost]);
+      const response = await axios.put("/communitypost/offerTags", { tagList: ["dairy"] });
+      expect(response.results).toEqual([offerPost]);
       expect(response.statusCode).toEqual(OK);
   });
 
   test("No tags provided", async () => {
-      OfferPostTags.findAll = jest.fn().mockReturnValueOnce([offerPostDataVals]);
-      OfferPost.findAll = jest.fn().mockReturnValueOnce([offerPostDataVals])
-      const response = await request
-          .put("/communitypost/offerTags")
-          .set('token', s2sToken)
-          .send({ tagList: [] });
-      expect(JSON.parse(response.text).results).toEqual([offerPost]);
+      const response = await axios.put("/communitypost/offerTags", { tagList: [] });
+      expect(response.results).toEqual([offerPost]);
       expect(response.statusCode).toEqual(OK);
   });
 
   test("Invalid tags", async () => {
-      const response = await request
-          .put("/communitypost/offerTags")
-          .set('token', s2sToken)
-          .send({ tagList: null });
+      const response = await axios.put("/communitypost/offerTags", { tagList: null });
       expect(response.statusCode).toEqual(BAD_REQUEST);
   });
 });

@@ -16,10 +16,10 @@ const verifyToken = async (req, res) => {
   if (response.status == OK) {
     let foundUser = await userStore.findUserForLogin(response.data.sub);
     if (!foundUser) {
-      res.status(NOT_FOUND).send({ token: response.data.sub });
+      res.status(NOT_FOUND).json(JSON.parse(JSON.stringify({ token: response.data.sub })));
     }
   } else {
-    res.status(UNAUTHORIZED).send(e);
+    res.status(UNAUTHORIZED);
   }
 };
 
@@ -29,7 +29,7 @@ const getUser = async (req, res) => {
     include: ["preferences", "leaderboard"],
   });
   if (response) {
-    res.json({ user: response });
+    res.json(JSON.parse(JSON.stringify({ user: response })));
   } else {
     console.log("Error finding user");
     res.sendStatus(INTERNAL_SERVER_ERROR);
@@ -54,17 +54,17 @@ const upsertUserPreference = async (req, res) => {
 };
 
 const deleteUserPreference = async (req, res) => {
-console.log("Delete user pref");
-if (req.params.preferenceId) {
-  const preferenceId = req.params.preferenceId;
-  const deleted = await Preference.destroy({
-    where: { id: preferenceId },
-  });
-  res.json({ deleted });
-} else {
-  console.log("Error deleting user preferences: " + error);
-  res.sendStatus(INTERNAL_SERVER_ERROR);
-}
+  console.log("Delete user pref");
+  if (req.params.preferenceId) {
+    const preferenceId = req.params.preferenceId;
+    const deleted = await Preference.destroy({
+      where: { id: preferenceId },
+    });
+    res.json({ deleted });
+  } else {
+    console.log("Error deleting user preferences: " + error);
+    res.sendStatus(INTERNAL_SERVER_ERROR);
+  }
 };
 
 const updateUser = async (req, res) => {
@@ -92,7 +92,7 @@ const updateUser = async (req, res) => {
       profilePicture: req.body.profilePicture,
     });
 
-    res.status(OK).json(response);
+    res.status(OK).json(JSON.parse(JSON.stringify(response)));
   } else {
     res.sendStatus(BAD_REQUEST);
   }
@@ -120,7 +120,7 @@ const createUser = async (req, res) => {
         include: [{ association: User.Leaderboard, as: "leaderboard" }],
       }
     );
-    res.status(CREATED).json(response);
+    res.status(CREATED).json(JSON.parse(JSON.stringify(response)));
   } else {
     res.sendStatus(BAD_REQUEST);
   }

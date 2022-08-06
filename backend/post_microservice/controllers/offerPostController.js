@@ -7,7 +7,7 @@ const getOffer = async (req, res) => {
     if(req.params.offerId) {
         const response = await OfferPost.findOne({where: {offerId: req.params.offerId}});
         if (response) {
-            res.status(OK).json(response);
+            res.status(OK).json(JSON.parse(JSON.stringify(response)));
         } else {
             res.sendStatus(NOT_FOUND);
         }
@@ -19,7 +19,7 @@ const getOffer = async (req, res) => {
 const getAllOffers = async (req, res) => {
     const response = await OfferPost.findAll();
     if (response) {
-        res.status(OK).json(response);
+        res.status(OK).json(JSON.parse(JSON.stringify(response)));
     } else {
         res.sendStatus(NOT_FOUND);
     }
@@ -29,7 +29,7 @@ const getAllUserOffers = async (req, res) => {
     if (req.params.userId) {
         const response = await OfferPost.findAll({where: {userId: req.params.userId}});
         if (response) {
-            res.status(OK).json(response);
+            res.status(OK).json(JSON.parse(JSON.stringify(response)));
         } else {
             res.sendStatus(NOT_FOUND);
         }
@@ -89,7 +89,7 @@ const searchOffers = async (req, res) => {
             }
         }
 
-        res.json(response);
+        res.json(JSON.parse(JSON.stringify(response)));
 
     } catch (error) {
         console.log("Error with searching for offer posts: " + error);
@@ -123,7 +123,7 @@ const searchOffersWithTags = async (req, res) => {
             return post.dataValues;
         })
 
-        res.status(OK).json({results: result});
+        res.status(OK).json(JSON.parse(JSON.stringify({results: result})));
     } else {
       res.sendStatus(BAD_REQUEST);
     }
