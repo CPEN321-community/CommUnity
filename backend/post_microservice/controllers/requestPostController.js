@@ -152,6 +152,7 @@ const createRequest = async (req, res) => {
             requestPosts: 1,
         };
         await axios.put(`${process.env.USER_URL}/rank`, updateUserBody);
+
         res.sendStatus(CREATED);
     } else {
       res.sendStatus(BAD_REQUEST);

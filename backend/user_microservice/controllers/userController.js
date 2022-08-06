@@ -8,6 +8,7 @@ const {
   NOT_FOUND,
   BAD_REQUEST
 } = require("../httpCodes");
+const s2sToken = require('../../config_post.json')["s2sToken"];
 
 const verifyToken = async (req, res) => {
   let response = await axios(
@@ -31,7 +32,7 @@ const getUser = async (req, res) => {
   if (response) {
     res.json(JSON.parse(JSON.stringify({ user: response })));
   } else {
-    console.log("Error finding user");
+
     res.sendStatus(INTERNAL_SERVER_ERROR);
   }
 };
@@ -54,7 +55,7 @@ const upsertUserPreference = async (req, res) => {
 };
 
 const deleteUserPreference = async (req, res) => {
-  console.log("Delete user pref");
+
   if (req.params.preferenceId) {
     const preferenceId = req.params.preferenceId;
     const deleted = await Preference.destroy({
@@ -62,34 +63,39 @@ const deleteUserPreference = async (req, res) => {
     });
     res.json(JSON.parse(JSON.stringify({ deleted })));
   } else {
-    console.log("Error deleting user preferences: " + error);
+
     res.sendStatus(INTERNAL_SERVER_ERROR);
   }
 };
 
 const updateUser = async (req, res) => {
-  const hasAllFields = req.headers.userId && req.body.firstName && req.body.lastName && req.body.email && req.body.profilePicture;
+  const hasAllFields = (req.headers.userid || req.headers.userId) && req.body.firstName && req.body.lastName && req.body.email && req.body.profilePicture;
   const validEmail = req.body.email.includes("@") && req.body.email.includes(".com");
   const validProfilePic = req.body.profilePicture.includes(".com");
+
   if (hasAllFields && validEmail && validProfilePic) {
-    const response = await User.create(
+    const response = await User.update(
       {
-        userId: req.headers.userId,
+        userId: req.headers.userId || req.headers.userid,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
         profilePicture: req.body.profilePicture,
       },
       {
-        where: { userId: req.body.userId }
+        where: { userId: req.headers.userId || req.headers.userid }
       }
     );
 
     await axios.post(`${process.env.CHAT_URL}/chat/changeUserInfo`, {
-      userId: req.body.userId,
+      userId: req.headers.userId || req.headers.userid,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       profilePicture: req.body.profilePicture,
+    }, {
+      headers: {
+        token: s2sToken,
+      }
     });
 
     res.status(OK).json(JSON.parse(JSON.stringify(response)));
@@ -99,13 +105,14 @@ const updateUser = async (req, res) => {
 }
 
 const createUser = async (req, res) => {
-  const hasAllFields = req.headers.userId && req.body.firstName && req.body.lastName && req.body.email && req.body.profilePicture;
+  const hasAllFields = (req.headers.userid || req.headers.userId) && req.body.firstName && req.body.lastName && req.body.email && req.body.profilePicture;
   const validEmail = req.body.email.includes("@") && req.body.email.includes(".com");
   const validProfilePic = req.body.profilePicture.includes(".com");
+
   if (hasAllFields && validEmail && validProfilePic) {
     const response = await User.create(
       {
-        userId: req.headers.userId,
+        userId: req.headers.userId || req.headers.userid,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
@@ -120,7 +127,6 @@ const createUser = async (req, res) => {
         include: [{ association: User.Leaderboard, as: "leaderboard" }],
       }
     );
-    console.log(response, 'hello');
     res.status(CREATED).json(JSON.parse(JSON.stringify(response)));
   } else {
     res.sendStatus(BAD_REQUEST);

@@ -42,11 +42,15 @@ const getUserRank = async (req, res) => {
         const user = await Leaderboard.findOne({ 
             where: { userId }
         });
-        const higherScoringUsers = await Leaderboard.findAll({
-            where: {score: {[Op.gte]: user.score}}
-        })
-        const rank = higherScoringUsers.length;
-        res.status(OK).json(JSON.parse(JSON.stringify({ rank })));
+        if (user) {
+            const higherScoringUsers = await Leaderboard.findAll({
+                where: {score: {[Op.gte]: user.dataValues.score}}
+            })
+            const rank = higherScoringUsers.length;
+            res.status(OK).json(JSON.parse(JSON.stringify({ rank })));
+        } else {
+            res.sendStatus(INTERNAL_SERVER_ERROR);
+        }
     } else {
         res.sendStatus(BAD_REQUEST);
     }
