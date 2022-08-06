@@ -120,6 +120,7 @@ const createUser = async (req, res) => {
         include: [{ association: User.Leaderboard, as: "leaderboard" }],
       }
     );
+    console.log(response, 'hello');
     res.status(CREATED).json(JSON.parse(JSON.stringify(response)));
   } else {
     res.sendStatus(BAD_REQUEST);

@@ -54,7 +54,6 @@ const createdRequest = {
 }
 
 describe("POST communitypost/requests", () => {
-    test("test", () => { expect(true).toBe(t
     test("Request post is successfully created", async () => {
       const response = await axios.post("/communitypost/requests", createdRequest);
       expect(response.status).toEqual(CREATED);
@@ -116,13 +115,15 @@ describe("POST communitypost/requestTags", () => {
 
 describe("DELETE communitypost/requests/:requestId", () => {
     test("Request post is successfully deleted", async () => {
-      const response = await axios.delete("/communitypost/requests/request1");
+      const requests = await axios.get("/communitypost/requests");
+      const response = await axios.delete(`/communitypost/requests/${requests.data[0].requestId}`);
       expect(response.status).toEqual(OK);
     });
 
-    test("Request post with corresponding offerId does not exist", async () => {
-      const response = await axios.delete("/communitypost/requests/request1");
-      expect(response.status).toEqual(NOT_FOUND);
+    test("Request post with corresponding requestId does not exist", async () => {
+      await axios.delete("/communitypost/requests/aasdfasdfasdfasdf").catch(e => {
+        expect(e.response.status).toEqual(NOT_FOUND);
+      });
     });
   });
 
