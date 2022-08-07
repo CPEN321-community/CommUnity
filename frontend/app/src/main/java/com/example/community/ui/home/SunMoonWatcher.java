@@ -62,15 +62,15 @@ public class SunMoonWatcher {
         }
     }
 
-    private Pair<Float, Float> getCoordinates(boolean isDay) {
-        long now = LocalTime.now().toNanoOfDay();
-        long midYTime;
-        if (isDay) {
-            midYTime = twelvePM;
-        } else {
-            midYTime = twelveAM;
-        }
-        Float absY = (float) Math.abs(now - midYTime);
-        return new Pair<>(0.0f, absY);
-    }
+    // private Pair<Float, Float> getCoordinates(boolean isDay) {
+    //     long now = LocalTime.now().toNanoOfDay();
+    //     long midYTime;
+    //     if (isDay) {
+    //         midYTime = twelvePM;
+    //     } else {
+    //         midYTime = twelveAM;
+    //     }
+    //     Float absY = (float) Math.abs(now - midYTime);
+    //     return new Pair<>(0.0f, absY);
+    // }
 }
