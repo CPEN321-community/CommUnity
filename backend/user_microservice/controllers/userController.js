@@ -32,8 +32,7 @@ const getUser = async (req, res) => {
   if (response) {
     res.json(JSON.parse(JSON.stringify({ user: response })));
   } else {
-
-    res.sendStatus(INTERNAL_SERVER_ERROR);
+    res.status(NOT_FOUND).json({message:"User not Found!"});
   }
 };
 
@@ -105,7 +104,7 @@ const createUser = async (req, res) => {
   const hasAllFields = (req.headers.userid || req.headers.userId) && req.body.firstName && req.body.lastName && req.body.email && req.body.profilePicture;
   const validEmail = req.body.email.includes("@") && req.body.email.includes(".com");
   const validProfilePic = req.body.profilePicture.includes(".com");
-
+  console.log(req.body, req.headers.userId);
   if (hasAllFields && validEmail && validProfilePic) {
     const response = await User.create(
       {

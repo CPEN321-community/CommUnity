@@ -189,8 +189,13 @@ public class LoginActivity extends AppCompatActivity {
                     callback.onSuccess(!response.isNull("user"));
                 },
                 error -> {
+                    if (error.networkResponse.statusCode == 404) {
+                        callback.onSuccess(true);
+                    }
+                    else {
                     Log.e(TAG, "userDoesExist: " + error);
                     callback.onError(error);
+                    }
                 }) {
             @Override
             public Map<String, String> getHeaders() {
