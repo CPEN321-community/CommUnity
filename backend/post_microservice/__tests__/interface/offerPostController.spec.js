@@ -41,24 +41,6 @@ describe("POST communitypost/offers", () => {
     });
   });
 
-  test("Invalid URL for image", async () => {
-    const invalidUrl = {
-      offerId: "offer1",
-      userId: "user1",
-      title: "Juice",
-      description: "Juicy",
-      quantity: 2,
-      pickUpLocation: "Juice Bar",
-      image: "juicyPic",
-      status: "Active",
-      bestBeforeDate: "04/20/2024",
-      tagList: []
-    }
-    await axios.post("/communitypost/offers", invalidUrl).catch(e => {
-      expect(e.response.status).toEqual(BAD_REQUEST);
-    });
-  });
-
   test("bestBeforeDate entry is invalid (wrong format)", async () => {
     const invalidDate = {
       offerId: "offer1",

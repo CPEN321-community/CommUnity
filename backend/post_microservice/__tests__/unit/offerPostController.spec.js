@@ -95,26 +95,6 @@ describe("POST communitypost/offers", () => {
     expect(response.statusCode).toEqual(BAD_REQUEST);
   });
 
-  test("Invalid URL for image", async () => {
-    const invalidUrl = {
-      offerId: "offer1",
-      userId: "user1",
-      title: "Juice",
-      description: "Juicy",
-      quantity: 2,
-      pickUpLocation: "Juice Bar",
-      image: "juicyPic",
-      status: "Active",
-      bestBeforeDate: "04/20/2024",
-      tagList: []
-    }
-    OfferPost.create = jest.fn().mockReturnValueOnce(invalidUrl);
-    OfferPostTags.create = jest.fn();
-    axios.put = jest.fn().mockReturnValueOnce([invalidUrl]);
-    const response = await request.post("/communitypost/offers").set('token', s2sToken).send(invalidUrl);
-    expect(response.statusCode).toEqual(BAD_REQUEST);
-  });
-
   test("bestBeforeDate entry is invalid (wrong format)", async () => {
     const invalidDate = {
       offerId: "offer1",
