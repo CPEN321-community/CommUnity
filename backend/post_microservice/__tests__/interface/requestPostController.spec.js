@@ -12,7 +12,7 @@ const createdRequest = {
 }
 
 axios.defaults.headers = { token: s2sToken }
-axios.defaults.baseURL = process.env.CLOUD_POST_URL;
+axios.defaults.baseURL = process.env.POST_URL;
 // axios.defaults.baseURL = "http://localhost:8081";
 
 describe("POST communitypost/requests", () => {
