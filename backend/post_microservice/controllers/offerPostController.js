@@ -131,7 +131,7 @@ const searchOffersWithTags = async (req, res) => {
 
 const createOffer = async (req, res) => {
     const hasAllFields = req.body.userId && req.body.title && req.body.description && req.body.quantity && req.body.pickUpLocation && req.body.status && req.body.bestBeforeDate && req.body.tagList;
-    const validDate = req.body.bestBeforeDate.length == 10;
+    const validDate = req.body.bestBeforeDate.length === 10;
 
     if(hasAllFields && validDate) {
         const createdOffer = await OfferPost.create({
