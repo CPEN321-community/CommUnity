@@ -4,7 +4,7 @@ const supertest = require("supertest");
 const app = require("../../index");
 const { beforeAll } = require("@jest/globals");
 const s2sToken = require('./../../../config_post.json')["s2sToken"];
-const { OK, CREATED, BAD_REQUEST, INTERNAL_SERVER_ERROR } = require("../../httpCodes");
+const { OK, CREATED, BAD_REQUEST, NOT_FOUND } = require("../../httpCodes");
 
 jest.mock("axios");
 
@@ -142,7 +142,7 @@ describe("GET /user", () => {
   test("User does not exist", async () => {
     User.findByPk = jest.fn().mockReturnValueOnce(null);
     const response = await request.get("/user/user1").set('token', s2sToken);
-    expect(response.statusCode).toEqual(INTERNAL_SERVER_ERROR);
+    expect(response.statusCode).toEqual(NOT_FOUND);
   });
 });
 
@@ -234,7 +234,7 @@ describe("PUT /rank", () => {
     test("User does not exist", async () => {
       User.findByPk = jest.fn().mockReturnValueOnce(null);
       const response = await request.get("/user/user1").set('token', s2sToken);
-      expect(response.statusCode).toEqual(INTERNAL_SERVER_ERROR);
+      expect(response.statusCode).toEqual(NOT_FOUND);
     });
   });
   

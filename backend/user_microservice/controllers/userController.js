@@ -8,7 +8,7 @@ const {
   NOT_FOUND,
   BAD_REQUEST
 } = require("../httpCodes");
-const s2sToken = require('../../config_post.json')["s2sToken"];
+const s2sToken = require('../../config_user.json')["s2sToken"];
 
 const verifyToken = async (req, res) => {
   let response = await axios(

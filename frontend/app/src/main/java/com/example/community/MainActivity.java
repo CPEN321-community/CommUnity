@@ -1,13 +1,11 @@
 package com.example.community;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -195,7 +193,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         StringRequest stringReq = new StringRequest(Request.Method.POST, weather_tempurl, new Response.Listener<String>(){
             @Override
             public void onResponse(String response){
-                String data_output = "";
                 try{
                     JSONObject jsonResp = new JSONObject(response);
                     JSONArray jsonArr = jsonResp.getJSONArray("weather");
@@ -203,7 +200,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     String description = jsonObjWeather.getString("description");
                     Log.d(TAG, "Current weather: " + description);
 
-                    String bgColour;
                     ConstraintLayout bgLayout = (ConstraintLayout) findViewById(R.id.sun_moon_bg);
 
                     switch(description){

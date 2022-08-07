@@ -2,20 +2,18 @@ package com.example.community.ui.home;
 
 import android.os.CountDownTimer;
 import android.util.Log;
-import android.util.Pair;
-import android.widget.ImageView;
+// import android.util.Pair;
 
-import com.example.community.R;
 import com.example.community.databinding.TimeSunMoonElementBinding;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+// import java.time.LocalTime;
 
 public class SunMoonWatcher {
 
     private static final String TAG = "SUN_MOON_WATCHER";
-    private final static long twelvePM = LocalTime.of(12, 0).toNanoOfDay();
-    private final static long twelveAM = LocalTime.of(0, 0).toNanoOfDay();
+    // private final static long twelvePM = LocalTime.of(12, 0).toNanoOfDay();
+    // private final static long twelveAM = LocalTime.of(0, 0).toNanoOfDay();
 
     private final TimeSunMoonElementBinding binding;
     //private final ImageView imageView;
@@ -58,21 +56,21 @@ public class SunMoonWatcher {
                 binding.greeting.setText("Good Night!");
             }
             //imageView.setImageResource(R.mipmap.ic_moon_img);
-            Pair<Float, Float> coords = getCoordinates(isDay);
+            // Pair<Float, Float> coords = getCoordinates(isDay);
             //imageView.setX(coords.first);
             //imageView.setY(coords.second);
         }
     }
 
-    private Pair<Float, Float> getCoordinates(boolean isDay) {
-        long now = LocalTime.now().toNanoOfDay();
-        long midYTime;
-        if (isDay) {
-            midYTime = twelvePM;
-        } else {
-            midYTime = twelveAM;
-        }
-        Float absY = (float) Math.abs(now - midYTime);
-        return new Pair<>(0.0f, absY);
-    }
+    // private Pair<Float, Float> getCoordinates(boolean isDay) {
+    //     long now = LocalTime.now().toNanoOfDay();
+    //     long midYTime;
+    //     if (isDay) {
+    //         midYTime = twelvePM;
+    //     } else {
+    //         midYTime = twelveAM;
+    //     }
+    //     Float absY = (float) Math.abs(now - midYTime);
+    //     return new Pair<>(0.0f, absY);
+    // }
 }

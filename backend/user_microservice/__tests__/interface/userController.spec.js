@@ -1,7 +1,7 @@
 
 const axios = require("axios");
 const s2sToken = require('../../../config_post.json')["s2sToken"];
-const { OK, CREATED, BAD_REQUEST, INTERNAL_SERVER_ERROR} = require("../../httpCodes");
+const { OK, CREATED, BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND} = require("../../httpCodes");
 const { v4 } = require('uuid');
 
 const user = {
@@ -15,8 +15,7 @@ const uuid1 = v4();
 const uuid2 = v4();
 
 axios.defaults.headers = { token: s2sToken, userId: uuid1 }
-axios.defaults.baseURL = process.env.CLOUD_USER_URL;
-// axios.defaults.baseURL = "http://localhost:8080";
+axios.defaults.baseURL = "http://ec2-3-98-122-163.ca-central-1.compute.amazonaws.com:3000";
 
 describe("POST /user", () => {
   test("Pass", async () => {
@@ -109,14 +108,14 @@ describe("PUT /user", () => {
 });
 
 describe("GET /user", () => {
-  // test("Pass", async () => {
-  //   const response = await axios.get("/user/u1");
-  //   expect(response.status).toEqual(OK);
-  // });
+  test("Pass", async () => {
+    const response = await axios.get(`/user/${uuid1}`);
+    expect(response.status).toEqual(OK);
+  });
 
   test("User does not exist", async () => {
     await axios.get("/user/u1").catch(e => {
-      expect(e.response.status).toEqual(INTERNAL_SERVER_ERROR);
+      expect(e.response.status).toEqual(NOT_FOUND);
     })
   });
 });
@@ -160,7 +159,7 @@ describe("GET /rank", () => {
 
   test("User does not exist", async () => {
     await axios.get(`/user/nulllll`).catch(e => {
-      expect(e.response.status).toEqual(INTERNAL_SERVER_ERROR);
+      expect(e.response.status).toEqual(NOT_FOUND);
     })
   });
 });

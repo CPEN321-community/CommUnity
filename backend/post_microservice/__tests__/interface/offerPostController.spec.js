@@ -16,8 +16,8 @@ const createdOffer = {
 }
 
 axios.defaults.headers = { token: s2sToken }
-axios.defaults.baseURL = process.env.CLOUD_POST_URL;
-// axios.defaults.baseURL = "http://localhost:8081";
+axios.defaults.baseURL = "http://ec2-3-99-226-175.ca-central-1.compute.amazonaws.com:3000";
+
 describe("POST communitypost/offers", () => {
 
   test("Offer post is successfully created", async () => {
@@ -37,24 +37,6 @@ describe("POST communitypost/offers", () => {
       bestBeforeDate: "04/20/2024"
     }
     await axios.post("/communitypost/offers", missingFieldOffer).catch(e => {
-      expect(e.response.status).toEqual(BAD_REQUEST);
-    });
-  });
-
-  test("Invalid URL for image", async () => {
-    const invalidUrl = {
-      offerId: "offer1",
-      userId: "user1",
-      title: "Juice",
-      description: "Juicy",
-      quantity: 2,
-      pickUpLocation: "Juice Bar",
-      image: "juicyPic",
-      status: "Active",
-      bestBeforeDate: "04/20/2024",
-      tagList: []
-    }
-    await axios.post("/communitypost/offers", invalidUrl).catch(e => {
       expect(e.response.status).toEqual(BAD_REQUEST);
     });
   });
