@@ -2,7 +2,7 @@ package com.example.community.ui.home;
 
 import android.os.CountDownTimer;
 import android.util.Log;
-import android.util.Pair;
+// import android.util.Pair;
 
 import com.example.community.databinding.TimeSunMoonElementBinding;
 
@@ -12,8 +12,8 @@ import java.time.LocalTime;
 public class SunMoonWatcher {
 
     private static final String TAG = "SUN_MOON_WATCHER";
-    private final static long twelvePM = LocalTime.of(12, 0).toNanoOfDay();
-    private final static long twelveAM = LocalTime.of(0, 0).toNanoOfDay();
+    // private final static long twelvePM = LocalTime.of(12, 0).toNanoOfDay();
+    // private final static long twelveAM = LocalTime.of(0, 0).toNanoOfDay();
 
     private final TimeSunMoonElementBinding binding;
     //private final ImageView imageView;
