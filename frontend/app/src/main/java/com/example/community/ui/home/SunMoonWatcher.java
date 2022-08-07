@@ -3,9 +3,7 @@ package com.example.community.ui.home;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.util.Pair;
-import android.widget.ImageView;
 
-import com.example.community.R;
 import com.example.community.databinding.TimeSunMoonElementBinding;
 
 import java.time.LocalDateTime;
@@ -58,7 +56,7 @@ public class SunMoonWatcher {
                 binding.greeting.setText("Good Night!");
             }
             //imageView.setImageResource(R.mipmap.ic_moon_img);
-            Pair<Float, Float> coords = getCoordinates(isDay);
+            // Pair<Float, Float> coords = getCoordinates(isDay);
             //imageView.setX(coords.first);
             //imageView.setY(coords.second);
         }
