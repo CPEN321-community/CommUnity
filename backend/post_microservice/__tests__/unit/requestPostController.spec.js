@@ -4,7 +4,7 @@ const axios = require("axios");
 const { RequestPost, RequestPostTags } = require("../../models");
 const app = require("../../index");
 const s2sToken = require('./../../../config_post.json')["s2sToken"];
-const { OK, CREATED, NOT_FOUND, BAD_REQUEST } = require("../../httpCodes");
+const { OK, CREATED, NOT_FOUND, BAD_REQUEST, INTERNAL_SERVER_ERROR } = require("../../httpCodes");
 
 jest.mock("axios");
 

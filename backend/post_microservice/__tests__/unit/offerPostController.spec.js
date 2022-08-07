@@ -5,7 +5,7 @@ const axios = require("axios");
 const app = require("../../index");
 const { beforeAll } = require("@jest/globals");
 const s2sToken = require('./../../../config_post.json')["s2sToken"];
-const { OK, CREATED, NOT_FOUND, BAD_REQUEST } = require("../../httpCodes");
+const { OK, CREATED, NOT_FOUND, BAD_REQUEST, INTERNAL_SERVER_ERROR } = require("../../httpCodes");
 
 jest.mock("axios");
 
@@ -93,6 +93,26 @@ describe("POST communitypost/offers", () => {
     axios.put = jest.fn().mockReturnValueOnce([missingFieldOffer]);
     const response = await request.post("/communitypost/offers").set('token', s2sToken).send(missingFieldOffer);
     expect(response.statusCode).toEqual(BAD_REQUEST);
+  });
+
+  test("Invalid URL for image", async () => {
+    const invalidUrl = {
+      offerId: "offer1",
+      userId: "user1",
+      title: "Juice",
+      description: "Juicy",
+      quantity: 2,
+      pickUpLocation: "Juice Bar",
+      image: "juicyPic",
+      status: "Active",
+      bestBeforeDate: "04/20/2024",
+      tagList: []
+    }
+    OfferPost.create = jest.fn().mockReturnValueOnce(invalidUrl);
+    OfferPostTags.create = jest.fn();
+    axios.put = jest.fn().mockReturnValueOnce([invalidUrl]);
+    const response = await request.post("/communitypost/offers").set('token', s2sToken).send(invalidUrl);
+    expect(response.statusCode).toEqual(CREATED);
   });
 
   test("bestBeforeDate entry is invalid (wrong format)", async () => {

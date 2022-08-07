@@ -132,7 +132,8 @@ const searchOffersWithTags = async (req, res) => {
 
 const createOffer = async (req, res) => {
     const hasAllFields = !!(req.body.userId && req.body.title && req.body.description && req.body.quantity && req.body.pickUpLocation && req.body.status && req.body.bestBeforeDate && req.body.tagList);
-    if(hasAllFields) {
+    const validDate = req.body.bestBeforeDate.length == 10;
+    if(hasAllFields && validDate) {
         const createdOffer = await OfferPost.create({
             userId: req.body.userId,
             title: req.body.title,
@@ -145,16 +146,15 @@ const createOffer = async (req, res) => {
         });
         console.log(createdOffer);
 
-
         let tagList = req.body.tagList;
         if(tagList != null){
             for(let item of tagList) {
                 await OfferPostTags.create({
-                    postId: createdOffer.dataValues.offerId,
+                    postId: createdOffer.offerId,
                     name: item
                 });
             }
-            }
+        }
 
         const updateUserBody = {
             userId: req.body.userId,

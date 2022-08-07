@@ -141,7 +141,7 @@ const createRequest = async (req, res) => {
         if (tagList != null) {
             for(let item of tagList) {
                 RequestPostTags.create({
-                    postId: createdRequest.dataValues.requestId,
+                    postId: createdRequest.requestId,
                     name: item
                   });
             }
