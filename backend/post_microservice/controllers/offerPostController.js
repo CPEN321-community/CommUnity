@@ -111,13 +111,14 @@ const searchOffersWithTags = async (req, res) => {
             if (uniquePostIds.includes(postTags[i].dataValues.postId)){
                 duplicateOfferTagIds.push(postTags[i].dataValues.offerId);
             } else {
-                uniquePostIds.push(postTags[i].dataValues.offerId);
+                uniquePostIds.push(postTags[i].dataValues.postId);
             }
         }
-
+        console.log(uniquePostIds);
         const postList = await OfferPost.findAll({
             where: {offerId: uniquePostIds}
         });
+        console.log(postList);
 
         const result = postList.map(post => {
             return post.dataValues;
@@ -130,10 +131,8 @@ const searchOffersWithTags = async (req, res) => {
 }
 
 const createOffer = async (req, res) => {
-    const hasAllFields = req.body.userId && req.body.title && req.body.description && req.body.quantity && req.body.pickUpLocation && req.body.status && req.body.bestBeforeDate && req.body.tagList;
-    const validDate = req.body.bestBeforeDate.length === 10;
-
-    if(hasAllFields && validDate) {
+    const hasAllFields = !!(req.body.userId && req.body.title && req.body.description && req.body.quantity && req.body.pickUpLocation && req.body.status && req.body.bestBeforeDate && req.body.tagList);
+    if(hasAllFields) {
         const createdOffer = await OfferPost.create({
             userId: req.body.userId,
             title: req.body.title,
@@ -144,12 +143,14 @@ const createOffer = async (req, res) => {
             status: req.body.status,
             bestBeforeDate: req.body.bestBeforeDate
         });
+        console.log(createdOffer);
+
 
         let tagList = req.body.tagList;
         if(tagList != null){
             for(let item of tagList) {
-                OfferPostTags.create({
-                    postId: createdOffer.offerId,
+                await OfferPostTags.create({
+                    postId: createdOffer.dataValues.offerId,
                     name: item
                 });
             }

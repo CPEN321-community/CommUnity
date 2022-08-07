@@ -129,6 +129,7 @@ const createRoom = async (postId, isOffer, senderData) => {
   let post;
   let postData;
   try {
+    console.log(process.env.POST_URL);
     post = await axios.get(
       `${process.env.POST_URL}/communitypost/${typeString}/${postId}`
     );
@@ -138,7 +139,8 @@ const createRoom = async (postId, isOffer, senderData) => {
       return false;
     }
   } catch (e) {
-    console.error(e.response.status);
+    console.log("ERROR GETTING POST");
+    console.error(e);
     return false;
   }
 

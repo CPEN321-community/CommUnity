@@ -2,6 +2,7 @@ package com.example.community.classes;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -38,6 +39,9 @@ public class ChatHelper {
 
     private static final Emitter.Listener createRoomListener = args -> {
         JSONObject data = (JSONObject) args[0];
+        if (data == null) {
+            return;
+        }
         Log.d(TAG, "Connect: " + data);
         ChatRoom chat = new ChatRoom(data);
         Log.d(TAG, "iConnect: " + chat.getMe().firstName);

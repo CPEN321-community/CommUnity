@@ -28,7 +28,8 @@ const socketHandler = async (socket, io) => {
     try {
       room = await createRoom(postId, isOffer, senderData);
     } catch (e) {
-      console.log(e.data);
+      console.log("ERROR MAKING ROOM");
+      console.log(e);
       room = false;
     }
 
@@ -58,7 +59,7 @@ const socketHandler = async (socket, io) => {
         };
         other.emit("createRoom", inverse);
       }
-      socket.emit("createRoom", room);
+      socket.emit("createRoom", {...room, messages:[]});
     } else {
       socket.emit("createRoom", null);
     }

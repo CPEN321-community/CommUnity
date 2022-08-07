@@ -111,6 +111,7 @@ const searchRequestsWithTags = async (req, res) => {
                 uniquePostIds.push(postTags[i].dataValues.postId);
             }
         }
+        console.log(uniquePostIds);
 
         const postList = await RequestPost.findAll({
             where: {requestId: uniquePostIds}
@@ -135,11 +136,12 @@ const createRequest = async (req, res) => {
             description: req.body.description,
             status: req.body.status
           });
+          console.log(createdRequest);
         let tagList = req.body.tagList;
         if (tagList != null) {
             for(let item of tagList) {
                 RequestPostTags.create({
-                    postId: createdRequest.requestId,
+                    postId: createdRequest.dataValues.requestId,
                     name: item
                   });
             }
