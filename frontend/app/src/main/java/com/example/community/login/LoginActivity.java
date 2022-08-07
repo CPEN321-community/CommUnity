@@ -190,7 +190,7 @@ public class LoginActivity extends AppCompatActivity {
                 },
                 error -> {
                     if (error.networkResponse.statusCode == 404) {
-                        callback.onSuccess(true);
+                        callback.onSuccess(false);
                     }
                     else {
                     Log.e(TAG, "userDoesExist: " + error);
