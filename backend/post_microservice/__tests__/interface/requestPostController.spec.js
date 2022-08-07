@@ -12,8 +12,7 @@ const createdRequest = {
 }
 
 axios.defaults.headers = { token: s2sToken }
-axios.defaults.baseURL = process.env.POST_URL;
-// axios.defaults.baseURL = "http://localhost:8081";
+axios.defaults.baseURL = "http://ec2-3-99-226-175.ca-central-1.compute.amazonaws.com:3000";
 
 describe("POST communitypost/requests", () => {
     test("Request post is successfully created", async () => {
