@@ -7,7 +7,7 @@ import android.util.Log;
 import com.example.community.databinding.TimeSunMoonElementBinding;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+// import java.time.LocalTime;
 
 public class SunMoonWatcher {
 
